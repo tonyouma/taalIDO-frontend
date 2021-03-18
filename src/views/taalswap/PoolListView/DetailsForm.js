@@ -83,10 +83,7 @@ function DetailsForm({ pool, onCancel }) {
     }
   });
 
-  const {
-    handleSubmit,
-    isSubmitting
-  } = formik;
+  const { handleSubmit, isSubmitting } = formik;
 
   return (
     <FormikProvider value={formik}>
