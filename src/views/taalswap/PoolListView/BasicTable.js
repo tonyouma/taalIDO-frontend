@@ -8,12 +8,16 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  Slider
+  Slider,
+  DialogTitle
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPoolList } from '../../../redux/slices/pool';
 import ToolbarTable from '../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
+import { DialogAnimate } from '../../../components/Animate';
+import DetailsForm from './DetailsForm';
+import { closeModal, openModal } from '../../../redux/slices/pool';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +76,9 @@ export default function BasicTable() {
   const [filterName, setFilterName] = useState('');
 
   const dispatch = useDispatch();
-  const { poolList } = useSelector((state) => state.pool);
+  const { poolList, isOpenModal, selectedPool } = useSelector(
+    (state) => state.pool
+  );
 
   useEffect(() => {
     dispatch(getPoolList());
@@ -83,8 +89,12 @@ export default function BasicTable() {
     setFilterName(event.target.value);
   };
 
-  const handleClick = (event, name) => {
-    console.log(name);
+  const handleOpenModal = (name) => {
+    dispatch(openModal(name));
+  };
+
+  const handleCloseModal = () => {
+    dispatch(closeModal());
   };
 
   const filteredPools = applyFilter(poolList, filterName);
@@ -111,7 +121,7 @@ export default function BasicTable() {
                   key={row.name}
                   hover
                   className={classes.hideLastBorder}
-                  onClick={(event) => handleClick(event, row.name)}
+                  onClick={(event) => handleOpenModal(row.name)}
                 >
                   <TableCell component="th" scope="row" width="15%">
                     {row.name}
@@ -143,6 +153,11 @@ export default function BasicTable() {
             </TableBody>
           </Table>
         </TableContainer>
+
+        <DialogAnimate open={isOpenModal}>
+          <DialogTitle>{'Pool Details'}</DialogTitle>
+          <DetailsForm pool={selectedPool} onCancel={handleCloseModal} />
+        </DialogAnimate>
       </Scrollbars>
     </div>
   );

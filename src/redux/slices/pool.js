@@ -1,8 +1,5 @@
-// import { map } from 'lodash';
-// import axios from 'src/utils/axios';
 import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
-import mock from 'src/utils/mock';
 
 // ----------------------------------------------------------------------
 
@@ -31,12 +28,28 @@ const slice = createSlice({
     getPoolListSuccess(state, action) {
       state.isLoading = false;
       state.poolList = action.payload;
+    },
+
+    // OPEN MODAL
+    openModal(state, action) {
+      const name = action.payload;
+      state.isOpenModal = true;
+      state.selectedPool = name;
+    },
+
+    // CLOSE MODAL
+    closeModal(state) {
+      state.isOpenModal = false;
+      state.selectedPool = null;
     }
   }
 });
 
 // Reducer
 export default slice.reducer;
+
+// Actions
+export const { openModal, closeModal } = slice.actions;
 
 export function getPoolList() {
   // mock.restore();
