@@ -1,6 +1,6 @@
-import { map } from 'lodash';
-import axios from 'src/utils/axios';
-// import axios from 'axios';
+// import { map } from 'lodash';
+// import axios from 'src/utils/axios';
+import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
 import mock from 'src/utils/mock';
 
@@ -39,16 +39,16 @@ const slice = createSlice({
 export default slice.reducer;
 
 export function getPoolList() {
-  mock.restore();
+  // mock.restore();
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/pools');
-      // result.poolsList = [...response.data];
+      const response = await axios.get('http://localhost:3001/pools');
       response.data.map((resp) => {
         resp.ratio = 0.03 + resp.id;
         resp.access = 'Private';
         resp.progress = (resp.id + 1) * 10;
+        return resp;
       });
       dispatch(slice.actions.getPoolListSuccess(response.data));
     } catch (error) {
