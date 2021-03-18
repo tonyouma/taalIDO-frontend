@@ -1,0 +1,124 @@
+import { merge } from 'lodash';
+import clsx from 'clsx';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Icon } from '@iconify/react';
+import ReactApexChart from 'react-apexcharts';
+import { fNumber, fPercent } from 'src/utils/formatNumber';
+import { ApexChartsOption } from 'src/components/Charts/Apexcharts';
+import trendingUpFill from '@iconify-icons/eva/trending-up-fill';
+import trendingDownFill from '@iconify-icons/eva/trending-down-fill';
+import { alpha, useTheme, makeStyles } from '@material-ui/core/styles';
+import { Box, Card, Typography } from '@material-ui/core';
+
+// ----------------------------------------------------------------------
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(3),
+    justifyContent: 'space-between'
+  },
+  trending: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center'
+  },
+  trendingIcon: {
+    width: 24,
+    height: 24,
+    display: 'flex',
+    borderRadius: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: theme.spacing(1),
+    color: theme.palette.primary.main,
+    backgroundColor: alpha(theme.palette.primary.main, 0.16)
+  },
+  isTrendingDown: {
+    color: theme.palette.error.main,
+    backgroundColor: alpha(theme.palette.error.main, 0.16)
+  }
+}));
+
+// ----------------------------------------------------------------------
+
+TotalBalance.propTypes = {
+  className: PropTypes.string
+};
+
+const PERCENT = -0.06;
+const TOTAL_BALANCE = 18765.093383;
+
+function TotalBalance({ className, ...other }) {
+  const classes = useStyles();
+  const theme = useTheme();
+
+  const chartData = [{ data: [12, 14, 2, 47, 42, 15, 47, 75, 65, 19, 14] }];
+  const chartOptions = merge(ApexChartsOption(), {
+    colors: [theme.palette.info.main],
+    chart: { animations: { enabled: true }, sparkline: { enabled: true } },
+    stroke: { width: 2 },
+    tooltip: {
+      x: { show: false },
+      y: {
+        formatter: (seriesName) => fNumber(seriesName),
+        title: {
+          formatter: function (seriesName) {
+            return '';
+          }
+        }
+      },
+      marker: { show: false }
+    }
+  });
+
+  return (
+    <Card className={clsx(classes.root, className)} {...other}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Typography variant="subtitle2" gutterBottom>
+          Total Balance
+        </Typography>
+        <Typography variant="h3" gutterBottom>
+          {fNumber(TOTAL_BALANCE)}
+        </Typography>
+
+        <div className={classes.trending}>
+          <div
+            className={clsx(classes.trendingIcon, {
+              [classes.isTrendingDown]: PERCENT < 0
+            })}
+          >
+            <Icon
+              width={16}
+              height={16}
+              icon={PERCENT >= 0 ? trendingUpFill : trendingDownFill}
+            />
+          </div>
+          <Typography variant="subtitle2" component="span">
+            {PERCENT > 0 && '+'}
+            {fPercent(PERCENT)}
+          </Typography>
+          <Typography
+            variant="body2"
+            component="span"
+            sx={{ color: 'text.secondary' }}
+          >
+            &nbsp;than last week
+          </Typography>
+        </div>
+      </Box>
+
+      <ReactApexChart
+        type="line"
+        series={chartData}
+        options={chartOptions}
+        width={120}
+        height={80}
+      />
+    </Card>
+  );
+}
+
+export default TotalBalance;

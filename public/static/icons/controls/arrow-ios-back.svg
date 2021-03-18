@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>arrow-ios-back</title>
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="arrow-ios-back" fill-rule="nonzero">
+      <rect id="Rectangle" fill="#000000" opacity="0"
+        transform="translate(12.000000, 12.000000) rotate(90.000000) translate(-12.000000, -12.000000) " x="0" y="0"
+        width="24" height="24"></rect>
+      <path
+        d="M13.83,19.0000686 C13.5274116,19.0010289 13.2406301,18.8649915 13.05,18.63 L8.22,12.63 C7.91668285,12.2609981 7.91668285,11.7290019 8.22,11.36 L13.22,5.36 C13.5734622,4.93474075 14.2047407,4.87653778 14.63,5.23000001 C15.0552592,5.58346225 15.1134622,6.21474074 14.76,6.64 L10.29,12 L14.61,17.36 C14.8596926,17.6597233 14.9122976,18.0772862 14.7447459,18.4295743 C14.5771943,18.7818624 14.2200765,19.0045572 13.83,19.0000686 Z"
+        id="Path" fill="#FFFFFF"></path>
+    </g>
+  </g>
+</svg>
