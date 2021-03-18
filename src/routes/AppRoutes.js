@@ -11,6 +11,19 @@ const AppRoutes = {
   guard: AuthProtect,
   layout: DashboardLayout,
   routes: [
+    // TAALSWAP : POOLS
+    // ----------------------------------------------------------------------
+    {
+      exact: true,
+      path: PATH_APP.taalswap.root,
+      component: lazy(() => import('src/views/taalswap/PoolListView'))
+    },
+    {
+      exact: true,
+      path: PATH_APP.taalswap.application,
+      component: lazy(() => import('src/views/taalswap/ApplicationView'))
+    },
+
     // GENERAL
     // ----------------------------------------------------------------------
     {

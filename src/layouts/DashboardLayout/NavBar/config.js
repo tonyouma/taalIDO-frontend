@@ -29,6 +29,23 @@ const ICONS = {
 };
 
 const navConfig = [
+  // TAALSWAP IDO
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'taalswap ido',
+    items: [
+      {
+        title: 'pools',
+        href: PATH_APP.taalswap.root,
+        icon: ICONS.elements
+      },
+      {
+        title: 'application',
+        href: PATH_APP.taalswap.application,
+        icon: ICONS.page
+      }
+    ]
+  },
   // GENERAL
   // ----------------------------------------------------------------------
   {
