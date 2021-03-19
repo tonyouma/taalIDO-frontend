@@ -55,7 +55,7 @@ function CandidateCard({ card, index, className }) {
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
         {card.lists.map((item) => (
           <Box
-            key={item.text}
+            key={item.subscription}
             component="li"
             sx={{
               display: 'flex',
