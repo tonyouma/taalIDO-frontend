@@ -152,10 +152,10 @@ export default function BasicTable() {
                   className={classes.hideLastBorder}
                   onClick={(event) => handleOpenModal(row)}
                 >
-                  <TableCell component="th" scope="row" width="15%">
+                  <TableCell component="th" scope="row" width="20%">
                     {row.name}
                   </TableCell>
-                  <TableCell align="right" width="10%">
+                  <TableCell align="right" width="5%">
                     {row.ratio}
                   </TableCell>
                   <TableCell align="right" width="10%">
@@ -182,7 +182,7 @@ export default function BasicTable() {
             </TableBody>
           </Table>
         </TableContainer>
-        {/* 
+        {/*
         <DialogAnimate open={isOpenModal}>
           <DialogTitle>{'Pool Details'}</DialogTitle>
           <DetailsForm
