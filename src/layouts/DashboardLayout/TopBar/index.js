@@ -81,7 +81,7 @@ function TopBar({ onOpenNav, className }) {
           <Languages />
           <Notifications />
           <Settings />
-          <Account />
+          {/* <Account /> */}
         </Box>
       </Toolbar>
     </AppBar>

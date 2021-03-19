@@ -92,7 +92,7 @@ function ToolbarTable({ numSelected, filterName, onFilterName, className }) {
           className={classes.search}
         />
       )}
-
+      {/* 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
@@ -105,7 +105,7 @@ function ToolbarTable({ numSelected, filterName, onFilterName, className }) {
             <Icon icon={roundFilterList} />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 }
