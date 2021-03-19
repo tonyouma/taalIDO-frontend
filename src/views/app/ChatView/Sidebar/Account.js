@@ -98,7 +98,7 @@ function Account({ className }) {
             alignItems: 'center'
           }}
         >
-          <MyAvatar />
+          {/* <MyAvatar /> */}
 
           <Box sx={{ ml: 2, mr: 3 }}>
             <Typography noWrap variant="subtitle1">
