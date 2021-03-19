@@ -82,10 +82,10 @@ function Settings({ className }) {
 
           <Box sx={{ my: 3 }} />
 
-          <Typography variant="subtitle2" gutterBottom>
+          {/* <Typography variant="subtitle2" gutterBottom>
             Direction
           </Typography>
-          <ThemeDirection />
+          <ThemeDirection /> */}
         </Box>
       </Drawer>
     </div>
