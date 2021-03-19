@@ -32,7 +32,7 @@ import WalletDialog from 'src/views/taalswap/Components/WalletDialog';
 
 const MENU_LINKS = [
   { title: 'Home', icon: homeFill, href: '/' },
-  { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap.root },
+  { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap.pools },
   {
     title: 'Yield Farming',
     icon: roundStreetview,

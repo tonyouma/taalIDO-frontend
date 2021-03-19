@@ -11,6 +11,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, Box, Container, Typography } from '@material-ui/core';
 import { MButton } from 'src/theme';
+import { Link as RouterLink } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -87,9 +88,8 @@ function Advertisement({ className }) {
                 color="white"
                 underline="none"
                 variant="contained"
-                component={Link}
-                target="_blank"
-                // href={PATH_HOME.purchase}
+                component={RouterLink}
+                to="/app/taalswap/application/start"
               >
                 Apply for IDO
               </MButton>

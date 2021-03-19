@@ -229,7 +229,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
             variant="contained"
             pending={isSubmitting}
           >
-            Post
+            Create
           </LoadingButton>
         </Box>
       </Form>
