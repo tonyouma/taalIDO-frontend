@@ -87,7 +87,7 @@ function CandidatePool({ className }) {
   const isDesktop = useBreakpoints('up', 'lg');
 
   return (
-    <Page title="Candidate Pools" className={classes.root}>
+    <Page title="TaalSwap Finance" className={classes.root}>
       <Container maxWidth="lg">
         <Grid container spacing={5}>
           <Grid item xs={12}>
