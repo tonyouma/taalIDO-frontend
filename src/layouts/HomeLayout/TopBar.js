@@ -168,7 +168,7 @@ function TopBar() {
             variant="contained"
             component={Link}
             target="_blank"
-            href={PATH_HOME.purchase}
+            href={PATH_HOME.dashboard}
           >
             Connect Wallet
           </Button>
