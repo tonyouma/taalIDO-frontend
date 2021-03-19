@@ -87,7 +87,7 @@ function DarkMode({ className }) {
     <div className={clsx(classes.root, className)}>
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
         <Grid container spacing={5} direction="row-reverse">
-          <Grid item xs={12} md={50}>
+          <Grid item xs={12}>
             <div className={classes.content}>
               <MotionInView
                 variants={varFadeInUp}

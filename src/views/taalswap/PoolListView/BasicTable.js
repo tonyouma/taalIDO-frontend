@@ -235,7 +235,7 @@ export default function BasicTable() {
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={`${selectedPool.max} Token`}
+                value={`${selectedPool.max} tokens`}
                 fullWidth
               />
               <TextField

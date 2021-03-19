@@ -44,35 +44,86 @@ const PLANS = [
   {
     icon: '/static/icons/ic_plan_free.svg',
     lists: [
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'WhitePaper/LitePaper', isAvailable: true }
-    ]
+      {
+        text: 'Token Contract Address',
+        isAvailable: true,
+        subscription: 'address1'
+      },
+      { text: 'Website URL', isAvailable: true, subscription: 'url1' },
+      {
+        text: 'Token Contract Address',
+        isAvailable: true,
+        subscription: 'address2'
+      },
+      { text: 'Website URL', isAvailable: true, subscription: 'url2' },
+      {
+        text: 'Token Contract Address',
+        isAvailable: true,
+        subscription: 'address3'
+      },
+      {
+        text: 'WhitePaper/LitePaper',
+        isAvailable: true,
+        subscription: 'whitepaper1'
+      }
+    ],
+    subscription: 'free'
   },
   {
     icon: '/static/icons/ic_plan_starter.svg',
     lists: [
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'WhitePaper/LitePaper', isAvailable: true }
-    ]
+      {
+        text: 'Token Contract Address',
+        isAvailable: true,
+        subscription: 'address4'
+      },
+      { text: 'Website URL', isAvailable: true, subscription: 'url4' },
+      {
+        text: 'Token Contract Address',
+        isAvailable: true,
+        subscription: 'address5'
+      },
+      { text: 'Website URL', isAvailable: true, subscription: 'url5' },
+      {
+        text: 'Token Contract Address',
+        isAvailable: true,
+        subscription: 'address6'
+      },
+      {
+        text: 'WhitePaper/LitePaper',
+        isAvailable: true,
+        subscription: 'whitepaper2'
+      }
+    ],
+    subscription: 'starter'
   },
   {
     icon: '/static/icons/ic_plan_premium.svg',
     lists: [
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'WhitePaper/LitePaper', isAvailable: true }
-    ]
+      {
+        text: 'Token Contract Address',
+        isAvailable: true,
+        subscription: 'address7'
+      },
+      { text: 'Website URL', isAvailable: true, subscription: 'url7' },
+      {
+        text: 'Token Contract Address',
+        isAvailable: true,
+        subscription: 'address8'
+      },
+      { text: 'Website URL', isAvailable: true, subscription: 'url8' },
+      {
+        text: 'Token Contract Address',
+        isAvailable: true,
+        subscription: 'address9'
+      },
+      {
+        text: 'WhitePaper/LitePaper',
+        isAvailable: true,
+        subscription: 'whitepaper3'
+      }
+    ],
+    subscription: 'premium'
   }
 ];
 

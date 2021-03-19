@@ -64,32 +64,47 @@ const PLANS = [
   {
     icon: '/static/icons/ic_plan_free.svg',
     lists: [
-      { text: 'Ratio', isAvailable: true },
-      { text: 'MAX', isAvailable: true },
-      { text: 'Access', isAvailable: true },
-      { text: 'Max.Contribution', isAvailable: true },
-      { text: 'Totlal Raise', isAvailable: true }
-    ]
+      { text: 'Ratio', isAvailable: true, subscription: 'ratio' },
+      { text: 'MAX', isAvailable: true, subscription: 'max' },
+      { text: 'Access', isAvailable: true, subscription: 'access' },
+      {
+        text: 'Max.Contribution',
+        isAvailable: true,
+        subscription: 'max contribution'
+      },
+      { text: 'Totlal Raise', isAvailable: true, subscription: 'total raise' }
+    ],
+    subscription: 'free'
   },
   {
     icon: '/static/icons/ic_plan_starter.svg',
     lists: [
-      { text: 'Ratio', isAvailable: true },
-      { text: 'MAX', isAvailable: true },
-      { text: 'Access', isAvailable: true },
-      { text: 'Max.Contribution', isAvailable: true },
-      { text: 'Totlal Raise', isAvailable: true }
-    ]
+      { text: 'Ratio', isAvailable: true, subscription: 'ratio' },
+      { text: 'MAX', isAvailable: true, subscription: 'max' },
+      { text: 'Access', isAvailable: true, subscription: 'access' },
+      {
+        text: 'Max.Contribution',
+        isAvailable: true,
+        subscription: 'max contribution'
+      },
+      { text: 'Totlal Raise', isAvailable: true, subscription: 'total raise' }
+    ],
+    subscription: 'starter'
   },
   {
     icon: '/static/icons/ic_plan_premium.svg',
     lists: [
-      { text: 'Ratio', isAvailable: true },
-      { text: 'MAX', isAvailable: true },
-      { text: 'Access', isAvailable: true },
-      { text: 'Max.Contribution', isAvailable: true },
-      { text: 'Totlal Raise', isAvailable: true }
-    ]
+      { text: 'Ratio', isAvailable: true, subscription: 'ratio' },
+      { text: 'MAX', isAvailable: true, subscription: 'max' },
+      { text: 'Access', isAvailable: true, subscription: 'access' },
+      {
+        text: 'Max.Contribution',
+        isAvailable: true,
+        subscription: 'max contribution'
+      },
+      { text: 'Totlal Raise', isAvailable: true, subscription: 'total raise' }
+    ],
+    subscription: 'premium'
   }
 ];
 

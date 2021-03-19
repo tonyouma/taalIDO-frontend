@@ -53,7 +53,7 @@ function PlanCard({ card, index, className }) {
       )}
       {index === 1 && (
         <MLabel
-          color="gray"
+          color="info"
           sx={{
             top: 16,
             right: 16,
@@ -65,7 +65,7 @@ function PlanCard({ card, index, className }) {
       )}
       {index === 2 && (
         <MLabel
-          color="gray"
+          color="info"
           sx={{
             top: 16,
             right: 16,
@@ -115,7 +115,7 @@ function PlanCard({ card, index, className }) {
       </Box>
 
       <Button
-        // to={PATH_APP.root}
+        to={PATH_APP.taalswap.pools}
         fullWidth
         size="large"
         variant="contained"
