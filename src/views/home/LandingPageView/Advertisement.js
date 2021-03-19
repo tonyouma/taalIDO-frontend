@@ -89,7 +89,7 @@ function Advertisement({ className }) {
                 variant="contained"
                 component={Link}
                 target="_blank"
-                href={PATH_HOME.purchase}
+                // href={PATH_HOME.purchase}
               >
                 Apply for IDO
               </MButton>
