@@ -2,9 +2,13 @@ import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { BASE_IMG } from 'src/utils/getImages';
-import { varFadeInUp, MotionInView } from 'src/components/Animate';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Container, Typography } from '@material-ui/core';
+import {
+  varFadeInUp,
+  varFadeInDown,
+  MotionInView
+} from 'src/components/Animate';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     textAlign: 'center',
     [theme.breakpoints.up('md')]: {
-      textAlign: 'left',
+      textAlign: 'Center',
       position: 'absolute'
     }
   }
@@ -37,25 +41,24 @@ function CleanInterfaces({ className }) {
   const classes = useStyles();
 
   return (
-    <div className={clsx(classes.root, className)}>
-      <Container maxWidth="lg">
-        <div className={classes.content}>
-          <MotionInView variants={varFadeInUp}>
-            <Typography
-              gutterBottom
-              variant="overline"
-              sx={{ color: 'text.secondary', display: 'block' }}
-            >
-              clean & clear
-            </Typography>
-          </MotionInView>
-
-          <MotionInView variants={varFadeInUp}>
-            <Typography variant="h2" paragraph>
-              Beautiful, Modern and Clean User Interfaces
-            </Typography>
-          </MotionInView>
-        </div>
+    <Container maxWidth="lg" className={clsx(classes.root, className)}>
+      <div className={classes.heading}>
+        <MotionInView variants={varFadeInUp}>
+          <Typography
+            gutterBottom
+            variant="overline"
+            align="center"
+            sx={{ color: 'text.secondary', display: 'block' }}
+          >
+            TaalSwap
+          </Typography>
+        </MotionInView>
+        <MotionInView variants={varFadeInDown}>
+          <Typography variant="h2" align="center">
+            Fire up your project <br />
+            with TaalSwap
+          </Typography>
+        </MotionInView>
 
         <MotionInView variants={varFadeInUp}>
           <Box
@@ -69,8 +72,8 @@ function CleanInterfaces({ className }) {
             sx={{ m: 'auto' }}
           />
         </MotionInView>
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 }
 

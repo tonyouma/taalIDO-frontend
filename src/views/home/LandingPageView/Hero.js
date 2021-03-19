@@ -132,41 +132,22 @@ function Hero({ className }) {
           <div className={classes.content}>
             <motion.div variants={varFadeInRight}>
               <Typography variant="h1" sx={{ color: 'common.white' }}>
-                Start a <br />
-                New Project <br /> with
+                Fire up your project with <br />
                 <Typography
                   component="span"
                   variant="h1"
                   sx={{ color: 'primary.main' }}
                 >
-                  &nbsp;Minimal
+                  TaalSwap
                 </Typography>
               </Typography>
             </motion.div>
 
             <motion.div variants={varFadeInRight}>
               <Box component="p" sx={{ color: 'common.white', py: 5 }}>
-                The starting point for your next project based on
-                easy-to-customize Material-UI © helps you build apps faster and
-                better.
+                TaalSwap is a permissions cross-chain platform for IDO, yield
+                farming and NFT auction.
               </Box>
-            </motion.div>
-
-            <motion.div variants={varFadeInRight} className={classes.link}>
-              <Box
-                component="img"
-                alt="sketch icon"
-                src="/static/icons/ic_sketch.svg"
-                sx={{ mr: 1, width: 20, height: 20 }}
-              />
-              <Link
-                color="inherit"
-                underline="always"
-                href={PATH_HOME.cloud}
-                target="_blank"
-              >
-                Preview in Sketch Cloud
-              </Link>
             </motion.div>
 
             <motion.div variants={varFadeInRight}>
@@ -177,32 +158,11 @@ function Hero({ className }) {
                 to={PATH_APP.general.dashboard}
                 startIcon={<Icon icon={flashFill} width={20} height={20} />}
               >
-                Live Preview
+                Go Now
               </Button>
             </motion.div>
 
-            <div className={classes.listIcon}>
-              <motion.img
-                variants={varFadeInRight}
-                src="/static/icons/ic_m_sketch.svg"
-              />
-              <motion.img
-                variants={varFadeInRight}
-                src="/static/icons/ic_m_figma.svg"
-              />
-              <motion.img
-                variants={varFadeInRight}
-                src="/static/icons/ic_m_material.svg"
-              />
-              <motion.img
-                variants={varFadeInRight}
-                src="/static/icons/ic_m_react.svg"
-              />
-              <motion.img
-                variants={varFadeInRight}
-                src="/static/icons/ic_m_redux.svg"
-              />
-            </div>
+            <div className={classes.listIcon}></div>
           </div>
         </Container>
       </motion.div>

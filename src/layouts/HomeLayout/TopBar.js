@@ -31,9 +31,9 @@ import { MIconButton } from 'src/theme';
 
 const MENU_LINKS = [
   { title: 'Home', icon: homeFill, href: '/' },
-  { title: 'Components', icon: roundStreetview, href: PATH_HOME.components },
-  { title: 'Dashboard', icon: roundSpeed, href: PATH_HOME.dashboard },
-  { title: 'Documentation', icon: bookOpenFill, href: PATH_DOCS.root }
+  { title: 'Yield Farming', icon: roundStreetview, href: PATH_HOME.components },
+  { title: 'About', icon: roundSpeed, href: PATH_HOME.dashboard },
+  { title: 'Account', icon: bookOpenFill, href: PATH_DOCS.root }
 ];
 
 const APP_BAR_MOBILE = 64;
@@ -170,7 +170,7 @@ function TopBar() {
             target="_blank"
             href={PATH_HOME.purchase}
           >
-            Purchase Now
+            Connect Wallet
           </Button>
 
           <Hidden mdUp>

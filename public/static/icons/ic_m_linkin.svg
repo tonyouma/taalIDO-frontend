@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <g id="linkin" transform="translate(-913 -4756.5)">
+    <g id="Avatar_A.Icon_4.48" data-name="Avatar/ A.Icon/ 4.48" transform="translate(913 4756.5)">
+      <g id="_background" data-name="🎨background">
+        <circle id="_background-2" data-name="🎨background" cx="24" cy="24" r="24" fill="#fff"/>
+      </g>
+    </g>
+    <g id="___Icons_ic_replace" data-name="__🥬Icons/ ic_replace" transform="translate(925 4768.5)">
+      <g id="linkedin">
+        <rect id="Rectangle" width="24" height="24" transform="translate(24 24) rotate(180)" opacity="0"/>
+        <path id="Path" d="M5.85,0A5.83,5.83,0,0,0,0,5.82V11.7a.9.9,0,0,0,.9.9H3a.9.9,0,0,0,.9-.9V5.82A1.94,1.94,0,0,1,6.05,3.89a2,2,0,0,1,1.75,2V11.7a.9.9,0,0,0,.9.9h2.1a.9.9,0,0,0,.9-.9V5.82A5.83,5.83,0,0,0,5.85,0Z" transform="translate(9.3 8.4)" fill="#007ebb"/>
+        <rect id="Rectangle-2" data-name="Rectangle" width="4.5" height="11.7" rx="0.9" transform="translate(3 9.3)" fill="#007ebb"/>
+        <circle id="Oval" cx="2.25" cy="2.25" r="2.25" transform="translate(3 3)" fill="#007ebb"/>
+      </g>
+    </g>
+  </g>
+</svg>

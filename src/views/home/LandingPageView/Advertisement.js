@@ -77,8 +77,8 @@ function Advertisement({ className }) {
               sx={{ color: 'common.white', mb: 5 }}
             >
               <Typography variant="h2">
-                Get started with
-                <br /> Minimal Kit today
+                Want to launch
+                <br /> your project on TaalSwap?
               </Typography>
             </MotionInView>
             <MotionInView variants={varFadeInDown}>
@@ -91,7 +91,7 @@ function Advertisement({ className }) {
                 target="_blank"
                 href={PATH_HOME.purchase}
               >
-                Purchase Now
+                Apply for IDO
               </MButton>
             </MotionInView>
           </Box>

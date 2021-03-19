@@ -3,11 +3,12 @@ import Hero from './Hero';
 import Footer from './Footer';
 import DarkMode from './DarkMode';
 import Page from 'src/components/Page';
-import Minimal from './Minimal';
 import Advertisement from './Advertisement';
 import CleanInterfaces from './CleanInterfaces';
-import HugePackElements from './HugePackElements';
+//import HugePackElements from './HugePackElements';
+import TabCard from './TabCard';
 import { makeStyles } from '@material-ui/core/styles';
+import CandidatePool from './CandidatePool';
 
 // ----------------------------------------------------------------------
 
@@ -27,18 +28,17 @@ function LandingPageView() {
 
   return (
     <Page
-      title="The starting point for your next project | Minimal-UI"
+      title="Fire up your project with TaalSwap"
       id="move_top"
       className={classes.root}
     >
       <Hero />
       <div className={classes.content}>
-        <Minimal />
-        <HugePackElements />
-        <DarkMode />
-        <CleanInterfaces />
+        <TabCard />
+        <CandidatePool />
         <Advertisement />
-        <Footer />
+        <CleanInterfaces />
+        <DarkMode />
       </div>
     </Page>
   );

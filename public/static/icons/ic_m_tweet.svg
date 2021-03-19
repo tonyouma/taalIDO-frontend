@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <g id="tweet" transform="translate(-976 -4756.5)">
+    <g id="Avatar_A.Icon_4.48" data-name="Avatar/ A.Icon/ 4.48" transform="translate(976 4756.5)">
+      <g id="_background" data-name="🎨background">
+        <circle id="_background-2" data-name="🎨background" cx="24" cy="24" r="24" fill="#fff"/>
+      </g>
+    </g>
+    <g id="___Icons_ic_replace" data-name="__🥬Icons/ ic_replace" transform="translate(988 4768.5)">
+      <g id="twitter">
+        <path id="Path" d="M0,0H24V24H0" opacity="0"/>
+        <path id="Path-2" data-name="Path" d="M5.076,16A11.07,11.07,0,0,0,16.516,5,8.09,8.09,0,0,0,18,2.157a.44.44,0,0,0-.62-.51,1.88,1.88,0,0,1-2.16-.38,3.89,3.89,0,0,0-5.58-.17A4.13,4.13,0,0,0,8.486,5c-3.35.2-5.65-1.39-7.49-3.57a.43.43,0,0,0-.75.24,9.68,9.68,0,0,0,4.6,10.05A6.73,6.73,0,0,1,.376,14a.45.45,0,0,0-.14.84A11,11,0,0,0,5.076,16" transform="translate(3.004 4.003)" fill="#00aaec"/>
+      </g>
+    </g>
+  </g>
+</svg>
