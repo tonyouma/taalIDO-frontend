@@ -20,8 +20,18 @@ const AppRoutes = {
     },
     {
       exact: true,
-      path: PATH_APP.taalswap.application,
+      path: PATH_APP.taalswap.pools,
+      component: lazy(() => import('src/views/taalswap/PoolListView'))
+    },
+    {
+      exact: true,
+      path: PATH_APP.taalswap.application.root,
       component: lazy(() => import('src/views/taalswap/ApplicationView'))
+    },
+    {
+      exact: true,
+      path: PATH_APP.taalswap.application.start,
+      component: lazy(() => import('src/views/taalswap/ApplicationView/Start'))
     },
 
     {

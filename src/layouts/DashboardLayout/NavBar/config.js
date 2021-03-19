@@ -36,12 +36,12 @@ const navConfig = [
     items: [
       {
         title: 'pools',
-        href: PATH_APP.taalswap.root,
+        href: PATH_APP.taalswap.pools,
         icon: ICONS.elements
       },
       {
         title: 'application',
-        href: PATH_APP.taalswap.application,
+        href: PATH_APP.taalswap.application.root,
         icon: ICONS.page
       },
       {

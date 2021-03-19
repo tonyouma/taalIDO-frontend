@@ -39,7 +39,11 @@ function DashboardAppView() {
           responsible for ...
         </Typography>
 
-        <Button to="#" variant="contained" component={RouterLink}>
+        <Button
+          to="/app/taalswap/application/start"
+          variant="contained"
+          component={RouterLink}
+        >
           Start Your Application
         </Button>
       </Container>
