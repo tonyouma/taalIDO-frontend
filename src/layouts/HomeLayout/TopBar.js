@@ -33,9 +33,13 @@ import WalletDialog from 'src/views/taalswap/Components/WalletDialog';
 const MENU_LINKS = [
   { title: 'Home', icon: homeFill, href: '/' },
   { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap.root },
-  { title: 'Yield Farming', icon: roundStreetview, href: PATH_HOME.components },
-  { title: 'About', icon: roundSpeed, href: PATH_HOME.dashboard },
-  { title: 'Account', icon: bookOpenFill, href: PATH_DOCS.root }
+  {
+    title: 'Yield Farming',
+    icon: roundStreetview,
+    href: PATH_APP.taalswap
+  },
+  { title: 'About', icon: roundSpeed, href: PATH_APP.taalswap },
+  { title: 'Account', icon: bookOpenFill, href: PATH_APP.taalswap }
 ];
 
 const APP_BAR_MOBILE = 64;
