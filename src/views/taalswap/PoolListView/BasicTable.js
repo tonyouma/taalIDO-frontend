@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Scrollbars from 'src/components/Scrollbars';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Button,
   Table,
   TableRow,
   TableHead,
@@ -9,8 +10,13 @@ import {
   TableCell,
   TableContainer,
   Slider,
-  DialogTitle
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField
 } from '@material-ui/core';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getPoolList } from '../../../redux/slices/pool';
@@ -22,18 +28,31 @@ import { closeModal, openModal } from '../../../redux/slices/pool';
 
 // ----------------------------------------------------------------------
 
-const useStyles = makeStyles({
-  root: {}
-});
+const useStyles = makeStyles((theme) => ({
+  root: {},
+  contentTextField: {
+    '& .MuiFormLabel-root': {
+      color: theme.palette.primary.main
+    },
+    marginTop: '1rem'
+  },
+  button: {
+    width: '100px'
+  },
+  dialogTitle: {
+    color: theme.palette.primary.main
+  }
+}));
 
 function valueText(value) {
-  return `${value}%`;
+  const returnValue = `${value}%`;
+  return returnValue;
 }
 
 const marks = [
   {
     value: 0,
-    label: '0°C'
+    label: '0%'
   },
   {
     value: 20,
@@ -83,9 +102,9 @@ export default function BasicTable() {
   );
 
   useEffect(() => {
+    console.log(poolList);
     dispatch(getPoolList());
   }, [dispatch]);
-  console.log(poolList);
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
@@ -100,7 +119,6 @@ export default function BasicTable() {
   };
 
   const handleOnClickSwap = () => {
-    console.log(selectedPool);
     dispatch(closeModal());
     history.push({
       pathname: '/app/taalswap/swap',
@@ -164,7 +182,7 @@ export default function BasicTable() {
             </TableBody>
           </Table>
         </TableContainer>
-
+        {/* 
         <DialogAnimate open={isOpenModal}>
           <DialogTitle>{'Pool Details'}</DialogTitle>
           <DetailsForm
@@ -172,7 +190,87 @@ export default function BasicTable() {
             onCancel={handleCloseModal}
             onClickSwap={handleOnClickSwap}
           />
-        </DialogAnimate>
+        </DialogAnimate> */}
+
+        {selectedPool && (
+          <Dialog
+            // maxWidth="lg"
+            open={isOpenModal}
+            onClose={handleCloseModal}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle
+              className={classes.dialogTitle}
+              id="customized-dialog-title"
+              onClose={handleCloseModal}
+            >
+              Pool Details
+            </DialogTitle>
+            <DialogContent dividers>
+              <TextField
+                className={classes.contentTextField}
+                label="Pool"
+                variant="standard"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={selectedPool.name}
+                fullWidth
+              />
+              <TextField
+                className={classes.contentTextField}
+                label="Token"
+                variant="standard"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={selectedPool.address}
+                fullWidth
+              />
+              <TextField
+                className={classes.contentTextField}
+                label="Max"
+                variant="standard"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={`${selectedPool.max} Token`}
+                fullWidth
+              />
+              <TextField
+                className={classes.contentTextField}
+                color="primary"
+                label="Whitelisted"
+                variant="standard"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={selectedPool.whitelist}
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                className={classes.button}
+                variant="outlined"
+                color="inherit"
+                onClick={handleCloseModal}
+              >
+                Cancel
+              </Button>
+              <Button
+                className={classes.button}
+                variant="contained"
+                onClick={handleOnClickSwap}
+                color="primary"
+                autoFocus
+              >
+                Swap
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
       </Scrollbars>
     </div>
   );

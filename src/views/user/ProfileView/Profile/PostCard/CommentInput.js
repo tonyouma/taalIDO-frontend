@@ -52,7 +52,7 @@ function CommentInput({
 
   return (
     <div className={clsx(classes.root, className)}>
-      <MyAvatar />
+      {/* <MyAvatar /> */}
       <TextField
         fullWidth
         size="small"

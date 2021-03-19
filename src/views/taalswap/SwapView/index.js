@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from '../../../components/Page';
@@ -40,7 +40,7 @@ function SwapView() {
   const location = useLocation();
 
   useEffect(() => {
-    console.log(location.state);
+    console.log(location.state.selectedPool);
   }, [location]);
 
   return (
@@ -181,6 +181,7 @@ function SwapView() {
                       >
                         Go
                       </Button>
+
                       <Typography variant="caption">
                         Have problems with Joing? Click here to read
                         instructions

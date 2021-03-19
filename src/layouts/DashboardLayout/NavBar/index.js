@@ -127,7 +127,7 @@ NavBar.propTypes = {
 function NavBar({ isOpenNav, onCloseNav }) {
   const classes = useStyles();
   const { pathname } = useLocation();
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   useEffect(() => {
     if (isOpenNav && onCloseNav) {
@@ -144,7 +144,7 @@ function NavBar({ isOpenNav, onCloseNav }) {
         </RouterLink>
       </Box>
 
-      <Link
+      {/* <Link
         underline="none"
         component={RouterLink}
         to={PATH_APP.management.user.account}
@@ -160,7 +160,7 @@ function NavBar({ isOpenNav, onCloseNav }) {
             </Typography>
           </Box>
         </div>
-      </Link>
+      </Link> */}
 
       {MenuLinks.map((list) => (
         <List
@@ -196,7 +196,7 @@ function NavBar({ isOpenNav, onCloseNav }) {
             variant="subtitle1"
             sx={{ color: 'grey.800' }}
           >
-            Hi, {user.displayName}
+            Hi,
           </Typography>
           <Typography variant="body2" sx={{ mb: 2, color: 'grey.600' }}>
             Need help?
