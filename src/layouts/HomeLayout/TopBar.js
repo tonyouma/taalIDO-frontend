@@ -26,6 +26,7 @@ import {
   ListItemText
 } from '@material-ui/core';
 import { MIconButton } from 'src/theme';
+import WalletDialog from 'src/views/taalswap/Components/WalletDialog';
 
 // ----------------------------------------------------------------------
 
@@ -89,6 +90,12 @@ function TopBar() {
   const offset = useOffSetTop(100);
   const [openMenu, setOpenMenu] = useState(false);
   const isHome = pathname === '/';
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
+  };
 
   const renderMenuDesktop = (
     <div>
@@ -166,12 +173,17 @@ function TopBar() {
           <Button
             underline="none"
             variant="contained"
-            component={Link}
+            // component={Link}
             target="_blank"
-            href={PATH_HOME.dashboard}
+            onClick={() => setIsOpenModal(true)}
           >
             Connect Wallet
           </Button>
+
+          <WalletDialog
+            isOpenModal={isOpenModal}
+            handleCloseModal={handleCloseModal}
+          />
 
           <Hidden mdUp>
             <MIconButton
