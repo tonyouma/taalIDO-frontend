@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
 
 function valueText(value) {
   const returnValue = `${value}%`;
-  console.log(returnValue);
   return returnValue;
 }
 
