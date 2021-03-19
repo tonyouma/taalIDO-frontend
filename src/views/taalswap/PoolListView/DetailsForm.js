@@ -34,10 +34,11 @@ const useStyles = makeStyles((theme) => ({
 
 DetailsForm.propTypes = {
   pool: PropTypes.object,
-  onCancel: PropTypes.func
+  onCancel: PropTypes.func,
+  onClickSwap: PropTypes.func
 };
 
-function DetailsForm({ pool, onCancel }) {
+function DetailsForm({ pool, onCancel, onClickSwap }) {
   const classes = useStyles();
 
   const EventSchema = Yup.object().shape({
@@ -58,6 +59,7 @@ function DetailsForm({ pool, onCancel }) {
         // }
         resetForm();
         onCancel();
+        onClickSwap();
         setSubmitting(false);
       } catch (error) {
         console.error(error);
@@ -99,6 +101,7 @@ function DetailsForm({ pool, onCancel }) {
             variant="contained"
             pending={isSubmitting}
             pendingIndicator="Loading..."
+            onClick={onClickSwap}
           >
             Swap
           </LoadingButton>

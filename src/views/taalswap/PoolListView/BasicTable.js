@@ -12,6 +12,7 @@ import {
   DialogTitle
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { getPoolList } from '../../../redux/slices/pool';
 import ToolbarTable from '../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
@@ -73,6 +74,7 @@ function applyFilter(array, query) {
 
 export default function BasicTable() {
   const classes = useStyles();
+  const history = useHistory();
   const [filterName, setFilterName] = useState('');
 
   const dispatch = useDispatch();
@@ -95,6 +97,15 @@ export default function BasicTable() {
 
   const handleCloseModal = () => {
     dispatch(closeModal());
+  };
+
+  const handleOnClickSwap = () => {
+    console.log(selectedPool);
+    dispatch(closeModal());
+    history.push({
+      pathname: '/app/taalswap/swap',
+      state: { selectedPool: selectedPool }
+    });
   };
 
   const filteredPools = applyFilter(poolList, filterName);
@@ -156,7 +167,11 @@ export default function BasicTable() {
 
         <DialogAnimate open={isOpenModal}>
           <DialogTitle>{'Pool Details'}</DialogTitle>
-          <DetailsForm pool={selectedPool} onCancel={handleCloseModal} />
+          <DetailsForm
+            pool={selectedPool}
+            onCancel={handleCloseModal}
+            onClickSwap={handleOnClickSwap}
+          />
         </DialogAnimate>
       </Scrollbars>
     </div>

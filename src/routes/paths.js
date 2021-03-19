@@ -37,7 +37,8 @@ export const PATH_APP = {
   root: ROOTS.app,
   taalswap: {
     root: path(ROOTS.app, '/taalswap'),
-    application: path(ROOTS.app, '/taalswap/application')
+    application: path(ROOTS.app, '/taalswap/application'),
+    swap: path(ROOTS.app, '/taalswap/swap')
   },
   general: {
     root: path(ROOTS.app, '/dashboard'),

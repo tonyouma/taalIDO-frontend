@@ -24,6 +24,12 @@ const AppRoutes = {
       component: lazy(() => import('src/views/taalswap/ApplicationView'))
     },
 
+    {
+      exact: true,
+      path: PATH_APP.taalswap.swap,
+      component: lazy(() => import('src/views/taalswap/SwapView'))
+    },
+
     // GENERAL
     // ----------------------------------------------------------------------
     {
