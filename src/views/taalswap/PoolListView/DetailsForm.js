@@ -13,16 +13,6 @@ import { LoadingButton } from '@material-ui/lab';
 
 // ----------------------------------------------------------------------
 
-const COLOR_OPTIONS = [
-  '#00AB55', // theme.palette.primary.main,
-  '#1890FF', // theme.palette.info.main,
-  '#94D82D', // theme.palette.success.main,
-  '#FFC107', // theme.palette.warning.main,
-  '#FF4842', // theme.palette.error.main
-  '#04297A', // theme.palette.info.darker
-  '#7A0C2E' // theme.palette.error.darker
-];
-
 const getInitialValues = (pool) => {
   const _pool = {
     title: '',
@@ -59,14 +49,6 @@ function DetailsForm({ pool, onCancel }) {
     validationSchema: EventSchema,
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       try {
-        const newEvent = {
-          title: values.title,
-          description: values.description,
-          textColor: values.textColor,
-          allDay: values.allDay,
-          start: values.start,
-          end: values.end
-        };
         // if (event) {
         //   dispatch(updateEvent(event.id, newEvent));
         //   enqueueSnackbar('Update event success', { variant: 'success' });
@@ -89,8 +71,17 @@ function DetailsForm({ pool, onCancel }) {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <DialogContent>
-          <Typography variant="subtitle1" gutterBottom>
-            Pool : {pool}
+          <Typography variant="subtitle1" className={classes.margin}>
+            Pool : {pool.name}
+          </Typography>
+          <Typography variant="subtitle1" className={classes.margin}>
+            Token : {pool.address}
+          </Typography>
+          <Typography variant="subtitle1" className={classes.margin}>
+            Max : {pool.max} Tokens
+          </Typography>
+          <Typography variant="subtitle1" className={classes.margin}>
+            Whitelisted : {pool.whitelist}
           </Typography>
         </DialogContent>
 

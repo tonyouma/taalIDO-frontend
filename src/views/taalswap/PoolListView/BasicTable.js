@@ -89,8 +89,8 @@ export default function BasicTable() {
     setFilterName(event.target.value);
   };
 
-  const handleOpenModal = (name) => {
-    dispatch(openModal(name));
+  const handleOpenModal = (row) => {
+    dispatch(openModal(row));
   };
 
   const handleCloseModal = () => {
@@ -121,7 +121,7 @@ export default function BasicTable() {
                   key={row.name}
                   hover
                   className={classes.hideLastBorder}
-                  onClick={(event) => handleOpenModal(row.name)}
+                  onClick={(event) => handleOpenModal(row)}
                 >
                   <TableCell component="th" scope="row" width="15%">
                     {row.name}

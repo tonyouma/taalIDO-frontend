@@ -32,9 +32,9 @@ const slice = createSlice({
 
     // OPEN MODAL
     openModal(state, action) {
-      const name = action.payload;
+      const row = action.payload;
       state.isOpenModal = true;
-      state.selectedPool = name;
+      state.selectedPool = row;
     },
 
     // CLOSE MODAL
