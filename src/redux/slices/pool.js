@@ -56,7 +56,7 @@ export function getPoolList() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('http://localhost:3001/pools');
+      const response = await axios.get('http://133.186.222.82:3001/pools');
       response.data.map((resp) => {
         resp.ratio = 0.03 + resp.id;
         resp.access = 'Private';
