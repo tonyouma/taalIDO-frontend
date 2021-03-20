@@ -8,7 +8,7 @@ import {
   Typography
 } from '@material-ui/core';
 
-import { injected, walletconnect } from '../../../connectors';
+import { injected, walletconnect } from 'src/connectors';
 import { setActivatingConnector } from 'src/redux/slices/wallet';
 import { useDispatch } from 'react-redux';
 
