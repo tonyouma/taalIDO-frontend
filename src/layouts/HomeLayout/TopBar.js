@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import { Icon } from '@iconify/react';
 import Logo from 'src/components/Logo';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import useOffSetTop from 'src/hooks/useOffSetTop';
 import homeFill from '@iconify-icons/eva/home-fill';
 import PopoverMenu from 'src/components/PopoverMenu';
 import roundSpeed from '@iconify-icons/ic/round-speed';
 import menu2Fill from '@iconify-icons/eva/menu-2-fill';
-import { PATH_HOME, PATH_DOCS, PATH_APP } from 'src/routes/paths';
+import { PATH_APP } from 'src/routes/paths';
 import bookOpenFill from '@iconify-icons/eva/book-open-fill';
 import roundStreetview from '@iconify-icons/ic/round-streetview';
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
@@ -27,6 +27,10 @@ import {
 } from '@material-ui/core';
 import { MIconButton } from 'src/theme';
 import WalletDialog from 'src/views/taalswap/Components/WalletDialog';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActivatingConnector } from 'src/redux/slices/wallet';
+import { useEagerConnect, useInactiveListener } from 'src/hooks/useWallet';
+import { useWeb3React } from '@web3-react/core';
 
 // ----------------------------------------------------------------------
 
@@ -90,6 +94,7 @@ const useStyles = makeStyles((theme) => ({
 
 function TopBar() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const anchorRef = useRef(null);
   const { pathname } = useLocation();
   const offset = useOffSetTop(100);
@@ -97,11 +102,40 @@ function TopBar() {
   const isHome = pathname === '/';
 
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { activatingConnector } = useSelector((state) => state.wallet);
 
-  const handleCloseModal = () => {
+  const context = useWeb3React();
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
+
+  useEffect(() => {
+    if (activatingConnector && activatingConnector === connector) {
+      dispatch(setActivatingConnector(undefined));
+    }
+  }, [activatingConnector, connector]);
+
+  // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
+  const triedEager = useEagerConnect();
+
+  // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
+  useInactiveListener(!triedEager || !!activatingConnector);
+
+  const handleCloseModal = async (name) => {
     setIsOpenModal(false);
   };
 
+  console.log('---> activatingConnector', activatingConnector);
+  console.log('---> connector', connector);
+  console.log('---------> active : ', active);
+  console.log('---------> account : ', account);
   const renderMenuDesktop = (
     <div>
       {MENU_LINKS.map((link) => (
@@ -152,6 +186,22 @@ function TopBar() {
     </PopoverMenu>
   );
 
+  const renderConnectWallet = () => {
+    if (!connector) {
+      return (
+        <Button
+          underline="none"
+          variant="contained"
+          // component={Link}
+          target="_blank"
+          onClick={() => setIsOpenModal(true)}
+        >
+          Connect Wallet
+        </Button>
+      );
+    }
+  };
+
   return (
     <AppBar
       color="transparent"
@@ -175,19 +225,12 @@ function TopBar() {
 
           <Hidden mdDown>{renderMenuDesktop}</Hidden>
 
-          <Button
-            underline="none"
-            variant="contained"
-            // component={Link}
-            target="_blank"
-            onClick={() => setIsOpenModal(true)}
-          >
-            Connect Wallet
-          </Button>
+          {renderConnectWallet()}
 
           <WalletDialog
             isOpenModal={isOpenModal}
             handleCloseModal={handleCloseModal}
+            activate={activate}
           />
 
           <Hidden mdUp>

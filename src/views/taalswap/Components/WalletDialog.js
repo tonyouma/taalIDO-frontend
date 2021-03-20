@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
@@ -7,6 +7,10 @@ import {
   DialogContent,
   Typography
 } from '@material-ui/core';
+
+import { injected, walletconnect } from '../../../connectors';
+import { setActivatingConnector } from 'src/redux/slices/wallet';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -45,11 +49,19 @@ const walletList = [
   }
 ];
 
-const WalletDialog = ({ isOpenModal, handleCloseModal }) => {
+const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const onClickWallet = (wallet) => {
-    console.log(wallet);
+  const onClickWallet = async (wallet) => {
+    if (wallet.name === 'MetaMask') {
+      await activate(injected);
+      dispatch(setActivatingConnector(injected));
+    } else if (wallet.name === 'WalletConnect') {
+      await activate(walletconnect);
+      dispatch(setActivatingConnector(walletconnect));
+    }
+    handleCloseModal(wallet.name);
   };
 
   return (

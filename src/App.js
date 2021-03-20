@@ -17,29 +17,44 @@ import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import JwtProvider from 'src/components/Auth/JwtProvider';
 // import FirebaseProvider from 'src/components/Auth/FirebaseProvider';
 
+import {
+  Web3ReactProvider,
+  useWeb3React,
+  nsupportedChainIdError
+} from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+
 // ----------------------------------------------------------------------
 
 const history = createBrowserHistory();
 
+function getLibrary(provider: any): Web3Provider {
+  const library = new Web3Provider(provider);
+  library.pollingInterval = 12000;
+  return library;
+}
+
 function App() {
   return (
-    <Provider store={store}>
-      <PersistGate loading={<LoadingScreen />} persistor={persistor}>
-        <ThemeConfig>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <NotistackProvider>
-              <Router history={history}>
-                <JwtProvider>
-                  <ScrollToTop />
-                  <GoogleAnalytics />
-                  {renderRoutes(routes)}
-                </JwtProvider>
-              </Router>
-            </NotistackProvider>
-          </LocalizationProvider>
-        </ThemeConfig>
-      </PersistGate>
-    </Provider>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Provider store={store}>
+        <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+          <ThemeConfig>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <NotistackProvider>
+                <Router history={history}>
+                  <JwtProvider>
+                    <ScrollToTop />
+                    <GoogleAnalytics />
+                    {renderRoutes(routes)}
+                  </JwtProvider>
+                </Router>
+              </NotistackProvider>
+            </LocalizationProvider>
+          </ThemeConfig>
+        </PersistGate>
+      </Provider>
+    </Web3ReactProvider>
   );
 }
 
