@@ -219,7 +219,9 @@ function TopBar() {
           }}
         >
           <RouterLink to="/">
-            <Logo />
+            <Logo
+              className={clsx(classes.root, { [classes.onScroll]: offset })}
+            />
           </RouterLink>
           <Box sx={{ flexGrow: 1 }} />
 
