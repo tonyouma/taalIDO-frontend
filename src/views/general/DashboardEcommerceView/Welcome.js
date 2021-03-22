@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Button, Box, Card, CardContent } from '@material-ui/core';
+import { PATH_HOME } from '../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -57,6 +58,9 @@ function Welcome({ className, ...other }) {
 
         <Button to="#" variant="contained" component={RouterLink}>
           Go Now
+        </Button>
+        <Button to="#" variant="contained" href={PATH_HOME.docs}>
+          White Paper
         </Button>
       </CardContent>
 

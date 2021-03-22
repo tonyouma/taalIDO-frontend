@@ -30,7 +30,8 @@ export const PATH_HOME = {
   components: '/components',
   cloud: 'https://www.sketch.com/s/0fa4699d-a3ff-4cd5-a3a7-d851eb7e17f0',
   purchase: 'https://material-ui.com/store/items/minimal-dashboard/',
-  dashboard: ROOTS.app
+  dashboard: ROOTS.app,
+  docs: 'https://app.gitbook.com/@taalswap/s/taalswap-documents/'
 };
 
 export const PATH_APP = {

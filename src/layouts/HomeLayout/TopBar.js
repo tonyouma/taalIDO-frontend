@@ -7,7 +7,7 @@ import homeFill from '@iconify-icons/eva/home-fill';
 import PopoverMenu from 'src/components/PopoverMenu';
 import roundSpeed from '@iconify-icons/ic/round-speed';
 import menu2Fill from '@iconify-icons/eva/menu-2-fill';
-import { PATH_APP } from 'src/routes/paths';
+import { PATH_APP, PATH_HOME } from 'src/routes/paths';
 import bookOpenFill from '@iconify-icons/eva/book-open-fill';
 import roundStreetview from '@iconify-icons/ic/round-streetview';
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
@@ -48,7 +48,7 @@ const MENU_LINKS = [
     icon: roundStreetview,
     href: PATH_APP.taalswap
   },
-  { title: 'About', icon: roundSpeed, href: PATH_APP.taalswap },
+  { title: 'About', icon: roundSpeed, href: PATH_HOME.docs },
   { title: 'Account', icon: bookOpenFill, href: PATH_APP.taalswap }
 ];
 
