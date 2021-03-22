@@ -32,11 +32,18 @@ function DashboardAppView() {
           Platform.
         </Typography>
         <Typography variant="body1" gutterBottom>
-          With this goal in mind, TaalSwap initially aims at the perfect match
-          of promising projects with strong-willed investors in terms of which
-          innovate startups are empowered to realize their ideas and
-          technologies. To achieve thus goal, the TaalSwap council is
-          responsible for ...
+          TaalSwap ultimately pursues a permissionless and interoperable IDO
+          platform. With this goal in mind, TaalSwap, in its initial stage of
+          operation, aims at the perfect match of promising projects with
+          strong-willed investors in terms of which innovative startups are
+          empowered to realize their ideas and technologies. In achieving this,
+          the TaalSwap council is responsible for reviewing and voting on your
+          application for launch on TaalSwap. Your application will be
+          rigorously reviewed and evaluated by the council. Every council member
+          will cast his/her vote, and your project will be approved for launch
+          if the number of votes in favor of your project is greater than 60%.
+          On approval, the instructions to prepare for and execute the launch on
+          TaalSwap will be provided.
         </Typography>
 
         <Button

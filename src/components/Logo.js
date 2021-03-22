@@ -9,7 +9,7 @@ Logo.propTypes = {
 };
 
 function Logo({ className, ...other }) {
-  console.log(className);
+  // console.log(className);
   let logoFile;
   if (className === 'makeStyles-root-15' || className === 'jss15') {
     logoFile = '/static/brand/logo_w/logo_single.svg';

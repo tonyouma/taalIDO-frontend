@@ -36,9 +36,9 @@ function getLibrary(provider: any): Web3Provider {
 
 function App() {
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <Provider store={store}>
-        <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+    <Provider store={store}>
+      <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+        <Web3ReactProvider getLibrary={getLibrary}>
           <ThemeConfig>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <NotistackProvider>
@@ -52,9 +52,9 @@ function App() {
               </NotistackProvider>
             </LocalizationProvider>
           </ThemeConfig>
-        </PersistGate>
-      </Provider>
-    </Web3ReactProvider>
+        </Web3ReactProvider>
+      </PersistGate>
+    </Provider>
   );
 }
 

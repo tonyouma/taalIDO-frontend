@@ -28,9 +28,15 @@ import {
 import { MIconButton } from 'src/theme';
 import WalletDialog from 'src/views/taalswap/Components/WalletDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActivatingConnector } from 'src/redux/slices/wallet';
+import {
+  hasError,
+  setActivatingConnector,
+  setBalance,
+  getWalletBalance
+} from 'src/redux/slices/wallet';
 import { useEagerConnect, useInactiveListener } from 'src/hooks/useWallet';
 import { useWeb3React } from '@web3-react/core';
+import { formatEther } from '@ethersproject/units';
 
 // ----------------------------------------------------------------------
 
@@ -102,7 +108,7 @@ function TopBar() {
   const isHome = pathname === '/';
 
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const { activatingConnector } = useSelector((state) => state.wallet);
+  const { activatingConnector, balance } = useSelector((state) => state.wallet);
 
   const context = useWeb3React();
   const {
@@ -117,14 +123,16 @@ function TopBar() {
   } = context;
 
   useEffect(() => {
+    console.log('1----------> ', activatingConnector);
+    console.log('1----------> ', connector);
     if (activatingConnector && activatingConnector === connector) {
       dispatch(setActivatingConnector(undefined));
     }
+    dispatch(getWalletBalance(account, library));
   }, [activatingConnector, connector]);
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
   const triedEager = useEagerConnect();
-
   // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
   useInactiveListener(!triedEager || !!activatingConnector);
 
@@ -132,10 +140,12 @@ function TopBar() {
     setIsOpenModal(false);
   };
 
-  console.log('---> activatingConnector', activatingConnector);
-  console.log('---> connector', connector);
-  console.log('---------> active : ', active);
-  console.log('---------> account : ', account);
+  console.log('2----------> ', activatingConnector);
+  console.log('2----------> ', connector);
+  if (balance !== null) {
+    console.log('wallet account = ', account);
+    console.log('wallet balance = ', formatEther(balance));
+  }
   const renderMenuDesktop = (
     <div>
       {MENU_LINKS.map((link) => (
