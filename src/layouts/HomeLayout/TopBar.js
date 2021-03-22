@@ -48,7 +48,7 @@ const MENU_LINKS = [
     icon: roundStreetview,
     href: PATH_APP.taalswap
   },
-  { title: 'About', icon: roundSpeed, href: PATH_HOME.docs },
+  { title: 'About', icon: roundSpeed, href: PATH_APP.taalswap },
   { title: 'Account', icon: bookOpenFill, href: PATH_APP.taalswap }
 ];
 

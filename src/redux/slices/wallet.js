@@ -6,6 +6,7 @@ import {
   UnsupportedChainIdError
 } from '@web3-react/core';
 import { formatEther } from '@ethersproject/units';
+import talkData from 'src/contracts/Talken';
 
 // ----------------------------------------------------------------------
 
@@ -90,6 +91,11 @@ export function getWalletBalance(account, library) {
           .catch(() => {
             dispatch(slice.actions.setBalance(null));
           });
+
+        const talkAddr = '0x59d8562ec4f2e770505029dcc206f71448b43803';
+        const talkContract = new library.eth.Contract(talkData.abi, talkAddr);
+        const decimals = talkContract.methods.decimals().call();
+        console.log('--------> ', decimals);
       }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
