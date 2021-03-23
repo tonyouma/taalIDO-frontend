@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
-import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Button, Typography, Box } from '@material-ui/core';
 import { MLabel } from 'src/theme';
@@ -40,7 +39,7 @@ function CandidateCard({ card, index, className }) {
   return (
     <Card className={clsx(classes.root, className)}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
-        <Typography variant="h2" sx={{ mx: 1 }}>
+        <Typography variant="h3" sx={{ mx: 1 }}>
           Protocol
         </Typography>
       </Box>
@@ -52,11 +51,9 @@ function CandidateCard({ card, index, className }) {
         sx={{ width: 80, height: 80, mt: 3 }}
       />
 
-      <Box component="ul" sx={{ my: 5, width: '100%' }}>
+      <Box sx={{ my: 5, width: '100%' }}>
         {card.lists.map((item) => (
           <Box
-            key={item.text}
-            component="li"
             sx={{
               display: 'flex',
               typography: 'body2',
@@ -65,8 +62,10 @@ function CandidateCard({ card, index, className }) {
               '&:not(:last-of-type)': { mb: 2 }
             }}
           >
-            <Box component={Icon} sx={{ width: 20, height: 20, mr: 1.5 }} />
+            <Box sx={{ width: 15, height: 20, mr: 1.5 }} />
             {item.text}
+            <Box sx={{ width: 15, height: 20, mr: 1.5 }} />
+            test
           </Box>
         ))}
       </Box>

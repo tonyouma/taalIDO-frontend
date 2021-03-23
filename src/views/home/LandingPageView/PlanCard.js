@@ -1,6 +1,9 @@
 import clsx from 'clsx';
-import React from 'react';
+import * as React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
+import CirculProgress from './CirculProgress';
 import { Icon } from '@iconify/react';
 import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
@@ -77,17 +80,14 @@ function PlanCard({ card, index, className }) {
       )}
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
-        <Typography variant="h2" sx={{ mx: 1 }}>
+        <Typography variant="h3" sx={{ mx: 1 }}>
           Protocol
         </Typography>
       </Box>
 
-      <Box
-        component="img"
-        alt={card.subscription}
-        src={card.icon}
-        sx={{ width: 80, height: 80, mt: 3 }}
-      />
+      <StyledEngineProvider injectFirst>
+        <CirculProgress />
+      </StyledEngineProvider>
 
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
         {card.lists.map((item) => (

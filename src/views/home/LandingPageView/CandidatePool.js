@@ -1,42 +1,18 @@
-import clsx from 'clsx';
 import React from 'react';
 import CandidateCard from './CandidateCard';
+import Logo from 'src/components/Logo';
 import Page from 'src/components/Page';
-import PropTypes from 'prop-types';
-import useBreakpoints from 'src/hooks/useBreakpoints';
-import PhoneIcon from '@material-ui/icons/Phone';
+import { Link as RouterLink } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import {
-  varFadeInUp,
-  varFadeInDown,
-  MotionInView
-} from 'src/components/Animate';
-import { alpha, makeStyles } from '@material-ui/core/styles';
-import {
+  Box,
+  Button,
   Grid,
-  Card,
-  Typography,
+  Switch,
   Container,
-  CardContent,
-  CardHeader
+  Typography
 } from '@material-ui/core';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-
-// ----------------------------------------------------------------------
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: '90%',
-    margin: 'auto',
-    display: 'flex',
-    position: 'relative',
-    alignItems: 'center',
-    flexDirection: 'column',
-    padding: theme.spacing(3),
-    [theme.breakpoints.up(414)]: {
-      padding: theme.spacing(5)
-    }
-  }
-}));
+import { PATH_APP } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -44,78 +20,110 @@ const PLANS = [
   {
     icon: '/static/icons/ic_plan_free.svg',
     lists: [
-      { text: 'Token Contac Address', isAvailable: true },
+      { text: 'Token Contract Address', isAvailable: true },
       { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'WhitePaper/LitePaper', isAvailable: true }
+      { text: 'WhitePager/LitePaper', isAvailable: true },
+      { text: 'Project Introduction', isAvailable: true },
+      { text: 'Max.Allocation per Wallet', isAvailable: true }
+      //{ text: 'Total Supply', isAvailable: false }
     ]
   },
   {
     icon: '/static/icons/ic_plan_starter.svg',
     lists: [
-      { text: 'Token Contac Address', isAvailable: true },
+      { text: 'Token Contract Address', isAvailable: true },
       { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'WhitePaper/LitePaper', isAvailable: true }
+      { text: 'WhitePager/LitePaper', isAvailable: true },
+      { text: 'Project Introduction', isAvailable: true },
+      { text: 'Max.Allocation per Wallet', isAvailable: true }
+      //{ text: 'Total Supply', isAvailable: false }
     ]
   },
   {
     icon: '/static/icons/ic_plan_premium.svg',
     lists: [
-      { text: 'Token Contac Address', isAvailable: true },
+      { text: 'Token Contract Address', isAvailable: true },
       { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'Token Contac Address', isAvailable: true },
-      { text: 'WhitePaper/LitePaper', isAvailable: true }
+      { text: 'WhitePager/LitePaper', isAvailable: true },
+      { text: 'Project Introduction', isAvailable: true },
+      { text: 'Max.Allocation per Wallet', isAvailable: true }
+      //{ text: 'Total Supply', isAvailable: false }
     ]
   }
 ];
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    minHeight: '100%',
+    paddingTop: theme.spacing(0),
+    paddingBottom: theme.spacing(10)
+  },
+  header: {
+    top: 0,
+    left: 0,
+    lineHeight: 0,
+    width: '100%',
+    position: 'absolute',
+    padding: theme.spacing(3, 3, 0),
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing(5, 5, 0)
+    }
+  }
+}));
+
 // ----------------------------------------------------------------------
 
-CandidatePool.propTypes = {
-  className: PropTypes.string
-};
-
-function CandidatePool({ className }) {
+function CandidatePool() {
   const classes = useStyles();
-  const isDesktop = useBreakpoints('up', 'lg');
 
   return (
-    <Page title="Candidate Pools" className={classes.root}>
+    <Page title="TaalSwap Finace" className={classes.root}>
       <Container maxWidth="lg">
-        <Grid container spacing={5}>
-          <Grid item xs={12}>
-            <MotionInView variants={varFadeInUp}>
-              <Typography
-                gutterBottom
-                variant="overline"
-                align="center"
-                sx={{ color: 'text.secondary', display: 'block' }}
-              >
-                TaalSwap
-              </Typography>
-            </MotionInView>
-            <MotionInView variants={varFadeInDown}>
-              <Typography variant="h2" align="center">
-                Candidate Pools <br />
-              </Typography>
-            </MotionInView>
-          </Grid>
+        <Typography align="center" sx={{ color: 'text.secondary' }}>
+          TaalSwap
+        </Typography>
+        <Typography variant="h2" align="center" gutterBottom>
+          Candidate Pools
+        </Typography>
+
+        <Box sx={{ my: 5 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end'
+            }}
+          ></Box>
+        </Box>
+
+        <Grid container spacing={3}>
+          {PLANS.map((card, index) => (
+            <Grid item xs={12} md={4} key={card.subscription}>
+              <CandidateCard card={card} index={index} />
+            </Grid>
+          ))}
         </Grid>
       </Container>
-      <Grid container spacing={3}>
-        {PLANS.map((card, index) => (
-          <Grid item xs={12} md={4} key={card.subscription}>
-            <CandidateCard card={card} index={index} />
-          </Grid>
-        ))}
-      </Grid>
+      <Container maxWidth="lg">
+        <Box sx={{ my: 7 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <Button
+              to={PATH_APP.root}
+              fullWidth
+              size="large"
+              variant="outlined"
+              component={RouterLink}
+            >
+              View All
+            </Button>
+          </Box>
+        </Box>
+      </Container>
     </Page>
   );
 }
