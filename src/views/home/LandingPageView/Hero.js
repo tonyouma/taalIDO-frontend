@@ -150,13 +150,6 @@ function Hero({ className }) {
               <Box component="p" sx={{ color: 'common.white', py: 5 }}>
                 TaalSwap is a permissions cross-chain platform for IDO, yield
                 farming and NFT auction.
-                <Button
-                  size="large"
-                  className={classes.margin}
-                  href={PATH_HOME.docs}
-                >
-                  Read White Paper
-                </Button>
               </Box>
             </motion.div>
 
