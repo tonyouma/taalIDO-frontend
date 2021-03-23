@@ -89,7 +89,7 @@ function Advertisement({ className }) {
                 underline="none"
                 variant="contained"
                 component={RouterLink}
-                to="/app/taalswap/application/start"
+                to="/app/taalswap/application"
               >
                 Apply for IDO
               </MButton>
