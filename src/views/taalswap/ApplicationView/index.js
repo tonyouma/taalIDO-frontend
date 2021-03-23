@@ -27,10 +27,7 @@ function DashboardAppView() {
         <Typography variant="h4" component="h1" paragraph>
           TaalSwap IDO Governance
         </Typography>
-        <Typography variant="subtitle1" gutterBottom>
-          TaalSwap ultimately pursues a permissions and interoperable IDO
-          Platform.
-        </Typography>
+
         <Typography variant="body1" gutterBottom>
           TaalSwap ultimately pursues a permissionless and interoperable IDO
           platform. With this goal in mind, TaalSwap, in its initial stage of
@@ -51,7 +48,7 @@ function DashboardAppView() {
           variant="contained"
           component={RouterLink}
         >
-          Start Your Application
+          Fill in Your Application
         </Button>
       </Container>
     </Page>
