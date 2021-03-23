@@ -48,7 +48,11 @@ const MENU_LINKS = [
     icon: roundStreetview,
     href: PATH_APP.taalswap
   },
-  { title: 'About', icon: roundSpeed, href: PATH_APP.taalswap },
+  {
+    title: 'About',
+    icon: roundSpeed,
+    href: 'https://taalswap.gitbook.io/taalswap-documents/'
+  },
   { title: 'Account', icon: bookOpenFill, href: PATH_APP.taalswap }
 ];
 
@@ -148,23 +152,42 @@ function TopBar() {
   }
   const renderMenuDesktop = (
     <div>
-      {MENU_LINKS.map((link) => (
-        <Link
-          exact
-          to={link.href}
-          key={link.title}
-          underline="none"
-          variant="subtitle2"
-          component={RouterLink}
-          activeClassName={classes.isDesktopActive}
-          className={clsx({
-            [classes.isHome]: isHome
-          })}
-          sx={{ mr: 5, color: 'text.primary' }}
-        >
-          {link.title}
-        </Link>
-      ))}
+      {MENU_LINKS.map((link) =>
+        link.title !== 'About' ? (
+          <Link
+            exact
+            to={link.href}
+            key={link.title}
+            underline="none"
+            variant="subtitle2"
+            component={RouterLink}
+            activeClassName={classes.isDesktopActive}
+            className={clsx({
+              [classes.isHome]: isHome
+            })}
+            sx={{ mr: 5, color: 'text.primary' }}
+          >
+            {link.title}
+          </Link>
+        ) : (
+          <Link
+            to={{ pathname: link.href }}
+            target="_blank"
+            key={link.title}
+            underline="none"
+            variant="subtitle2"
+            component={RouterLink}
+            activeClassName={classes.isDesktopActive}
+            className={clsx({
+              [classes.isHome]: isHome
+            })}
+            style={{ color: 'white' }}
+            sx={{ mr: 5, color: 'text.primary' }}
+          >
+            {link.title}
+          </Link>
+        )
+      )}
     </div>
   );
 
