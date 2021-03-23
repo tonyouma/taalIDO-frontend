@@ -157,7 +157,7 @@ function TopBar() {
   const renderMenuDesktop = (
     <div>
       {MENU_LINKS.map((link) =>
-        link.title !== 'About' ? (
+        link.title !== 'Docs' ? (
           <Link
             exact
             to={link.href}
