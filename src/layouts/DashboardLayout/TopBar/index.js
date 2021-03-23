@@ -62,7 +62,7 @@ function TopBar({ onOpenNav, className }) {
           </IconButton>
         </Hidden>
 
-        <Search />
+        {/* <Search /> */}
         <Box sx={{ flexGrow: 1 }} />
 
         <Box
@@ -79,7 +79,7 @@ function TopBar({ onOpenNav, className }) {
           }}
         >
           <Languages />
-          <Notifications />
+          {/* <Notifications /> */}
           <Settings />
           {/* <Account /> */}
         </Box>
