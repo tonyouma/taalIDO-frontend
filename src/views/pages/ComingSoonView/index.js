@@ -105,22 +105,6 @@ function ComingSoonView() {
             src="/static/illustrations/illustration_coming_soon.svg"
             sx={{ width: '100%', maxHeight: 240, my: { xs: 5, sm: 10 } }}
           />
-
-          <Countdown countdown={countdown} />
-
-          <OutlinedInput
-            fullWidth
-            placeholder="Enter your email"
-            endAdornment={
-              <InputAdornment position="end" edge="end">
-                <Button variant="contained" size="large" to="/">
-                  Notify Me
-                </Button>
-              </InputAdornment>
-            }
-            className={classes.input}
-          />
-
           <Box sx={{ textAlign: 'center', '& > *': { mx: 1 } }}>
             {SOCIALS.map((social) => (
               <Tooltip key={social.name} title={social.name}>
