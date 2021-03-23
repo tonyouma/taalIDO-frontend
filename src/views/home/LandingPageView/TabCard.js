@@ -1,158 +1,138 @@
-import clsx from 'clsx';
-import React, { useState } from 'react';
+import * as React from 'react';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import PlanCard from './PlanCard';
 import Page from 'src/components/Page';
-import PropTypes from 'prop-types';
-import { Icon } from '@iconify/react';
-import { PATH_APP } from 'src/routes/paths';
-import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
 import { Link as RouterLink } from 'react-router-dom';
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import { HeaderDashboard } from 'src/layouts/Common';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
   Button,
-  Card,
-  Tab,
   Grid,
-  Tabs,
-  Typography,
+  Switch,
   Container,
-  CardContent,
-  CardHeader
+  Typography
 } from '@material-ui/core';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import { MLabel } from 'src/theme';
+import { PATH_APP } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
-const SIMPLE_TAB = [
+const PLANS = [
   {
-    value: '1',
-    icon: <PhoneIcon />,
-    label: 'Live&Upcoming Pools',
-    disabled: false
+    lists: [
+      { text: 'Ratio', isAvailable: false },
+      { text: 'MAX', isAvailable: false },
+      { text: 'Access', isAvailable: false },
+      { text: 'MAX. Contribution', isAvailable: false },
+      { text: 'Total Raise', isAvailable: false }
+    ]
   },
   {
-    value: '2',
-    icon: <FavoriteIcon />,
-    label: 'Accomplished Pools',
-    disabled: true
+    lists: [
+      { text: 'Ratio', isAvailable: true },
+      { text: 'MAX', isAvailable: true },
+      { text: 'Access', isAvailable: true },
+      { text: 'MAX. Contribution', isAvailable: true },
+      { text: 'Total Raise', isAvailable: true }
+    ]
+  },
+  {
+    lists: [
+      { text: 'Ratio', isAvailable: true },
+      { text: 'MAX', isAvailable: true },
+      { text: 'Access', isAvailable: true },
+      { text: 'MAX. Contribution', isAvailable: true },
+      { text: 'Total Raise', isAvailable: true }
+    ]
   }
 ];
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: '90%',
-    margin: 'auto',
-    display: 'flex',
-    position: 'relative',
-    alignItems: 'center',
-    flexDirection: 'column',
-    padding: theme.spacing(3),
-    [theme.breakpoints.up(414)]: {
-      padding: theme.spacing(5)
+    minHeight: '100%',
+    paddingTop: theme.spacing(15),
+    paddingBottom: theme.spacing(10)
+  },
+  header: {
+    top: 0,
+    left: 0,
+    lineHeight: 0,
+    width: '100%',
+    position: 'absolute',
+    padding: theme.spacing(3, 3, 0),
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing(5, 5, 0)
     }
   }
 }));
 
 // ----------------------------------------------------------------------
 
-const PLANS = [
-  {
-    icon: '/static/icons/ic_plan_free.svg',
-    lists: [
-      { text: 'Ratio', isAvailable: true, subscription: 'ratio' },
-      { text: 'MAX', isAvailable: true, subscription: 'max' },
-      { text: 'Access', isAvailable: true, subscription: 'access' },
-      {
-        text: 'Max.Contribution',
-        isAvailable: true,
-        subscription: 'max contribution'
-      },
-      { text: 'Totlal Raise', isAvailable: true, subscription: 'total raise' }
-    ],
-    subscription: 'free'
-  },
-  {
-    icon: '/static/icons/ic_plan_starter.svg',
-    lists: [
-      { text: 'Ratio', isAvailable: true, subscription: 'ratio' },
-      { text: 'MAX', isAvailable: true, subscription: 'max' },
-      { text: 'Access', isAvailable: true, subscription: 'access' },
-      {
-        text: 'Max.Contribution',
-        isAvailable: true,
-        subscription: 'max contribution'
-      },
-      { text: 'Totlal Raise', isAvailable: true, subscription: 'total raise' }
-    ],
-    subscription: 'starter'
-  },
-  {
-    icon: '/static/icons/ic_plan_premium.svg',
-    lists: [
-      { text: 'Ratio', isAvailable: true, subscription: 'ratio' },
-      { text: 'MAX', isAvailable: true, subscription: 'max' },
-      { text: 'Access', isAvailable: true, subscription: 'access' },
-      {
-        text: 'Max.Contribution',
-        isAvailable: true,
-        subscription: 'max contribution'
-      },
-      { text: 'Totlal Raise', isAvailable: true, subscription: 'total raise' }
-    ],
-    subscription: 'premium'
-  }
-];
-
-// ----------------------------------------------------------------------
-
-function TabsView() {
+function Tabcard() {
   const classes = useStyles();
-  const [value, setValue] = useState('1');
-  const [valueScrollable, setValueScrollable] = useState('1');
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const handleChangeScrollable = (event, newValue) => {
-    setValueScrollable(newValue);
-  };
-
   return (
-    <Page
-      title="Live&Upcoming Pools | Accomplished Pools"
-      className={classes.root}
-    >
+    <Page title="TaalSwap Finace" className={classes.root}>
       <Container maxWidth="lg">
-        <Grid container spacing={5}>
-          <Grid item xs={12}>
-            <CardContent>
-              <TabContext value={value}>
-                <TabList onChange={handleChange} centered>
-                  {SIMPLE_TAB.map((tab) => (
-                    <Tab key={tab.value} label={tab.label} value={tab.value} />
-                  ))}
-                </TabList>
-              </TabContext>
-            </CardContent>
-          </Grid>
+        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+          <Tabs value={value} onChange={handleChange} centered>
+            <Tab label="Live&Upcoming Pools" />
+            <Tab label="Accomplished Pools" />
+          </Tabs>
+        </Box>
+
+        <Box sx={{ my: 5 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end'
+            }}
+          ></Box>
+        </Box>
+
+        <Grid container spacing={3}>
+          {PLANS.map((card, index) => (
+            <Grid item xs={12} md={4} key={card.subscription}>
+              <PlanCard card={card} index={index} />
+            </Grid>
+          ))}
+        </Grid>
+
+        <Grid container spacing={3} sx={{ my: 5 }}>
+          {PLANS.map((card, index) => (
+            <Grid item xs={12} md={4} key={card.subscription}>
+              <PlanCard card={card} index={index} />
+            </Grid>
+          ))}
         </Grid>
       </Container>
-
-      <Grid container spacing={3}>
-        {PLANS.map((card, index) => (
-          <Grid item xs={12} md={4} key={card.subscription}>
-            <PlanCard card={card} index={index} />
-          </Grid>
-        ))}
-      </Grid>
+      <Container maxWidth="lg">
+        <Box sx={{ my: 7 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <Button
+              // to={PATH_APP.root}
+              fullWidth
+              size="large"
+              variant="outlined"
+              component={RouterLink}
+            >
+              View All
+            </Button>
+          </Box>
+        </Box>
+      </Container>
     </Page>
   );
 }
 
-export default TabsView;
+export default Tabcard;

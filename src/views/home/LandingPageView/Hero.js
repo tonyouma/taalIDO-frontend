@@ -165,7 +165,7 @@ function Hero({ className }) {
                 size="large"
                 variant="contained"
                 component={RouterLink}
-                to={PATH_APP.general.dashboard}
+                // to={PATH_APP.general.dashboard}
                 startIcon={<Icon icon={flashFill} width={20} height={20} />}
               >
                 Go Now
