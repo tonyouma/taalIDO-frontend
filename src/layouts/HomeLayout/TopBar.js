@@ -51,7 +51,7 @@ const MENU_LINKS = [
     href: PATH_APP.taalswap
   },
   {
-    title: 'About',
+    title: 'Docs',
     icon: roundSpeed,
     href: 'https://taalswap.gitbook.io/taalswap-documents/'
   },
@@ -146,7 +146,7 @@ function TopBar() {
     setIsOpenModal(false);
   };
 
-  dispatch(getContractDecimals(library));
+  dispatch(getContractDecimals(account, library));
 
   // console.log('2----------> ', activatingConnector);
   // console.log('2----------> ', connector);
