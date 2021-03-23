@@ -32,11 +32,13 @@ import {
   hasError,
   setActivatingConnector,
   setBalance,
-  getWalletBalance
+  getWalletBalance,
+  getContractDecimals
 } from 'src/redux/slices/wallet';
 import { useEagerConnect, useInactiveListener } from 'src/hooks/useWallet';
 import { useWeb3React } from '@web3-react/core';
 import { formatEther } from '@ethersproject/units';
+import talkData from '../../contracts/Talken';
 
 // ----------------------------------------------------------------------
 
@@ -123,8 +125,8 @@ function TopBar() {
   } = context;
 
   useEffect(() => {
-    console.log('1----------> ', activatingConnector);
-    console.log('1----------> ', connector);
+    // console.log('1----------> ', activatingConnector);
+    // console.log('1----------> ', connector);
     if (activatingConnector && activatingConnector === connector) {
       dispatch(setActivatingConnector(undefined));
     }
@@ -140,8 +142,10 @@ function TopBar() {
     setIsOpenModal(false);
   };
 
-  console.log('2----------> ', activatingConnector);
-  console.log('2----------> ', connector);
+  dispatch(getContractDecimals(library));
+
+  // console.log('2----------> ', activatingConnector);
+  // console.log('2----------> ', connector);
   if (balance !== null) {
     console.log('wallet account = ', account);
     console.log('wallet balance = ', formatEther(balance));

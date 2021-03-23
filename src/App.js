@@ -17,18 +17,14 @@ import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import JwtProvider from 'src/components/Auth/JwtProvider';
 // import FirebaseProvider from 'src/components/Auth/FirebaseProvider';
 
-import {
-  Web3ReactProvider,
-  useWeb3React,
-  nsupportedChainIdError
-} from '@web3-react/core';
+import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
 // ----------------------------------------------------------------------
 
 const history = createBrowserHistory();
 
-function getLibrary(provider: any): Web3Provider {
+function getLibrary(provider) {
   const library = new Web3Provider(provider);
   library.pollingInterval = 12000;
   return library;
@@ -36,9 +32,9 @@ function getLibrary(provider: any): Web3Provider {
 
 function App() {
   return (
-    <Provider store={store}>
-      <PersistGate loading={<LoadingScreen />} persistor={persistor}>
-        <Web3ReactProvider getLibrary={getLibrary}>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Provider store={store}>
+        <PersistGate loading={<LoadingScreen />} persistor={persistor}>
           <ThemeConfig>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <NotistackProvider>
@@ -52,9 +48,9 @@ function App() {
               </NotistackProvider>
             </LocalizationProvider>
           </ThemeConfig>
-        </Web3ReactProvider>
-      </PersistGate>
-    </Provider>
+        </PersistGate>
+      </Provider>
+    </Web3ReactProvider>
   );
 }
 

@@ -6,7 +6,7 @@ import {
   UnsupportedChainIdError
 } from '@web3-react/core';
 import { formatEther } from '@ethersproject/units';
-import talkData from 'src/contracts/Talken';
+import talkData from '../../contracts/Talken';
 
 // ----------------------------------------------------------------------
 
@@ -16,6 +16,8 @@ const initialState = {
   account: null,
   balance: null
 };
+
+const ethers = require('ethers');
 
 const slice = createSlice({
   name: 'wallet',
@@ -91,14 +93,38 @@ export function getWalletBalance(account, library) {
           .catch(() => {
             dispatch(slice.actions.setBalance(null));
           });
-
-        const talkAddr = '0x59d8562ec4f2e770505029dcc206f71448b43803';
-        const talkContract = new library.eth.Contract(talkData.abi, talkAddr);
-        const decimals = talkContract.methods.decimals().call();
-        console.log('--------> ', decimals);
       }
     } catch (error) {
       dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getContractDecimals(library) {
+  return async (dispatch) => {
+    try {
+      if (!!library) {
+        const talkAddr = '0x59d8562ec4f2e770505029dcc206f71448b43803';
+        // const talkContract = new library.web3.Contract(talkData.abi, talkAddr);
+        const talkContract = new library.eth.Contract(talkData.abi, talkAddr);
+        // const talkContract = new ethers.Contract(
+        //   talkAddr,
+        //   talkData.abi,
+        //   ethers.getDefaultProvider(4)
+        // );
+
+        talkContract.methods
+          .symbol()
+          .call()
+          .then((decimals) => {
+            console.log('---------> ' + decimals);
+          })
+          .catch(() => {
+            console.log('!!!!!!!!!!!!!!!!!!');
+          });
+      }
+    } catch (error) {
+      console.log('@@@@@@@@@@@@@@@@@@@@', error);
     }
   };
 }
