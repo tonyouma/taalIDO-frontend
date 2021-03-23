@@ -185,7 +185,6 @@ function TopBar() {
             className={clsx({
               [classes.isHome]: isHome
             })}
-            style={{ color: 'white' }}
             sx={{ mr: 5, color: 'text.primary' }}
           >
             {link.title}
