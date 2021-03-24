@@ -92,7 +92,7 @@ function Account() {
         onClick={handleOpen}
         className={clsx(classes.btnAvatar, { [classes.isSelected]: isOpen })}
       >
-        <MyAvatar />
+        {/* <MyAvatar /> */}
       </MIconButton>
 
       <PopoverMenu
@@ -101,14 +101,14 @@ function Account() {
         onClose={handleClose}
         anchorEl={anchorRef.current}
       >
-        <Box sx={{ my: 2, px: 2.5 }}>
+        {/* <Box sx={{ my: 2, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
             {user.displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
             {user.email}
           </Typography>
-        </Box>
+        </Box> */}
 
         <Divider sx={{ my: 1 }} />
 

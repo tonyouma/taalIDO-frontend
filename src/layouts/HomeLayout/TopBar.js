@@ -7,7 +7,7 @@ import homeFill from '@iconify-icons/eva/home-fill';
 import PopoverMenu from 'src/components/PopoverMenu';
 import roundSpeed from '@iconify-icons/ic/round-speed';
 import menu2Fill from '@iconify-icons/eva/menu-2-fill';
-import { PATH_HOME, PATH_DOCS } from 'src/routes/paths';
+import { PATH_HOME, PATH_DOCS, PATH_APP } from 'src/routes/paths';
 import bookOpenFill from '@iconify-icons/eva/book-open-fill';
 import roundStreetview from '@iconify-icons/ic/round-streetview';
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
@@ -26,11 +26,13 @@ import {
   ListItemText
 } from '@material-ui/core';
 import { MIconButton } from 'src/theme';
+import WalletDialog from 'src/views/taalswap/Components/WalletDialog';
 
 // ----------------------------------------------------------------------
 
 const MENU_LINKS = [
   { title: 'Home', icon: homeFill, href: '/' },
+  { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap.root },
   { title: 'Yield Farming', icon: roundStreetview, href: PATH_HOME.components },
   { title: 'About', icon: roundSpeed, href: PATH_HOME.dashboard },
   { title: 'Account', icon: bookOpenFill, href: PATH_DOCS.root }
@@ -89,6 +91,12 @@ function TopBar() {
   const offset = useOffSetTop(100);
   const [openMenu, setOpenMenu] = useState(false);
   const isHome = pathname === '/';
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
+  };
 
   const renderMenuDesktop = (
     <div>
@@ -166,12 +174,17 @@ function TopBar() {
           <Button
             underline="none"
             variant="contained"
-            component={Link}
+            // component={Link}
             target="_blank"
-            href={PATH_HOME.dashboard}
+            onClick={() => setIsOpenModal(true)}
           >
             Connect Wallet
           </Button>
+
+          <WalletDialog
+            isOpenModal={isOpenModal}
+            handleCloseModal={handleCloseModal}
+          />
 
           <Hidden mdUp>
             <MIconButton

@@ -8,7 +8,7 @@ import DashboardLayout from 'src/layouts/DashboardLayout';
 
 const AppRoutes = {
   path: PATH_APP.root,
-  guard: AuthProtect,
+  // guard: AuthProtect,
   layout: DashboardLayout,
   routes: [
     // TAALSWAP : POOLS

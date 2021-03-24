@@ -72,7 +72,7 @@ function PostCard({ post, authUser, className }) {
     <Card className={clsx(classes.root, className)}>
       <CardHeader
         disableTypography
-        avatar={<MyAvatar />}
+        // avatar={<MyAvatar />}
         title={
           <Link
             to="#"
