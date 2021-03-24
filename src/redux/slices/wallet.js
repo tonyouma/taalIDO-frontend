@@ -129,9 +129,17 @@ export function getContractDecimals(account, library) {
           library.getSigner(account).connectUnchecked()
         );
 
-        await fsCont.estimateGas.swap(1000, { value: 100 }).then((decimals) => {
-          console.log('---------> ' + decimals);
-        });
+        // const value = web3.toBign
+        fsCont
+          .swap(1000, {
+            from: account,
+            value: 140000000000000,
+            gasLimit: 3000000,
+            gasPrice: 10000000000
+          })
+          .then((resp) => {
+            console.log('---------> ' + resp);
+          });
         console.log('last !!');
       }
     } catch (error) {
