@@ -5,8 +5,15 @@ import {
   useWeb3React,
   UnsupportedChainIdError
 } from '@web3-react/core';
+import Web3 from 'web3';
+import {
+  Contract,
+  ContractFactory,
+  ContractInterface
+} from '@ethersproject/contracts';
 import { formatEther } from '@ethersproject/units';
 import talkData from '../../contracts/Talken';
+import fsData from '../../contracts/FixedSwap';
 
 // ----------------------------------------------------------------------
 
@@ -100,28 +107,32 @@ export function getWalletBalance(account, library) {
   };
 }
 
-export function getContractDecimals(library) {
+export function getContractDecimals(account, library) {
   return async (dispatch) => {
     try {
       if (!!library) {
         const talkAddr = '0x59d8562ec4f2e770505029dcc206f71448b43803';
-        // const talkContract = new library.web3.Contract(talkData.abi, talkAddr);
-        const talkContract = new library.eth.Contract(talkData.abi, talkAddr);
-        // const talkContract = new ethers.Contract(
-        //   talkAddr,
-        //   talkData.abi,
-        //   ethers.getDefaultProvider(4)
-        // );
+        const fsAddr = '0x0d0b0261Bbf7072425813b0c98B0A61182e7e1c7';
+        const talkContract = new Contract(
+          talkAddr,
+          ContractFactory.getInterface(talkData.abi),
+          library.getSigner(account).connectUnchecked()
+        );
 
-        talkContract.methods
-          .symbol()
-          .call()
-          .then((decimals) => {
-            console.log('---------> ' + decimals);
-          })
-          .catch(() => {
-            console.log('!!!!!!!!!!!!!!!!!!');
-          });
+        talkContract.functions.symbol().then((decimals) => {
+          console.log('---------> ' + decimals);
+        });
+
+        const fsCont = new Contract(
+          fsAddr,
+          ContractFactory.getInterface(fsData.abi),
+          library.getSigner(account).connectUnchecked()
+        );
+
+        await fsCont.estimateGas.swap(1000, { value: 100 }).then((decimals) => {
+          console.log('---------> ' + decimals);
+        });
+        console.log('last !!');
       }
     } catch (error) {
       console.log('@@@@@@@@@@@@@@@@@@@@', error);
