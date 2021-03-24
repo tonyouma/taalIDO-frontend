@@ -1,24 +1,14 @@
 import React from 'react';
-import Countdown from './Countdown';
 import Page from 'src/components/Page';
 import Logo from 'src/components/Logo';
 import { Icon } from '@iconify/react';
-import useCountdown from 'src/hooks/useCountdown';
 import { Link as RouterLink } from 'react-router-dom';
 import twitterFill from '@iconify-icons/eva/twitter-fill';
 import facebookFill from '@iconify-icons/eva/facebook-fill';
 import linkedinFill from '@iconify-icons/eva/linkedin-fill';
 import instagramFilled from '@iconify-icons/ant-design/instagram-filled';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Box,
-  Button,
-  Tooltip,
-  Container,
-  Typography,
-  InputAdornment,
-  OutlinedInput
-} from '@material-ui/core';
+import { Box, Button, Container, Tooltip, Typography } from '@material-ui/core';
 import { MIconButton } from 'src/theme';
 
 // ----------------------------------------------------------------------
@@ -80,7 +70,6 @@ const useStyles = makeStyles((theme) => ({
 
 function ComingSoonView() {
   const classes = useStyles();
-  const countdown = useCountdown(new Date('07/07/2022 21:30'));
 
   return (
     <Page title="Coming Soon | Minimal-UI" className={classes.root}>
