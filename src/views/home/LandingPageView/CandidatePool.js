@@ -25,7 +25,7 @@ const PLANS = [
       { text: 'WhitePager/LitePaper', isAvailable: true },
       { text: 'Project Introduction', isAvailable: true },
       { text: 'Max.Allocation per Wallet', isAvailable: true }
-      //{ text: 'Total Supply', isAvailable: false }
+      { text: 'Total Supply', isAvailable: false }
     ]
   },
   {
@@ -36,7 +36,7 @@ const PLANS = [
       { text: 'WhitePager/LitePaper', isAvailable: true },
       { text: 'Project Introduction', isAvailable: true },
       { text: 'Max.Allocation per Wallet', isAvailable: true }
-      //{ text: 'Total Supply', isAvailable: false }
+      { text: 'Total Supply', isAvailable: false }
     ]
   },
   {
@@ -47,7 +47,7 @@ const PLANS = [
       { text: 'WhitePager/LitePaper', isAvailable: true },
       { text: 'Project Introduction', isAvailable: true },
       { text: 'Max.Allocation per Wallet', isAvailable: true }
-      //{ text: 'Total Supply', isAvailable: false }
+      { text: 'Total Supply', isAvailable: false }
     ]
   }
 ];
@@ -79,9 +79,6 @@ function CandidatePool() {
   return (
     <Page title="TaalSwap Finace" className={classes.root}>
       <Container maxWidth="lg">
-        <Typography align="center" sx={{ color: 'text.secondary' }}>
-          TaalSwap
-        </Typography>
         <Typography variant="h2" align="center" gutterBottom>
           Candidate Pools
         </Typography>

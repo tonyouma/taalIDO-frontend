@@ -2,7 +2,7 @@ import NavItem from './NavItem';
 import MenuLinks from './config';
 import PropTypes from 'prop-types';
 import Logo from 'src/components/Logo';
-import useAuth from 'src/hooks/useAuth';
+//import useAuth from 'src/hooks/useAuth';
 import React, { useEffect } from 'react';
 import MyAvatar from 'src/components/MyAvatar';
 import Scrollbars from 'src/components/Scrollbars';
