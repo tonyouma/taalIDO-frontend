@@ -113,6 +113,7 @@ export function getContractDecimals(account, library) {
       if (!!library) {
         const talkAddr = '0x59d8562ec4f2e770505029dcc206f71448b43803';
         const fsAddr = '0x0d0b0261Bbf7072425813b0c98B0A61182e7e1c7';
+        const tttAddr = '0x31EdEEd92d51F825F146bba79B4357989A9B8240';
         const talkContract = new Contract(
           talkAddr,
           ContractFactory.getInterface(talkData.abi),
@@ -124,22 +125,25 @@ export function getContractDecimals(account, library) {
         });
 
         const fsCont = new Contract(
-          fsAddr,
+          tttAddr,
           ContractFactory.getInterface(fsData.abi),
           library.getSigner(account).connectUnchecked()
         );
 
-        // const value = web3.toBign
-        fsCont
-          .swap(1000, {
-            from: account,
-            value: 140000000000000,
-            gasLimit: 3000000,
-            gasPrice: 10000000000
-          })
-          .then((resp) => {
-            console.log('---------> ' + resp);
-          });
+        // fsCont.getBuyers().then((ret) => {
+        //   console.log(ret);
+        // });
+
+        // const amount = ethers.BigNumber.from('148');
+        // fsCont
+        //   .swap(1000000, {
+        //     value: amount,
+        //     gasLimit: 3000000,
+        //     gasPrice: 10000000000
+        //   })
+        //   .then((resp) => {
+        //     console.log('---------> ' + resp.hash);
+        //   });
         console.log('last !!');
       }
     } catch (error) {
