@@ -14,6 +14,7 @@ import calendarReducer from './slices/calendar';
 import notificationsReducer from './slices/notifications';
 import poolReducer from './slices/pool';
 import walletReducer from './slices/wallet';
+import applicationReducer from './slices/application';
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +52,8 @@ const rootReducer = combineReducers({
   product: persistReducer(productPersistConfig, productReducer),
   authJwt: persistReducer(authPersistConfig, authJwtReducer),
   pool: poolReducer,
-  wallet: walletReducer
+  wallet: walletReducer,
+  application: applicationReducer
 });
 
 export { rootPersistConfig, rootReducer };

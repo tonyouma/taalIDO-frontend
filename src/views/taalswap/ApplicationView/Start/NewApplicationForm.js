@@ -101,9 +101,11 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
             fullWidth
             label="token contract address"
             size="small"
-            {...getFieldProps('contractAddress')}
-            error={Boolean(touched.contractAddress && errors.contractAddress)}
-            helperText={touched.contractAddress && errors.contractAddress}
+            {...getFieldProps('tokenContractAddr')}
+            error={Boolean(
+              touched.tokenContractAddr && errors.tokenContractAddr
+            )}
+            helperText={touched.tokenContractAddr && errors.tokenContractAddr}
             className={classes.margin}
           />
           <TextField
@@ -177,7 +179,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
             label="github url"
             size="small"
             {...getFieldProps('githubUrl')}
-            error={Boolean(touched.githubUrl && errors.namgithubUrle)}
+            error={Boolean(touched.githubUrl && errors.githubUrl)}
             helperText={touched.githubUrl && errors.githubUrl}
             className={classes.margin}
           />
