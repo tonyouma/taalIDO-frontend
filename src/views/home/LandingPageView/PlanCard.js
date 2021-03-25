@@ -115,7 +115,7 @@ function PlanCard({ card, index, className }) {
       </Box>
 
       <Button
-        to={PATH_APP.root}
+        to={PATH_APP.taalswap.pooldetails}
         fullWidth
         size="large"
         variant="contained"
