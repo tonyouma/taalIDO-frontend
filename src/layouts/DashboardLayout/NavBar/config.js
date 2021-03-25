@@ -43,6 +43,11 @@ const navConfig = [
         title: 'application',
         href: PATH_APP.taalswap.application,
         icon: ICONS.page
+      },
+      {
+        title: 'participate',
+        href: PATH_APP.taalswap.participate,
+        icon: ICONS.page
       }
       // {
       //   title: 'swap',
