@@ -43,6 +43,11 @@ const navConfig = [
         title: 'Apply for IDO',
         href: PATH_APP.taalswap.application.root,
         icon: ICONS.page
+      },
+      {
+        title: 'Apply for IDO List',
+        href: PATH_APP.taalswap.application.list,
+        icon: ICONS.page
       }
       // {
       //   title: 'swap',
