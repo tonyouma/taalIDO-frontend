@@ -1,7 +1,10 @@
 import General from './General';
+import Billing from './Billing';
 import { Icon } from '@iconify/react';
 import Page from 'src/components/Page';
+import SocialLinks from './SocialLinks';
 import { capitalCase } from 'change-case';
+import Notifications from './Notifications';
 import { PATH_APP } from 'src/routes/paths';
 import ChangePassword from './ChangePassword';
 import React, { useState, useEffect } from 'react';
@@ -12,7 +15,13 @@ import roundVpnKey from '@iconify-icons/ic/round-vpn-key';
 import roundReceipt from '@iconify-icons/ic/round-receipt';
 import { HeaderDashboard } from 'src/layouts/Common';
 import roundAccountBox from '@iconify-icons/ic/round-account-box';
-import { getCards, getProfile } from 'src/redux/slices/user';
+import {
+  getCards,
+  getProfile,
+  getInvoices,
+  getAddressBook,
+  getNotifications
+} from 'src/redux/slices/user';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Tab, Box, Tabs } from '@material-ui/core';
 
@@ -31,10 +40,19 @@ function AccountView() {
   const classes = useStyles();
   const [currentTab, setCurrentTab] = useState('general');
   const dispatch = useDispatch();
-  const { cards, myProfile, addressBook } = useSelector((state) => state.user);
+  const {
+    cards,
+    invoices,
+    myProfile,
+    addressBook,
+    notifications
+  } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getCards());
+    dispatch(getAddressBook());
+    dispatch(getInvoices());
+    dispatch(getNotifications());
     dispatch(getProfile());
   }, [dispatch]);
 
@@ -46,11 +64,37 @@ function AccountView() {
     return null;
   }
 
+  if (!notifications) {
+    return null;
+  }
+
   const ACCOUNT_TABS = [
     {
       value: 'general',
       icon: <Icon icon={roundAccountBox} width={20} height={20} />,
       component: <General />
+    },
+    {
+      value: 'billing',
+      icon: <Icon icon={roundReceipt} width={20} height={20} />,
+      component: (
+        <Billing cards={cards} addressBook={addressBook} invoices={invoices} />
+      )
+    },
+    {
+      value: 'notifications',
+      icon: <Icon icon={bellFill} width={20} height={20} />,
+      component: <Notifications notifications={notifications} />
+    },
+    {
+      value: 'social_links',
+      icon: <Icon icon={shareFill} width={20} height={20} />,
+      component: <SocialLinks myProfile={myProfile} />
+    },
+    {
+      value: 'change_password',
+      icon: <Icon icon={roundVpnKey} width={20} height={20} />,
+      component: <ChangePassword />
     }
   ];
 
@@ -65,7 +109,7 @@ function AccountView() {
     >
       <Container>
         <HeaderDashboard
-          heading="Create a new Application"
+          heading="Account"
           links={[
             { name: 'Dashboard', href: PATH_APP.root },
             { name: 'Management', href: PATH_APP.management.root },
