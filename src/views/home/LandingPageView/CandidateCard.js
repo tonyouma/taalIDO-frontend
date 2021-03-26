@@ -38,12 +38,6 @@ function CandidateCard({ card, index, className }) {
 
   return (
     <Card className={clsx(classes.root, className)}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
-        <Typography variant="h3" sx={{ mx: 1 }}>
-          Protocol
-        </Typography>
-      </Box>
-
       {/* <Box // page 2-2 이미지 삭제
         component="img"
         alt={card.subscription}
@@ -51,7 +45,7 @@ function CandidateCard({ card, index, className }) {
         sx={{ width: 80, height: 80, mt: 3 }}
       /> */}
 
-      <Box sx={{ my: 5, width: '100%' }}>
+      <Box sx={{ my: 0, width: '100%' }}>
         {/* page 2-3 레이아웃 재배치 */}
         {card.lists.map((item, index) => (
           <Box

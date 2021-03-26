@@ -18,7 +18,6 @@ import { PATH_APP } from 'src/routes/paths';
 
 const PLANS = [
   {
-    icon: '/static/icons/ic_plan_free.svg',
     lists: [
       { text: 'Token Contract Address', isAvailable: true },
       { text: 'Website URL', isAvailable: true },
@@ -29,7 +28,6 @@ const PLANS = [
     ]
   },
   {
-    icon: '/static/icons/ic_plan_starter.svg',
     lists: [
       { text: 'Token Contract Address', isAvailable: true },
       { text: 'Website URL', isAvailable: true },
@@ -40,7 +38,6 @@ const PLANS = [
     ]
   },
   {
-    icon: '/static/icons/ic_plan_premium.svg',
     lists: [
       { text: 'Token Contract Address', isAvailable: true },
       { text: 'Website URL', isAvailable: true },
