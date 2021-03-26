@@ -89,50 +89,123 @@ function General({ className }) {
       <FormikProvider value={formik}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={6}>
               <Card>
                 <CardContent>
                   <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
                       <TextField
-                        disabled={user.email === 'demo@minimals.cc'} // You can remove this
                         fullWidth
                         label="Pool Name"
-                        {...getFieldProps('displayName')}
-                      />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        fullWidth
-                        disabled
-                        label="Email Address"
-                        {...getFieldProps('email')}
-                      />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        fullWidth
-                        label="Phone Number"
                         {...getFieldProps('phoneNumber')}
                       />
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
                       <TextField
                         fullWidth
-                        label="Address"
+                        label="Token Contract Address"
                         {...getFieldProps('address')}
                       />
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        fullWidth
+                        label="Trade Value"
+                        {...getFieldProps('phoneNumber')}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        fullWidth
+                        label="Trade Amount"
+                        {...getFieldProps('address')}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        fullWidth
+                        label="Min. Fund Raise"
+                        {...getFieldProps('phoneNumber')}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={12}>
                       <TextField
                         select
                         fullWidth
-                        label="Country"
-                        placeholder="Country"
+                        label="Address"
+                        placeholder="Address"
+                        {...getFieldProps('country')}
+                        SelectProps={{ native: true }}
+                        error={Boolean(touched.country && errors.country)}
+                        helperText={touched.country && errors.country}
+                        className={classes.margin}
+                      >
+                        <option value="" />
+                        {countries.map((option) => (
+                          <option key={option.code} value={option.label}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        fullWidth
+                        label="Max. Individuals"
+                        {...getFieldProps('phoneNumber')}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        fullWidth
+                        label="Min Individuals"
+                        {...getFieldProps('address')}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        fullWidth
+                        label="Preferred Start Date"
+                        {...getFieldProps('phoneNumber')}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        fullWidth
+                        label="Fee Amount"
+                        {...getFieldProps('address')}
+                      />
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        fullWidth
+                        label="Name"
+                        {...getFieldProps('displayName')}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        select
+                        fullWidth
+                        label="Category"
+                        placeholder="Category"
                         {...getFieldProps('country')}
                         SelectProps={{ native: true }}
                         error={Boolean(touched.country && errors.country)}
@@ -148,27 +221,27 @@ function General({ className }) {
                       </TextField>
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
                       <TextField
                         fullWidth
-                        label="State/Region"
-                        {...getFieldProps('state')}
+                        label="Website URL"
+                        {...getFieldProps('phoneNumber')}
                       />
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
                       <TextField
                         fullWidth
-                        label="City"
-                        {...getFieldProps('city')}
+                        label="Email Address"
+                        {...getFieldProps('address')}
                       />
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
                       <TextField
                         fullWidth
-                        label="Zip/Code"
-                        {...getFieldProps('zipCode')}
+                        label="Telegram Handle"
+                        {...getFieldProps('address')}
                       />
                     </Grid>
 
@@ -177,32 +250,45 @@ function General({ className }) {
                         {...getFieldProps('about')}
                         fullWidth
                         multiline
-                        minRows={4}
-                        maxRows={4}
-                        label="About"
+                        minRows={6}
+                        maxRows={6}
+                        label="Description"
                       />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Box
+                        sx={{
+                          my: 3,
+                          display: 'flex',
+                          alignItems: 'Right',
+                          flexDirection: 'column'
+                        }}
+                      >
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              {...getFieldProps('isPublic')}
+                              color="primary"
+                            />
+                          }
+                          labelPlacement="start"
+                          label="Atomic"
+                        />
+                      </Box>
                     </Grid>
                   </Grid>
 
                   <Box
-                    sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}
+                    sx={{ mt: 5, display: 'flex', justifyContent: 'flex-end' }}
                   >
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          {...getFieldProps('isPublic')}
-                          color="primary"
-                        />
-                      }
-                      labelPlacement="start"
-                      label="Atomic"
-                    />
                     <LoadingButton
                       type="submit"
+                      fullWidth
                       variant="contained"
                       pending={isSubmitting}
                     >
-                      Save Changes
+                      Create
                     </LoadingButton>
                   </Box>
                 </CardContent>

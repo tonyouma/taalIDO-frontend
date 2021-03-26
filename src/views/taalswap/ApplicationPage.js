@@ -3,7 +3,6 @@ import { Icon } from '@iconify/react';
 import Page from 'src/components/Page';
 import { capitalCase } from 'change-case';
 import { PATH_APP } from 'src/routes/paths';
-import ChangePassword from './ChangePassword';
 import React, { useState, useEffect } from 'react';
 import bellFill from '@iconify-icons/eva/bell-fill';
 import shareFill from '@iconify-icons/eva/share-fill';
@@ -12,7 +11,7 @@ import roundVpnKey from '@iconify-icons/ic/round-vpn-key';
 import roundReceipt from '@iconify-icons/ic/round-receipt';
 import { HeaderDashboard } from 'src/layouts/Common';
 import roundAccountBox from '@iconify-icons/ic/round-account-box';
-import { getCards, getProfile } from 'src/redux/slices/user';
+import { getCards, getProfile, getAddressBook } from 'src/redux/slices/user';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Tab, Box, Tabs } from '@material-ui/core';
 
@@ -35,6 +34,7 @@ function AccountView() {
 
   useEffect(() => {
     dispatch(getCards());
+    dispatch(getAddressBook());
     dispatch(getProfile());
   }, [dispatch]);
 
@@ -66,12 +66,7 @@ function AccountView() {
       <Container>
         <HeaderDashboard
           heading="Create a new Application"
-          links={[
-            { name: 'Dashboard', href: PATH_APP.root },
-            { name: 'Management', href: PATH_APP.management.root },
-            { name: 'User', href: PATH_APP.management.user.root },
-            { name: 'Account Settings' }
-          ]}
+          links={[{ name: 'New Application' }]}
         />
 
         <Tabs
