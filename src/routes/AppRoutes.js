@@ -39,6 +39,11 @@ const AppRoutes = {
       path: PATH_APP.taalswap.participate,
       component: lazy(() => import('src/views/taalswap/SwapView/Participate'))
     },
+    {
+      exact: true,
+      path: PATH_APP.taalswap.applicationpage,
+      component: lazy(() => import('src/views/taalswap/ApplicationPage'))
+    },
 
     // GENERAL
     // ----------------------------------------------------------------------
