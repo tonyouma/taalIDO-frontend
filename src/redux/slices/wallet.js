@@ -14,6 +14,7 @@ import {
 import { formatEther } from '@ethersproject/units';
 import talkData from '../../contracts/Talken';
 import fsData from '../../contracts/FixedSwap';
+import { BigNumber } from '@ethersproject/bignumber';
 
 // ----------------------------------------------------------------------
 
@@ -112,7 +113,7 @@ export function getContractDecimals(account, library) {
     try {
       if (!!library) {
         const talkAddr = '0x59d8562ec4f2e770505029dcc206f71448b43803';
-        const fsAddr = '0x0d0b0261Bbf7072425813b0c98B0A61182e7e1c7';
+        const fsAddr = '0x31EdEEd92d51F825F146bba79B4357989A9B8240';
         const talkContract = new Contract(
           talkAddr,
           ContractFactory.getInterface(talkData.abi),
@@ -123,23 +124,24 @@ export function getContractDecimals(account, library) {
           console.log('---------> ' + decimals);
         });
 
-        const fsCont = new Contract(
-          fsAddr,
-          ContractFactory.getInterface(fsData.abi),
-          library.getSigner(account).connectUnchecked()
-        );
-
-        // const value = web3.toBign
-        fsCont
-          .swap(1000, {
-            from: account,
-            value: 140000000000000,
-            gasLimit: 3000000,
-            gasPrice: 10000000000
-          })
-          .then((resp) => {
-            console.log('---------> ' + resp);
-          });
+        // const fsCont = new Contract(
+        //   fsAddr,
+        //   ContractFactory.getInterface(fsData.abi),
+        //   library.getSigner(account).connectUnchecked()
+        // );
+        //
+        // const value = ethers.utils.parseEther('1.48');
+        // // const value = ethers.BigNumber.from(1.48);
+        // console.log(value.toString());
+        // fsCont
+        //   .swap(10000, {
+        //     from: account,
+        //     value: value,
+        //     gasLimit: 3000000
+        //   })
+        //   .then((resp) => {
+        //     console.log('---------> ', resp);
+        //   });
         console.log('last !!');
       }
     } catch (error) {
