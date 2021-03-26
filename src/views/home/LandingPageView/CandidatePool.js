@@ -24,8 +24,8 @@ const PLANS = [
       { text: 'Website URL', isAvailable: true },
       { text: 'WhitePager/LitePaper', isAvailable: true },
       { text: 'Project Introduction', isAvailable: true },
-      { text: 'Max.Allocation per Wallet', isAvailable: true }
-      { text: 'Total Supply', isAvailable: false }
+      { text: 'Max.Allocation per Wallet', isAvailable: true },
+      { text: 'Total Supply', isAvailable: true }
     ]
   },
   {
@@ -35,8 +35,8 @@ const PLANS = [
       { text: 'Website URL', isAvailable: true },
       { text: 'WhitePager/LitePaper', isAvailable: true },
       { text: 'Project Introduction', isAvailable: true },
-      { text: 'Max.Allocation per Wallet', isAvailable: true }
-      { text: 'Total Supply', isAvailable: false }
+      { text: 'Max.Allocation per Wallet', isAvailable: true },
+      { text: 'Total Supply', isAvailable: true }
     ]
   },
   {
@@ -46,8 +46,8 @@ const PLANS = [
       { text: 'Website URL', isAvailable: true },
       { text: 'WhitePager/LitePaper', isAvailable: true },
       { text: 'Project Introduction', isAvailable: true },
-      { text: 'Max.Allocation per Wallet', isAvailable: true }
-      { text: 'Total Supply', isAvailable: false }
+      { text: 'Max.Allocation per Wallet', isAvailable: true },
+      { text: 'Total Supply', isAvailable: true }
     ]
   }
 ];

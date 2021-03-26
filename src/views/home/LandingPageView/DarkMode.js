@@ -35,8 +35,10 @@ import {
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
+  // page 3-2 padding 변경
   root: {
-    padding: theme.spacing(20, 0),
+    paddingTop: 50,
+    paddingBottom: 200,
     backgroundColor: theme.palette.grey[900]
   },
   content: {
@@ -47,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
       height: '100%',
       marginBottom: '100',
       textAlign: 'left',
-      display: 'inline-flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'flex-start'
@@ -93,9 +94,10 @@ function DarkMode({ className }) {
                 variants={varFadeInUp}
                 sx={{ color: 'common.white' }}
               >
-                <Typography variant="h4" paragraph>
+                {/* <Typography variant="h4" paragraph>
                   TaalSwap
-                </Typography>
+                </Typography> */}
+                <Logo />
               </MotionInView>
               <MotionInView
                 variants={varFadeInUp}
