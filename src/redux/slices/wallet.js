@@ -124,27 +124,25 @@ export function getContractDecimals(account, library) {
           console.log('---------> ' + decimals);
         });
 
-        const fsCont = new Contract(
-          tttAddr,
-          ContractFactory.getInterface(fsData.abi),
-          library.getSigner(account).connectUnchecked()
-        );
-
-        // fsCont.getBuyers().then((ret) => {
-        //   console.log(ret);
-        // });
-
-        // const amount = ethers.BigNumber.from('148');
+        // const fsCont = new Contract(
+        //   tttAddr,
+        //   ContractFactory.getInterface(fsData.abi),
+        //   library.getSigner(account).connectUnchecked()
+        // );
+        //
+        // const value = ethers.utils.parseEther('1.48');
+        // console.log(value.toString());
         // fsCont
-        //   .swap(1000000, {
-        //     value: amount,
-        //     gasLimit: 3000000,
-        //     gasPrice: 10000000000
+        //   .swap(10000, {
+        //     from: account,
+        //     value: value,
+        //     gasLimit: 3000000
         //   })
+        //   .on(() => {})
         //   .then((resp) => {
-        //     console.log('---------> ' + resp.hash);
+        //     console.log('————> ', resp);
         //   });
-        console.log('last !!');
+        // console.log('last !!');
       }
     } catch (error) {
       console.log('@@@@@@@@@@@@@@@@@@@@', error);
