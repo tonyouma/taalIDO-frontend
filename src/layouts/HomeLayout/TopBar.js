@@ -135,6 +135,7 @@ function TopBar() {
   useEffect(() => {
     // console.log('1----------> ', activatingConnector);
     // console.log('1----------> ', connector);
+    // console.log(context);
     if (activatingConnector && activatingConnector === connector) {
       dispatch(setActivatingConnector(undefined));
     }
@@ -207,10 +208,10 @@ function TopBar() {
 
   // console.log('2----------> ', activatingConnector);
   // console.log('2----------> ', connector);
-  if (balance !== null) {
-    console.log('wallet account = ', account);
-    console.log('wallet balance = ', formatEther(balance));
-  }
+  // if (balance !== null) {
+  //   console.log('wallet account = ', account);
+  //   console.log('wallet balance = ', formatEther(balance));
+  // }
   const renderMenuDesktop = (
     <div>
       {MENU_LINKS.map((link) =>
