@@ -16,7 +16,9 @@ import {
 import { useContract } from '../../../hooks/useContract';
 import talkData from '../../../contracts/Talken';
 import fixedData from '../../../contracts/FixedSwap';
-import { useDispatch, useSelector } from 'react-redux';
+import getRatio from '../../../utils/getRatio';
+import getMax from '../../../utils/getMax';
+import getProgressValue from '../../../utils/getProgressValue';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -114,9 +116,9 @@ function SwapView() {
     console.log(selectedPool);
     fetchData();
 
-    setRatio(1 / (selectedPool.value * Math.pow(10, -18)));
-    setMax(selectedPool.max * selectedPool.value * Math.pow(10, -18));
-    setProgressValue(allocated / selectedPool.sale);
+    setRatio(getRatio(selectedPool.value));
+    setMax(getMax(selectedPool.max, selectedPool.value));
+    setProgressValue(getProgressValue(allocated, selectedPool.sale));
   }, [fetchData]);
 
   return (
@@ -146,9 +148,11 @@ function SwapView() {
                 <Grid item xs={12} sm={12} md={6} lg={6}>
                   <Box className={classes.box2rem}>
                     <Box className={classes.box2rem}>
-                      <Typography variant="body1">0 live</Typography>
                       <Typography variant="body1">
-                        Participant : Public
+                        0 (추후 연동) live
+                      </Typography>
+                      <Typography variant="body1">
+                        Participant : Public (추후 연동)
                       </Typography>
                     </Box>
                     <Box className={classes.box2rem}>
@@ -173,7 +177,7 @@ function SwapView() {
                         InputLabelProps={{
                           shrink: true
                         }}
-                        value="0.008881"
+                        value="0.008881 (추후 연동)"
                         style={{ width: '49%' }}
                       />
                       <TextField
@@ -187,7 +191,7 @@ function SwapView() {
                       />
                     </Box>
                     <Box className={classes.box2rem} textAlign="center">
-                      Auction progress : 0 BNB / 10 BNB
+                      Auction progress : 0 BNB / 10 BNB (추후 연동)
                       <LinearProgress
                         variant="determinate"
                         value={0}
@@ -231,7 +235,9 @@ function SwapView() {
                       justifyContent="space-between"
                     >
                       <Typography variant="body2">Your Bid Ammount</Typography>
-                      <Typography variant="body2">Blance : 0 BNB</Typography>
+                      <Typography variant="body2">
+                        Blance : 0 BNB (추후 연동)
+                      </Typography>
                     </Box>
                     <Box
                       className={classes.box}
