@@ -46,13 +46,13 @@ function AccountView() {
     return null;
   }
 
-  const ACCOUNT_TABS = [
-    {
-      value: 'general',
-      icon: <Icon icon={roundAccountBox} width={20} height={20} />,
-      component: <General />
-    }
-  ];
+  // const ACCOUNT_TABS = [
+  //   {
+  //     value: 'general',
+  //     icon: <Icon icon={roundAccountBox} width={20} height={20} />,
+  //     component: <General />
+  //   }
+  // ];
 
   const handleChangeTab = (event, newValue) => {
     setCurrentTab(newValue);
@@ -69,7 +69,8 @@ function AccountView() {
           links={[{ name: 'New Application' }]}
         />
 
-        <Tabs
+        {/* 탭 삭제 */}
+        {/* <Tabs
           value={currentTab}
           scrollButtons="auto"
           variant="scrollable"
@@ -86,12 +87,14 @@ function AccountView() {
               value={tab.value}
             />
           ))}
-        </Tabs>
+        </Tabs> */}
 
-        {ACCOUNT_TABS.map((tab) => {
+        <General />
+
+        {/* {ACCOUNT_TABS.map((tab) => {
           const isMatched = tab.value === currentTab;
           return isMatched && <Box key={tab.value}>{tab.component}</Box>;
-        })}
+        })} */}
       </Container>
     </Page>
   );
