@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from '../../../components/Page';
@@ -13,6 +13,12 @@ import {
   TextField,
   LinearProgress
 } from '@material-ui/core';
+import { useContract } from '../../../hooks/useContract';
+import talkData from '../../../contracts/Talken';
+import fixedData from '../../../contracts/FixedSwap';
+import getRatio from '../../../utils/getRatio';
+import getMax from '../../../utils/getMax';
+import getProgressValue from '../../../utils/getProgressValue';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -39,9 +45,81 @@ function SwapView() {
   const classes = useStyles();
   const location = useLocation();
 
+  const [symbol, setSymbol] = useState('');
+  const [ratio, setRatio] = useState(0);
+  const [max, setMax] = useState(0);
+  const [allocated, setAllocated] = useState(0);
+  const [progressValue, setProgressValue] = useState(0);
+  const [participants, setParticipants] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPreStart, setIsPreStart] = useState(false);
+  const [isSaleFunded, setIsSaleFunded] = useState(false);
+  const [bidAmount, setBidAmount] = useState(0);
+
+  const selectedPool = location.state.selectedPool;
+
+  const talkContract = useContract(selectedPool.address, talkData.abi);
+  const fixedContract = useContract(selectedPool.contract, fixedData.abi);
+
+  const onChangeBidAmount = (e) => {
+    e.preventDefault();
+    setBidAmount(e.target.value);
+  };
+
+  const onClickGo = () => {
+    console.log(bidAmount);
+  };
+
+  const fetchData = useCallback(async () => {
+    !!talkContract &&
+      (await talkContract.functions
+        .symbol()
+        .then((result) => setSymbol(result.tokenSymbol))
+        // .then((result) => console.log(result))
+        .catch((error) => console.log(error)));
+
+    !!fixedContract &&
+      (await fixedContract.functions
+        .tokensAllocated()
+        .then((result) => setAllocated(result))
+        .catch((error) => console.log(error)));
+
+    !!fixedContract &&
+      (await fixedContract.functions
+        .getBuyers()
+        .then((result) => {
+          const buyers = result[0].filter((buyer) => buyer !== null);
+          setParticipants(buyers.length);
+        })
+        .catch((error) => console.log(error)));
+
+    !!fixedContract &&
+      (await fixedContract.functions
+        .isOpen()
+        .then((result) => setIsOpen(result[0]))
+        .catch((error) => console.log(error)));
+
+    !!fixedContract &&
+      (await fixedContract.functions
+        .isPreStart()
+        .then((result) => setIsPreStart(result[0]))
+        .catch((error) => console.log(error)));
+
+    !!fixedContract &&
+      (await fixedContract.functions
+        .isSaleFunded()
+        .then((result) => setIsSaleFunded(result[0]))
+        .catch((error) => console.log(error)));
+  }, [talkContract]);
+
   useEffect(() => {
-    console.log(location.state.selectedPool);
-  }, [location]);
+    console.log(selectedPool);
+    fetchData();
+
+    setRatio(getRatio(selectedPool.value));
+    setMax(getMax(selectedPool.max, selectedPool.value));
+    setProgressValue(getProgressValue(allocated, selectedPool.sale));
+  }, [fetchData]);
 
   return (
     <Page title="Swap | IDO" className={classes.root}>
@@ -49,7 +127,7 @@ function SwapView() {
         <Grid container>
           <Grid item xs={12}>
             <Card>
-              <CardHeader title="XXX Protocol" />
+              <CardHeader title={selectedPool.name} />
               <Grid container>
                 <Grid item xs={12} sm={12} md={6} lg={6}>
                   <Box
@@ -70,9 +148,11 @@ function SwapView() {
                 <Grid item xs={12} sm={12} md={6} lg={6}>
                   <Box className={classes.box2rem}>
                     <Box className={classes.box2rem}>
-                      <Typography variant="body1">0 live</Typography>
                       <Typography variant="body1">
-                        Praticipant : Public
+                        0 (추후 연동) live
+                      </Typography>
+                      <Typography variant="body1">
+                        Participant : Public (추후 연동)
                       </Typography>
                     </Box>
                     <Box className={classes.box2rem}>
@@ -83,7 +163,7 @@ function SwapView() {
                           shrink: true
                         }}
                         fullWidth
-                        value="1 BNB = 30000 ALICE"
+                        value={`${ratio} ETH = 1 ${symbol}`}
                       />
                     </Box>
                     <Box
@@ -97,7 +177,7 @@ function SwapView() {
                         InputLabelProps={{
                           shrink: true
                         }}
-                        value="0.008881"
+                        value="0.008881 (추후 연동)"
                         style={{ width: '49%' }}
                       />
                       <TextField
@@ -107,11 +187,11 @@ function SwapView() {
                           shrink: true
                         }}
                         style={{ width: '49%' }}
-                        value="5 BNB"
+                        value={`${max} ETH`}
                       />
                     </Box>
                     <Box className={classes.box2rem} textAlign="center">
-                      Auction progress : 0 BNB / 10 BNB
+                      Auction progress : 0 BNB / 10 BNB (추후 연동)
                       <LinearProgress
                         variant="determinate"
                         value={0}
@@ -155,7 +235,9 @@ function SwapView() {
                       justifyContent="space-between"
                     >
                       <Typography variant="body2">Your Bid Ammount</Typography>
-                      <Typography variant="body2">Blance : 0 BNB</Typography>
+                      <Typography variant="body2">
+                        Blance : 0 BNB (추후 연동)
+                      </Typography>
                     </Box>
                     <Box
                       className={classes.box}
@@ -166,8 +248,10 @@ function SwapView() {
                     >
                       <TextField
                         label="Bid Ammount"
+                        value={bidAmount}
                         variant="standard"
                         fullWidth
+                        onChange={onChangeBidAmount}
                       />
                     </Box>
                     <Box className={classes.box} textAlign="center">
@@ -178,6 +262,7 @@ function SwapView() {
                           marginTop: '2rem'
                         }}
                         variant="contained"
+                        onClick={onClickGo}
                       >
                         Go
                       </Button>
