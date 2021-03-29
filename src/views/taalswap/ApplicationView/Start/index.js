@@ -41,7 +41,7 @@ function ApplicationStart() {
       .required('Min. Fund Raise is required'),
     access: Yup.string().required('Access is required'),
     minIndividuals: Yup.number()
-      .positive()
+      .min(0)
       .required('Min. Individuals is required'),
     maxIndividuals: Yup.number()
       .positive()
@@ -74,7 +74,7 @@ function ApplicationStart() {
       preferredStartDate: moment().add(1, 'd').toDate(),
       feeAmount: 1
     },
-    // validationSchema: NewApplicationSchema,
+    validationSchema: NewApplicationSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         const newApplication = {
