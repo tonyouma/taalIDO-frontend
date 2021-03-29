@@ -135,7 +135,7 @@ function TopBar() {
       dispatch(setActivatingConnector(undefined));
     }
     dispatch(getWalletBalance(account, library));
-    dispatch(getContractDecimals(account, library));
+    // dispatch(getContractDecimals(account, library));
   }, [activatingConnector, connector]);
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
@@ -147,10 +147,10 @@ function TopBar() {
     setIsOpenModal(false);
   };
 
-  if (balance !== null) {
-    console.log('wallet account = ', account);
-    console.log('wallet balance = ', formatEther(balance));
-  }
+  // if (balance !== null) {
+  //   console.log('wallet account = ', account);
+  //   console.log('wallet balance = ', formatEther(balance));
+  // }
   const renderMenuDesktop = (
     <div>
       {MENU_LINKS.map((link) =>
