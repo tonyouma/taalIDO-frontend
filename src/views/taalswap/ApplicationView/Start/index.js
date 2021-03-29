@@ -93,7 +93,7 @@ function ApplicationStart() {
           access: values.access,
           minIndividuals: values.minIndividuals,
           maxIndividuals: values.maxIndividuals,
-          atomic: values.atomic,
+          atomic: values.isAtomic,
           preferredStartDate: values.preferredStartDate,
           startDate: moment(values.preferredStartDate.toDateString()).unix(), // preferredStartDate 에포크타임으로 저장
           endDate: moment(values.preferredStartDate.toDateString())
