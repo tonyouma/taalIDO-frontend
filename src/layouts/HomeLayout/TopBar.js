@@ -38,7 +38,13 @@ import {
 import { useEagerConnect, useInactiveListener } from 'src/hooks/useWallet';
 import { useWeb3React } from '@web3-react/core';
 import { formatEther } from '@ethersproject/units';
-import talkData from '../../contracts/Talken';
+import { fixedData } from '../../contracts';
+import { tokenData } from '../../contracts';
+import Application from 'taalswap-js/src/models';
+import Numbers from 'taalswap-js/src/utils/Numbers';
+import { Contract, ContractFactory } from '@ethersproject/contracts';
+import moment from 'moment';
+import { ethers } from 'ethers';
 
 // ----------------------------------------------------------------------
 
@@ -147,6 +153,113 @@ function TopBar() {
     setIsOpenModal(false);
   };
 
+  dispatch(getContractDecimals(account, library));
+
+  // 스마트컨트랙 연동 테스트 코그 >>
+  if (!!library) {
+    console.log('library', library);
+    const ERC20TokenAddress = '0x581F2FCA16F9989CA9c46ebbD107410c9D8fA0B8';
+    const contractAddress = '0xd9606583D4e2c9b7d9EB89C0C3De1d359d9DDb5F';
+
+    const fixedContract = new Contract(
+      contractAddress,
+      ContractFactory.getInterface(fixedData.abi),
+      library.getSigner(account).connectUnchecked()
+    );
+
+    const tokenContract = new Contract(
+      contractAddress,
+      ContractFactory.getInterface(tokenData.abi),
+      library.getSigner(account).connectUnchecked()
+    );
+
+    const taalswapApp = new Application({
+      test: true,
+      mainnet: false,
+      account: account
+    });
+    // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+    const swapContract = taalswapApp.getFixedSwapContract({
+      tokenAddress: ERC20TokenAddress,
+      decimals: 18,
+      contractAddress: contractAddress,
+      fixedContract: fixedContract,
+      tokenContract: tokenContract
+    });
+
+    const tokenFundAmount = 0.00000000000345546;
+    const tradeValue = 0.0000000000012342;
+
+    let params = [
+      ERC20TokenAddress,
+      Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
+      Numbers.toSmartContractDecimals(tokenFundAmount, 18),
+      Numbers.timeToSmartContractTime(moment().add(6, 'minutes')),
+      Numbers.timeToSmartContractTime(moment().add(8, 'minutes')),
+      Numbers.toSmartContractDecimals(0, 18),
+      Numbers.toSmartContractDecimals(tokenFundAmount, 18),
+      false,
+      Numbers.toSmartContractDecimals(0, 18),
+      parseInt('2'),
+      true
+    ];
+
+    const deployTx = ethers.Contract.getDeployTransaction(
+      fixedData.bytecode,
+      fixedData.abi,
+      params
+    );
+
+    library
+      .getSigner(account)
+      .connectUnchecked()
+      .sendTransaction(deployTx)
+      .then((tx) => {
+        console.log(tx);
+      });
+
+    // library.wallet.sendTransaction(deployTx).then((tx) => {
+    //   console.log(tx);
+    // });
+
+    // swapContract
+    //   .deploy({
+    //     tradeValue: tradeValue,
+    //     tokensForSale: tokenFundAmount,
+    //     isTokenSwapAtomic: true,
+    //     individualMaximumAmount: tokenFundAmount,
+    //     startDate: moment().add(6, 'minutes'),
+    //     endDate: moment().add(8, 'minutes'),
+    //     hasWhitelisting: true
+    //   })
+    //   .then((resp) => {
+    //     console.log(swapContract.getAddress());
+    //   });
+
+    // swapContract.__init__();
+    // swapContract.assertERC20Info().then((resp) => {
+    //   console.log(resp);
+    // });
+    // console.log(swapContract);
+
+    swapContract.tokensForSale().then((tokens) => {
+      console.log('tokensForSale', tokens);
+      const xxx = Numbers.toSmartContractDecimals(tokens, 18);
+      console.log(xxx);
+    });
+
+    // const tokenPurchaseAmount = 0.000000000002145546;
+    const tokenPurchaseAmount = 10000;
+    swapContract
+      .swap({ tokenAmount: tokenPurchaseAmount, account: account })
+      .then((resp) => {
+        console.log(resp);
+      });
+  }
+  // << 스마트컨트랙 연동 테스트 소스
+
+  // console.log('2----------> ', activatingConnector);
+  // console.log('2----------> ', connector);
   // if (balance !== null) {
   //   console.log('wallet account = ', account);
   //   console.log('wallet balance = ', formatEther(balance));

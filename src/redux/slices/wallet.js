@@ -12,8 +12,9 @@ import {
   ContractInterface
 } from '@ethersproject/contracts';
 import { formatEther } from '@ethersproject/units';
-import talkData from '../../contracts/Talken';
-import fsData from '../../contracts/FixedSwap';
+import talkData from '../../contracts/Talken.json';
+import fsData from '../../contracts/FixedSwap.json';
+import { BigNumber } from '@ethersproject/bignumber';
 
 // ----------------------------------------------------------------------
 

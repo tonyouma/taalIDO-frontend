@@ -14,8 +14,9 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import { useContract } from '../../../hooks/useContract';
-import talkData from '../../../contracts/Talken';
-import fixedData from '../../../contracts/FixedSwap';
+import talkData from '../../../contracts/Talken.json';
+import fixedData from '../../../contracts/FixedSwap.json';
+import { useDispatch, useSelector } from 'react-redux';
 import getRatio from '../../../utils/getRatio';
 import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
