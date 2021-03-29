@@ -187,49 +187,29 @@ function TopBar() {
       tokenContract: tokenContract
     });
 
-    const tokenFundAmount = 0.00000000000345546;
-    const tradeValue = 0.0000000000012342;
-
-    const params = [
-      ERC20TokenAddress,
-      Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
-      Numbers.toSmartContractDecimals(tokenFundAmount, 18),
-      Numbers.timeToSmartContractTime(moment().add(6, 'minutes')),
-      Numbers.timeToSmartContractTime(moment().add(8, 'minutes')),
-      Numbers.toSmartContractDecimals(0, 18),
-      Numbers.toSmartContractDecimals(tokenFundAmount, 18),
-      false,
-      Numbers.toSmartContractDecimals(0, 18),
-      parseInt('2'),
-      true
-    ];
-
-    console.log(params);
+    // const params = [
+    //   ERC20TokenAddress,
+    //   Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
+    //   Numbers.toSmartContractDecimals(tokenFundAmount, 18),
+    //   Numbers.timeToSmartContractTime(moment().add(6, 'minutes')),
+    //   Numbers.timeToSmartContractTime(moment().add(8, 'minutes')),
+    //   Numbers.toSmartContractDecimals(0, 18),
+    //   Numbers.toSmartContractDecimals(tokenFundAmount, 18),
+    //   false,
+    //   Numbers.toSmartContractDecimals(0, 18),
+    //   parseInt('2'),
+    //   true
+    // ];
+    //
+    // console.log(params);
+    // 스마트컨트랙 배포 샘플 코드
     const factory = new ContractFactory(
       fixedData.abi,
       fixedData.bytecode,
-      library.getSigner(account).connectUnchecked()
+      library.getSigner(account)
     );
-    factory
-      .deploy(
-        ERC20TokenAddress,
-        Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
-        Numbers.toSmartContractDecimals(tokenFundAmount, 18),
-        Numbers.timeToSmartContractTime(moment().add(6, 'minutes')),
-        Numbers.timeToSmartContractTime(moment().add(8, 'minutes')),
-        Numbers.toSmartContractDecimals(0, 18),
-        Numbers.toSmartContractDecimals(tokenFundAmount, 18),
-        false,
-        Numbers.toSmartContractDecimals(0, 18),
-        parseInt(2),
-        true,
-        {
-          gasLimit: 7000000
-        }
-      )
-      .then((contract) => {
-        console.log(contract.address);
-      });
+
+    taalDeploy(factory).then((r) => console.log('..... Deploy DONE'));
 
     // ethers.Contract;
     // const deployTx = ethers.Contract.getDeployTransaction(
@@ -443,6 +423,34 @@ function TopBar() {
       )}
     </AppBar>
   );
+}
+
+async function taalDeploy(factory) {
+  const ERC20TokenAddress = '0x581F2FCA16F9989CA9c46ebbD107410c9D8fA0B8';
+  const tokenFundAmount = 0.00000000000345546;
+  const tradeValue = 0.0000000000012342;
+
+  const contract = await factory.deploy(
+    ERC20TokenAddress,
+    Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
+    Numbers.toSmartContractDecimals(tokenFundAmount, 18),
+    Numbers.timeToSmartContractTime(moment().add(6, 'minutes')),
+    Numbers.timeToSmartContractTime(moment().add(8, 'minutes')),
+    Numbers.toSmartContractDecimals(0, 18),
+    Numbers.toSmartContractDecimals(tokenFundAmount, 18),
+    false,
+    Numbers.toSmartContractDecimals(0, 18),
+    parseInt('10'),
+    true,
+    {
+      gasLimit: 7000000
+    }
+  );
+
+  // await factory.contract.deployed();
+
+  console.log('?????????????????');
+  console.log(contract);
 }
 
 export default TopBar;
