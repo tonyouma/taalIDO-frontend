@@ -38,34 +38,41 @@ function CandidateCard({ card, index, className }) {
 
   return (
     <Card className={clsx(classes.root, className)}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
-        <Typography variant="h3" sx={{ mx: 1 }}>
-          Protocol
-        </Typography>
-      </Box>
-
-      <Box
+      {/* <Box // page 2-2 이미지 삭제
         component="img"
         alt={card.subscription}
         src={card.icon}
         sx={{ width: 80, height: 80, mt: 3 }}
-      />
+      /> */}
 
-      <Box sx={{ my: 5, width: '100%' }}>
-        {card.lists.map((item) => (
+      <Box sx={{ my: 0, width: '100%' }}>
+        {/* page 2-3 레이아웃 재배치 */}
+        {card.lists.map((item, index) => (
           <Box
             sx={{
               display: 'flex',
-              typography: 'body2',
               alignItems: 'center',
               color: item.isAvailable ? 'text.primary' : 'text.disabled',
               '&:not(:last-of-type)': { mb: 2 }
             }}
           >
-            <Box sx={{ width: 15, height: 20, mr: 1.5 }} />
-            {item.text}
-            <Box sx={{ width: 15, height: 20, mr: 1.5 }} />
-            test
+            <Box>
+              <Box
+                sx={{
+                  mr: 1.5
+                }}
+                fontWeight={'bold'}
+                fontSize={20}
+              >
+                {item.text}
+              </Box>
+              <Box
+                sx={{
+                  mr: 1.0
+                }}
+              />
+              {index == 1 ? 'http://token.co.kr' : 'texttexttext'}
+            </Box>
           </Box>
         ))}
       </Box>

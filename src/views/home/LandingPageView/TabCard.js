@@ -20,29 +20,41 @@ import { PATH_APP } from 'src/routes/paths';
 const PLANS = [
   {
     lists: [
-      { text: 'Ratio', isAvailable: false },
-      { text: 'MAX', isAvailable: false },
-      { text: 'Access', isAvailable: false },
-      { text: 'MAX. Contribution', isAvailable: false },
-      { text: 'Total Raise', isAvailable: false }
+      { text: 'Ratio', describe: ['0.1 Token per USDT'], isAvailable: true },
+      { text: 'MAX', describe: ['10,000 Token'], isAvailable: true },
+      { text: 'Access', describe: ['Whitelisted'], isAvailable: true },
+      { text: 'MAX. Contribution', describe: ['Address'], isAvailable: true },
+      {
+        text: 'Total Raise',
+        describe: ['1,000 USDT'],
+        isAvailable: true
+      }
     ]
   },
   {
     lists: [
-      { text: 'Ratio', isAvailable: true },
-      { text: 'MAX', isAvailable: true },
-      { text: 'Access', isAvailable: true },
-      { text: 'MAX. Contribution', isAvailable: true },
-      { text: 'Total Raise', isAvailable: true }
+      { text: 'Ratio', describe: ['0.1 Token per USDT'], isAvailable: true },
+      { text: 'MAX', describe: ['10,000 Token'], isAvailable: true },
+      { text: 'Access', describe: ['Whitelisted'], isAvailable: true },
+      { text: 'MAX. Contribution', describe: ['Address'], isAvailable: true },
+      {
+        text: 'Total Raise',
+        describe: ['1,000 USDT'],
+        isAvailable: true
+      }
     ]
   },
   {
     lists: [
-      { text: 'Ratio', isAvailable: true },
-      { text: 'MAX', isAvailable: true },
-      { text: 'Access', isAvailable: true },
-      { text: 'MAX. Contribution', isAvailable: true },
-      { text: 'Total Raise', isAvailable: true }
+      { text: 'Ratio', describe: ['0.1 Token per USDT'], isAvailable: true },
+      { text: 'MAX', describe: ['10,000 Token'], isAvailable: true },
+      { text: 'Access', describe: ['Whitelisted'], isAvailable: true },
+      { text: 'MAX. Contribution', describe: ['Address'], isAvailable: true },
+      {
+        text: 'Total Raise',
+        describe: ['1,000 USDT'],
+        isAvailable: true
+      }
     ]
   }
 ];
@@ -63,6 +75,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       padding: theme.spacing(5, 5, 0)
     }
+  },
+  // page 2-1 글자 스타일
+  label: {
+    fontSize: 20
   }
 }));
 
@@ -80,8 +96,8 @@ function Tabcard() {
       <Container maxWidth="lg">
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <Tabs value={value} onChange={handleChange} centered>
-            <Tab label="Live&Upcoming Pools" />
-            <Tab label="Accomplished Pools" />
+            <Tab label="Live&Upcoming Pools" className={classes.label} />
+            <Tab label="Accomplished Pools" className={classes.label} />
           </Tabs>
         </Box>
 

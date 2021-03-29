@@ -18,36 +18,33 @@ import { PATH_APP } from 'src/routes/paths';
 
 const PLANS = [
   {
-    icon: '/static/icons/ic_plan_free.svg',
     lists: [
       { text: 'Token Contract Address', isAvailable: true },
       { text: 'Website URL', isAvailable: true },
       { text: 'WhitePager/LitePaper', isAvailable: true },
       { text: 'Project Introduction', isAvailable: true },
-      { text: 'Max.Allocation per Wallet', isAvailable: true }
-      //{ text: 'Total Supply', isAvailable: false }
+      { text: 'Max.Allocation per Wallet', isAvailable: true },
+      { text: 'Total Supply', isAvailable: true }
     ]
   },
   {
-    icon: '/static/icons/ic_plan_starter.svg',
     lists: [
       { text: 'Token Contract Address', isAvailable: true },
       { text: 'Website URL', isAvailable: true },
       { text: 'WhitePager/LitePaper', isAvailable: true },
       { text: 'Project Introduction', isAvailable: true },
-      { text: 'Max.Allocation per Wallet', isAvailable: true }
-      //{ text: 'Total Supply', isAvailable: false }
+      { text: 'Max.Allocation per Wallet', isAvailable: true },
+      { text: 'Total Supply', isAvailable: true }
     ]
   },
   {
-    icon: '/static/icons/ic_plan_premium.svg',
     lists: [
       { text: 'Token Contract Address', isAvailable: true },
       { text: 'Website URL', isAvailable: true },
       { text: 'WhitePager/LitePaper', isAvailable: true },
       { text: 'Project Introduction', isAvailable: true },
-      { text: 'Max.Allocation per Wallet', isAvailable: true }
-      //{ text: 'Total Supply', isAvailable: false }
+      { text: 'Max.Allocation per Wallet', isAvailable: true },
+      { text: 'Total Supply', isAvailable: true }
     ]
   }
 ];
@@ -79,9 +76,6 @@ function CandidatePool() {
   return (
     <Page title="TaalSwap Finace" className={classes.root}>
       <Container maxWidth="lg">
-        <Typography align="center" sx={{ color: 'text.secondary' }}>
-          TaalSwap
-        </Typography>
         <Typography variant="h2" align="center" gutterBottom>
           Candidate Pools
         </Typography>

@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '80%',
     align: 'center'
+  },
+  // page 5-2 문구 크기 늘리기 및 텍스트 녹색 변경
+  text: {
+    color: theme.palette.primary.main
   }
 }));
 
@@ -24,7 +28,13 @@ function DashboardAppView() {
   return (
     <Page className={classes.root} title="TaalSWap| IDO Application">
       <Container maxWidth="xl">
-        <Typography variant="h4" component="h1" paragraph>
+        <Typography
+          variant="h4"
+          component="h1"
+          paragraph
+          // page 5-1 텍스트 간격 늘리기. 더 늘리고 싶으면 paddingBottom 숫자 늘릴 것.
+          sx={{ paddingBottom: 3 }}
+        >
           TaalSwap IDO Governance
         </Typography>
 
@@ -43,12 +53,14 @@ function DashboardAppView() {
           TaalSwap will be provided.
         </Typography>
 
+        {/* page 5-3 button 위치 아래로, 하단 button 에서 marginTop : 수치를 조절 */}
         <Button
           to="/app/taalswap/application/start"
           variant="contained"
           component={RouterLink}
+          sx={{ marginTop: 5 }}
         >
-          Fill in Your Application
+          Start Your Application
         </Button>
       </Container>
     </Page>

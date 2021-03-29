@@ -258,7 +258,7 @@ function TopBar() {
       console.log(xxx);
     });
 
-    // const tokenPurchaseAmount = 0.000000000002145546;
+    // const tokenPurchaseAmount = 0.000000000002145546; 잘못된 값
     const tokenPurchaseAmount = 10000;
     swapContract
       .swap({ tokenAmount: tokenPurchaseAmount, account: account })
@@ -447,10 +447,21 @@ async function taalDeploy(factory) {
     }
   );
 
-  // await factory.contract.deployed();
-
-  console.log('?????????????????');
   console.log(contract);
+  console.log('$$$$$$$$$$$$$$$$$$$$$$$');
+  const receipt = await contract.deployTransaction.wait();
+
+  // Async로 동작을 함...
+  console.log('######################');
+  console.log(receipt);
+
+  const { confirmations } = receipt;
+  if (confirmations === 1) {
+    console.log('fixedSwap contract deploy... confirmed!!');
+  }
+
+  const { address } = contract;
+  console.log(address);
 }
 
 export default TopBar;

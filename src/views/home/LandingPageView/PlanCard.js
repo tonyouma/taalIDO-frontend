@@ -97,7 +97,6 @@ function PlanCard({ card, index, className }) {
             sx={{
               display: 'flex',
               typography: 'body2',
-              alignItems: 'center',
               color: item.isAvailable ? 'text.primary' : 'text.disabled',
               '&:not(:last-of-type)': { mb: 2 }
             }}
@@ -108,8 +107,13 @@ function PlanCard({ card, index, className }) {
               sx={{ width: 20, height: 20, mr: 1.5 }}
             />
             {item.text}
-            <Box sx={{ width: 20, height: 20, mr: 1.5 }} />
-            0.1 token per USDT
+            <Box sx={{ flex: 1 }} />
+            {/* page 1-1 오른쪽 정렬 및 텍스트 */}
+            <Box sx={{ mr: 1.5 }}>
+              {item.describe.map((item2) => {
+                return <Box sx={{ mr: 1.5 }}>{item2}</Box>;
+              })}
+            </Box>
           </Box>
         ))}
       </Box>
