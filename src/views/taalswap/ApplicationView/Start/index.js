@@ -24,9 +24,8 @@ function ApplicationStart() {
   const dispatch = useDispatch();
 
   const NewApplicationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().required('Project Name is required'),
     category: Yup.string().required('Category is required'),
-    projectDesc: Yup.string().required('Project Description is required'),
     websiteUrl: Yup.string().required('Website URL is required'),
     email: Yup.string().email().required('eMail is required'),
     telegramHandle: Yup.string().required('Telegram handle is required'),
@@ -127,12 +126,7 @@ function ApplicationStart() {
           heading="Create a new application"
           links={[{ name: 'New Application' }]}
         />
-
-        <Card>
-          <CardContent>
-            <NewApplicationForm formik={formik} />
-          </CardContent>
-        </Card>
+        <NewApplicationForm formik={formik} />
       </Container>
     </Page>
   );
