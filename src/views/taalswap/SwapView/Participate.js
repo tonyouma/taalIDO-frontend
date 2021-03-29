@@ -8,6 +8,7 @@ import SortingSelecting from './SortingSelecting';
 import { HeaderDashboard } from 'src/layouts/Common';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Box,
   Grid,
   Card,
   Container,
@@ -44,6 +45,8 @@ function TableView() {
           heading="Protocol"
           links={[{ name: 'SubText Display Area' }]}
         />
+
+        <Box>ICON (ICX)</Box>
 
         <Tabs
           value={currentTab}

@@ -94,6 +94,10 @@ function General({ className }) {
                 <CardContent>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={12}>
+                      {/* 타이틀 삽입 */}
+                      <Box sx={{ fontSize: 20 }}>- IDO Information</Box>
+                    </Grid>
+                    <Grid item xs={12} sm={12}>
                       <TextField
                         fullWidth
                         label="Pool Name"
@@ -192,6 +196,10 @@ function General({ className }) {
               <Card>
                 <CardContent>
                   <Grid container spacing={2}>
+                    <Grid item xs={12} sm={12}>
+                      {/* 타이틀 삽입 */}
+                      <Box sx={{ fontSize: 20 }}>- Project Information</Box>
+                    </Grid>
                     <Grid item xs={12} sm={12}>
                       <TextField
                         fullWidth

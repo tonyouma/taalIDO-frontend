@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import Scrollbars from 'src/components/Scrollbars';
 import { makeStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Typography from '@material-ui/core/Typography';
+
 import {
+  Box,
   Table,
   TableRow,
   TableHead,
@@ -12,6 +16,21 @@ import {
 } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -52,7 +71,7 @@ export default function BasicTable() {
                 <TableCell>Dessert (100g serving)</TableCell>
                 <TableCell align="right">Calories</TableCell>
                 <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                <TableCell align="center">Carbs&nbsp;(g)</TableCell>
                 <TableCell align="right">Protein&nbsp;(g)</TableCell>
               </TableRow>
             </TableHead>
@@ -64,8 +83,14 @@ export default function BasicTable() {
                   </TableCell>
                   <TableCell align="right">{row.calories}</TableCell>
                   <TableCell align="right">{row.fat}</TableCell>
-                  <TableCell align="right">{row.carbs}</TableCell>
-                  <TableCell align="right">{row.protein}</TableCell>
+                  <TableCell align="center" width="20%">
+                    <LinearProgressWithLabel
+                      value={row.progress >= 100 ? 100 : row.carbs}
+                    />
+                  </TableCell>
+                  <TableCell align="right" width="10%">
+                    {row.protein}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
