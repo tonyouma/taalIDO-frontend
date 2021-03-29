@@ -92,7 +92,11 @@ function General({ className }) {
             <Grid item xs={12} md={6}>
               <Card>
                 <CardContent>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={4}>
+                    <Grid item xs={12} sm={12}>
+                      {/* 타이틀 삽입 */}
+                      <Box sx={{ fontSize: 18 }}> IDO Information</Box>
+                    </Grid>
                     <Grid item xs={12} sm={12}>
                       <TextField
                         fullWidth
@@ -191,7 +195,11 @@ function General({ className }) {
             <Grid item xs={12} md={6}>
               <Card>
                 <CardContent>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={4}>
+                    <Grid item xs={12} sm={12}>
+                      {/* 타이틀 삽입 */}
+                      <Box sx={{ fontSize: 18 }}> Project Information</Box>
+                    </Grid>
                     <Grid item xs={12} sm={12}>
                       <TextField
                         fullWidth
