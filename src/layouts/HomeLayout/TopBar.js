@@ -190,7 +190,7 @@ function TopBar() {
     const tokenFundAmount = 0.00000000000345546;
     const tradeValue = 0.0000000000012342;
 
-    let params = [
+    const params = [
       ERC20TokenAddress,
       Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
       Numbers.toSmartContractDecimals(tokenFundAmount, 18),
@@ -204,19 +204,49 @@ function TopBar() {
       true
     ];
 
-    const deployTx = ethers.Contract.getDeployTransaction(
-      fixedData.bytecode,
+    console.log(params);
+    const factory = new ContractFactory(
       fixedData.abi,
-      params
+      fixedData.bytecode,
+      library.getSigner(account).connectUnchecked()
     );
-
-    library
-      .getSigner(account)
-      .connectUnchecked()
-      .sendTransaction(deployTx)
-      .then((tx) => {
-        console.log(tx);
+    factory
+      .deploy(
+        ERC20TokenAddress,
+        Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
+        Numbers.toSmartContractDecimals(tokenFundAmount, 18),
+        Numbers.timeToSmartContractTime(moment().add(6, 'minutes')),
+        Numbers.timeToSmartContractTime(moment().add(8, 'minutes')),
+        Numbers.toSmartContractDecimals(0, 18),
+        Numbers.toSmartContractDecimals(tokenFundAmount, 18),
+        false,
+        Numbers.toSmartContractDecimals(0, 18),
+        parseInt(2),
+        true,
+        {
+          gasLimit: 7000000
+        }
+      )
+      .then((contract) => {
+        console.log(contract.address);
       });
+
+    // ethers.Contract;
+    // const deployTx = ethers.Contract.getDeployTransaction(
+    //   fixedData.bytecode,
+    //   fixedData.abi,
+    //   params
+    // );
+    // library.contract.deployTransaction();
+    // ContractFactory.getInterface();
+    //
+    // library
+    //   .getSigner(account)
+    //   .connectUnchecked()
+    //   .sendTransaction(deployTx)
+    //   .then((tx) => {
+    //     console.log(tx);
+    //   });
 
     // library.wallet.sendTransaction(deployTx).then((tx) => {
     //   console.log(tx);
