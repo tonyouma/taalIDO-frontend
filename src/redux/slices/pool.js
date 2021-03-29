@@ -101,7 +101,7 @@ export function createApplication(newApplication) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.post(
-        'http://localhost:3001/pools',
+        'http://133.186.222.82:3001/pools',
         newApplication
       );
       dispatch(slice.actions.createApplicationSuccess(response.data));

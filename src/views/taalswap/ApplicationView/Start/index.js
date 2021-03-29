@@ -72,7 +72,7 @@ function ApplicationStart() {
       maxIndividuals: '',
       isAtomic: false,
       preferredStartDate: moment().add(1, 'd').toDate(),
-      feeAmount: ''
+      feeAmount: 1
     },
     // validationSchema: NewApplicationSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
