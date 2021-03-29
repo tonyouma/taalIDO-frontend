@@ -37,20 +37,22 @@ function DashboardAppView() {
         >
           TaalSwap IDO Governance
         </Typography>
-
+        <Typography variant="h6" gutterBottom className={classes.text}>
+          TaalSwap ultimately pursues a permissions and interoperable IDO
+          Platform.
+        </Typography>
         <Typography variant="body1" gutterBottom>
-          TaalSwap ultimately pursues a permissionless and interoperable IDO
-          platform. With this goal in mind, TaalSwap, in its initial stage of
-          operation, aims at the perfect match of promising projects with
-          strong-willed investors in terms of which innovative startups are
-          empowered to realize their ideas and technologies. In achieving this,
-          the TaalSwap council is responsible for reviewing and voting on your
-          application for launch on TaalSwap. Your application will be
-          rigorously reviewed and evaluated by the council. Every council member
-          will cast his/her vote, and your project will be approved for launch
-          if the number of votes in favor of your project is greater than 60%.
-          On approval, the instructions to prepare for and execute the launch on
-          TaalSwap will be provided.
+          With this goal in mind, TaalSwap, in its initial stage of operation,
+          aims at the perfect match of promising projects with strong-willed
+          investors in terms of which innovative startups are empowered to
+          realize their ideas and technologies. In achieving this, the TaalSwap
+          council is responsible for reviewing and voting on your application
+          for launch on TaalSwap. Your application will be rigorously reviewed
+          and evaluated by the council. Every council member will cast his/her
+          vote, and your project will be approved for launch if the number of
+          votes in favor of your project is greater than 60%. On approval, the
+          instructions to prepare for and execute the launch on TaalSwap will be
+          provided.
         </Typography>
 
         {/* page 5-3 button 위치 아래로, 하단 button 에서 marginTop : 수치를 조절 */}
@@ -60,7 +62,7 @@ function DashboardAppView() {
           component={RouterLink}
           sx={{ marginTop: 5 }}
         >
-          Start Your Application
+          Fill in Your Application
         </Button>
       </Container>
     </Page>
