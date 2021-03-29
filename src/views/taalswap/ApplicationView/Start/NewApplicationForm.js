@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormikProvider } from 'formik';
 import { LoadingButton } from '@material-ui/lab';
@@ -7,15 +7,26 @@ import { makeStyles } from '@material-ui/core/styles';
 import Block from 'src/components/Block';
 import {
   Box,
-  Button,
   TextField,
-  Typography,
-  Card,
-  CardContent,
-  FormHelperText
+  InputAdornment,
+  FormControlLabel,
+  Switch
 } from '@material-ui/core';
+import { MobileDatePicker } from '@material-ui/lab';
+import moment from 'moment';
 
 // ----------------------------------------------------------------------
+
+const CATEGORIES = [
+  { value: 'defi', label: 'DeFi' },
+  { value: 'nft', label: 'NFT' },
+  { value: 'others', label: 'Others' }
+];
+
+const ACCESS = [
+  { value: 'private', label: 'Private' },
+  { value: 'public', label: 'Public' }
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -55,7 +66,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
         className={clsx(classes.root, className)}
         {...other}
       >
-        <Block title="Contact information" className={classes.margin}>
+        <Block title="Project Information" className={classes.margin}>
           <TextField
             fullWidth
             label="Name"
@@ -65,10 +76,46 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
             helperText={touched.name && errors.name}
             className={classes.margin}
           />
+          <TextField
+            select
+            fullWidth
+            label="Category"
+            size="small"
+            {...getFieldProps('category')}
+            SelectProps={{ native: true }}
+            error={Boolean(touched.category && errors.category)}
+            helperText={touched.category && errors.category}
+            className={classes.margin}
+          >
+            {CATEGORIES.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </TextField>
 
           <TextField
             fullWidth
-            label="email"
+            label="Description"
+            size="small"
+            {...getFieldProps('projectDesc')}
+            error={Boolean(touched.projectDesc && errors.projectDesc)}
+            helperText={touched.projectDesc && errors.projectDesc}
+            className={classes.margin}
+          />
+          <TextField
+            fullWidth
+            label="Website URL"
+            size="small"
+            {...getFieldProps('websiteUrl')}
+            error={Boolean(touched.websiteUrl && errors.websiteUrl)}
+            helperText={touched.websiteUrl && errors.websiteUrl}
+            className={classes.margin}
+          />
+
+          <TextField
+            fullWidth
+            label="eMail"
             size="small"
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
@@ -78,28 +125,28 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
 
           <TextField
             fullWidth
-            label="telegram id"
+            label="Telegram handle"
             size="small"
-            {...getFieldProps('telegramId')}
-            error={Boolean(touched.telegramId && errors.telegramId)}
-            helperText={touched.telegramId && errors.telegramId}
+            {...getFieldProps('telegramHandle')}
+            error={Boolean(touched.telegramHandle && errors.telegramHandle)}
+            helperText={touched.telegramHandle && errors.telegramHandle}
             className={classes.margin}
           />
         </Block>
 
-        <Block title="project information" className={classes.margin}>
+        <Block title="IDO Information" className={classes.margin}>
           <TextField
             fullWidth
-            label="project name"
+            label="Pool Name"
             size="small"
-            {...getFieldProps('projectName')}
-            error={Boolean(touched.projectName && errors.projectName)}
-            helperText={touched.projectName && errors.projectName}
+            {...getFieldProps('poolName')}
+            error={Boolean(touched.poolName && errors.poolName)}
+            helperText={touched.poolName && errors.poolName}
             className={classes.margin}
           />
           <TextField
             fullWidth
-            label="token contract address"
+            label="Token Contract Address"
             size="small"
             {...getFieldProps('tokenContractAddr')}
             error={Boolean(
@@ -108,121 +155,122 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
             helperText={touched.tokenContractAddr && errors.tokenContractAddr}
             className={classes.margin}
           />
-          <TextField
-            fullWidth
-            label="project description"
-            size="small"
-            {...getFieldProps('projectDesc')}
-            error={Boolean(touched.projectDesc && errors.projectDesc)}
-            helperText={touched.projectDesc && errors.projectDesc}
-            className={classes.margin}
-          />
-          <TextField
-            fullWidth
-            label="website url"
-            size="small"
-            {...getFieldProps('websiteUrl')}
-            error={Boolean(touched.websiteUrl && errors.websiteUrl)}
-            helperText={touched.websiteUrl && errors.websiteUrl}
-            className={classes.margin}
-          />
-          <TextField
-            fullWidth
-            label="whitepaper"
-            size="small"
-            {...getFieldProps('whitePaper')}
-            error={Boolean(touched.whitePaper && errors.whitePaper)}
-            helperText={touched.whitePaper && errors.whitePaper}
-            className={classes.margin}
-          />
-          <TextField
-            fullWidth
-            label="token information"
-            size="small"
-            {...getFieldProps('tokenInformation')}
-            error={Boolean(touched.tokenInformation && errors.tokenInformation)}
-            helperText={touched.tokenInformation && errors.tokenInformation}
-            className={classes.margin}
-          />
-          <TextField
-            fullWidth
-            label="twitter url"
-            size="small"
-            {...getFieldProps('twitterUrl')}
-            error={Boolean(touched.twitterUrl && errors.twitterUrl)}
-            helperText={touched.twitterUrl && errors.twitterUrl}
-            className={classes.margin}
-          />
-          <TextField
-            fullWidth
-            label="telegram handle"
-            size="small"
-            {...getFieldProps('telegramHandle')}
-            error={Boolean(touched.telegramHandle && errors.telegramHandle)}
-            helperText={touched.telegramHandle && errors.telegramHandle}
-            className={classes.margin}
-          />
-          <TextField
-            fullWidth
-            label="roadmaps"
-            size="small"
-            {...getFieldProps('roadmaps')}
-            error={Boolean(touched.roadmaps && errors.roadmaps)}
-            helperText={touched.roadmaps && errors.roadmaps}
-            className={classes.margin}
-          />
-        </Block>
 
-        <Block title="investments and progresses" className={classes.margin}>
           <TextField
             fullWidth
-            label="github url"
+            label="Trade Value"
             size="small"
-            {...getFieldProps('githubUrl')}
-            error={Boolean(touched.githubUrl && errors.githubUrl)}
-            helperText={touched.githubUrl && errors.githubUrl}
+            {...getFieldProps('tradeValue')}
+            error={Boolean(touched.tradeValue && errors.tradeValue)}
+            helperText={(touched.tradeValue && errors.tradeValue) || '(In ETH)'}
+            className={classes.margin}
+          />
+          <TextField
+            fullWidth
+            label="Trade Amount"
+            size="small"
+            {...getFieldProps('tradeAmount')}
+            error={Boolean(touched.tradeAmount && errors.tradeAmount)}
+            helperText={
+              (touched.tradeAmount && errors.tradeAmount) ||
+              '(Total # of tokens for sale)'
+            }
+            className={classes.margin}
+          />
+          <TextField
+            fullWidth
+            label="Min. Fund Raise"
+            size="small"
+            {...getFieldProps('minFundRaise')}
+            error={Boolean(touched.minFundRaise && errors.minFundRaise)}
+            helperText={
+              (touched.minFundRaise && errors.minFundRaise) ||
+              '(Min. # of tokens sold at least)'
+            }
+            className={classes.margin}
+          />
+
+          <TextField
+            select
+            fullWidth
+            label="Access"
+            size="small"
+            {...getFieldProps('access')}
+            SelectProps={{ native: true }}
+            error={Boolean(touched.access && errors.access)}
+            helperText={touched.access && errors.access}
+            className={classes.margin}
+          >
+            {ACCESS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </TextField>
+
+          <TextField
+            fullWidth
+            label="Min. Individuals"
+            size="small"
+            {...getFieldProps('minIndividuals')}
+            error={Boolean(touched.minIndividuals && errors.minIndividuals)}
+            helperText={
+              (touched.minIndividuals && errors.minIndividuals) ||
+              '(Min. # of tokens allowed per person)'
+            }
             className={classes.margin}
           />
 
           <TextField
             fullWidth
-            label="amount of fund raised"
+            label="Max. Individuals"
             size="small"
-            {...getFieldProps('amountRaise')}
-            error={Boolean(touched.amountRaise && errors.amountRaise)}
-            helperText={touched.amountRaise && errors.amountRaise}
+            {...getFieldProps('maxIndividuals')}
+            error={Boolean(touched.maxIndividuals && errors.maxIndividuals)}
+            helperText={
+              (touched.maxIndividuals && errors.maxIndividuals) ||
+              '(Max. # of tokens allowed per person)'
+            }
             className={classes.margin}
+          />
+
+          <MobileDatePicker
+            label="Preferred Start Date"
+            size="small"
+            minDate={moment().add(1, 'd').toDate()}
+            value={values.preferredStartDate}
+            onChange={(date) => setFieldValue('preferredStartDate', date)}
+            renderInput={(params) => (
+              <TextField {...params} fullWidth margin="normal" />
+            )}
           />
 
           <TextField
             fullWidth
-            label="(investors)"
+            label="Fee Amount"
             size="small"
-            {...getFieldProps('investors')}
-            error={Boolean(touched.investors && errors.investors)}
-            helperText={touched.investors && errors.investors}
+            {...getFieldProps('feeAmount')}
+            error={Boolean(touched.feeAmount && errors.feeAmount)}
+            helperText={(touched.feeAmount && errors.feeAmount) || '(> 1%)'}
             className={classes.margin}
+            InputProps={{
+              endAdornment: <InputAdornment position="start">%</InputAdornment>
+            }}
           />
-
-          <TextField
-            fullWidth
-            label="amount of fund planning to raise on TaalSwap"
-            size="small"
-            {...getFieldProps('amountRaisePlan')}
-            error={Boolean(touched.amountRaisePlan && errors.amountRaisePlan)}
-            helperText={touched.amountRaisePlan && errors.amountRaisePlan}
-            className={classes.margin}
-          />
-
-          <TextField
-            fullWidth
-            label="preferred IDO launch date"
-            size="small"
-            {...getFieldProps('launchDate')}
-            error={Boolean(touched.launchDate && errors.launchDate)}
-            helperText={touched.launchDate && errors.launchDate}
-            className={classes.margin}
-          />
+          <div
+            style={{
+              width: '100%',
+              textAlign: 'left'
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Switch {...getFieldProps('isAtomic')} color="primary" />
+              }
+              labelPlacement="start"
+              label="Atomic"
+            />
+          </div>
         </Block>
 
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

@@ -41,6 +41,18 @@ const slice = createSlice({
     closeModal(state) {
       state.isOpenModal = false;
       state.selectedPool = null;
+    },
+
+    // GET APPLICATIONS
+    getApplicationListSuccess(state, action) {
+      state.isLoading = false;
+      state.applicationList = action.payload;
+    },
+
+    // CREATE APPLICATIONS
+    createApplicationSuccess(state, action) {
+      state.isLoading = false;
+      state.applicationList = action.payload;
     }
   }
 });
@@ -64,6 +76,35 @@ export function getPoolList() {
         return resp;
       });
       dispatch(slice.actions.getPoolListSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getApplicationList() {
+  return async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.get(
+        'http://133.186.222.82:3001/applications'
+      );
+      dispatch(slice.actions.getApplicationListSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function createApplication(newApplication) {
+  return async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.post(
+        'http://localhost:3001/pools',
+        newApplication
+      );
+      dispatch(slice.actions.createApplicationSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

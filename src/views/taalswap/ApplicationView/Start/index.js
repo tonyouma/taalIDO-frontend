@@ -4,15 +4,12 @@ import React, { useState } from 'react';
 import NewApplicationForm from './NewApplicationForm';
 import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
-import { PATH_APP } from 'src/routes/paths';
-import { fData } from 'src/utils/formatNumber';
-import fakeRequest from 'src/utils/fakeRequest';
 import { HeaderDashboard } from 'src/layouts/Common';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Card, CardContent } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { createApplication } from 'src/redux/slices/application';
-import axios from 'axios';
+import { createApplication } from 'src/redux/slices/pool';
+import moment from 'moment';
 
 // ----------------------------------------------------------------------
 
@@ -28,72 +25,86 @@ function ApplicationStart() {
 
   const NewApplicationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    email: Yup.string().email().required('e-mail is required'),
-    telegramId: Yup.string().required('telegram id is required'),
-    projectName: Yup.string().required('project name is required'),
+    category: Yup.string().required('Category is required'),
+    projectDesc: Yup.string().required('Project Description is required'),
+    websiteUrl: Yup.string().required('Website URL is required'),
+    email: Yup.string().email().required('eMail is required'),
+    telegramHandle: Yup.string().required('Telegram handle is required'),
+    poolName: Yup.string().required('Pool Name is required'),
     tokenContractAddr: Yup.string().required(
-      'token contract address is required'
+      'Token Contract Address is required'
     ),
-    projectDesc: Yup.string().required('project description is required'),
-    websiteUrl: Yup.string().required('website url is required'),
-    whitePaper: Yup.string().required('whitepaper is required'),
-    tokenInformation: Yup.string().required('token information is required'),
-    twitterUrl: Yup.string().required('twitter url is required'),
-    telegramHandle: Yup.string().required('telegram handle is required'),
-    roadmaps: Yup.string().required('roadmaps is required'),
-    githubUrl: Yup.string().required('github url is required'),
-    amountRaise: Yup.number()
+    tradeValue: Yup.number().positive().required('Trade Value is required'),
+    tradeAmount: Yup.number().positive().required('Trade Amount is required'),
+    minFundRaise: Yup.number()
       .positive()
-      .required('amount of fund raised is required'),
-    investors: Yup.string().required('(investors) is required'),
-    amountRaisePlan: Yup.number()
+      .required('Min. Fund Raise is required'),
+    access: Yup.string().required('Access is required'),
+    minIndividuals: Yup.number()
       .positive()
-      .required('amount of fund planning to raise on TaalSwap is required'),
-    launchDate: Yup.string().required('preferred IDO lanunch date is required')
+      .required('Min. Individuals is required'),
+    maxIndividuals: Yup.number()
+      .positive()
+      .required('Max. Individuals is required'),
+    feeAmount: Yup.number()
+      .positive('Fee Amount is positive integer')
+      .integer('Fee Amount is positive integer')
+      .min(1)
+      .max(100)
+      .required('Fee Amount is required')
   });
 
   const formik = useFormik({
     initialValues: {
       name: '',
-      email: '',
-      telegramId: '',
-      projectName: '',
-      tokenContractAddr: '',
+      category: 'defi',
       projectDesc: '',
       websiteUrl: '',
-      whitePaper: '',
-      tokenInformation: '',
-      twitterUrl: '',
+      email: '',
       telegramHandle: '',
-      roadmaps: '',
-      githubUrl: '',
-      amountRaise: '',
-      investors: '',
-      amountRaisePlan: '',
-      launchDate: ''
+      poolName: '',
+      tokenContractAddr: '',
+      tradeValue: '',
+      tradeAmount: '',
+      minFundRaise: '',
+      access: 'private',
+      minIndividuals: '',
+      maxIndividuals: '',
+      isAtomic: false,
+      preferredStartDate: moment().add(1, 'd').toDate(),
+      feeAmount: ''
     },
-    validationSchema: NewApplicationSchema,
+    // validationSchema: NewApplicationSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         const newApplication = {
-          name: values.name,
-          email: values.email,
-          telegramId: values.telegramId,
-          projectName: values.projectName,
-          tokenContractAddr: values.tokenContractAddr,
+          projectName: values.name,
+          category: values.category,
           projectDesc: values.projectDesc,
           websiteUrl: values.websiteUrl,
-          whitePaper: values.whitePaper,
-          tokenInformation: values.tokenInformation,
-          twitterUrl: values.twitterUrl,
+          email: values.email,
           telegramHandle: values.telegramHandle,
-          roadmaps: values.roadmaps,
-          githubUrl: values.githubUrl,
-          amountRaise: values.amountRaise,
-          investors: values.investors,
-          amountRaisePlan: values.amountRaisePlan,
-          launchDate: values.launchDate
+          poolName: values.poolName,
+          tokenContractAddr: values.tokenContractAddr,
+          contractAddress: '',
+          tradeValue: values.tradeValue,
+          tradeAmount: values.tradeAmount,
+          minFundRaise: values.minFundRaise,
+          access: values.access,
+          minIndividuals: values.minIndividuals,
+          maxIndividuals: values.maxIndividuals,
+          atomic: values.atomic,
+          preferredStartDate: values.preferredStartDate,
+          startDate: moment(values.preferredStartDate.toDateString()).unix(), // preferredStartDate 에포크타임으로 저장
+          endDate: moment(values.preferredStartDate.toDateString())
+            .add(30, 'd')
+            .unix(), // startdate + 30일
+          ratio: 1 / (values.tradeValue * Math.pow(10, -18)),
+          progress: '',
+          feeAmount: values.feeAmount,
+          status: 'candidate'
         };
+        console.log('======>' + newApplication.toString());
         dispatch(createApplication(newApplication));
         resetForm();
         setSubmitting(false);
