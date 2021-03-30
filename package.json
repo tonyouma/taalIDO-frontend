@@ -134,6 +134,7 @@
     "yup": "^0.28.5"
   },
   "devDependencies": {
+    "@iconify-icons/akar-icons": "^1.1.5",
     "@iconify-icons/ant-design": "^1.1.0",
     "@iconify-icons/eva": "^1.1.0",
     "@iconify-icons/ic": "^1.1.3",
