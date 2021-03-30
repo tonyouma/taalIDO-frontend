@@ -7,6 +7,7 @@ import {
   DialogContent,
   Typography
 } from '@material-ui/core';
+import { Height, PaddingTwoTone } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -15,20 +16,31 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     textAlign: 'center',
-    color: theme.palette.primary.main
+    fontSize: 30,
+    color: '#000000',
+    paddingTop: 10
   },
+  // page 4-1 디자인 변경 : border 테두리,
   walletBoxWrapper: {
     padding: '0rem 1rem 0rem 1rem',
     borderRadius: '1em',
-    border: '1px solid gray',
+    border: '1px solid',
+    borderColor: theme.palette.primary.main,
     marginBottom: '1rem',
-    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
     '&:hover': {
       cursor: 'pointer'
     }
   },
+  // 4-1 디자인 변경 connect to wall,
+  walletBoxIcon: {
+    alignItems: 'center'
+  },
   walletBoxContent: {
     margin: '0.5rem',
+    minWidth: 135,
     padding: '0rem 0.5rem 0rem 0.5rem'
   }
 }));
@@ -62,13 +74,12 @@ const WalletDialog = ({ isOpenModal, handleCloseModal }) => {
         aria-labelledby="max-width-dialog-title"
         aria-describedby="alert-dialog-description"
       >
+        <Box className={classes.dialogTitle}>CONNECT TO A WALLET</Box>
         <DialogTitle
           className={classes.dialogTitle}
           id="customized-dialog-title"
           onClose={handleCloseModal}
-        >
-          CONNECT TO A WALLET
-        </DialogTitle>
+        />
         <DialogContent>
           {walletList.map((wallet, index) => (
             <Box
@@ -77,6 +88,13 @@ const WalletDialog = ({ isOpenModal, handleCloseModal }) => {
               boxShadow="3"
               onClick={() => onClickWallet(wallet)}
             >
+              <Box
+                component="img"
+                alt="logo"
+                src={'/static/icons/wallet_icon0' + (index + 1) + '.png'}
+                height={index == 1 ? 30 : 40}
+                className={classes.walletBoxIcon}
+              />
               <Box className={classes.walletBoxContent}>
                 <Typography>{wallet.name}</Typography>
               </Box>
