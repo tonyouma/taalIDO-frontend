@@ -6,7 +6,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isLoading: false,
   error: false,
-  poolList: []
+  poolList: [],
+  applicationList: []
 };
 
 const slice = createSlice({
@@ -86,9 +87,7 @@ export function getApplicationList() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get(
-        'http://133.186.222.82:3001/applications'
-      );
+      const response = await axios.get('http://133.186.222.82:3001/pools');
       dispatch(slice.actions.getApplicationListSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
