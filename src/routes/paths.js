@@ -41,6 +41,7 @@ export const PATH_APP = {
     pools: path(ROOTS.app, '/taalswap/pools'),
     application: {
       root: path(ROOTS.app, '/taalswap/application'),
+      information: path(ROOTS.app, '/taalswap/application/information'),
       start: path(ROOTS.app, '/taalswap/application/start'),
       list: path(ROOTS.app, '/taalswap/application/list')
     },

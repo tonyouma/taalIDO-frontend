@@ -39,14 +39,14 @@ const navConfig = [
         href: PATH_APP.taalswap.pools,
         icon: ICONS.elements
       },
-      {
+      /*{
         title: 'Apply for IDO',
         href: PATH_APP.taalswap.application.root,
         icon: ICONS.page
-      },
+      },*/
       {
-        title: 'Apply for IDO List',
-        href: PATH_APP.taalswap.application.list,
+        title: 'Applications',
+        href: PATH_APP.taalswap.application.root,
         icon: ICONS.page
       },
       {
