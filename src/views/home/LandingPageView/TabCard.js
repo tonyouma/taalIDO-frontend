@@ -1,63 +1,15 @@
-import * as React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PlanCard from './PlanCard';
 import Page from 'src/components/Page';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Box,
-  Button,
-  Grid,
-  Switch,
-  Container,
-  Typography
-} from '@material-ui/core';
+import { Box, Button, Grid, Container } from '@material-ui/core';
 import { PATH_APP } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
-
-const PLANS = [
-  {
-    lists: [
-      { text: 'Ratio', describe: ['0.1 Token per USDT'], isAvailable: true },
-      { text: 'MAX', describe: ['10,000 Token'], isAvailable: true },
-      { text: 'Access', describe: ['Whitelisted'], isAvailable: true },
-      { text: 'MAX. Contribution', describe: ['Address'], isAvailable: true },
-      {
-        text: 'Total Raise',
-        describe: ['1,000 USDT'],
-        isAvailable: true
-      }
-    ]
-  },
-  {
-    lists: [
-      { text: 'Ratio', describe: ['0.1 Token per USDT'], isAvailable: true },
-      { text: 'MAX', describe: ['10,000 Token'], isAvailable: true },
-      { text: 'Access', describe: ['Whitelisted'], isAvailable: true },
-      { text: 'MAX. Contribution', describe: ['Address'], isAvailable: true },
-      {
-        text: 'Total Raise',
-        describe: ['1,000 USDT'],
-        isAvailable: true
-      }
-    ]
-  },
-  {
-    lists: [
-      { text: 'Ratio', describe: ['0.1 Token per USDT'], isAvailable: true },
-      { text: 'MAX', describe: ['10,000 Token'], isAvailable: true },
-      { text: 'Access', describe: ['Whitelisted'], isAvailable: true },
-      { text: 'MAX. Contribution', describe: ['Address'], isAvailable: true },
-      {
-        text: 'Total Raise',
-        describe: ['1,000 USDT'],
-        isAvailable: true
-      }
-    ]
-  }
-];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,7 +38,19 @@ const useStyles = makeStyles((theme) => ({
 
 function Tabcard() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const { poolList } = useSelector((state) => state.pool);
+
+  const [pools, setPools] = useState([]);
+
+  useEffect(() => {
+    console.log(poolList);
+    setPools(
+      poolList.filter(
+        (pool) => !!pool.contractAddress && pool.contractAddress !== ''
+      )
+    );
+  }, [poolList]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -112,20 +76,20 @@ function Tabcard() {
         </Box>
 
         <Grid container spacing={3}>
-          {PLANS.map((card, index) => (
-            <Grid item xs={12} md={4} key={card.subscription}>
-              <PlanCard card={card} index={index} />
+          {pools.map((pool, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <PlanCard pool={pool} index={index} />
             </Grid>
           ))}
         </Grid>
 
-        <Grid container spacing={3} sx={{ my: 5 }}>
-          {PLANS.map((card, index) => (
+        {/* <Grid container spacing={3} sx={{ my: 5 }}>
+          {pools.map((card, index) => (
             <Grid item xs={12} md={4} key={card.subscription}>
-              <PlanCard card={card} index={index} />
+              <PlanCard pool={card} index={index} />
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
       </Container>
       <Container maxWidth="lg">
         <Box sx={{ my: 7 }}>

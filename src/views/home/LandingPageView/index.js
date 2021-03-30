@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Hero from './Hero';
 import Footer from './Footer';
 import DarkMode from './DarkMode';
@@ -9,7 +9,8 @@ import CleanInterfaces from './CleanInterfaces';
 import TabCard from './TabCard';
 import { makeStyles } from '@material-ui/core/styles';
 import CandidatePool from './CandidatePool';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getPoolList } from '../../../redux/slices/pool';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +26,11 @@ const useStyles = makeStyles((theme) => ({
 
 function LandingPageView() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getPoolList());
+  }, [dispatch]);
   return (
     <Page
       title="Fire up your project with TaalSwap"
