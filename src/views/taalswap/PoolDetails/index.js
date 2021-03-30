@@ -59,12 +59,10 @@ function GridView() {
         <Card sx={{ mb: 5 }}>
           <CardHeader title="XXXX Protocol" />
           <CardContent>
-            <Block>
-              <Typography variant="body2">
-                We appreciate your business. Should you need us to add VAT or
-                extra notes let us know!
-              </Typography>
-            </Block>
+            <Typography variant="body2" display="flex">
+              We appreciate your business. Should you need us to add VAT or
+              extra notes let us know!
+            </Typography>
           </CardContent>
         </Card>
       </Container>
