@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Scrollbars from 'src/components/Scrollbars';
 import { makeStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Typography from '@material-ui/core/Typography';
+
 import {
   Button,
   Table,
@@ -14,7 +17,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField
+  TextField,
+  Box
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,6 +47,21 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main
   }
 }));
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
 
 function valueText(value) {
   const returnValue = `${value}%`;
@@ -163,7 +182,7 @@ export default function BasicTable() {
                   </TableCell>
                   <TableCell align="right" width="5%"></TableCell>
                   <TableCell align="right" width="40%">
-                    <Slider
+                    {/* <Slider
                       marks={marks}
                       step={10}
                       min={0}
@@ -172,6 +191,10 @@ export default function BasicTable() {
                       value={row.progress}
                       valueLabelDisplay="auto"
                       getAriaValueText={valueText}
+                    /> */}
+
+                    <LinearProgressWithLabel
+                      value={row.progress >= 100 ? 100 : row.progress}
                     />
                   </TableCell>
                   <TableCell align="left" width="20%">

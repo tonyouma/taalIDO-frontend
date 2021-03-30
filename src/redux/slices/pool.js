@@ -69,12 +69,12 @@ export function getPoolList() {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get('http://133.186.222.82:3001/pools');
-      response.data.map((resp) => {
-        resp.ratio = 0.03 + resp.id;
-        resp.access = 'Private';
-        resp.progress = (resp.id + 1) * 10;
-        return resp;
-      });
+      // response.data.map((resp) => {
+      //   resp.ratio = 0.03 + resp.id;
+      //   resp.access = 'Private';
+      //   resp.progress = (resp.id + 1) * 10;
+      //   return resp;
+      // });
       dispatch(slice.actions.getPoolListSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));

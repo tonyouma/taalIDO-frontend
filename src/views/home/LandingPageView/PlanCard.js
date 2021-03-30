@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import * as React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
@@ -11,6 +11,7 @@ import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Button, Typography, Box } from '@material-ui/core';
 import { MLabel } from 'src/theme';
+import getMax from '../../../utils/getMax';
 
 // ----------------------------------------------------------------------
 
@@ -37,8 +38,17 @@ PlanCard.propTypes = {
   className: PropTypes.string
 };
 
-function PlanCard({ card, index, className }) {
+function PlanCard({ pool, index, className }) {
   const classes = useStyles();
+
+  const [max, setMax] = useState(0);
+  console.log(pool);
+
+  useEffect(() => {
+    // setRatio(getRatio(pool.value));
+    setMax(getMax(pool.maxIndividuals, pool.tradeValue));
+    // setProgressValue(getProgressValue(allocated, pool.sale));
+  }, [getMax]);
 
   return (
     <Card className={clsx(classes.root, className)}>
@@ -79,10 +89,24 @@ function PlanCard({ card, index, className }) {
         </MLabel>
       )}
 
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
-        <Typography variant="h3" sx={{ mx: 1 }}>
-          Protocol
-        </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          // justifyContent: 'flex-end',
+          my: 2
+        }}
+      >
+        <Box style={{ textAlign: 'center' }}>
+          <Typography variant="h3" sx={{ mx: 1 }}>
+            {pool.poolName}
+          </Typography>
+        </Box>
+        <Box style={{ textAlign: 'center' }}>
+          <Typography variant="body2" sx={{ mx: 1 }}>
+            symbol(연동) / ETH
+          </Typography>
+        </Box>
       </Box>
 
       <StyledEngineProvider injectFirst>
@@ -90,7 +114,7 @@ function PlanCard({ card, index, className }) {
       </StyledEngineProvider>
 
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
-        {card.lists.map((item) => (
+        {/* {card.lists.map((item) => (
           <Box
             key={item.text}
             component="li"
@@ -108,14 +132,110 @@ function PlanCard({ card, index, className }) {
             />
             {item.text}
             <Box sx={{ flex: 1 }} />
-            {/* page 1-1 오른쪽 정렬 및 텍스트 */}
+            
             <Box sx={{ mr: 1.5 }}>
               {item.describe.map((item2) => {
                 return <Box sx={{ mr: 1.5 }}>{item2}</Box>;
               })}
             </Box>
           </Box>
-        ))}
+        ))} */}
+
+        {/* Ratio */}
+        <Box
+          key="ratio"
+          component="li"
+          sx={{
+            display: 'flex',
+            typography: 'body2',
+            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
+            '&:not(:last-of-type)': { mb: 2 }
+          }}
+        >
+          <Box
+            component={Icon}
+            icon={checkmarkFill}
+            sx={{ width: 20, height: 20, mr: 1.5 }}
+          />
+          Ratio
+          <Box sx={{ flex: 1 }} />
+          {/* page 1-1 오른쪽 정렬 및 텍스트 */}
+          <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5 }}>{pool.ratio} ETH = 1 Symbol(연동)</Box>
+          </Box>
+        </Box>
+
+        {/* Maximum */}
+        <Box
+          key="maximum"
+          component="li"
+          sx={{
+            display: 'flex',
+            typography: 'body2',
+            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
+            '&:not(:last-of-type)': { mb: 2 }
+          }}
+        >
+          <Box
+            component={Icon}
+            icon={checkmarkFill}
+            sx={{ width: 20, height: 20, mr: 1.5 }}
+          />
+          Maximum
+          <Box sx={{ flex: 1 }} />
+          {/* page 1-1 오른쪽 정렬 및 텍스트 */}
+          <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5 }}>{max} ETH</Box>
+          </Box>
+        </Box>
+
+        {/* Access */}
+        <Box
+          key="access"
+          component="li"
+          sx={{
+            display: 'flex',
+            typography: 'body2',
+            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
+            '&:not(:last-of-type)': { mb: 2 }
+          }}
+        >
+          <Box
+            component={Icon}
+            icon={checkmarkFill}
+            sx={{ width: 20, height: 20, mr: 1.5 }}
+          />
+          Access
+          <Box sx={{ flex: 1 }} />
+          {/* page 1-1 오른쪽 정렬 및 텍스트 */}
+          <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5 }}>{!!pool.access && pool.access}</Box>
+          </Box>
+        </Box>
+
+        {/* Participants */}
+        <Box
+          key="participants"
+          component="li"
+          sx={{
+            display: 'flex',
+            typography: 'body2',
+            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
+            '&:not(:last-of-type)': { mb: 2 }
+          }}
+        >
+          <Box
+            component={Icon}
+            icon={checkmarkFill}
+            sx={{ width: 20, height: 20, mr: 1.5 }}
+          />
+          Participants
+          <Box sx={{ flex: 1 }} />
+          {/* page 1-1 오른쪽 정렬 및 텍스트 */}
+          <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5 }}>0(연동)</Box>
+          </Box>
+        </Box>
       </Box>
 
       <Button
