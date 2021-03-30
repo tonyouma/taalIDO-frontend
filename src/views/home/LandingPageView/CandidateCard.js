@@ -72,8 +72,11 @@ function CandidateCard({ pool, index, className }) {
                 sx={{
                   mr: 1.0
                 }}
-              />
-              {index == 1 ? 'http://token.co.kr' : 'texttexttext'}
+                bgcolor="#cccccc"
+                color="#666666"
+              >
+                {index == 1 ? 'http://token.co.kr' : 'texttexttext'}
+              </Box>
             </Box>
           </Box>
         ))} */}
