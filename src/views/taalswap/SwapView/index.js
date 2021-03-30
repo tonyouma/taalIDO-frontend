@@ -40,16 +40,29 @@ function SwapView() {
   const location = useLocation();
 
   useEffect(() => {
-    console.log(location.state.selectedPool);
+    //console.log(location.state.selectedPool);
   }, [location]);
 
   return (
     <Page title="Swap | IDO" className={classes.root}>
+      <Box display="flex" justifyContent="center" sx={{ fontSize: 30 }}>
+        XXX Protocol
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        sx={{
+          fontSize: 15,
+          color: '#888888',
+          fontWeight: 'bold'
+        }}
+      >
+        swap
+      </Box>
       <Container maxWidth="lg">
         <Grid container>
           <Grid item xs={12}>
             <Card>
-              <CardHeader title="XXX Protocol" />
               <Grid container>
                 <Grid item xs={12} sm={12} md={6} lg={6}>
                   <Box
@@ -110,8 +123,52 @@ function SwapView() {
                         value="5 BNB"
                       />
                     </Box>
-                    <Box className={classes.box2rem} textAlign="center">
-                      Auction progress : 0 BNB / 10 BNB
+                    <Box className={classes.box2rem} display="flex">
+                      <Box width="80%" marginTop={2}>
+                        <Typography color="#888888" sx={{ mx: 1 }}>
+                          Auction progress :
+                        </Typography>
+                      </Box>
+                      <Typography variant="h2" sx={{ mx: 1 }}>
+                        0
+                      </Typography>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        sx={{
+                          mb: 1,
+                          alignSelf: 'flex-end',
+                          color: 'text.secondary'
+                        }}
+                      >
+                        bnb
+                      </Typography>
+                      <Typography
+                        component="span"
+                        variant="h5"
+                        paddingLeft={1}
+                        sx={{
+                          mb: 1,
+                          alignSelf: 'flex-end',
+                          color: 'text.secondary'
+                        }}
+                      >
+                        /
+                      </Typography>
+                      <Typography variant="h2" sx={{ mx: 1 }}>
+                        10
+                      </Typography>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        sx={{
+                          mb: 1,
+                          alignSelf: 'flex-end',
+                          color: 'text.secondary'
+                        }}
+                      >
+                        bnb
+                      </Typography>
                       <LinearProgress
                         variant="determinate"
                         value={0}
@@ -160,7 +217,6 @@ function SwapView() {
                     <Box
                       className={classes.box}
                       textAlign="center"
-                      color="gray"
                       display="flex"
                       justifyContent="space-between"
                     >
@@ -169,6 +225,31 @@ function SwapView() {
                         variant="standard"
                         fullWidth
                       />
+                      <Box
+                        sx={{
+                          mb: 2.5,
+                          display: 'flex',
+                          justifyContent: 'flex-end'
+                        }}
+                      >
+                        <Typography sx={{ color: 'text.secondary' }}>
+                          $
+                        </Typography>
+                        <Typography variant="h2" sx={{ mx: 1 }}>
+                          9.99
+                        </Typography>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          sx={{
+                            mb: 1,
+                            alignSelf: 'flex-end',
+                            color: 'text.secondary'
+                          }}
+                        >
+                          /mo
+                        </Typography>
+                      </Box>
                     </Box>
                     <Box className={classes.box} textAlign="center">
                       <Button

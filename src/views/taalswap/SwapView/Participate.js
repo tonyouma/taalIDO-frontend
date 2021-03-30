@@ -46,8 +46,6 @@ function TableView() {
           links={[{ name: 'SubText Display Area' }]}
         />
 
-        <Box>ICON (ICX)</Box>
-
         <Tabs
           value={currentTab}
           scrollButtons="auto"
@@ -58,6 +56,7 @@ function TableView() {
         >
           {ACCOUNT_TABS.map((tab) => (
             <Tab
+              label={tab.value}
               disableRipple
               key={tab.value}
               icon={tab.icon}
@@ -66,17 +65,30 @@ function TableView() {
           ))}
         </Tabs>
 
+        <Box display="flex" alignItems="center">
+          <Box
+            sx={{
+              my: 4,
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column'
+            }}
+            component="img"
+            alt="logo"
+            src={'/static/icons/wallet_icon01.png'}
+            height={30}
+          />
+          ICON (ICX) $1.691
+          <Box color="#ff0000" fontSize={10} marginLeft={1}>
+            5.65% ↓
+          </Box>
+        </Box>
+
         <Grid container spacing={5}>
           <Grid item xs={12}>
             <Card>
               <CardHeader title="Basic Table" />
               <BasicTable />
-            </Card>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Card>
-              <SortingSelecting />
             </Card>
           </Grid>
         </Grid>
