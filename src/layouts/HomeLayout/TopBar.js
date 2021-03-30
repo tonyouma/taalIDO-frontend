@@ -252,19 +252,49 @@ function TopBar() {
     // });
     // console.log(swapContract);
 
-    swapContract.tokensForSale().then((tokens) => {
-      console.log('tokensForSale', tokens);
-      const xxx = Numbers.toSmartContractDecimals(tokens, 18);
-      console.log(xxx);
-    });
+    // swapContract.tokensForSale().then((tokens) => {
+    //   console.log('tokensForSale', tokens);
+    //   const xxx = Numbers.toSmartContractDecimals(tokens, 18);
+    //   console.log(xxx);
+    // });
 
-    // const tokenPurchaseAmount = 0.000000000002145546; 잘못된 값
-    const tokenPurchaseAmount = 10000;
-    swapContract
-      .swap({ tokenAmount: tokenPurchaseAmount, account: account })
-      .then((resp) => {
-        console.log(resp);
-      });
+    // swapContract.tokensAllocated().then((tokens) => {
+    //   console.log('tokensAllocated', tokens);
+    //   const xxx = Numbers.toSmartContractDecimals(tokens, 18);
+    //   console.log('tokensAllocated' + xxx);
+    // });
+    //
+    // swapContract.getBuyers().then((buyers) => {
+    //   console.log('getBuyers', buyers);
+    //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
+    //   // console.log('getBuyers' + xxx);
+    // });
+    //
+    // swapContract.isOpen().then((isOpen) => {
+    //   console.log('isOpen', isOpen);
+    //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
+    //   // console.log('getBuyers' + xxx);
+    // });
+    //
+    // swapContract.isPreStart().then((isPreStart) => {
+    //   console.log('isPreStart', isPreStart);
+    //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
+    //   // console.log('getBuyers' + xxx);
+    // });
+    //
+    // swapContract.isFunded().then((isSaleFunded) => {
+    //   console.log('isSaleFunded', isSaleFunded);
+    //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
+    //   // console.log('getBuyers' + xxx);
+    // });
+    //
+    // // const tokenPurchaseAmount = 0.000000000002145546; 잘못된 값
+    // const tokenPurchaseAmount = 10000;
+    // swapContract
+    //   .swap({ tokenAmount: tokenPurchaseAmount, account: account })
+    //   .then((resp) => {
+    //     console.log(resp);
+    //   });
   }
   // << 스마트컨트랙 연동 테스트 소스
 
