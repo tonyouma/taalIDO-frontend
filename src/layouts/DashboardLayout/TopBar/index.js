@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Search from './Search';
 import Account from './Account';
 import PropTypes from 'prop-types';
@@ -9,7 +9,23 @@ import Notifications from './Notifications';
 import Settings from 'src/layouts/Common/Settings';
 import menu2Fill from '@iconify-icons/eva/menu-2-fill';
 import { alpha, makeStyles } from '@material-ui/core/styles';
-import { Box, AppBar, Hidden, Toolbar, IconButton } from '@material-ui/core';
+import {
+  Box,
+  AppBar,
+  Hidden,
+  Toolbar,
+  IconButton,
+  Button,
+  Container
+} from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { useWeb3React } from '@web3-react/core';
+import {
+  getWalletBalance,
+  setActivatingConnector
+} from '../../../redux/slices/wallet';
+import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
+import WalletDialog from '../../../views/taalswap/Components/WalletDialog';
 
 // ----------------------------------------------------------------------
 
@@ -46,7 +62,54 @@ TopBar.propTypes = {
 
 function TopBar({ onOpenNav, className }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const { activatingConnector, balance } = useSelector((state) => state.wallet);
 
+  const context = useWeb3React();
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
+
+  useEffect(() => {
+    // console.log('1----------> ', activatingConnector);
+    // console.log('1----------> ', connector);
+    if (activatingConnector && activatingConnector === connector) {
+      dispatch(setActivatingConnector(undefined));
+    }
+    dispatch(getWalletBalance(account, library));
+    // dispatch(getContractDecimals(account, library));
+  }, [activatingConnector, connector]);
+
+  // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
+  const triedEager = useEagerConnect();
+  // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
+  useInactiveListener(!triedEager || !!activatingConnector);
+  const handleCloseModal = async (name) => {
+    setIsOpenModal(false);
+  };
+  const renderConnectWallet = () => {
+    if (!connector) {
+      return (
+        <Button
+          underline="none"
+          variant="contained"
+          // component={Link}
+          target="_blank"
+          onClick={() => setIsOpenModal(true)}
+        >
+          Connect Wallet
+        </Button>
+      );
+    }
+  };
   return (
     <AppBar className={clsx(classes.root, className)}>
       <Toolbar className={classes.toolbar}>
@@ -82,6 +145,12 @@ function TopBar({ onOpenNav, className }) {
           {/* <Notifications /> */}
           <Settings />
           {/* <Account /> */}
+          {renderConnectWallet()}
+          <WalletDialog
+            isOpenModal={isOpenModal}
+            handleCloseModal={handleCloseModal}
+            activate={activate}
+          />
         </Box>
       </Toolbar>
     </AppBar>
