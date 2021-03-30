@@ -64,7 +64,7 @@ function CandidateCard({ pool, index, className }) {
                   mr: 1.5
                 }}
                 fontWeight={'bold'}
-                fontSize={20}
+                fontSize={18}
               >
                 {item.text}
               </Box>
@@ -72,6 +72,7 @@ function CandidateCard({ pool, index, className }) {
                 sx={{
                   mr: 1.0
                 }}
+                fontSize={16}
                 bgcolor="#cccccc"
                 color="#666666"
               >
