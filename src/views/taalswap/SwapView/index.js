@@ -1,282 +1,165 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router';
+import React from 'react';
+import clsx from 'clsx';
+import * as Yup from 'yup';
+import Page from 'src/components/Page';
+import Logo from 'src/components/Logo';
+import { useSnackbar } from 'notistack';
+import { HeaderDashboard } from 'src/layouts/Common';
+import JoninthePool from './JoninthePool';
+import fakeRequest from 'src/utils/fakeRequest';
+import useBreakpoints from 'src/hooks/useBreakpoints';
+import { Link as RouterLink } from 'react-router-dom';
+import PaymentInformation from './PaymentInformation';
+import { useFormik, Form, FormikProvider } from 'formik';
+import { MButton } from 'src/theme';
 import { makeStyles } from '@material-ui/core/styles';
-import Page from '../../../components/Page';
-import {
-  Box,
-  Card,
-  CardHeader,
-  Container,
-  Grid,
-  Button,
-  Typography,
-  TextField,
-  LinearProgress
-} from '@material-ui/core';
+import { Box, Grid, Card, Container, Typography } from '@material-ui/core';
+
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
-  boxButtons: {
-    marginTop: '1rem',
-    marginLeft: '1rem'
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    minHeight: '100%',
+    paddingTop: theme.spacing(15),
+    paddingBottom: theme.spacing(10)
   },
-  box: {
-    marginTop: '1rem',
-    marginBottom: '1rem',
-    paddingLeft: '1rem',
-    paddingRight: '1rem'
-  },
-  box2rem: {
-    marginTop: '2rem',
-    marginBottom: '2rem',
-    paddingLeft: '1rem',
-    paddingRight: '1rem'
+  header: {
+    top: 0,
+    left: 0,
+    lineHeight: 0,
+    width: '100%',
+    position: 'absolute',
+    padding: theme.spacing(3, 3, 0),
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing(5, 5, 0)
+    }
   }
 }));
 
-function SwapView() {
-  const classes = useStyles();
-  const location = useLocation();
+// ----------------------------------------------------------------------
 
-  useEffect(() => {
-    //console.log(location.state.selectedPool);
-  }, [location]);
+function PaymentView(className, ...other) {
+  const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+  const upMd = useBreakpoints('up', 'md');
+
+  const PaymentSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+    phone: Yup.string().required('Phone is required'),
+    email: Yup.string()
+      .email('Email must be a valid email address')
+      .required('Email is required'),
+    address: Yup.string().required('Address is required')
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      phone: '',
+      email: '',
+      address: '',
+      subscription: 'premium',
+      isMonthly: false,
+      method: 'paypal',
+      newCardName: '',
+      newCardNumber: '',
+      newCardExpired: '',
+      newCardCvv: ''
+    },
+    validationSchema: PaymentSchema,
+    onSubmit: async (values, { resetForm }) => {
+      const submitData = {
+        name: values.name,
+        phone: values.phone,
+        email: values.email,
+        address: values.address,
+        subscription: 'premium'
+      };
+      await fakeRequest(500);
+      if (values.method === 'paypal') {
+        alert(
+          JSON.stringify(
+            {
+              ...submitData,
+              method: values.method
+            },
+            null,
+            2
+          )
+        );
+      } else if (values.method !== 'paypal' && !values.newCardName) {
+        alert(
+          JSON.stringify(
+            {
+              ...submitData,
+              method: values.method,
+              card: values.card
+            },
+            null,
+            2
+          )
+        );
+      }
+      if (values.newCardName) {
+        alert(
+          JSON.stringify(
+            {
+              ...submitData,
+              method: values.method,
+              newCardName: values.newCardName,
+              newCardNumber: values.newCardNumber,
+              newCardExpired: values.newCardExpired,
+              newCardCvv: values.newCardCvv
+            },
+            null,
+            2
+          )
+        );
+      }
+      resetForm();
+      enqueueSnackbar('Payment success', { variant: 'success' });
+    }
+  });
 
   return (
-    <Page title="Swap | IDO" className={classes.root}>
-      <Box display="flex" justifyContent="center" sx={{ fontSize: 30 }}>
-        XXX Protocol
-      </Box>
-      <Box
-        display="flex"
-        justifyContent="center"
-        sx={{
-          fontSize: 15,
-          color: '#888888',
-          fontWeight: 'bold'
-        }}
-      >
-        swap
-      </Box>
+    <Page title="Table-Components | Minimal-UI" className={classes.root}>
       <Container maxWidth="lg">
-        <Grid container>
-          <Grid item xs={12}>
-            <Card>
-              <Grid container>
-                <Grid item xs={12} sm={12} md={6} lg={6}>
-                  <Box
-                    className={classes.boxButtons}
-                    sx={{
-                      '& > :not(style)': {
-                        m: 1
-                      }
-                    }}
-                  >
-                    <Button variant="contained">participate</Button>
-                    <Button variant="contained">project info</Button>
-                    <Button variant="contained">project news</Button>
-                  </Box>
-                </Grid>
-              </Grid>
-              <Grid container>
-                <Grid item xs={12} sm={12} md={6} lg={6}>
-                  <Box className={classes.box2rem}>
-                    <Box className={classes.box2rem}>
-                      <Typography variant="body1">0 live</Typography>
-                      <Typography variant="body1">
-                        Praticipant : Public
-                      </Typography>
-                    </Box>
-                    <Box className={classes.box2rem}>
-                      <TextField
-                        label="Fixed Swap Ratio"
-                        variant="standard"
-                        InputLabelProps={{
-                          shrink: true
-                        }}
-                        fullWidth
-                        value="1 BNB = 30000 ALICE"
-                      />
-                    </Box>
-                    <Box
-                      className={classes.box2rem}
-                      display="flex"
-                      justifyContent="space-between"
-                    >
-                      <TextField
-                        label="Price, $"
-                        variant="standard"
-                        InputLabelProps={{
-                          shrink: true
-                        }}
-                        value="0.008881"
-                        style={{ width: '49%' }}
-                      />
-                      <TextField
-                        label="Maximum Allocation per Wallet"
-                        variant="standard"
-                        InputLabelProps={{
-                          shrink: true
-                        }}
-                        style={{ width: '49%' }}
-                        value="5 BNB"
-                      />
-                    </Box>
-                    <Box className={classes.box2rem} display="flex">
-                      <Box width="80%" marginTop={2}>
-                        <Typography color="#888888" sx={{ mx: 1 }}>
-                          Auction progress :
-                        </Typography>
-                      </Box>
-                      <Typography variant="h2" sx={{ mx: 1 }}>
-                        0
-                      </Typography>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        sx={{
-                          mb: 1,
-                          alignSelf: 'flex-end',
-                          color: 'text.secondary'
-                        }}
-                      >
-                        bnb
-                      </Typography>
-                      <Typography
-                        component="span"
-                        variant="h5"
-                        paddingLeft={1}
-                        sx={{
-                          mb: 1,
-                          alignSelf: 'flex-end',
-                          color: 'text.secondary'
-                        }}
-                      >
-                        /
-                      </Typography>
-                      <Typography variant="h2" sx={{ mx: 1 }}>
-                        10
-                      </Typography>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        sx={{
-                          mb: 1,
-                          alignSelf: 'flex-end',
-                          color: 'text.secondary'
-                        }}
-                      >
-                        bnb
-                      </Typography>
-                      <LinearProgress
-                        variant="determinate"
-                        value={0}
-                        style={{ marginTop: '0.5rem' }}
-                      />
-                    </Box>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6}>
-                  <Box style={{ margin: '2rem' }}>
-                    <Box className={classes.box} textAlign="center">
-                      <Typography variant="h3">Join The Pool</Typography>
-                    </Box>
-                    <Box
-                      className={classes.box}
-                      textAlign="center"
-                      color="gray"
-                    >
-                      <Typography variant="body2">
-                        0d : 5h : 22m : 51s
-                      </Typography>
-                    </Box>
-                    <Box
-                      className={classes.box}
-                      textAlign="center"
-                      color="gray"
-                    >
-                      <div
-                        style={{
-                          height: '3px',
-                          maxWidth: '100%',
-                          backgroundColor: 'black'
-                        }}
-                      />
-                    </Box>
-                    <Box
-                      className={classes.box}
-                      textAlign="center"
-                      color="gray"
-                      display="flex"
-                      justifyContent="space-between"
-                    >
-                      <Typography variant="body2">Your Bid Ammount</Typography>
-                      <Typography variant="body2">Blance : 0 BNB</Typography>
-                    </Box>
-                    <Box
-                      className={classes.box}
-                      textAlign="center"
-                      display="flex"
-                      justifyContent="space-between"
-                    >
-                      <TextField
-                        label="Bid Ammount"
-                        variant="standard"
-                        fullWidth
-                      />
-                      <Box
-                        sx={{
-                          mb: 2.5,
-                          display: 'flex',
-                          justifyContent: 'flex-end'
-                        }}
-                      >
-                        <Typography sx={{ color: 'text.secondary' }}>
-                          $
-                        </Typography>
-                        <Typography variant="h2" sx={{ mx: 1 }}>
-                          9.99
-                        </Typography>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          sx={{
-                            mb: 1,
-                            alignSelf: 'flex-end',
-                            color: 'text.secondary'
-                          }}
-                        >
-                          /mo
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Box className={classes.box} textAlign="center">
-                      <Button
-                        style={{
-                          width: '100%',
-                          height: '3.5rem',
-                          marginTop: '2rem'
-                        }}
-                        variant="contained"
-                      >
-                        Go
-                      </Button>
+        <HeaderDashboard heading="XXXProtocol" links={[{ name: 'Swap' }]} />
 
-                      <Typography variant="caption">
-                        Have problems with Joing? Click here to read
-                        instructions
-                      </Typography>
-                    </Box>
-                  </Box>
+        <div className={clsx(classes.root, className)} {...other}>
+          <MButton color="error" size="small" variant="contained">
+            Participage
+          </MButton>
+
+          <MButton color="info" size="small" variant="contained">
+            Project Info
+          </MButton>
+
+          <MButton color="info" size="small" variant="contained">
+            Project News
+          </MButton>
+        </div>
+        <Card>
+          <FormikProvider value={formik}>
+            <Form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
+              <Grid container spacing={upMd ? 5 : 2}>
+                <Grid item xs={12} md={6}>
+                  <PaymentInformation formik={formik} />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <JoninthePool formik={formik} />
                 </Grid>
               </Grid>
-            </Card>
-          </Grid>
-        </Grid>
+            </Form>
+          </FormikProvider>
+        </Card>
       </Container>
     </Page>
   );
 }
 
-export default SwapView;
+export default PaymentView;
