@@ -10,6 +10,7 @@ import menu2Fill from '@iconify-icons/eva/menu-2-fill';
 import { PATH_APP, PATH_HOME } from 'src/routes/paths';
 import bookOpenFill from '@iconify-icons/eva/book-open-fill';
 import roundStreetview from '@iconify-icons/ic/round-streetview';
+import walletIcon from '@iconify-icons/akar-icons/wallet';
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 import { makeStyles, alpha } from '@material-ui/core/styles';
 import {
@@ -341,6 +342,17 @@ function TopBar() {
           </Link>
         )
       )}
+      {!connector && (
+        <Button
+          underline="none"
+          variant="contained"
+          // component={Link}
+          target="_blank"
+          onClick={() => setIsOpenModal(true)}
+        >
+          Connect Wallet
+        </Button>
+      )}
     </div>
   );
 
@@ -368,25 +380,44 @@ function TopBar() {
             <ListItemText>{link.title}</ListItemText>
           </MenuItem>
         ))}
+        {!connector && (
+          <Box>
+            <MenuItem
+              component={Button}
+              onClick={() => setIsOpenModal(true)}
+              activeClassName={classes.isMobileActive}
+              sx={{
+                color: 'text.secondary',
+                width: '100%'
+                // textAlign: 'center'
+              }}
+            >
+              <ListItemIcon>
+                <Icon icon={walletIcon} width={20} height={20} />
+              </ListItemIcon>
+              <ListItemText>Connect Wallet</ListItemText>
+            </MenuItem>
+          </Box>
+        )}
       </List>
     </PopoverMenu>
   );
 
-  const renderConnectWallet = () => {
-    if (!connector) {
-      return (
-        <Button
-          underline="none"
-          variant="contained"
-          // component={Link}
-          target="_blank"
-          onClick={() => setIsOpenModal(true)}
-        >
-          Connect Wallet
-        </Button>
-      );
-    }
-  };
+  // const renderConnectWallet = () => {
+  //   if (!connector) {
+  //     return (
+  //       <Button
+  //         underline="none"
+  //         variant="contained"
+  //         // component={Link}
+  //         target="_blank"
+  //         onClick={() => setIsOpenModal(true)}
+  //       >
+  //         Connect Wallet
+  //       </Button>
+  //     );
+  //   }
+  // };
 
   return (
     <AppBar
@@ -413,7 +444,7 @@ function TopBar() {
 
           <Hidden mdDown>{renderMenuDesktop}</Hidden>
 
-          {renderConnectWallet()}
+          {/* {renderConnectWallet()} */}
 
           <WalletDialog
             isOpenModal={isOpenModal}
