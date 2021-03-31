@@ -1,19 +1,11 @@
 import General from './General';
-import { Icon } from '@iconify/react';
 import Page from 'src/components/Page';
-import { capitalCase } from 'change-case';
-import { PATH_APP } from 'src/routes/paths';
 import React, { useState, useEffect } from 'react';
-import bellFill from '@iconify-icons/eva/bell-fill';
-import shareFill from '@iconify-icons/eva/share-fill';
 import { useDispatch, useSelector } from 'react-redux';
-import roundVpnKey from '@iconify-icons/ic/round-vpn-key';
-import roundReceipt from '@iconify-icons/ic/round-receipt';
 import { HeaderDashboard } from 'src/layouts/Common';
-import roundAccountBox from '@iconify-icons/ic/round-account-box';
 import { getCards, getProfile, getAddressBook } from 'src/redux/slices/user';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Tab, Box, Tabs } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +22,7 @@ function AccountView() {
   const classes = useStyles();
   const [currentTab, setCurrentTab] = useState('general');
   const dispatch = useDispatch();
-  const { cards, myProfile, addressBook } = useSelector((state) => state.user);
+  const { cards, myProfile } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getCards());
@@ -59,10 +51,7 @@ function AccountView() {
   };
 
   return (
-    <Page
-      title="Account Settings-Management | Minimal-UI"
-      className={classes.root}
-    >
+    <Page title="TaalSwap | IDO" className={classes.root}>
       <Container>
         <HeaderDashboard
           heading="Create a new Application"

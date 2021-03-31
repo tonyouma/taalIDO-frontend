@@ -47,7 +47,10 @@ function CandidateCard({ pool, index, className }) {
         sx={{ width: 80, height: 80, mt: 3 }}
       /> */}
 
-      <Box sx={{ my: 0, width: '100%' }}>
+      <Box
+        sx={{ my: 0, width: '100%' }}
+        /*bgcolor={index % 2 == 0 ? '#cccccc' : '#ffffff'}*/
+      >
         {/* page 2-3 레이아웃 재배치 */}
         {/* {card.lists.map((item, index) => (
           <Box
@@ -73,7 +76,6 @@ function CandidateCard({ pool, index, className }) {
                   mr: 1.0
                 }}
                 fontSize={16}
-                bgcolor="#cccccc"
                 color="#666666"
               >
                 {index == 1 ? 'http://token.co.kr' : 'texttexttext'}
