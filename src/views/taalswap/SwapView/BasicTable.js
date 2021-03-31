@@ -72,7 +72,7 @@ export default function BasicTable() {
                 <TableCell align="right">Calories</TableCell>
                 <TableCell align="right">Fat&nbsp;(g)</TableCell>
                 <TableCell align="center">Carbs&nbsp;(g)</TableCell>
-                <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                <TableCell align="center">Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -88,7 +88,7 @@ export default function BasicTable() {
                       value={row.progress >= 100 ? 100 : row.carbs}
                     />
                   </TableCell>
-                  <TableCell align="right" width="10%">
+                  <TableCell align="center" width="10%">
                     {row.protein}
                   </TableCell>
                 </TableRow>

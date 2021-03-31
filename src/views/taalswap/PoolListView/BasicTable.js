@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Scrollbars from 'src/components/Scrollbars';
-import { makeStyles } from '@material-ui/core/styles';
+import { useTheme, makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
-
+import { sentenceCase } from 'change-case';
 import {
   Button,
   Table,
@@ -12,6 +12,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TablePagination,
   Slider,
   Dialog,
   DialogTitle,
@@ -29,6 +30,7 @@ import { filter } from 'lodash';
 import { DialogAnimate } from '../../../components/Animate';
 import DetailsForm from './DetailsForm';
 import { closeModal, openModal } from '../../../redux/slices/pool';
+import { MLabel } from 'src/theme';
 
 // ----------------------------------------------------------------------
 
@@ -71,27 +73,33 @@ function valueText(value) {
 const marks = [
   {
     value: 0,
-    label: '0%'
+    label: '0%',
+    status: 'in_progress'
   },
   {
     value: 20,
-    label: '20%'
+    label: '20%',
+    status: 'paid'
   },
   {
     value: 40,
-    label: '40%'
+    label: '40%',
+    status: 'out_of_date'
   },
   {
     value: 60,
-    label: '60%'
+    label: '60%',
+    status: 'paid'
   },
   {
     value: 80,
-    label: '80%'
+    label: '80%',
+    status: 'paid'
   },
   {
     value: 100,
-    label: '100%'
+    label: '100%',
+    status: 'paid'
   }
 ];
 
@@ -114,7 +122,16 @@ export default function BasicTable() {
   const classes = useStyles();
   const history = useHistory();
   const [filterName, setFilterName] = useState('');
-
+  const theme = useTheme();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
   const dispatch = useDispatch();
   const { poolList, isOpenModal, selectedPool } = useSelector(
     (state) => state.pool
@@ -155,10 +172,9 @@ export default function BasicTable() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Pool Name</TableCell>
+                <TableCell component="th">Pool Name</TableCell>
                 <TableCell align="right">Ratio</TableCell>
                 <TableCell align="right">Access</TableCell>
-                <TableCell align="right"></TableCell>
                 <TableCell align="right">Progress</TableCell>
                 <TableCell align="right">Status</TableCell>
               </TableRow>
@@ -171,17 +187,16 @@ export default function BasicTable() {
                   className={classes.hideLastBorder}
                   onClick={(event) => handleOpenModal(row)}
                 >
-                  <TableCell component="th" scope="row" width="15%">
+                  <TableCell component="th" scope="row" width="20%">
                     {row.name}
                   </TableCell>
                   <TableCell align="right" width="10%">
                     {row.ratio}
                   </TableCell>
-                  <TableCell align="right" width="10%">
+                  <TableCell align="right" width="15%">
                     {row.access}
                   </TableCell>
-                  <TableCell align="right" width="5%"></TableCell>
-                  <TableCell align="right" width="40%">
+                  <TableCell align="right" width="35%">
                     {/* <Slider
                       marks={marks}
                       step={10}
@@ -192,13 +207,23 @@ export default function BasicTable() {
                       valueLabelDisplay="auto"
                       getAriaValueText={valueText}
                     /> */}
-
                     <LinearProgressWithLabel
                       value={row.progress >= 100 ? 100 : row.progress}
                     />
                   </TableCell>
-                  <TableCell align="left" width="20%">
-                    {row.status}
+                  <TableCell align="right" width="15%">
+                    <MLabel
+                      variant={
+                        theme.palette.mode === 'light' ? 'ghost' : 'filled'
+                      }
+                      color={
+                        (row.status === 'in_progress' && 'warning') ||
+                        (row.status === 'out_of_date' && 'error') ||
+                        'success'
+                      }
+                    >
+                      {sentenceCase(row.status)}
+                    </MLabel>
                   </TableCell>
                 </TableRow>
               ))}
@@ -295,6 +320,15 @@ export default function BasicTable() {
           </Dialog>
         )}
       </Scrollbars>
+      <TablePagination
+        page={page}
+        component="div"
+        count={BasicTable.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        rowsPerPageOptions={[10, 25, 100]}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </div>
   );
 }
