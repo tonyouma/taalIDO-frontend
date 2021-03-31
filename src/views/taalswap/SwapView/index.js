@@ -9,6 +9,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { MButton } from 'src/theme';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Card, Container } from '@material-ui/core';
+import PoolButton from './PoolButton';
 
 // ----------------------------------------------------------------------
 
@@ -38,19 +39,8 @@ function PaymentView(className, ...other) {
     <Page title="Table-Components | Minimal-UI" className={classes.root}>
       <Container maxWidth="lg">
         <HeaderDashboard heading="XXXProtocol" links={[{ name: 'Swap' }]} />
-
         <div className={clsx(classes.root, className)} {...other}>
-          <MButton color="error" size="small" variant="contained">
-            Participate
-          </MButton>
-
-          <MButton color="info" size="small" variant="contained">
-            Project Info
-          </MButton>
-
-          <MButton color="info" size="small" variant="contained">
-            Project News
-          </MButton>
+          <PoolButton />
         </div>
         <Card>
           <FormikProvider value={formik}>
