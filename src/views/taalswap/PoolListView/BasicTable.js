@@ -19,7 +19,8 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Box
+  Box,
+  Hidden
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +32,7 @@ import { DialogAnimate } from '../../../components/Animate';
 import DetailsForm from './DetailsForm';
 import { closeModal, openModal } from '../../../redux/slices/pool';
 import { MLabel } from 'src/theme';
+import getMax from '../../../utils/getMax';
 
 // ----------------------------------------------------------------------
 
@@ -65,51 +67,14 @@ function LinearProgressWithLabel(props) {
   );
 }
 
-function valueText(value) {
-  const returnValue = `${value}%`;
-  return returnValue;
-}
-
-const marks = [
-  {
-    value: 0,
-    label: '0%',
-    status: 'in_progress'
-  },
-  {
-    value: 20,
-    label: '20%',
-    status: 'paid'
-  },
-  {
-    value: 40,
-    label: '40%',
-    status: 'out_of_date'
-  },
-  {
-    value: 60,
-    label: '60%',
-    status: 'paid'
-  },
-  {
-    value: 80,
-    label: '80%',
-    status: 'paid'
-  },
-  {
-    value: 100,
-    label: '100%',
-    status: 'paid'
-  }
-];
-
 // ----------------------------------------------------------------------
 
 function applyFilter(array, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   if (query) {
     array = filter(array, (_user) => {
-      return _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+      console.log(array);
+      return _user.poolName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
     });
     return array;
   }
@@ -125,6 +90,7 @@ export default function BasicTable() {
   const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -138,7 +104,6 @@ export default function BasicTable() {
   );
 
   useEffect(() => {
-    console.log(poolList);
     dispatch(getPoolList());
   }, [dispatch]);
 
@@ -180,15 +145,15 @@ export default function BasicTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredPools.map((row) => (
+              {filteredPools.map((row, index) => (
                 <TableRow
-                  key={row.name}
+                  key={index}
                   hover
                   className={classes.hideLastBorder}
                   onClick={(event) => handleOpenModal(row)}
                 >
                   <TableCell component="th" scope="row" width="20%">
-                    {row.name}
+                    {row.poolName}
                   </TableCell>
                   <TableCell align="right" width="10%">
                     {row.ratio}
@@ -242,7 +207,6 @@ export default function BasicTable() {
 
         {selectedPool && (
           <Dialog
-            // maxWidth="lg"
             open={isOpenModal}
             onClose={handleCloseModal}
             aria-labelledby="alert-dialog-title"
@@ -263,7 +227,7 @@ export default function BasicTable() {
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={selectedPool.name}
+                value={selectedPool.poolName}
                 fullWidth
               />
               <TextField
@@ -273,7 +237,7 @@ export default function BasicTable() {
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={selectedPool.address}
+                value={selectedPool.tokenContractAddr}
                 fullWidth
               />
               <TextField
@@ -283,18 +247,21 @@ export default function BasicTable() {
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={`${selectedPool.max} Token`}
+                value={`${getMax(
+                  selectedPool.maxIndividuals,
+                  selectedPool.tradeValue
+                )} Token`}
                 fullWidth
               />
               <TextField
                 className={classes.contentTextField}
                 color="primary"
-                label="Whitelisted"
+                label="Access"
                 variant="standard"
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={selectedPool.whitelist}
+                value={selectedPool.access}
                 fullWidth
               />
             </DialogContent>
