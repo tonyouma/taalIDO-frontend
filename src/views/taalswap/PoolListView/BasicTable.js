@@ -240,7 +240,7 @@ export default function BasicTable() {
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={selectedPool.name}
+                value={selectedPool.poolName}
                 fullWidth
               />
               <TextField
@@ -250,7 +250,7 @@ export default function BasicTable() {
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={selectedPool.address}
+                value={selectedPool.tokenContractAddr}
                 fullWidth
               />
               <TextField
@@ -260,7 +260,7 @@ export default function BasicTable() {
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={`${selectedPool.max} tokens`}
+                value={`${selectedPool.maxIndividuals} tokens`}
                 fullWidth
               />
               <TextField
@@ -271,7 +271,7 @@ export default function BasicTable() {
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={selectedPool.whitelist}
+                value={selectedPool.access}
                 fullWidth
               />
             </DialogContent>
