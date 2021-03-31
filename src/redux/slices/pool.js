@@ -53,7 +53,13 @@ const slice = createSlice({
     // CREATE APPLICATIONS
     createApplicationSuccess(state, action) {
       state.isLoading = false;
-      state.applicationList = action.payload;
+      // state.applicationList = action.payload;
+    },
+
+    // APPROVE APPLICATIONS
+    updateApplicationSuccess(state, action) {
+      state.isLoading = false;
+      // state.applicationList = action.payload;
     }
   }
 });
@@ -104,6 +110,22 @@ export function createApplication(newApplication) {
         newApplication
       );
       dispatch(slice.actions.createApplicationSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function updateApplication(application) {
+  return async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.put(
+        'http://133.186.222.82:3001/pools/' + application.id,
+        application
+      );
+      console.log('response ' + response);
+      dispatch(slice.actions.approveApplicationSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

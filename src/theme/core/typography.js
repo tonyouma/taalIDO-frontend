@@ -24,6 +24,7 @@ function responsiveFontSizes({ sm, md, lg }) {
 // const FONT_PRIMARY = 'Avenir Next, Menlo';
 // const FONT_PRIMARY = 'Roboto';
 const FONT_PRIMARY = 'Be Vietnam, sans-serif'; // Google Font
+// const FONT_PRIMARY = 'Source Code Pro'; // Google Font
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
 const typography = {

@@ -1,15 +1,16 @@
 import * as Yup from 'yup';
 import Page from 'src/components/Page';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NewApplicationForm from './NewApplicationForm';
 import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
 import { HeaderDashboard } from 'src/layouts/Common';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Card, CardContent } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import { useFormik } from 'formik';
 import { createApplication } from 'src/redux/slices/pool';
 import moment from 'moment';
+import { useWeb3React } from '@web3-react/core';
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +23,13 @@ function ApplicationStart() {
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
+
+  const context = useWeb3React();
+  const { account } = context;
+
+  useEffect(() => {
+    console.log('test : ' + account);
+  }, [account]);
 
   const NewApplicationSchema = Yup.object().shape({
     name: Yup.string().required('Project Name is required'),
@@ -101,7 +109,8 @@ function ApplicationStart() {
           ratio: 1 / (values.tradeValue * Math.pow(10, -18)),
           progress: '',
           feeAmount: values.feeAmount,
-          status: 'candidate'
+          status: 'candidate',
+          creator: account
         };
         console.log('======>' + newApplication.toString());
         dispatch(createApplication(newApplication));
@@ -126,7 +135,7 @@ function ApplicationStart() {
           heading="Create a new application"
           links={[{ name: 'New Application' }]}
         />
-        <NewApplicationForm formik={formik} />
+        <NewApplicationForm formik={formik} account={account} />
       </Container>
     </Page>
   );
