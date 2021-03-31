@@ -44,7 +44,6 @@ function Tabcard() {
   const [pools, setPools] = useState([]);
 
   useEffect(() => {
-    console.log(poolList);
     setPools(
       poolList.filter(
         (pool) => !!pool.contractAddress && pool.contractAddress !== ''

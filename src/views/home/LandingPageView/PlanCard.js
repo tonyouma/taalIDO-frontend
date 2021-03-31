@@ -44,12 +44,8 @@ function PlanCard({ pool, index, className }) {
   const history = useHistory();
 
   const [max, setMax] = useState(0);
-  console.log(pool);
-
   useEffect(() => {
-    // setRatio(getRatio(pool.value));
     setMax(getMax(pool.maxIndividuals, pool.tradeValue));
-    // setProgressValue(getProgressValue(allocated, pool.sale));
   }, [getMax]);
 
   const onClickDetails = () => {
