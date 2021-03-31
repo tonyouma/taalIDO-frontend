@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Divider, Typography } from '@material-ui/core';
+import { Box, Divider, Typography, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // ----------------------------------------------------------------------
@@ -89,7 +89,23 @@ function JoninthePool({ className }) {
       <Box sx={{ mb: 2.5, display: 'flex', justifyContent: 'flex-end' }}>
         <Typography sx={{ color: 'text.secondary' }}>$</Typography>
         <Typography variant="h2" sx={{ mx: 1 }}>
-          9.99
+          <TextField
+            sx={{
+              flex: 2 / 5,
+              flexWrap: 'wrap'
+            }}
+            variant="standard"
+            InputLabelProps={{
+              shrink: true
+            }}
+            size="small"
+            value="0"
+            margin="normal"
+            inputProps={{
+              style: { fontSize: 30, textAlign: 'center' }
+            }} // font size of input text
+            InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
+          />
         </Typography>
         <Typography
           component="span"
@@ -103,7 +119,6 @@ function JoninthePool({ className }) {
           /mo
         </Typography>
       </Box>
-      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
 
       <Box sx={{ mt: 5, mb: 3 }}>
         <LoadingButton fullWidth size="large" type="submit" variant="contained">

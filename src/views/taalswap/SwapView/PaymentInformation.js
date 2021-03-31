@@ -69,9 +69,10 @@ function PaymentInformation({ className }) {
           InputLabelProps={{
             shrink: true
           }}
-          value="0.008881"
           style={{ width: '49%' }}
+          value="0.008881"
         />
+
         <TextField
           label="Maximum Allocation per Wallet"
           variant="standard"
@@ -81,88 +82,88 @@ function PaymentInformation({ className }) {
           style={{ width: '49%' }}
           value="5 BNB"
         />
-        <Box className={classes.box2rem} display="flex">
-          <Box width="80%" marginTop={7} sx={{ alignItems: 'center' }}>
-            <Typography color="#888888" sx={{ mx: 1 }}>
-              Auction progress :
-            </Typography>
-          </Box>
-          <Box
+      </Box>
+      <Box className={classes.box2rem} display="flex">
+        <Box width="80%" marginTop={4} sx={{ alignItems: 'center' }}>
+          <Typography color="#888888" sx={{ mx: 1 }}>
+            Auction progress :
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            justifyContent: 'flex-end',
+            alignItems: 'center'
+          }}
+          display="flex"
+        >
+          <TextField
             sx={{
-              justifyContent: 'flex-end',
-              alignItems: 'center'
+              flex: 3 / 6,
+              flexWrap: 'wrap'
             }}
-            display="flex"
+            variant="standard"
+            InputLabelProps={{
+              shrink: true
+            }}
+            size="small"
+            value="0"
+            margin="normal"
+            inputProps={{
+              style: { fontSize: 30, textAlign: 'center' }
+            }} // font size of input text
+            InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
+          />
+          <Typography
+            component="span"
+            variant="body2"
+            sx={{
+              mb: 1,
+              alignSelf: 'flex-end',
+              color: 'text.secondary'
+            }}
           >
-            <TextField
-              sx={{
-                flex: 1 / 6,
-                flexWrap: 'wrap'
-              }}
-              variant="standard"
-              InputLabelProps={{
-                shrink: true
-              }}
-              size="small"
-              value="0"
-              margin="normal"
-              inputProps={{
-                style: { fontSize: 30, textAlign: 'center' }
-              }} // font size of input text
-              InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
-            />
-            <Typography
-              component="span"
-              variant="body2"
-              sx={{
-                mb: 1,
-                alignSelf: 'flex-end',
-                color: 'text.secondary'
-              }}
-            >
-              bnb
-            </Typography>
-            <Typography
-              component="span"
-              variant="h5"
-              paddingLeft={1}
-              sx={{
-                mb: 1,
-                alignSelf: 'flex-end',
-                color: 'text.secondary'
-              }}
-            >
-              /
-            </Typography>
-            <TextField
-              sx={{
-                flex: 1 / 6,
-                flexWrap: 'wrap'
-              }}
-              variant="standard"
-              InputLabelProps={{
-                shrink: true
-              }}
-              size="small"
-              value="10"
-              margin="normal"
-              inputProps={{
-                style: { fontSize: 30, textAlign: 'center' }
-              }} // font size of input text
-              InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
-            />
-            <Typography
-              component="span"
-              variant="body2"
-              sx={{
-                mb: 1,
-                alignSelf: 'flex-end',
-                color: 'text.secondary'
-              }}
-            >
-              bnb
-            </Typography>
-          </Box>
+            bnb
+          </Typography>
+          <Typography
+            component="span"
+            variant="h5"
+            paddingLeft={1}
+            sx={{
+              mb: 1,
+              alignSelf: 'flex-end',
+              color: 'text.secondary'
+            }}
+          >
+            /
+          </Typography>
+          <TextField
+            sx={{
+              flex: 3 / 6,
+              flexWrap: 'wrap'
+            }}
+            variant="standard"
+            InputLabelProps={{
+              shrink: true
+            }}
+            size="small"
+            value="10"
+            margin="normal"
+            inputProps={{
+              style: { fontSize: 30, textAlign: 'center' }
+            }} // font size of input text
+            InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
+          />
+          <Typography
+            component="span"
+            variant="body2"
+            sx={{
+              mb: 1,
+              alignSelf: 'flex-end',
+              color: 'text.secondary'
+            }}
+          >
+            bnb
+          </Typography>
         </Box>
       </Box>
     </div>
