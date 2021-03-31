@@ -5,7 +5,7 @@ import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Box } from '@material-ui/core';
-
+import getMax from '../../../utils/getMax';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -142,7 +142,7 @@ function CandidateCard({ pool, index, className }) {
         </Box>
 
         {/* WhitePager/LitePaper */}
-        <Box
+        {/* <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -167,7 +167,7 @@ function CandidateCard({ pool, index, className }) {
             />
             연동 필요
           </Box>
-        </Box>
+        </Box> */}
 
         {/* Project Introduction */}
         <Box
@@ -186,14 +186,14 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Project Introduction
+              Category
             </Box>
             <Box
               sx={{
                 mr: 1.0
               }}
             />
-            연동 필요
+            {pool.category}
           </Box>
         </Box>
 
@@ -221,7 +221,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.0
               }}
             />
-            연동 필요
+            {getMax(pool.maxIndividuals, pool.tradeValue)}
           </Box>
         </Box>
 
@@ -249,7 +249,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.0
               }}
             />
-            연동 필요
+            {pool.tradeAmount}
           </Box>
         </Box>
       </Box>

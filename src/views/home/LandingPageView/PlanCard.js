@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Card, Button, Typography, Box } from '@material-ui/core';
 import { MLabel } from 'src/theme';
 import getMax from '../../../utils/getMax';
+import { useHistory } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -40,6 +41,7 @@ PlanCard.propTypes = {
 
 function PlanCard({ pool, index, className }) {
   const classes = useStyles();
+  const history = useHistory();
 
   const [max, setMax] = useState(0);
   console.log(pool);
@@ -49,6 +51,14 @@ function PlanCard({ pool, index, className }) {
     setMax(getMax(pool.maxIndividuals, pool.tradeValue));
     // setProgressValue(getProgressValue(allocated, pool.sale));
   }, [getMax]);
+
+  const onClickDetails = () => {
+    console.log(pool);
+    history.push({
+      pathname: '/app/taalswap/swap',
+      state: { selectedPool: pool }
+    });
+  };
 
   return (
     <Card className={clsx(classes.root, className)}>
@@ -239,11 +249,12 @@ function PlanCard({ pool, index, className }) {
       </Box>
 
       <Button
-        to={PATH_APP.taalswap.pooldetails}
+        // to={PATH_APP.taalswap.pooldetails}
+        // component={RouterLink}
         fullWidth
         size="large"
         variant="contained"
-        component={RouterLink}
+        onClick={onClickDetails}
       >
         Details
       </Button>

@@ -100,7 +100,7 @@ function Tabcard() {
             }}
           >
             <Button
-              // to={PATH_APP.root}
+              to={PATH_APP.taalswap.pools}
               fullWidth
               size="large"
               variant="outlined"
