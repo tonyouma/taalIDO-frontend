@@ -100,8 +100,10 @@ const marks = [
 function applyFilter(array, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   if (query) {
-    array = filter(array, (_user) => {
-      return _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+    array = filter(array, (_pool) => {
+      console.log(_pool);
+      console.log(query);
+      return _pool.poolName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
     });
     return array;
   }
@@ -172,7 +174,7 @@ export default function BasicTable() {
                   onClick={(event) => handleOpenModal(row)}
                 >
                   <TableCell component="th" scope="row" width="20%">
-                    {row.name}
+                    {row.poolName}
                   </TableCell>
                   <TableCell align="right" width="5%">
                     {row.ratio}
