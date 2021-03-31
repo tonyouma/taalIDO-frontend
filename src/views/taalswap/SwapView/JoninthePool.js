@@ -1,12 +1,9 @@
 import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from '@iconify/react';
-import shieldFill from '@iconify-icons/eva/shield-fill';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Switch, Divider, Typography } from '@material-ui/core';
+import { Box, Divider, Typography } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-import { MLabel } from 'src/theme';
 
 // ----------------------------------------------------------------------
 
@@ -39,13 +36,11 @@ const useStyles = makeStyles((theme) => ({
 // ----------------------------------------------------------------------
 
 JoninthePool.propTypes = {
-  formik: PropTypes.object,
   className: PropTypes.string
 };
 
-function JoninthePool({ formik, className }) {
+function JoninthePool({ className }) {
   const classes = useStyles();
-  const { getFieldProps, isSubmitting } = formik;
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -111,13 +106,7 @@ function JoninthePool({ formik, className }) {
       <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
 
       <Box sx={{ mt: 5, mb: 3 }}>
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          pending={isSubmitting}
-        >
+        <LoadingButton fullWidth size="large" type="submit" variant="contained">
           Go
         </LoadingButton>
       </Box>

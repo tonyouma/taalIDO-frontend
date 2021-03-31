@@ -82,7 +82,7 @@ function PaymentInformation({ className }) {
           value="5 BNB"
         />
         <Box className={classes.box2rem} display="flex">
-          <Box width="80%" marginTop={5} sx={{ alignItems: 'center' }}>
+          <Box width="80%" marginTop={7} sx={{ alignItems: 'center' }}>
             <Typography color="#888888" sx={{ mx: 1 }}>
               Auction progress :
             </Typography>
