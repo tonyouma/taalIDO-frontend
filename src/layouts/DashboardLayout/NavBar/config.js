@@ -70,6 +70,30 @@ const navConfig = [
       //   icon: ICONS.page
       // }
     ]
+  },
+  // TAALSWAP POOL
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'taalswap pool',
+    items: [
+      {
+        title: '',
+        href: '',
+        icon: ''
+      }
+    ]
+  },
+  // TAALSWAP FARMS
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'taalswap farms',
+    items: [
+      {
+        title: '',
+        href: '',
+        icon: ''
+      }
+    ]
   }
   // GENERAL
   // ----------------------------------------------------------------------
