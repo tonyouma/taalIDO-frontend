@@ -22,8 +22,8 @@ function responsiveFontSizes({ sm, md, lg }) {
 // TODO : 어떤 폰트가 제일 잘 어울릴까?
 // const FONT_PRIMARY = 'Jalnan'; // 폰트가 설치되어 있지 않으면 기본 폰트로 보임.
 // const FONT_PRIMARY = 'Avenir Next, Menlo';
-const FONT_PRIMARY = 'Roboto';
-// const FONT_PRIMARY = 'Be Vietnam, sans-serif'; // Google Font
+// const FONT_PRIMARY = 'Roboto';
+const FONT_PRIMARY = 'Be Vietnam, sans-serif'; // Google Font
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
 const typography = {
