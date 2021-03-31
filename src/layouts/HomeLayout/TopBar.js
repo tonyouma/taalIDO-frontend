@@ -138,10 +138,10 @@ function TopBar() {
   useEffect(() => {
     // console.log('1----------> ', activatingConnector);
     // console.log('1----------> ', connector);
-    if (activatingConnector && activatingConnector === connector) {
-      dispatch(setActivatingConnector(undefined));
-    }
-    dispatch(getWalletBalance(account, library));
+    // if (activatingConnector && activatingConnector === connector) {
+    //   dispatch(setActivatingConnector(undefined));
+    // }
+    // dispatch(getWalletBalance(account, library));
     // dispatch(getContractDecimals(account, library));
   }, [activatingConnector, connector]);
 
@@ -154,149 +154,149 @@ function TopBar() {
     setIsOpenModal(false);
   };
 
-  dispatch(getContractDecimals(account, library));
+  // dispatch(getContractDecimals(account, library));
 
   // 스마트컨트랙 연동 테스트 코그 >>
-  if (!!library) {
-    console.log('library', library);
-    const ERC20TokenAddress = '0x581F2FCA16F9989CA9c46ebbD107410c9D8fA0B8';
-    const contractAddress = '0xd9606583D4e2c9b7d9EB89C0C3De1d359d9DDb5F';
+  // if (!!library) {
+  //   console.log('library', library);
+  //   const ERC20TokenAddress = '0x581F2FCA16F9989CA9c46ebbD107410c9D8fA0B8';
+  //   const contractAddress = '0xd9606583D4e2c9b7d9EB89C0C3De1d359d9DDb5F';
+  //
+  //   const fixedContract = new Contract(
+  //     contractAddress,
+  //     ContractFactory.getInterface(fixedData.abi),
+  //     library.getSigner(account).connectUnchecked()
+  //   );
+  //
+  //   const tokenContract = new Contract(
+  //     contractAddress,
+  //     ContractFactory.getInterface(tokenData.abi),
+  //     library.getSigner(account).connectUnchecked()
+  //   );
+  //
+  //   const taalswapApp = new Application({
+  //     test: true,
+  //     mainnet: false,
+  //     account: account
+  //   });
+  //   // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+  //   const swapContract = taalswapApp.getFixedSwapContract({
+  //     tokenAddress: ERC20TokenAddress,
+  //     decimals: 18,
+  //     contractAddress: contractAddress,
+  //     fixedContract: fixedContract,
+  //     tokenContract: tokenContract
+  //   });
 
-    const fixedContract = new Contract(
-      contractAddress,
-      ContractFactory.getInterface(fixedData.abi),
-      library.getSigner(account).connectUnchecked()
-    );
+  // const params = [
+  //   ERC20TokenAddress,
+  //   Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
+  //   Numbers.toSmartContractDecimals(tokenFundAmount, 18),
+  //   Numbers.timeToSmartContractTime(moment().add(6, 'minutes')),
+  //   Numbers.timeToSmartContractTime(moment().add(8, 'minutes')),
+  //   Numbers.toSmartContractDecimals(0, 18),
+  //   Numbers.toSmartContractDecimals(tokenFundAmount, 18),
+  //   false,
+  //   Numbers.toSmartContractDecimals(0, 18),
+  //   parseInt('2'),
+  //   true
+  // ];
+  //
+  // console.log(params);
+  // 스마트컨트랙 배포 샘플 코드
+  // const factory = new ContractFactory(
+  //   fixedData.abi,
+  //   fixedData.bytecode,
+  //   library.getSigner(account)
+  // );
+  //
+  // taalDeploy(factory).then((r) => console.log('..... Deploy DONE'));
 
-    const tokenContract = new Contract(
-      contractAddress,
-      ContractFactory.getInterface(tokenData.abi),
-      library.getSigner(account).connectUnchecked()
-    );
+  // ethers.Contract;
+  // const deployTx = ethers.Contract.getDeployTransaction(
+  //   fixedData.bytecode,
+  //   fixedData.abi,
+  //   params
+  // );
+  // library.contract.deployTransaction();
+  // ContractFactory.getInterface();
+  //
+  // library
+  //   .getSigner(account)
+  //   .connectUnchecked()
+  //   .sendTransaction(deployTx)
+  //   .then((tx) => {
+  //     console.log(tx);
+  //   });
 
-    const taalswapApp = new Application({
-      test: true,
-      mainnet: false,
-      account: account
-    });
-    // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
-    const swapContract = taalswapApp.getFixedSwapContract({
-      tokenAddress: ERC20TokenAddress,
-      decimals: 18,
-      contractAddress: contractAddress,
-      fixedContract: fixedContract,
-      tokenContract: tokenContract
-    });
+  // library.wallet.sendTransaction(deployTx).then((tx) => {
+  //   console.log(tx);
+  // });
 
-    // const params = [
-    //   ERC20TokenAddress,
-    //   Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
-    //   Numbers.toSmartContractDecimals(tokenFundAmount, 18),
-    //   Numbers.timeToSmartContractTime(moment().add(6, 'minutes')),
-    //   Numbers.timeToSmartContractTime(moment().add(8, 'minutes')),
-    //   Numbers.toSmartContractDecimals(0, 18),
-    //   Numbers.toSmartContractDecimals(tokenFundAmount, 18),
-    //   false,
-    //   Numbers.toSmartContractDecimals(0, 18),
-    //   parseInt('2'),
-    //   true
-    // ];
-    //
-    // console.log(params);
-    // 스마트컨트랙 배포 샘플 코드
-    const factory = new ContractFactory(
-      fixedData.abi,
-      fixedData.bytecode,
-      library.getSigner(account)
-    );
+  // swapContract
+  //   .deploy({
+  //     tradeValue: tradeValue,
+  //     tokensForSale: tokenFundAmount,
+  //     isTokenSwapAtomic: true,
+  //     individualMaximumAmount: tokenFundAmount,
+  //     startDate: moment().add(6, 'minutes'),
+  //     endDate: moment().add(8, 'minutes'),
+  //     hasWhitelisting: true
+  //   })
+  //   .then((resp) => {
+  //     console.log(swapContract.getAddress());
+  //   });
 
-    taalDeploy(factory).then((r) => console.log('..... Deploy DONE'));
+  // swapContract.__init__();
+  // swapContract.assertERC20Info().then((resp) => {
+  //   console.log(resp);
+  // });
+  // console.log(swapContract);
 
-    // ethers.Contract;
-    // const deployTx = ethers.Contract.getDeployTransaction(
-    //   fixedData.bytecode,
-    //   fixedData.abi,
-    //   params
-    // );
-    // library.contract.deployTransaction();
-    // ContractFactory.getInterface();
-    //
-    // library
-    //   .getSigner(account)
-    //   .connectUnchecked()
-    //   .sendTransaction(deployTx)
-    //   .then((tx) => {
-    //     console.log(tx);
-    //   });
+  // swapContract.tokensForSale().then((tokens) => {
+  //   console.log('tokensForSale', tokens);
+  //   const xxx = Numbers.toSmartContractDecimals(tokens, 18);
+  //   console.log(xxx);
+  // });
 
-    // library.wallet.sendTransaction(deployTx).then((tx) => {
-    //   console.log(tx);
-    // });
-
-    // swapContract
-    //   .deploy({
-    //     tradeValue: tradeValue,
-    //     tokensForSale: tokenFundAmount,
-    //     isTokenSwapAtomic: true,
-    //     individualMaximumAmount: tokenFundAmount,
-    //     startDate: moment().add(6, 'minutes'),
-    //     endDate: moment().add(8, 'minutes'),
-    //     hasWhitelisting: true
-    //   })
-    //   .then((resp) => {
-    //     console.log(swapContract.getAddress());
-    //   });
-
-    // swapContract.__init__();
-    // swapContract.assertERC20Info().then((resp) => {
-    //   console.log(resp);
-    // });
-    // console.log(swapContract);
-
-    // swapContract.tokensForSale().then((tokens) => {
-    //   console.log('tokensForSale', tokens);
-    //   const xxx = Numbers.toSmartContractDecimals(tokens, 18);
-    //   console.log(xxx);
-    // });
-
-    // swapContract.tokensAllocated().then((tokens) => {
-    //   console.log('tokensAllocated', tokens);
-    //   const xxx = Numbers.toSmartContractDecimals(tokens, 18);
-    //   console.log('tokensAllocated' + xxx);
-    // });
-    //
-    // swapContract.getBuyers().then((buyers) => {
-    //   console.log('getBuyers', buyers);
-    //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
-    //   // console.log('getBuyers' + xxx);
-    // });
-    //
-    // swapContract.isOpen().then((isOpen) => {
-    //   console.log('isOpen', isOpen);
-    //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
-    //   // console.log('getBuyers' + xxx);
-    // });
-    //
-    // swapContract.isPreStart().then((isPreStart) => {
-    //   console.log('isPreStart', isPreStart);
-    //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
-    //   // console.log('getBuyers' + xxx);
-    // });
-    //
-    // swapContract.isFunded().then((isSaleFunded) => {
-    //   console.log('isSaleFunded', isSaleFunded);
-    //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
-    //   // console.log('getBuyers' + xxx);
-    // });
-    //
-    // // const tokenPurchaseAmount = 0.000000000002145546; 잘못된 값
-    // const tokenPurchaseAmount = 10000;
-    // swapContract
-    //   .swap({ tokenAmount: tokenPurchaseAmount, account: account })
-    //   .then((resp) => {
-    //     console.log(resp);
-    //   });
-  }
+  // swapContract.tokensAllocated().then((tokens) => {
+  //   console.log('tokensAllocated', tokens);
+  //   const xxx = Numbers.toSmartContractDecimals(tokens, 18);
+  //   console.log('tokensAllocated' + xxx);
+  // });
+  //
+  // swapContract.getBuyers().then((buyers) => {
+  //   console.log('getBuyers', buyers);
+  //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
+  //   // console.log('getBuyers' + xxx);
+  // });
+  //
+  // swapContract.isOpen().then((isOpen) => {
+  //   console.log('isOpen', isOpen);
+  //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
+  //   // console.log('getBuyers' + xxx);
+  // });
+  //
+  // swapContract.isPreStart().then((isPreStart) => {
+  //   console.log('isPreStart', isPreStart);
+  //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
+  //   // console.log('getBuyers' + xxx);
+  // });
+  //
+  // swapContract.isFunded().then((isSaleFunded) => {
+  //   console.log('isSaleFunded', isSaleFunded);
+  //   // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
+  //   // console.log('getBuyers' + xxx);
+  // });
+  //
+  // // const tokenPurchaseAmount = 0.000000000002145546; 잘못된 값
+  // const tokenPurchaseAmount = 10000;
+  // swapContract
+  //   .swap({ tokenAmount: tokenPurchaseAmount, account: account })
+  //   .then((resp) => {
+  //     console.log(resp);
+  //   });
+  // }
   // << 스마트컨트랙 연동 테스트 소스
 
   // console.log('2----------> ', activatingConnector);
