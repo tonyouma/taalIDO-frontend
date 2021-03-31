@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,28 +16,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
-import SendIcon from '@material-ui/icons/Send';
 import FilterListIcon from '@material-ui/icons/FilterList';
-
-function createData(index, name, calories, fat, carbs, protein) {
-  return { index, name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
-  createData(2, 'Donut', 452, 25.0, 51, 4.9),
-  createData(3, 'Eclair', 262, 16.0, 24, 6.0),
-  createData(4, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
-  createData(6, 'Honeycomb', 408, 3.2, 87, 6.5),
-  createData(7, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData(8, 'Jelly Bean', 375, 0.0, 94, 0.0),
-  createData(9, 'KitKat', 518, 26.0, 65, 7.0),
-  createData(10, 'Lollipop', 392, 0.2, 98, 0.0),
-  createData(11, 'Marshmallow', 318, 0, 81, 2.0),
-  createData(12, 'Nougat', 360, 19.0, 9, 37.0),
-  createData(13, 'Oreo', 437, 18.0, 63, 4.0)
-];
+import { updateApplication, getApplicationList } from 'src/redux/slices/pool';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
+import { Button, Container } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
+import { useWeb3React } from '@web3-react/core';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import { admin } from 'src/config';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -67,15 +55,20 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'name',
+    id: 'projectName',
     numeric: false,
     disablePadding: true,
     label: 'Name'
   },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' }
+  { id: 'category', numeric: false, disablePadding: false, label: 'Category' },
+  {
+    id: 'startDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Start Date'
+  },
+  { id: 'endDate', numeric: false, disablePadding: false, label: 'End Date' },
+  { id: 'status', numeric: false, disablePadding: false, label: 'Status' }
 ];
 
 function EnhancedTableHead(props) {
@@ -144,7 +137,10 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { selected } = props;
+  const { selected, selectedItem } = props;
+  const dispatch = useDispatch();
+  const context = useWeb3React();
+  const { account } = context;
 
   const onClickEdit = () => {
     console.log(`edit item index :  ${selected}`);
@@ -152,6 +148,26 @@ const EnhancedTableToolbar = (props) => {
 
   const onClickSend = () => {
     console.log(`send item index : ${selected}`);
+    // 상태를 승인상태로 변경해준다.
+    const item = JSON.parse(JSON.stringify(selectedItem));
+    item.status = 'approved';
+    dispatch(updateApplication(item));
+  };
+
+  const onClickDeploy = () => {
+    console.log(`deploy item index : ${selected}`);
+    // 상태를 승인상태로 변경해준다.
+    const item = JSON.parse(JSON.stringify(selectedItem));
+    // deploy 테스트하자!!
+    console.log('deploy test : ' + JSON.stringify(item));
+    // deploy 후 주소를 받아서 설정한다.
+    // item.contractAddress = '';
+    // dispatch(updateApplication(item));
+  };
+
+  const checkAdmin = () => {
+    console.log('isAdmin' + admin.addresses.includes(account));
+    return admin.addresses.includes(account);
   };
 
   return (
@@ -182,23 +198,37 @@ const EnhancedTableToolbar = (props) => {
 
       {selected !== -1 ? (
         <div style={{ display: 'flex' }}>
-          <Tooltip title="Send">
-            <IconButton aria-label="Send" onClick={onClickSend}>
-              <SendIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Edit">
-            <IconButton aria-label="Edit" onClick={onClickEdit}>
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
+          {selectedItem.status === 'approved' &&
+          selectedItem.creator === account ? (
+            <Tooltip title="Deploy">
+              <IconButton aria-label="Send" onClick={onClickDeploy}>
+                <CloudUploadIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            ''
+          )}
+          {selectedItem.status === 'candidate' && checkAdmin() ? (
+            <Tooltip title="Approve">
+              <IconButton aria-label="Approve" onClick={onClickSend}>
+                <AssignmentTurnedInIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            ''
+          )}
+          {selectedItem.creator === account || checkAdmin() ? (
+            <Tooltip title="Edit">
+              <IconButton aria-label="Edit" onClick={onClickEdit}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            ''
+          )}
         </div>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        ''
       )}
     </Toolbar>
   );
@@ -236,8 +266,15 @@ const useStyles = makeStyles((theme) => ({
 export default function ApplicationListView() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState(-1);
+  const [selectedItem, setSelectedItem] = React.useState({});
+  const dispatch = useDispatch();
+  const { applicationList } = useSelector((state) => state.pool);
+  useEffect(() => {
+    console.log(applicationList);
+    dispatch(getApplicationList());
+  }, [dispatch]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -246,10 +283,13 @@ export default function ApplicationListView() {
   };
 
   const handleClick = (event, row) => {
-    if (selected === row.index) {
+    console.log('row : ' + JSON.stringify(row));
+    if (selected === row.id) {
       setSelected(-1);
+      setSelectedItem({});
     } else {
-      setSelected(row.index);
+      setSelected(row.id);
+      setSelectedItem(row);
     }
   };
 
@@ -258,7 +298,7 @@ export default function ApplicationListView() {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar selected={selected} />
+        <EnhancedTableToolbar selected={selected} selectedItem={selectedItem} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -270,14 +310,13 @@ export default function ApplicationListView() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={applicationList.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy)).map(
+              {stableSort(applicationList, getComparator(order, orderBy)).map(
                 (row, index) => {
-                  const isItemSelected = isSelected(row.index);
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
@@ -285,7 +324,7 @@ export default function ApplicationListView() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -300,12 +339,16 @@ export default function ApplicationListView() {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row.projectName}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="right">{row.category}</TableCell>
+                      <TableCell align="right">
+                        {moment.unix(row.startDate).format('YYYY-MM-DD')}
+                      </TableCell>
+                      <TableCell align="right">
+                        {moment.unix(row.endDate).format('YYYY-MM-DD')}
+                      </TableCell>
+                      <TableCell align="right">{row.status}</TableCell>
                     </TableRow>
                   );
                 }
@@ -313,6 +356,17 @@ export default function ApplicationListView() {
             </TableBody>
           </Table>
         </TableContainer>
+        <div align="right">
+          {' '}
+          <Button
+            to="/app/taalswap/application/information"
+            variant="contained"
+            component={RouterLink}
+            sx={{ marginTop: 3, marginRight: 3 }}
+          >
+            apply for IDO
+          </Button>
+        </div>
       </Paper>
     </div>
   );

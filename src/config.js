@@ -20,4 +20,8 @@ export const cloudinaryConfig = {
   cloudinaryUrl: process.env.REACT_APP_CLOUDINARY_URL
 };
 
+export const admin = {
+  addresses: ['0x3AeFa0a9222D69B535EA0A2fAE25768De8c9BBd1']
+};
+
 export const googleAnalyticsConfig = process.env.REACT_APP_GA_MEASUREMENT_ID;
