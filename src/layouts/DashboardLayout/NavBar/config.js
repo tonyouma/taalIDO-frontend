@@ -1,6 +1,6 @@
 import React from 'react';
 import { MLabel, MIcon } from 'src/theme';
-import { PATH_APP, PATH_PAGE } from 'src/routes/paths';
+import { PATH_APP, PATH_HOME, PATH_PAGE } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ const navConfig = [
   // TAALSWAP IDO
   // ----------------------------------------------------------------------
   {
-    subheader: 'taalswap ido',
+    subheader: 'ido',
     items: [
       {
         title: 'pools',
@@ -74,26 +74,14 @@ const navConfig = [
   // TAALSWAP POOL
   // ----------------------------------------------------------------------
   {
-    subheader: 'taalswap pool',
-    items: [
-      {
-        title: '',
-        href: '',
-        icon: ''
-      }
-    ]
+    subheader: 'pools',
+    items: []
   },
   // TAALSWAP FARMS
   // ----------------------------------------------------------------------
   {
-    subheader: 'taalswap farms',
-    items: [
-      {
-        title: '',
-        href: '',
-        icon: ''
-      }
-    ]
+    subheader: 'farms',
+    items: []
   }
   // GENERAL
   // ----------------------------------------------------------------------
