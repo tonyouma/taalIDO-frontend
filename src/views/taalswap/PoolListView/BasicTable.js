@@ -199,7 +199,7 @@ export default function BasicTable() {
                       value={row.progress >= 100 ? 100 : row.progress}
                     />
                   </TableCell>
-                  <TableCell align="left" width="20%">
+                  <TableCell align="right" width="20%">
                     {row.status}
                   </TableCell>
                 </TableRow>
