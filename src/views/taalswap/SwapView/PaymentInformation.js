@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, TextField } from '@material-ui/core';
+import { MLabel, MLinearProgress } from 'src/theme';
 
 // ----------------------------------------------------------------------
 
@@ -39,14 +40,18 @@ function PaymentInformation({ className }) {
 
   return (
     <div className={clsx(classes.root, className)}>
-      <Typography variant="h3" sx={{ mb: 2 }}>
-        0 live
-      </Typography>
-      <div className={classes.row}>
-        <Typography variant="h6" component="p">
-          Participant : Public
-        </Typography>
-      </div>
+      <MLabel color="primary">Candidate</MLabel>
+      <MLabel color="info">Info</MLabel>
+      <MLabel color="success">Success</MLabel>
+      <MLabel color="warning">Waring</MLabel>
+      <MLabel color="error">Error</MLabel>
+      <Box className={classes.box2rem} display="flex">
+        <div className={classes.row}>
+          <Typography variant="h6" component="p">
+            Participant : Public
+          </Typography>
+        </div>
+      </Box>
       <Box className={classes.box2rem}>
         <TextField
           label="Fixed Swap Ratio"
@@ -64,7 +69,7 @@ function PaymentInformation({ className }) {
         justifyContent="space-between"
       >
         <TextField
-          label="Price, $"
+          label="Price"
           variant="standard"
           InputLabelProps={{
             shrink: true
@@ -86,7 +91,7 @@ function PaymentInformation({ className }) {
       <Box className={classes.box2rem} display="flex">
         <Box width="80%" marginTop={4} sx={{ alignItems: 'center' }}>
           <Typography color="#888888" sx={{ mx: 1 }}>
-            Auction progress :
+            Progress
           </Typography>
         </Box>
         <Box
