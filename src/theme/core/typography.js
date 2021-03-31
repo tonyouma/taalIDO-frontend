@@ -19,7 +19,11 @@ function responsiveFontSizes({ sm, md, lg }) {
   };
 }
 
-const FONT_PRIMARY = 'Be Vietnam, sans-serif'; // Google Font
+// TODO : 어떤 폰트가 제일 잘 어울릴까?
+const FONT_PRIMARY = 'Jalnan';
+// const FONT_PRIMARY = 'Avenir Next, Menlo';
+// const FONT_PRIMARY = 'Menlo';
+// const FONT_PRIMARY = 'Be Vietnam, sans-serif'; // Google Font
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
 const typography = {
