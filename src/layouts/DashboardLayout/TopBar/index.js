@@ -26,6 +26,8 @@ import {
 } from '../../../redux/slices/wallet';
 import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
 import WalletDialog from '../../../views/taalswap/Components/WalletDialog';
+import { MIconButton } from '../../../theme';
+import settings2Fill from '@iconify-icons/eva/settings-2-fill';
 
 // ----------------------------------------------------------------------
 
@@ -98,15 +100,17 @@ function TopBar({ onOpenNav, className }) {
   const renderConnectWallet = () => {
     if (!connector) {
       return (
-        <Button
-          underline="none"
-          variant="contained"
-          // component={Link}
-          target="_blank"
-          onClick={() => setIsOpenModal(true)}
-        >
-          Connect Wallet
-        </Button>
+        <Box p={0.8}>
+          <Button
+            underline="none"
+            variant="contained"
+            // component={Link}
+            target="_blank"
+            onClick={() => setIsOpenModal(true)}
+          >
+            Connect Wallet
+          </Button>
+        </Box>
       );
     }
   };
