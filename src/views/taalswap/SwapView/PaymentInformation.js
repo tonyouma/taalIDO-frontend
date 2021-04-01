@@ -209,7 +209,7 @@ function PaymentInformation({ className, pool, index }) {
             component="span"
             variant="subtitle2"
             sx={{
-              mb: 7,
+              mb: 8,
               color: 'text.secondary'
             }}
           >

@@ -13,7 +13,6 @@ import {
   TableCell,
   TableContainer,
   TablePagination,
-  Slider,
   Dialog,
   DialogTitle,
   DialogContent,
