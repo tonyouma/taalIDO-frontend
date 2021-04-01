@@ -4,7 +4,7 @@ import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, Link } from '@material-ui/core';
-import { MBreadcrumbs } from 'src/theme';
+// import { MBreadcrumbs } from 'src/theme';
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +30,7 @@ function HeaderDashboard({
   heading,
   moreLink = '' || [],
   className,
+  subTitle,
   ...other
 }) {
   const classes = useStyles();
@@ -41,7 +42,10 @@ function HeaderDashboard({
           <Typography variant="h4" gutterBottom>
             {heading}
           </Typography>
-          <MBreadcrumbs links={links} {...other} />
+          {/* <MBreadcrumbs links={links} {...other} /> */}
+          <Typography variant="body4" color="#888888" gutterBottom>
+            {subTitle}
+          </Typography>
         </Box>
 
         {action && <Box sx={{ flexShrink: 0 }}>{action}</Box>}
