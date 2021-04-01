@@ -7,7 +7,8 @@ const initialState = {
   isLoading: false,
   error: false,
   poolList: [],
-  applicationList: []
+  applicationList: [],
+  update: {}
 };
 
 const slice = createSlice({
@@ -53,13 +54,13 @@ const slice = createSlice({
     // CREATE APPLICATIONS
     createApplicationSuccess(state, action) {
       state.isLoading = false;
-      // state.applicationList = action.payload;
+      state.update = action.payload;
     },
 
     // APPROVE APPLICATIONS
     updateApplicationSuccess(state, action) {
       state.isLoading = false;
-      // state.applicationList = action.payload;
+      state.update = action.payload;
     }
   }
 });
@@ -94,6 +95,20 @@ export function getApplicationList() {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get('http://133.186.222.82:3001/pools');
+      dispatch(slice.actions.getApplicationListSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function searchApplicationListByCreator(creator) {
+  return async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.get(
+        'http://133.186.222.82:3001/pools?id_lte=' + creator
+      );
       dispatch(slice.actions.getApplicationListSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
