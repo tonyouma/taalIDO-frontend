@@ -12,7 +12,7 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import { getPoolList } from '../../../redux/slices/pool';
+import { getPoolList } from 'src/redux/slices/pool';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

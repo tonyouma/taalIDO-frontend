@@ -30,6 +30,11 @@ const AppRoutes = {
     },
     {
       exact: true,
+      path: PATH_APP.taalswap.application.admin,
+      component: lazy(() => import('src/views/taalswap/ApplicationView/Admin'))
+    },
+    {
+      exact: true,
       path: PATH_APP.taalswap.application.information,
       component: lazy(() => import('src/views/taalswap/ApplicationView'))
     },
