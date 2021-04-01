@@ -38,7 +38,6 @@ function CandidatePool() {
   useEffect(() => {
     // dispatch(getPoolList());
     setCandidates(poolList.filter((pool) => pool.contractAddress === ''));
-    console.log(candidates);
   }, [poolList]);
 
   return (

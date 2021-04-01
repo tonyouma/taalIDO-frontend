@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
       height: 96,
       display: 'flex',
       justifyContent: 'space-between',
-      padding: theme.spacing(0, 1, 0, 3)
+      padding: theme.spacing(0, 1, 0, 1)
     },
     search: {
       width: 240,
@@ -79,7 +79,7 @@ function ToolbarTable({ numSelected, filterName, onFilterName, className }) {
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder="Search by Pool Name..."
           startAdornment={
             <InputAdornment position="start">
               <Box

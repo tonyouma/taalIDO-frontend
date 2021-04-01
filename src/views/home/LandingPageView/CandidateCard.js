@@ -6,6 +6,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Box } from '@material-ui/core';
 import getMax from '../../../utils/getMax';
+import EllipsisText from 'react-text-overflow-middle-ellipsis';
+
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +26,9 @@ const useStyles = makeStyles((theme) => ({
   box: {
     overflow: 'hidden',
     textOverflow: 'ellipsis'
-  }
+  },
+
+  tokenAddress: {}
 }));
 
 // ----------------------------------------------------------------------
@@ -111,7 +115,10 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.0
               }}
             />
-            {!!pool.tokenContractAddr && pool.tokenContractAddr}
+            <EllipsisText
+              text={pool.tokenContractAddr}
+              className={'centerText'}
+            ></EllipsisText>
           </Box>
         </Box>
 

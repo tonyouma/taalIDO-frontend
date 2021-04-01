@@ -44,12 +44,8 @@ function PlanCard({ pool, index, className }) {
   const history = useHistory();
 
   const [max, setMax] = useState(0);
-  console.log(pool);
-
   useEffect(() => {
-    // setRatio(getRatio(pool.value));
     setMax(getMax(pool.maxIndividuals, pool.tradeValue));
-    // setProgressValue(getProgressValue(allocated, pool.sale));
   }, [getMax]);
 
   const onClickDetails = () => {
@@ -244,6 +240,31 @@ function PlanCard({ pool, index, className }) {
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>0(연동)</Box>
+          </Box>
+        </Box>
+
+        {/* Total Raise */}
+        <Box
+          key="totalraise"
+          component="li"
+          sx={{
+            display: 'flex',
+            typography: 'body2',
+            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
+            '&:not(:last-of-type)': { mb: 2 }
+          }}
+        >
+          <Box
+            component={Icon}
+            icon={checkmarkFill}
+            sx={{ width: 20, height: 20, mr: 1.5 }}
+          />
+          Total Raise
+          <Box sx={{ flex: 1 }} />
+          {/* page 1-1 오른쪽 정렬 및 텍스트 */}
+          <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5 }}>tokensAllocated() * tradeValue (ETH)</Box>
+            {/* <Box sx={{ mr: 1.5 }}>0 ETH</Box> */}
           </Box>
         </Box>
       </Box>

@@ -1,3 +1,7 @@
 export default function getMax(max, value) {
-  return max * value * Math.pow(10, -18);
+  let result = 0;
+  if (max !== '' && value !== '') {
+    result = max * value * Math.pow(10, -18);
+  }
+  return result;
 }
