@@ -1,11 +1,19 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, TextField } from '@material-ui/core';
 import getMax from '../../../utils/getMax';
+import getProgressValue from '../../../utils/getProgressValue';
 import { MLabel } from 'src/theme';
+
+import { Contract, ContractFactory } from '@ethersproject/contracts';
+import { fixedData } from '../../../contracts';
+import { tokenData } from '../../../contracts';
+import { useWeb3React } from '@web3-react/core';
+import Application from 'taalswap-js/src/models';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import usePoolStatus from 'src/hooks/usePoolStatus';
 
 // ----------------------------------------------------------------------
 
@@ -33,20 +41,102 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
+function LinearProgressWithLabel(props) {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
 PaymentInformation.propTypes = {
   className: PropTypes.string
 };
 
 function PaymentInformation({ className, pool, index }) {
   const classes = useStyles();
+  const context = useWeb3React();
+  const poolList = usePoolStatus(pool);
+
+  const [progressValue, setProgressValue] = useState(0);
+  const [participants, setParticipants] = useState(0);
+
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
+
+  useEffect(() => {
+    console.log(poolList);
+    if (!!library) {
+      const fixedContract = new Contract(
+        pool.contractAddress,
+        ContractFactory.getInterface(fixedData.abi),
+        library.getSigner(account).connectUnchecked()
+      );
+      const tokenContract = new Contract(
+        pool.tokenContractAddr,
+        ContractFactory.getInterface(tokenData.abi),
+        library.getSigner(account).connectUnchecked()
+      );
+      const taalswapApp = new Application({
+        test: true,
+        mainnet: false,
+        account: account
+      });
+      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+      const swapContract = taalswapApp.getFixedSwapContract({
+        tokenAddress: pool.tokenContractAddr,
+        decimals: 18,
+        contractAddress: pool.contractAddress,
+        fixedContract: fixedContract,
+        tokenContract: tokenContract
+      });
+
+      swapContract
+        .getBuyers()
+        .then((result) => {
+          setParticipants(result.length);
+        })
+        .catch((error) => {});
+
+      swapContract
+        .tokensAllocated()
+        .then((result) => {
+          setProgressValue(getProgressValue(result, pool.tradeAmount));
+        })
+        .catch((error) => {});
+    }
+  }, [pool]);
 
   return (
     <div className={clsx(classes.root, className)}>
-      <MLabel color="primary">Candidate</MLabel>
-      <MLabel color="info">Info</MLabel>
-      <MLabel color="success">Success</MLabel>
+      {pool.status === 'candidate' ? (
+        <MLabel color="primary">Candidate</MLabel>
+      ) : null}
+      {pool.status === 'approved' ? (
+        <MLabel color="info">Approved</MLabel>
+      ) : null}
+      {pool.status === 'deployed' ? (
+        <MLabel color="success">Deployed</MLabel>
+      ) : null}
+      {/*       
       <MLabel color="warning">Waring</MLabel>
-      <MLabel color="error">Error</MLabel>
+      <MLabel color="error">Error</MLabel> */}
+
       <Box className={classes.box2rem} display="flex">
         <div className={classes.row}>
           <Typography variant="h6" component="p">
@@ -101,7 +191,8 @@ function PaymentInformation({ className, pool, index }) {
             Progress
           </Typography>
           <Box marginTop={3}>
-            <LinearProgress variant="determinate" />
+            {/* <LinearProgress variant="determinate" /> */}
+            <LinearProgressWithLabel value={progressValue} />
           </Box>
         </Box>
 
@@ -133,7 +224,7 @@ function PaymentInformation({ className, pool, index }) {
               color: 'text.secondary'
             }}
           >
-            120
+            {participants}
           </Typography>
         </Box>
       </Box>
