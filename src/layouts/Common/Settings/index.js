@@ -45,7 +45,7 @@ function Settings({ className }) {
   return (
     <div className={clsx(classes.root, className)}>
       <MIconButton onClick={handleOpenSettings}>
-        <Icon icon={settings2Fill} width={20} height={20} />
+        <Icon icon={settings2Fill} width={23} height={23} />
       </MIconButton>
 
       <Drawer

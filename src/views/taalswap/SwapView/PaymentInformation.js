@@ -1,8 +1,19 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, TextField } from '@material-ui/core';
+import getMax from '../../../utils/getMax';
+import getProgressValue from '../../../utils/getProgressValue';
+import { MLabel } from 'src/theme';
+
+import { Contract, ContractFactory } from '@ethersproject/contracts';
+import { fixedData } from '../../../contracts';
+import { tokenData } from '../../../contracts';
+import { useWeb3React } from '@web3-react/core';
+import Application from 'taalswap-js/src/models';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import usePoolStatus from 'src/hooks/usePoolStatus';
 
 // ----------------------------------------------------------------------
 
@@ -30,32 +41,118 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
+function LinearProgressWithLabel(props) {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
 PaymentInformation.propTypes = {
   className: PropTypes.string
 };
 
-function PaymentInformation({ className }) {
+function PaymentInformation({ className, pool, index }) {
   const classes = useStyles();
+  const context = useWeb3React();
+  const poolList = usePoolStatus(pool);
+
+  const [progressValue, setProgressValue] = useState(0);
+  const [participants, setParticipants] = useState(0);
+
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
+
+  useEffect(() => {
+    console.log(poolList);
+    if (!!library) {
+      const fixedContract = new Contract(
+        pool.contractAddress,
+        ContractFactory.getInterface(fixedData.abi),
+        library.getSigner(account).connectUnchecked()
+      );
+      const tokenContract = new Contract(
+        pool.tokenContractAddr,
+        ContractFactory.getInterface(tokenData.abi),
+        library.getSigner(account).connectUnchecked()
+      );
+      const taalswapApp = new Application({
+        test: true,
+        mainnet: false,
+        account: account
+      });
+      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+      const swapContract = taalswapApp.getFixedSwapContract({
+        tokenAddress: pool.tokenContractAddr,
+        decimals: 18,
+        contractAddress: pool.contractAddress,
+        fixedContract: fixedContract,
+        tokenContract: tokenContract
+      });
+
+      swapContract
+        .getBuyers()
+        .then((result) => {
+          setParticipants(result.length);
+        })
+        .catch((error) => {});
+
+      swapContract
+        .tokensAllocated()
+        .then((result) => {
+          setProgressValue(getProgressValue(result, pool.tradeAmount));
+        })
+        .catch((error) => {});
+    }
+  }, [pool]);
 
   return (
     <div className={clsx(classes.root, className)}>
-      <Typography variant="h3" sx={{ mb: 2 }}>
-        0 live
-      </Typography>
-      <div className={classes.row}>
-        <Typography variant="h6" component="p">
-          Participant : Public
-        </Typography>
-      </div>
+      {pool.status === 'candidate' ? (
+        <MLabel color="primary">Candidate</MLabel>
+      ) : null}
+      {pool.status === 'approved' ? (
+        <MLabel color="info">Approved</MLabel>
+      ) : null}
+      {pool.status === 'deployed' ? (
+        <MLabel color="success">Deployed</MLabel>
+      ) : null}
+      {/*       
+      <MLabel color="warning">Waring</MLabel>
+      <MLabel color="error">Error</MLabel> */}
+
+      <Box className={classes.box2rem} display="flex">
+        <div className={classes.row}>
+          <Typography variant="h6" component="p">
+            Access : {pool.access}
+          </Typography>
+        </div>
+      </Box>
       <Box className={classes.box2rem}>
         <TextField
-          label="Fixed Swap Ratio"
+          label="Trade Value"
           variant="standard"
           InputLabelProps={{
             shrink: true
           }}
           fullWidth
-          value="1 BNB = 30000 ALICE"
+          value={`${pool.ratio} ${pool.symbol} = 1 ETH`}
         />
       </Box>
       <Box
@@ -64,105 +161,70 @@ function PaymentInformation({ className }) {
         justifyContent="space-between"
       >
         <TextField
-          label="Price, $"
+          label="Max. Individuals"
           variant="standard"
           InputLabelProps={{
             shrink: true
           }}
           style={{ width: '49%' }}
-          value="0.008881"
+          // value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
+          value={`${pool.maxIndividuals} ${pool.symbol}`}
         />
 
         <TextField
-          label="Maximum Allocation per Wallet"
+          label="Price"
           variant="standard"
           InputLabelProps={{
             shrink: true
           }}
           style={{ width: '49%' }}
-          value="5 BNB"
+          value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
         />
       </Box>
-      <Box className={classes.box2rem} display="flex">
-        <Box width="80%" marginTop={4} sx={{ alignItems: 'center' }}>
+      <Box
+        className={classes.box2rem}
+        display="flex"
+        justifyContent="space-between"
+      >
+        <Box width="59%" marginTop={5} sx={{ alignItems: 'center' }}>
           <Typography color="#888888" sx={{ mx: 1 }}>
-            Auction progress :
+            Progress
           </Typography>
+          <Box marginTop={3}>
+            {/* <LinearProgress variant="determinate" /> */}
+            <LinearProgressWithLabel value={progressValue} />
+          </Box>
         </Box>
+
         <Box
+          width="35%"
           sx={{
-            justifyContent: 'flex-end',
-            alignItems: 'center'
+            mb: 2.5,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end'
           }}
-          display="flex"
         >
-          <TextField
-            sx={{
-              flex: 3 / 6,
-              flexWrap: 'wrap'
-            }}
-            variant="standard"
-            InputLabelProps={{
-              shrink: true
-            }}
-            size="small"
-            value="0"
-            margin="normal"
-            inputProps={{
-              style: { fontSize: 30, textAlign: 'center' }
-            }} // font size of input text
-            InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
-          />
           <Typography
             component="span"
-            variant="body2"
+            variant="subtitle2"
             sx={{
-              mb: 1,
-              alignSelf: 'flex-end',
+              mb: 8,
               color: 'text.secondary'
             }}
           >
-            bnb
+            Participants
           </Typography>
           <Typography
             component="span"
-            variant="h5"
-            paddingLeft={1}
+            variant="h3"
             sx={{
-              mb: 1,
+              mb: 0,
               alignSelf: 'flex-end',
               color: 'text.secondary'
             }}
           >
-            /
-          </Typography>
-          <TextField
-            sx={{
-              flex: 3 / 6,
-              flexWrap: 'wrap'
-            }}
-            variant="standard"
-            InputLabelProps={{
-              shrink: true
-            }}
-            size="small"
-            value="10"
-            margin="normal"
-            inputProps={{
-              style: { fontSize: 30, textAlign: 'center' }
-            }} // font size of input text
-            InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
-          />
-          <Typography
-            component="span"
-            variant="body2"
-            sx={{
-              mb: 1,
-              alignSelf: 'flex-end',
-              color: 'text.secondary'
-            }}
-          >
-            bnb
+            {participants}
           </Typography>
         </Box>
       </Box>

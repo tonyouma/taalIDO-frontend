@@ -1,10 +1,24 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Icon } from '@iconify/react';
+import shieldFill from '@iconify-icons/eva/shield-fill';
+
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Divider, Typography, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-
+import { Contract, ContractFactory } from '@ethersproject/contracts';
+import { fixedData } from '../../../contracts';
+import { tokenData } from '../../../contracts';
+import { useWeb3React } from '@web3-react/core';
+import Application from 'taalswap-js/src/models';
+import moment from 'moment';
+import {
+  getWalletBalance,
+  setActivatingConnector
+} from '../../../redux/slices/wallet';
+import { formatEther } from '@ethersproject/units';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +43,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: theme.spacing(2.5)
+    marginBottom: theme.spacing(2.5),
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -39,8 +54,166 @@ JoninthePool.propTypes = {
   className: PropTypes.string
 };
 
-function JoninthePool({ className }) {
+function JoninthePool({ className, pool }) {
   const classes = useStyles();
+  const context = useWeb3React();
+  const dispatch = useDispatch();
+  const [amount, setAmount] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSaleFunded, setIsSaleFunded] = useState(false);
+  const [tokensLeft, setTokensLeft] = useState(0);
+  const [minAmount, setMinAmount] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(0);
+  const [diffTime, setDiffTime] = useState({});
+  const { activatingConnector, balance } = useSelector((state) => state.wallet);
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
+  let swapContract;
+
+  if (
+    !!library &&
+    (pool.contractAddress !== '') & (pool.tokenContractAddr !== '')
+  ) {
+    const fixedContract = new Contract(
+      pool.contractAddress,
+      ContractFactory.getInterface(fixedData.abi),
+      library.getSigner(account).connectUnchecked()
+    );
+
+    const tokenContract = new Contract(
+      pool.tokenContractAddr,
+      ContractFactory.getInterface(tokenData.abi),
+      library.getSigner(account).connectUnchecked()
+    );
+    const taalswapApp = new Application({
+      test: true,
+      mainnet: false,
+      account: account
+    });
+
+    swapContract = taalswapApp.getFixedSwapContract({
+      tokenAddress: pool.tokenContractAddr,
+      decimals: 18,
+      contractAddress: pool.contractAddress,
+      fixedContract: fixedContract,
+      tokenContract: tokenContract
+    });
+  }
+
+  const onChangeAmount = (e) => {
+    setAmount(e.target.value);
+    console.log(e.target.value * pool.tradeValue);
+  };
+
+  const onClickSwap = () => {
+    try {
+      if (!!library) {
+        console.log(`tokensLeft : ${tokensLeft}`);
+        console.log(`minAmount  : ${minAmount}`);
+        console.log(`amount     : ${amount}`);
+        console.log(`maxAmount  : ${maxAmount}`);
+        console.log(`balance    : ${balance}`);
+
+        if (minAmount < amount && amount < maxAmount) {
+          if (amount < tokensLeft) {
+            swapContract
+              .swap({ tokenAmount: amount, account: account })
+              .then((resp) => {
+                console.log(resp);
+                setAmount(0);
+              })
+              .catch((error) => console.log(error));
+          } else {
+            console.log('2차 실패');
+            alert('tokensLeft보다 작게');
+          }
+        } else {
+          alert('최대값 보다 작고 최소값 보다 크게');
+          console.log('1차 실패');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const setDate = () => {
+  //   var nowEpoch = moment();
+  //   const endDate = moment.unix(pool.endDate);
+
+  //   console.log(nowEpoch.format('YYYY-MM-DD HH:mm'));
+  //   console.log(endDate.format('YYYY-MM-DD HH:mm'));
+
+  //   setDiffTime({
+  //     day: moment.duration(endDate.diff(nowEpoch)).days(),
+  //     hour: moment.duration(endDate.diff(nowEpoch)).hours(),
+  //     minute: moment.duration(endDate.diff(nowEpoch)).minutes()
+  //     // second: moment.duration(endDate.diff(nowEpoch)).seconds()
+  //   });
+
+  //   console.log(
+  //     `${diffTime.day} 일 ${diffTime.hour} 시간 ${diffTime.minute} 분 `
+  //   );
+  // };
+
+  useEffect(async () => {
+    if (!!library && !!swapContract) {
+      await swapContract
+        .isOpen()
+        .then((result) => {
+          setIsOpen(result);
+        })
+        .catch((error) => {});
+
+      await swapContract
+        .isFunded()
+        .then((result) => {
+          setIsSaleFunded(result);
+        })
+        .catch((error) => {});
+
+      await swapContract
+        .tokensLeft()
+        .then((result) => {
+          setTokensLeft(result);
+        })
+        .catch((error) => {});
+
+      await swapContract
+        .individualMinimumAmount()
+        .then((result) => {
+          setMinAmount(result);
+        })
+        .catch((error) => {});
+
+      await swapContract
+        .individualMaximumAmount()
+        .then((result) => {
+          setMaxAmount(result);
+        })
+        .catch((error) => {});
+
+      // await swapContract.().then((result) => {
+      //   setMaxAmount(result);
+      // });
+    }
+    console.log(pool.status);
+  }, [pool]);
+
+  useEffect(async () => {
+    if (!!library) {
+      await dispatch(getWalletBalance(account, library));
+      console.log(formatEther(balance));
+    }
+  }, [activatingConnector, connector]);
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -58,19 +231,36 @@ function JoninthePool({ className }) {
         </Typography>
       </div>
 
-      <Box
-        sx={{
-          pt: 1.5,
-          pb: 2.5,
-          display: 'flex',
-          justifyContent: 'space-between'
-        }}
-      >
-        <Typography variant="h6" component="p">
+      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+
+      <div className={classes.row}>
+        <Typography
+          component="p"
+          variant="subtitle2"
+          sx={{ color: 'text.secondary' }}
+        >
           Yout Bid Ammount
         </Typography>
-        <Typography variant="h6" component="p">
-          Blance : 0 BNB
+        <Typography
+          component="p"
+          variant="body2"
+          sx={{ color: 'text.secondary' }}
+        >
+          Blance : {balance !== null ? formatEther(balance) : 'none'} ETH
+        </Typography>
+      </div>
+
+      <Box sx={{ mb: 1.5, display: 'flex', justifyContent: 'flex-end' }}>
+        <Typography
+          component="span"
+          variant="subtitle2"
+          sx={{
+            mb: 1,
+            alignSelf: 'flex-end',
+            color: 'text.secondary'
+          }}
+        >
+          Price : 0.148 ETH
         </Typography>
       </Box>
 
@@ -82,14 +272,14 @@ function JoninthePool({ className }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Bid Ammount
+          Ammount
         </Typography>
       </div>
 
       <Box sx={{ mb: 2.5, display: 'flex', justifyContent: 'flex-end' }}>
-        <Typography sx={{ color: 'text.secondary' }}>$</Typography>
         <Typography variant="h2" sx={{ mx: 1 }}>
           <TextField
+            type="number"
             sx={{
               flex: 2 / 5,
               flexWrap: 'wrap'
@@ -99,12 +289,13 @@ function JoninthePool({ className }) {
               shrink: true
             }}
             size="small"
-            value="0"
+            value={amount}
             margin="normal"
             inputProps={{
               style: { fontSize: 30, textAlign: 'center' }
             }} // font size of input text
             InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
+            onChange={onChangeAmount}
           />
         </Typography>
         <Typography
@@ -116,12 +307,21 @@ function JoninthePool({ className }) {
             color: 'text.secondary'
           }}
         >
-          /mo
+          {pool.symbol}
         </Typography>
       </Box>
 
-      <Box sx={{ mt: 5, mb: 3 }}>
-        <LoadingButton fullWidth size="large" type="submit" variant="contained">
+      <Box sx={{ mt: 2, mb: 3 }}>
+        {/* <Button>
+
+        </Button> */}
+        <LoadingButton
+          fullWidth
+          size="large"
+          variant="contained"
+          onClick={onClickSwap}
+          // disabled={!(isOpen && isSaleFunded)}
+        >
           Go
         </LoadingButton>
       </Box>
@@ -136,8 +336,15 @@ function JoninthePool({ className }) {
             justifyContent: 'center'
           }}
         >
-          <Box sx={{ width: 20, height: 20, mr: 1, color: 'primary.main' }} />
-          Have problems Joing? Chlick hereto read instructions.
+          <Box
+            component={Icon}
+            icon={shieldFill}
+            sx={{ width: 20, height: 20, mr: 1, color: 'primary.main' }}
+          />
+          Warning : Balance should be bigger than the price
+        </Typography>
+        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+          Have problems Joing? Click here to read instructions.
         </Typography>
       </Box>
     </div>
