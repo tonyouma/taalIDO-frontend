@@ -10,9 +10,16 @@ import {
   Card,
   CardContent,
   TextField,
-  Typography
+  Typography,
+  Grid
 } from '@material-ui/core';
 import { getPoolList } from 'src/redux/slices/pool';
+import FeaturedApp from '../../../general/DashboardAppView/FeaturedApp';
+import TotalActiveUsers from '../../../general/DashboardAppView/TotalActiveUsers';
+import TotalInstalled from '../../../general/DashboardAppView/TotalInstalled';
+import TotalDownloads from '../../../general/DashboardAppView/TotalDownloads';
+import CurrentDownload from '../../../general/DashboardAppView/CurrentDownload';
+import AreaInstalled from '../../../general/DashboardAppView/AreaInstalled';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -87,89 +94,110 @@ const AdminView = () => {
       <Container>
         <HeaderDashboard heading="Admin" links={[{ name: 'settings' }]} />
 
-        <Card>
-          <CardContent>
-            <Typography variant="h6" component="h2">
-              Select Pool
-            </Typography>
-            <Box className={classes.box}>
-              <TextField
-                style={{ minWidth: '200px' }}
-                name="selectePool"
-                select
-                defaultValue=""
-                label="Pools"
-                size="small"
-                onChange={handleChange}
-              >
-                {pools.map((pool, index) => (
-                  <option key={index} value={pool.projectName}>
-                    {pool.projectName}
-                  </option>
-                ))}
-              </TextField>
-            </Box>
+        <Container maxWidth="xl">
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={4}>
+              <TotalActiveUsers />
+            </Grid>
 
-            <Typography variant="h6" component="h2">
-              Allowance
-            </Typography>
-            <Box className={classes.box}>
-              <TextField
-                className={classes.textField}
-                name="allowanceAmount"
-                label="Amount"
-                size="small"
-                value={allowanceAmount}
-                onChange={onChange}
-              ></TextField>
-              <Button
-                variant="contained"
-                size="medium"
-                onClick={onClickAllowance}
-              >
-                Save
-              </Button>
-            </Box>
+            <Grid item xs={12} md={4}>
+              <TotalInstalled />
+            </Grid>
 
-            <Typography variant="h6" component="h2">
-              Fund
-            </Typography>
-            <Box className={classes.box}>
-              <TextField
-                className={classes.textField}
-                name="fundAmount"
-                label="Amount"
-                size="small"
-                value={fundAmount}
-                onChange={onChange}
-              ></TextField>
-              <Button variant="contained" size="medium" onClick={onClickFund}>
-                Save
-              </Button>
-            </Box>
+            <Grid item xs={12} md={4}>
+              <TotalDownloads />
+            </Grid>
 
-            <Typography variant="h6" component="h2">
-              WhiteList
-            </Typography>
-            <Box className={classes.box}>
-              <TextField
-                className={classes.textField}
-                name="whiteList"
-                label="WhiteList"
-                size="small"
-                value={whiteList}
-                onChange={onChange}
-              ></TextField>
-              <Button
-                variant="contained"
-                size="medium"
-                onClick={onClickWhiteList}
-              >
-                Save
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
+            <Grid item xs={12} md={6} lg={4}>
+              <CurrentDownload />
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={8}>
+              <AreaInstalled />
+            </Grid>
+          </Grid>
+        </Container>
+        <CardContent>
+          <Typography variant="h6" component="h2">
+            Select Pool
+          </Typography>
+          <Box className={classes.box}>
+            <TextField
+              style={{ minWidth: '200px' }}
+              name="selectePool"
+              select
+              defaultValue=""
+              label="Pools"
+              size="small"
+              onChange={handleChange}
+            >
+              {pools.map((pool, index) => (
+                <option key={index} value={pool.projectName}>
+                  {pool.projectName}
+                </option>
+              ))}
+            </TextField>
+          </Box>
+
+          <Typography variant="h6" component="h2">
+            Allowance
+          </Typography>
+          <Box className={classes.box}>
+            <TextField
+              className={classes.textField}
+              name="allowanceAmount"
+              label="Amount"
+              size="small"
+              value={allowanceAmount}
+              onChange={onChange}
+            ></TextField>
+            <Button
+              variant="contained"
+              size="medium"
+              onClick={onClickAllowance}
+            >
+              Save
+            </Button>
+          </Box>
+
+          <Typography variant="h6" component="h2">
+            Fund
+          </Typography>
+          <Box className={classes.box}>
+            <TextField
+              className={classes.textField}
+              name="fundAmount"
+              label="Amount"
+              size="small"
+              value={fundAmount}
+              onChange={onChange}
+            ></TextField>
+            <Button variant="contained" size="medium" onClick={onClickFund}>
+              Save
+            </Button>
+          </Box>
+
+          <Typography variant="h6" component="h2">
+            WhiteList
+          </Typography>
+          <Box className={classes.box}>
+            <TextField
+              className={classes.textField}
+              name="whiteList"
+              label="WhiteList"
+              size="small"
+              value={whiteList}
+              onChange={onChange}
+            ></TextField>
+            <Button
+              variant="contained"
+              size="medium"
+              onClick={onClickWhiteList}
+            >
+              Save
+            </Button>
+          </Box>
+        </CardContent>
       </Container>
     </Page>
   );

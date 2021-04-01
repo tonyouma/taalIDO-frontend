@@ -220,7 +220,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                       {...getFieldProps('feeAmount')}
                       error={Boolean(touched.feeAmount && errors.feeAmount)}
                       helperText={
-                        (touched.feeAmount && errors.feeAmount) || '(> 1%)'
+                        (touched.feeAmount && errors.feeAmount) || '(> 2%)'
                       }
                       InputProps={{
                         endAdornment: (

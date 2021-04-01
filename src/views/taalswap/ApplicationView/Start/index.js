@@ -13,6 +13,7 @@ import moment from 'moment';
 import { useWeb3React } from '@web3-react/core';
 import { Contract, ContractFactory } from '@ethersproject/contracts';
 import { tokenData } from 'src/contracts';
+import { useHistory } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +44,7 @@ function ApplicationStart() {
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const context = useWeb3React();
   const { account, library } = context;
@@ -76,7 +78,7 @@ function ApplicationStart() {
     feeAmount: Yup.number()
       .positive('Fee Amount is positive integer')
       .integer('Fee Amount is positive integer')
-      .min(1)
+      .min(2)
       .max(100)
       .required('Fee Amount is required')
   });
@@ -99,7 +101,7 @@ function ApplicationStart() {
       maxIndividuals: '',
       isAtomic: false,
       preferredStartDate: moment().add(1, 'd').toDate(),
-      feeAmount: 1
+      feeAmount: 2
     },
     validationSchema: NewApplicationSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -133,23 +135,37 @@ function ApplicationStart() {
           creator: account
         };
         console.log('======>');
+        const result = {};
         // symbol , decimal 을 가져와서 셋팅한다.
         newApplication.symbol = await getSymbol(
           values.tokenContractAddr,
           account,
           library
-        );
+        ).catch((error) => {
+          result.error = error;
+        });
         newApplication.decimals = await getDecimals(
           values.tokenContractAddr,
           account,
           library
-        );
+        ).catch((error) => {
+          result.error = error;
+        });
         console.log('======>' + JSON.stringify(newApplication));
 
+        if (!!result.error) {
+          console.log('error : ' + JSON.stringify(result.error));
+          enqueueSnackbar('Create Application fail', { variant: 'fail' });
+          return;
+        }
         dispatch(createApplication(newApplication));
-        resetForm();
-        setSubmitting(false);
         enqueueSnackbar('Create Application success', { variant: 'success' });
+        history.push({
+          pathname: '/app/taalswap/application/list'
+        });
+        // resetForm();
+        // setSubmitting(false);
+        // enqueueSnackbar('Create Application success', { variant: 'success' });
       } catch (error) {
         console.error(error);
         setSubmitting(false);

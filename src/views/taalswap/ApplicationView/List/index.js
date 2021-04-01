@@ -11,11 +11,9 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import EditIcon from '@material-ui/icons/Edit';
 import { updateApplication, getApplicationList } from 'src/redux/slices/pool';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
@@ -26,7 +24,7 @@ import {
   Grid,
   TablePagination
 } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
@@ -34,9 +32,11 @@ import { admin } from 'src/config';
 import Numbers from 'taalswap-js/src/utils/Numbers';
 import { ContractFactory } from '@ethersproject/contracts';
 import { fixedData } from 'src/contracts';
-import Page from '../../../../components/Page';
-import { HeaderDashboard } from '../../../../layouts/Common';
+import Page from 'src/components/Page';
+import { HeaderDashboard } from 'src/layouts/Common';
 import BasicTable from '../../PoolListView/BasicTable';
+import { useSnackbar } from 'notistack';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -107,7 +107,7 @@ async function taalDeploy(factory, application) {
         application.minFundRaise,
         application.decimals
       ),
-      parseInt('10'),
+      application.feeAmount,
       application.access === 'private' ? true : false,
       {
         gasLimit: 7000000
@@ -225,10 +225,16 @@ const EnhancedTableToolbar = (props) => {
   const { selected, selectedItem } = props;
   const dispatch = useDispatch();
   const context = useWeb3React();
+  const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
   const { account, library } = context;
 
-  const onClickEdit = () => {
+  const onClickAdmin = () => {
     console.log(`edit item index :  ${selected}`);
+    history.push({
+      pathname: '/app/taalswap/application/admin',
+      state: { selectedItem: selectedItem }
+    });
   };
 
   const onClickSend = () => {
@@ -237,6 +243,8 @@ const EnhancedTableToolbar = (props) => {
     const item = JSON.parse(JSON.stringify(selectedItem));
     item.status = 'approved';
     dispatch(updateApplication(item));
+    enqueueSnackbar('Application approved', { variant: 'success' });
+    dispatch(getApplicationList());
   };
 
   const onClickDeploy = async () => {
@@ -245,16 +253,19 @@ const EnhancedTableToolbar = (props) => {
     const ret = await deployFixedSwap(item, account, library);
     if (!!ret.err) {
       console.log('error');
+      enqueueSnackbar('Application Deploy fail', { variant: 'fail' });
     } else {
       item.status = 'deployed';
       item.contractAddress = ret.address;
       dispatch(updateApplication(item));
       console.log('deploy success.');
+      enqueueSnackbar('Application Deploy success', { variant: 'success' });
+      dispatch(getApplicationList());
     }
   };
 
   const checkAdmin = () => {
-    console.log('isAdmin' + admin.addresses.includes(account));
+    console.log('isAdmin : ' + admin.addresses.includes(account));
     return admin.addresses.includes(account);
   };
 
@@ -299,9 +310,9 @@ const EnhancedTableToolbar = (props) => {
             ''
           )}
           {selectedItem.creator === account || checkAdmin() ? (
-            <Tooltip title="Edit">
-              <IconButton aria-label="Edit" onClick={onClickEdit}>
-                <EditIcon />
+            <Tooltip title="Admin">
+              <IconButton aria-label="Edit" onClick={onClickAdmin}>
+                <SupervisorAccountIcon />
               </IconButton>
             </Tooltip>
           ) : (

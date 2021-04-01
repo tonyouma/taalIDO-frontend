@@ -125,7 +125,7 @@ export function updateApplication(application) {
         application
       );
       console.log('response ' + response);
-      dispatch(slice.actions.approveApplicationSuccess(response.data));
+      dispatch(slice.actions.updateApplicationSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
