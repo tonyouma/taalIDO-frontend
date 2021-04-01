@@ -11,12 +11,32 @@ import { useFormik } from 'formik';
 import { createApplication } from 'src/redux/slices/pool';
 import moment from 'moment';
 import { useWeb3React } from '@web3-react/core';
+import { Contract, ContractFactory } from '@ethersproject/contracts';
+import { tokenData } from 'src/contracts';
 
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   root: {}
 }));
+
+async function getSymbol(address, account, library) {
+  const tokenContract = new Contract(
+    address,
+    ContractFactory.getInterface(tokenData.abi),
+    library.getSigner(account).connectUnchecked()
+  );
+  return await tokenContract.symbol();
+}
+
+async function getDecimals(address, account, library) {
+  const tokenContract = new Contract(
+    address,
+    ContractFactory.getInterface(tokenData.abi),
+    library.getSigner(account).connectUnchecked()
+  );
+  return await tokenContract.decimals();
+}
 
 function ApplicationStart() {
   const classes = useStyles();
@@ -25,7 +45,7 @@ function ApplicationStart() {
   const dispatch = useDispatch();
 
   const context = useWeb3React();
-  const { account } = context;
+  const { account, library } = context;
 
   useEffect(() => {
     console.log('test : ' + account);
@@ -106,13 +126,26 @@ function ApplicationStart() {
           endDate: moment(values.preferredStartDate.toDateString())
             .add(30, 'd')
             .unix(), // startdate + 30일
-          ratio: 1 / (values.tradeValue * Math.pow(10, -18)),
+          ratio: 1 / values.tradeValue,
           progress: '',
           feeAmount: values.feeAmount,
           status: 'candidate',
           creator: account
         };
-        console.log('======>' + newApplication.toString());
+        console.log('======>');
+        // symbol , decimal 을 가져와서 셋팅한다.
+        newApplication.symbol = await getSymbol(
+          values.tokenContractAddr,
+          account,
+          library
+        );
+        newApplication.decimals = await getDecimals(
+          values.tokenContractAddr,
+          account,
+          library
+        );
+        console.log('======>' + JSON.stringify(newApplication));
+
         dispatch(createApplication(newApplication));
         resetForm();
         setSubmitting(false);
