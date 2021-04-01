@@ -116,7 +116,7 @@ function PaymentInformation({ className, index }) {
             component="span"
             variant="subtitle2"
             sx={{
-              mb: 7,
+              mb: 8,
               color: 'text.secondary'
             }}
           >

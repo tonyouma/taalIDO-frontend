@@ -43,15 +43,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ACCORDIONS = [...Array(4)].map((accordion, index) => {
-  const setIndex = index + 1;
-  return {
-    value: `panel${setIndex}`,
-    heading: `Accordion${setIndex}`,
-    subHeading: faker.lorem.slug(),
-    detail: faker.lorem.lines()
-  };
-});
 // ----------------------------------------------------------------------
 
 function TableView() {
