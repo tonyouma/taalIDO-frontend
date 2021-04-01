@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,7 +19,13 @@ import EditIcon from '@material-ui/icons/Edit';
 import { updateApplication, getApplicationList } from 'src/redux/slices/pool';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { Button } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  Container,
+  Grid,
+  TablePagination
+} from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -28,6 +34,9 @@ import { admin } from 'src/config';
 import Numbers from 'taalswap-js/src/utils/Numbers';
 import { ContractFactory } from '@ethersproject/contracts';
 import { fixedData } from 'src/contracts';
+import Page from '../../../../components/Page';
+import { HeaderDashboard } from '../../../../layouts/Common';
+import BasicTable from '../../PoolListView/BasicTable';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -265,14 +274,7 @@ const EnhancedTableToolbar = (props) => {
           1 selected
         </Typography>
       ) : (
-        <Typography
-          className={classes.title}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Application List
-        </Typography>
+        ''
       )}
 
       {selected !== -1 ? (
@@ -350,6 +352,17 @@ export default function ApplicationListView() {
   const [selectedItem, setSelectedItem] = React.useState({});
   const dispatch = useDispatch();
   const { applicationList } = useSelector((state) => state.pool);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   useEffect(() => {
     console.log(applicationList);
     dispatch(getApplicationList());
@@ -375,78 +388,102 @@ export default function ApplicationListView() {
   const isSelected = (index) => (selected !== index ? false : true);
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <EnhancedTableToolbar selected={selected} selectedItem={selectedItem} />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={applicationList.length}
-            />
-            <TableBody>
-              {stableSort(applicationList, getComparator(order, orderBy)).map(
-                (row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.projectName}
-                      </TableCell>
-                      <TableCell align="right">{row.category}</TableCell>
-                      <TableCell align="right">
-                        {moment.unix(row.startDate).format('YYYY-MM-DD')}
-                      </TableCell>
-                      <TableCell align="right">
-                        {moment.unix(row.endDate).format('YYYY-MM-DD')}
-                      </TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
-                    </TableRow>
-                  );
-                }
+    <Page title="Application List" className={classes.root}>
+      <Container maxWidth="lg">
+        <HeaderDashboard heading="Application List" links={[{ name: '' }]} />
+        <Grid container spacing={5}>
+          <Grid item xs={12}>
+            <Card>
+              {selected !== -1 ? (
+                <EnhancedTableToolbar
+                  selected={selected}
+                  selectedItem={selectedItem}
+                />
+              ) : (
+                <div className={classes.paper}></div>
               )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <div align="right">
-          {' '}
-          <Button
-            to="/app/taalswap/application/information"
-            variant="contained"
-            component={RouterLink}
-            sx={{ marginTop: 3, marginRight: 3 }}
-          >
-            apply for IDO
-          </Button>
-        </div>
-      </Paper>
-    </div>
+              <TableContainer>
+                <Table
+                  className={classes.table}
+                  aria-labelledby="tableTitle"
+                  aria-label="enhanced table"
+                >
+                  <EnhancedTableHead
+                    classes={classes}
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
+                    rowCount={applicationList.length}
+                  />
+                  <TableBody>
+                    {stableSort(
+                      applicationList,
+                      getComparator(order, orderBy)
+                    ).map((row, index) => {
+                      const isItemSelected = isSelected(row.id);
+                      const labelId = `enhanced-table-checkbox-${index}`;
+                      return (
+                        <TableRow
+                          hover
+                          onClick={(event) => handleClick(event, row)}
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={row.id}
+                          selected={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              inputProps={{ 'aria-labelledby': labelId }}
+                            />
+                          </TableCell>
+                          <TableCell
+                            component="th"
+                            id={labelId}
+                            scope="row"
+                            padding="none"
+                          >
+                            {row.projectName}
+                          </TableCell>
+                          <TableCell align="right">{row.category}</TableCell>
+                          <TableCell align="right">
+                            {moment.unix(row.startDate).format('YYYY-MM-DD')}
+                          </TableCell>
+                          <TableCell align="right">
+                            {moment.unix(row.endDate).format('YYYY-MM-DD')}
+                          </TableCell>
+                          <TableCell align="right">{row.status}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                page={page}
+                component="div"
+                count={BasicTable.length}
+                rowsPerPage={rowsPerPage}
+                onPageChange={handleChangePage}
+                rowsPerPageOptions={[10, 25, 100]}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Card>
+            <div align="right">
+              {' '}
+              <Button
+                to="/app/taalswap/application/information"
+                variant="contained"
+                component={RouterLink}
+                sx={{ marginTop: 3, marginRight: 3 }}
+              >
+                apply for IDO
+              </Button>
+            </div>
+          </Grid>
+        </Grid>
+      </Container>
+    </Page>
   );
 }
