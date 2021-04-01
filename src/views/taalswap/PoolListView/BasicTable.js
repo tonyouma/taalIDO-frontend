@@ -33,6 +33,12 @@ import DetailsForm from './DetailsForm';
 import { closeModal, openModal } from '../../../redux/slices/pool';
 import { MLabel } from 'src/theme';
 import getMax from '../../../utils/getMax';
+import getProgressValue from '../../../utils/getProgressValue';
+import { Contract, ContractFactory } from '@ethersproject/contracts';
+import { fixedData } from '../../../contracts';
+import { tokenData } from '../../../contracts';
+import { useWeb3React } from '@web3-react/core';
+import Application from 'taalswap-js/src/models';
 
 // ----------------------------------------------------------------------
 
@@ -83,9 +89,100 @@ function applyFilter(array, query) {
 
 // ----------------------------------------------------------------------
 
+function TablePoolRow({ row, handleOpenModal }) {
+  const classes = useStyles();
+  const context = useWeb3React();
+  const theme = useTheme();
+  const [progressValue, setProgressValue] = useState(0);
+
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
+
+  useEffect(() => {
+    if (!!library) {
+      const fixedContract = new Contract(
+        row.contractAddress,
+        ContractFactory.getInterface(fixedData.abi),
+        library.getSigner(account).connectUnchecked()
+      );
+      const tokenContract = new Contract(
+        row.tokenContractAddr,
+        ContractFactory.getInterface(tokenData.abi),
+        library.getSigner(account).connectUnchecked()
+      );
+      const taalswapApp = new Application({
+        test: true,
+        mainnet: false,
+        account: account
+      });
+      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+      const swapContract = taalswapApp.getFixedSwapContract({
+        tokenAddress: row.tokenContractAddr,
+        decimals: 18,
+        contractAddress: row.contractAddress,
+        fixedContract: fixedContract,
+        tokenContract: tokenContract
+      });
+
+      swapContract
+        .tokensAllocated()
+        .then((result) => {
+          // setAllocated(result);
+          setProgressValue(getProgressValue(result, row.tradeAmount));
+          // setTotalRaise(result * pool.tradeValue);
+        })
+        .catch((error) => {});
+    }
+  }, [row]);
+
+  return (
+    <TableRow
+      key={row.poolName}
+      hover
+      className={classes.hideLastBorder}
+      onClick={(event) => handleOpenModal(row)}
+    >
+      <TableCell component="th" scope="row" width="15%">
+        {row.poolName}
+      </TableCell>
+      <TableCell align="right" width="20%">
+        {row.ratio} ETH = 1 {row.symbol}
+      </TableCell>
+      <TableCell align="right" width="5%">
+        {row.access}
+      </TableCell>
+      {/* <TableCell align="center" width="5%"></TableCell> */}
+      <TableCell align="right" width="40%">
+        <LinearProgressWithLabel value={progressValue} />
+      </TableCell>
+      <TableCell align="right" width="20%">
+        <MLabel
+          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+          color={
+            (row.status === 'in_progress' && 'warning') ||
+            (row.status === 'out_of_date' && 'error') ||
+            'success'
+          }
+        >
+          {sentenceCase(row.status)}
+        </MLabel>
+      </TableCell>
+    </TableRow>
+  );
+}
+
 export default function BasicTable() {
   const classes = useStyles();
   const history = useHistory();
+
   const [filterName, setFilterName] = useState('');
   const theme = useTheme();
   const [page, setPage] = useState(0);
@@ -146,6 +243,14 @@ export default function BasicTable() {
             </TableHead>
             <TableBody>
               {filteredPools.map((row, index) => (
+                <TablePoolRow
+                  key={index}
+                  row={row}
+                  handleOpenModal={handleOpenModal}
+                  // onChangeRatioValue={onChangeRatioValue}
+                />
+              ))}
+              {/* {filteredPools.map((row, index) => (
                 <TableRow
                   key={index}
                   hover
@@ -162,18 +267,14 @@ export default function BasicTable() {
                     {row.access}
                   </TableCell>
                   <TableCell align="right" width="35%">
-                    {/* <Slider
-                      marks={marks}
-                      step={10}
-                      min={0}
-                      max={100}
-                      defaultValue={0}
-                      value={row.progress}
-                      valueLabelDisplay="auto"
-                      getAriaValueText={valueText}
-                    /> */}
+                   
                     <LinearProgressWithLabel
-                      value={row.progress >= 100 ? 100 : row.progress}
+                      value={
+                        row.progress === '' || row.progress >= 100
+                          ? 100
+                          : row.progress
+                   
+                      }
                     />
                   </TableCell>
                   <TableCell align="right" width="15%">
@@ -191,7 +292,7 @@ export default function BasicTable() {
                     </MLabel>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))} */}
             </TableBody>
           </Table>
         </TableContainer>
