@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import shieldFill from '@iconify-icons/eva/shield-fill';
-import React, { useState, useEffect } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
