@@ -16,16 +16,18 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import { updateApplication, getApplicationList } from 'src/redux/slices/pool';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { Button, Container } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { admin } from 'src/config';
+import Numbers from 'taalswap-js/src/utils/Numbers';
+import { ContractFactory } from '@ethersproject/contracts';
+import { fixedData } from 'src/contracts';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -51,6 +53,80 @@ function stableSort(array, comparator) {
     return a[1] - b[1];
   });
   return stabilizedThis.map((el) => el[0]);
+}
+
+async function deployFixedSwap(application, account, library) {
+  console.log('application : ' + JSON.stringify(application));
+  console.log('account : ' + account);
+  console.log('library : ' + library);
+
+  const factory = new ContractFactory(
+    fixedData.abi,
+    fixedData.bytecode,
+    library.getSigner(account)
+  );
+
+  return await taalDeploy(factory, application);
+}
+
+async function taalDeploy(factory, application) {
+  console.log('taalDeploy start!');
+  const ret = {};
+  const contract = await factory
+    .deploy(
+      application.tokenContractAddr,
+      Numbers.toSmartContractDecimals(
+        application.tradeValue,
+        application.decimals
+      ) /* to wei */,
+      Numbers.toSmartContractDecimals(
+        application.tradeAmount,
+        application.decimals
+      ),
+      application.startDate,
+      application.endDate,
+      Numbers.toSmartContractDecimals(
+        application.minIndividuals,
+        application.decimals
+      ),
+      Numbers.toSmartContractDecimals(
+        application.maxIndividuals,
+        application.decimals
+      ),
+      application.atomic,
+      Numbers.toSmartContractDecimals(
+        application.minFundRaise,
+        application.decimals
+      ),
+      parseInt('10'),
+      application.access === 'private' ? true : false,
+      {
+        gasLimit: 7000000
+      }
+    )
+    .catch(function (err) {
+      console.log(err);
+      ret.err = err;
+    });
+
+  if (!!ret.err) return ret;
+
+  console.log('test========');
+  const receipt = await contract.deployTransaction.wait().catch(function (err) {
+    console.log(err);
+    ret.err = err;
+  });
+  if (!!ret.err) return ret;
+  const { confirmations } = receipt;
+  ret.confirmations = confirmations;
+  if (confirmations === 1) {
+    console.log('fixedSwap contract deploy... confirmed!!');
+    const { address } = contract;
+    ret.address = address;
+  } else {
+    console.log(JSON.stringify(receipt));
+  }
+  return ret;
 }
 
 const headCells = [
@@ -140,7 +216,7 @@ const EnhancedTableToolbar = (props) => {
   const { selected, selectedItem } = props;
   const dispatch = useDispatch();
   const context = useWeb3React();
-  const { account } = context;
+  const { account, library } = context;
 
   const onClickEdit = () => {
     console.log(`edit item index :  ${selected}`);
@@ -154,15 +230,18 @@ const EnhancedTableToolbar = (props) => {
     dispatch(updateApplication(item));
   };
 
-  const onClickDeploy = () => {
+  const onClickDeploy = async () => {
     console.log(`deploy item index : ${selected}`);
-    // 상태를 승인상태로 변경해준다.
     const item = JSON.parse(JSON.stringify(selectedItem));
-    // deploy 테스트하자!!
-    console.log('deploy test : ' + JSON.stringify(item));
-    // deploy 후 주소를 받아서 설정한다.
-    // item.contractAddress = '';
-    // dispatch(updateApplication(item));
+    const ret = await deployFixedSwap(item, account, library);
+    if (!!ret.err) {
+      console.log('error');
+    } else {
+      item.status = 'deployed';
+      item.contractAddress = ret.address;
+      dispatch(updateApplication(item));
+      console.log('deploy success.');
+    }
   };
 
   const checkAdmin = () => {
