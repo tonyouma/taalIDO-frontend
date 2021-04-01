@@ -222,52 +222,15 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { selected, selectedItem } = props;
-  const dispatch = useDispatch();
-  const context = useWeb3React();
-  const { enqueueSnackbar } = useSnackbar();
-  const history = useHistory();
-  const { account, library } = context;
-
-  const onClickAdmin = () => {
-    console.log(`edit item index :  ${selected}`);
-    history.push({
-      pathname: '/app/taalswap/application/admin',
-      state: { selectedItem: selectedItem }
-    });
-  };
-
-  const onClickSend = () => {
-    console.log(`send item index : ${selected}`);
-    // 상태를 승인상태로 변경해준다.
-    const item = JSON.parse(JSON.stringify(selectedItem));
-    item.status = 'approved';
-    dispatch(updateApplication(item));
-    enqueueSnackbar('Application approved', { variant: 'success' });
-    dispatch(getApplicationList());
-  };
-
-  const onClickDeploy = async () => {
-    console.log(`deploy item index : ${selected}`);
-    const item = JSON.parse(JSON.stringify(selectedItem));
-    const ret = await deployFixedSwap(item, account, library);
-    if (!!ret.err) {
-      console.log('error');
-      enqueueSnackbar('Application Deploy fail', { variant: 'fail' });
-    } else {
-      item.status = 'deployed';
-      item.contractAddress = ret.address;
-      dispatch(updateApplication(item));
-      console.log('deploy success.');
-      enqueueSnackbar('Application Deploy success', { variant: 'success' });
-      dispatch(getApplicationList());
-    }
-  };
-
-  const checkAdmin = () => {
-    console.log('isAdmin : ' + admin.addresses.includes(account));
-    return admin.addresses.includes(account);
-  };
+  const {
+    selected,
+    selectedItem,
+    onClickDeploy,
+    onClickAdmin,
+    onClickSend,
+    checkAdmin,
+    account
+  } = props;
 
   return (
     <Toolbar
@@ -362,9 +325,13 @@ export default function ApplicationListView() {
   const [selected, setSelected] = React.useState(-1);
   const [selectedItem, setSelectedItem] = React.useState({});
   const dispatch = useDispatch();
-  const { applicationList } = useSelector((state) => state.pool);
+  const { applicationList, update } = useSelector((state) => state.pool);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
+  const context = useWeb3React();
+  const { account, library } = context;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -374,10 +341,50 @@ export default function ApplicationListView() {
     setPage(0);
   };
 
+  const checkAdmin = () => {
+    console.log('isAdmin : ' + admin.addresses.includes(account));
+    return admin.addresses.includes(account);
+  };
+
+  const handleClickAdmin = () => {
+    console.log(`admin item index :  ${selected}`);
+    history.push({
+      pathname: '/app/taalswap/application/admin',
+      state: { selectedItem: selectedItem }
+    });
+  };
+
+  const handleClickSend = () => {
+    console.log(`send item index : ${selected}`);
+    // 상태를 승인상태로 변경해준다.
+    const item = JSON.parse(JSON.stringify(selectedItem));
+    item.status = 'approved';
+    dispatch(updateApplication(item));
+    enqueueSnackbar('Application approved', { variant: 'success' });
+    setSelected(-1);
+  };
+
+  const handleClickDeploy = async () => {
+    console.log(`deploy item index : ${selected}`);
+    const item = JSON.parse(JSON.stringify(selectedItem));
+    const ret = await deployFixedSwap(item, account, library);
+    if (!!ret.err) {
+      console.log('error');
+      enqueueSnackbar('Application Deploy fail', { variant: 'fail' });
+    } else {
+      item.status = 'deployed';
+      item.contractAddress = ret.address;
+      dispatch(updateApplication(item));
+      console.log('deploy success.');
+      enqueueSnackbar('Application Deploy success', { variant: 'success' });
+      setSelected(-1);
+    }
+  };
+
   useEffect(() => {
     console.log(applicationList);
     dispatch(getApplicationList());
-  }, [dispatch]);
+  }, [update]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -409,6 +416,11 @@ export default function ApplicationListView() {
                 <EnhancedTableToolbar
                   selected={selected}
                   selectedItem={selectedItem}
+                  onClickAdmin={handleClickAdmin}
+                  onClickSend={handleClickSend}
+                  onClickDeploy={handleClickDeploy}
+                  checkAdmin={checkAdmin}
+                  account={account}
                 />
               ) : (
                 <div className={classes.paper}></div>

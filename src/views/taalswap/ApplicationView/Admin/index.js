@@ -13,13 +13,18 @@ import {
   Typography,
   Grid
 } from '@material-ui/core';
-import { getPoolList } from 'src/redux/slices/pool';
-import FeaturedApp from '../../../general/DashboardAppView/FeaturedApp';
+import { searchApplicationListByCreator } from 'src/redux/slices/pool';
 import TotalActiveUsers from '../../../general/DashboardAppView/TotalActiveUsers';
 import TotalInstalled from '../../../general/DashboardAppView/TotalInstalled';
 import TotalDownloads from '../../../general/DashboardAppView/TotalDownloads';
 import CurrentDownload from '../../../general/DashboardAppView/CurrentDownload';
 import AreaInstalled from '../../../general/DashboardAppView/AreaInstalled';
+import { useWeb3React } from '@web3-react/core';
+import { useLocation } from 'react-router';
+import { Contract, ContractFactory } from '@ethersproject/contracts';
+import Application from 'taalswap-js/src/models';
+import { fixedData } from 'src/contracts';
+import { tokenData } from 'src/contracts';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -35,22 +40,154 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function getContract(application, account, library) {
+  console.log('application : ' + JSON.stringify(application));
+  console.log('account : ' + account);
+  console.log('library : ' + library);
+  const fixedContract = new Contract(
+    application.contractAddress,
+    ContractFactory.getInterface(fixedData.abi),
+    library.getSigner(account).connectUnchecked()
+  );
+
+  console.log('fixedContract complete ');
+  const tokenContract = new Contract(
+    application.tokenContractAddr,
+    ContractFactory.getInterface(tokenData.abi),
+    library.getSigner(account).connectUnchecked()
+  );
+
+  console.log('tokenContract complete ');
+  const taalswapApp = new Application({
+    test: true,
+    mainnet: false,
+    account: account
+  });
+
+  console.log('taalswapApp complete ');
+  // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+  return taalswapApp.getFixedSwapContract({
+    tokenAddress: application.tokenContractAddr,
+    decimals: 18,
+    contractAddress: application.contractAddress,
+    fixedContract: fixedContract,
+    tokenContract: tokenContract
+  });
+
+  console.log('getFixedSwapContract complete ');
+}
+
+async function callApprove(approveAmount, application, account, library) {
+  console.log('approveAmount : ' + approveAmount);
+
+  const ret = {};
+  const swapContract = getContract(application, account, library);
+  const result = await swapContract
+    .approveFundERC20(approveAmount)
+    .catch((error) => {
+      console.log(JSON.stringify(error));
+      ret.error = error;
+    });
+
+  if (!!ret.error) {
+    return ret;
+  }
+
+  console.log(JSON.stringify(result));
+  // application에 isApproved : true 추가하여 업데이트
+  // isFunded가 true 이면 application.status: upcomming 으로 업데이트
+}
+
+async function callFund(fundAmount, application, account, library) {
+  console.log('fundAmount : ' + fundAmount);
+
+  const ret = {};
+  const swapContract = getContract(application, account, library);
+  const result = await swapContract.fund(fundAmount).catch((error) => {
+    console.log(JSON.stringify(error));
+    ret.error = error;
+  });
+
+  if (!!ret.error) {
+    return ret;
+  }
+
+  console.log(JSON.stringify(result));
+  // application에 isFunded : true 추가하여 업데이트
+  // isApproved가 true 이면 application.status: upcomming 으로 업데이트
+}
+
+async function callAddWhiteListAddress(
+  whiteListAddress,
+  application,
+  account,
+  library
+) {
+  console.log('whiteListAddress : ' + JSON.stringify(whiteListAddress));
+
+  const ret = {};
+  const swapContract = getContract(application, account, library);
+  const result = await swapContract
+    .addWhitelistedAddress(whiteListAddress)
+    .catch((error) => {
+      console.log(JSON.stringify(error));
+      ret.error = error;
+    });
+
+  if (!!ret.error) {
+    return ret;
+  }
+
+  console.log(JSON.stringify(result));
+}
+
+async function callWithDrawFunds(application, account, library) {
+  const ret = {};
+  const swapContract = getContract(application, account, library);
+  const result = await swapContract.withdrawFunds().catch((error) => {
+    console.log(JSON.stringify(error));
+    ret.error = error;
+  });
+
+  if (!!ret.error) {
+    return ret;
+  }
+
+  console.log(JSON.stringify(result));
+}
+
+async function callWithDrawUnsoldTokens(application, account, library) {
+  const ret = {};
+  const swapContract = getContract(application, account, library);
+  const result = await swapContract.withdrawUnsoldTokens().catch((error) => {
+    console.log(JSON.stringify(error));
+    ret.error = error;
+  });
+
+  if (!!ret.error) {
+    return ret;
+  }
+
+  console.log(JSON.stringify(result));
+}
+
 const AdminView = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const context = useWeb3React();
+  const { account, library } = context;
+  const location = useLocation();
 
-  const { poolList } = useSelector((state) => state.pool);
+  const { applicationList } = useSelector((state) => state.pool);
 
-  const [pools, setPools] = useState([]);
   const [selectedPool, setSelectedPool] = useState('');
   const [inputs, setInputs] = useState({
-    allowanceAddress: '',
-    allowanceAmount: '',
+    approveAmount: '',
     fundAmount: '',
     whiteList: ''
   });
 
-  const { allowanceAddress, allowanceAmount, fundAmount, whiteList } = inputs;
+  const { approveAmount, fundAmount, whiteList } = inputs;
 
   const onChange = (e) => {
     const { value, name } = e.target;
@@ -64,27 +201,62 @@ const AdminView = () => {
     setSelectedPool(e.target.value);
   };
 
-  const onClickAllowance = () => {
-    console.log(
-      `seleted pool : ${selectedPool}, addresss : ${allowanceAddress}, amount : ${allowanceAmount}`
+  const getSelectedApp = () => {
+    return applicationList.filter(
+      (pool) => pool.id === selectedPool && pool.contractAddress !== ''
     );
   };
 
-  const onClickFund = () => {
-    console.log(`seleted pool : ${selectedPool}, fundAmount : ${fundAmount}`);
+  const onClickApprove = async () => {
+    if (!Number.isInteger(parseInt(approveAmount))) {
+      //approveAmount 는 int 여야함.
+      return;
+    }
+
+    console.log('approveAmount : ' + approveAmount);
+    const selectedItem = getSelectedApp();
+    await callApprove(parseInt(approveAmount), selectedItem, account, library);
   };
 
-  const onClickWhiteList = () => {
-    console.log(`seleted pool : ${selectedPool}, whiteList : ${whiteList}`);
+  const onClickFund = async () => {
+    if (!Number.isInteger(parseInt(fundAmount))) {
+      //fundAmount 는 int 여야함.
+      return;
+    }
+    const selectedItem = getSelectedApp();
+    await callFund(parseInt(fundAmount), selectedItem, account, library);
+  };
+
+  const onClickWhiteList = async () => {
+    const selectedItem = getSelectedApp();
+    await callAddWhiteListAddress(
+      whiteList.split(','),
+      selectedItem,
+      account,
+      library
+    );
+  };
+
+  const onClickWithDrawFunds = async () => {
+    const selectedItem = getSelectedApp();
+    console.log(
+      `seleted pool : ${JSON.stringify(selectedItem)}, WithDrawFunds`
+    );
+    await callWithDrawFunds(selectedItem, account, library);
+  };
+
+  const onClickWithdrawUnsoldTokens = async () => {
+    const selectedItem = getSelectedApp();
+    console.log(
+      `seleted pool : ${JSON.stringify(selectedItem)}, WithdrawUnsoldTokens`
+    );
+    await callWithDrawUnsoldTokens(selectedItem, account, library);
   };
 
   useEffect(() => {
-    dispatch(getPoolList());
-    const newPools = poolList.filter(
-      (pool) => pool.projectName !== undefined && pool.contractAddress !== ''
-    );
-    setPools(newPools);
-  }, [poolList]);
+    dispatch(searchApplicationListByCreator(account));
+    setSelectedPool(location.state.selectedItem.id);
+  }, [account, applicationList]);
 
   return (
     <Page
@@ -119,44 +291,40 @@ const AdminView = () => {
         </Container>
         <CardContent>
           <Typography variant="h6" component="h2">
-            Select Pool
+            Select Application
           </Typography>
           <Box className={classes.box}>
             <TextField
               style={{ minWidth: '200px' }}
-              name="selectePool"
+              name="selecteApplication"
               select
-              defaultValue=""
-              label="Pools"
+              defaultValue={location.state.selectedItem.id}
+              label="Applications"
               size="small"
               onChange={handleChange}
             >
-              {pools.map((pool, index) => (
-                <option key={index} value={pool.projectName}>
-                  {pool.projectName}
+              {applicationList.map((app, index) => (
+                <option key={index} value={app.id}>
+                  {app.projectName}
                 </option>
               ))}
             </TextField>
           </Box>
 
           <Typography variant="h6" component="h2">
-            Allowance
+            Approve
           </Typography>
           <Box className={classes.box}>
             <TextField
               className={classes.textField}
-              name="allowanceAmount"
+              name="approveAmount"
               label="Amount"
               size="small"
-              value={allowanceAmount}
+              value={approveAmount}
               onChange={onChange}
             ></TextField>
-            <Button
-              variant="contained"
-              size="medium"
-              onClick={onClickAllowance}
-            >
-              Save
+            <Button variant="contained" size="medium" onClick={onClickApprove}>
+              Approve
             </Button>
           </Box>
 
@@ -173,7 +341,7 @@ const AdminView = () => {
               onChange={onChange}
             ></TextField>
             <Button variant="contained" size="medium" onClick={onClickFund}>
-              Save
+              Fund
             </Button>
           </Box>
 
@@ -194,7 +362,25 @@ const AdminView = () => {
               size="medium"
               onClick={onClickWhiteList}
             >
-              Save
+              Add
+            </Button>
+          </Box>
+          <Box className={classes.box}>
+            <Button
+              variant="contained"
+              size="medium"
+              onClick={onClickWithDrawFunds}
+            >
+              WithDrawFunds
+            </Button>
+          </Box>
+          <Box className={classes.box}>
+            <Button
+              variant="contained"
+              size="medium"
+              onClick={onClickWithdrawUnsoldTokens}
+            >
+              WithdrawUnsoldTokens
             </Button>
           </Box>
         </CardContent>
