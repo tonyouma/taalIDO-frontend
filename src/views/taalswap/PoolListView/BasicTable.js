@@ -28,8 +28,6 @@ import { useHistory } from 'react-router-dom';
 import { getPoolList } from '../../../redux/slices/pool';
 import ToolbarTable from '../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
-import { DialogAnimate } from '../../../components/Animate';
-import DetailsForm from './DetailsForm';
 import { closeModal, openModal } from '../../../redux/slices/pool';
 import { MLabel } from 'src/theme';
 import getMax from '../../../utils/getMax';

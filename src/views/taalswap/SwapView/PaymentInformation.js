@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, TextField } from '@material-ui/core';
 import getMax from '../../../utils/getMax';
+import { MLabel } from 'src/theme';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 // ----------------------------------------------------------------------
 
@@ -35,19 +37,23 @@ PaymentInformation.propTypes = {
   className: PropTypes.string
 };
 
-function PaymentInformation({ className, pool }) {
+function PaymentInformation({ className, pool, index }) {
   const classes = useStyles();
 
   return (
     <div className={clsx(classes.root, className)}>
-      <Typography variant="h3" sx={{ mb: 2 }}>
-        0 {pool.status}
-      </Typography>
-      <div className={classes.row}>
-        <Typography variant="h6" component="p">
-          Access : {pool.access}
-        </Typography>
-      </div>
+      <MLabel color="primary">Candidate</MLabel>
+      <MLabel color="info">Info</MLabel>
+      <MLabel color="success">Success</MLabel>
+      <MLabel color="warning">Waring</MLabel>
+      <MLabel color="error">Error</MLabel>
+      <Box className={classes.box2rem} display="flex">
+        <div className={classes.row}>
+          <Typography variant="h6" component="p">
+            Access : {pool.access}
+          </Typography>
+        </div>
+      </Box>
       <Box className={classes.box2rem}>
         <TextField
           label="Trade Value"
@@ -74,6 +80,7 @@ function PaymentInformation({ className, pool }) {
           // value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
           value={`${pool.maxIndividuals} ${pool.symbol}`}
         />
+
         <TextField
           label="Price"
           variant="standard"
@@ -84,86 +91,49 @@ function PaymentInformation({ className, pool }) {
           value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
         />
       </Box>
-      <Box className={classes.box2rem} display="flex">
-        <Box width="80%" marginTop={4} sx={{ alignItems: 'center' }}>
+      <Box
+        className={classes.box2rem}
+        display="flex"
+        justifyContent="space-between"
+      >
+        <Box width="59%" marginTop={5} sx={{ alignItems: 'center' }}>
           <Typography color="#888888" sx={{ mx: 1 }}>
-            Auction progress :
+            Progress
           </Typography>
+          <Box marginTop={3}>
+            <LinearProgress variant="determinate" />
+          </Box>
         </Box>
+
         <Box
+          width="35%"
           sx={{
-            justifyContent: 'flex-end',
-            alignItems: 'center'
+            mb: 2.5,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end'
           }}
-          display="flex"
         >
-          <TextField
-            sx={{
-              flex: 3 / 6,
-              flexWrap: 'wrap'
-            }}
-            variant="standard"
-            InputLabelProps={{
-              shrink: true
-            }}
-            size="small"
-            value="0"
-            margin="normal"
-            inputProps={{
-              style: { fontSize: 30, textAlign: 'center' }
-            }} // font size of input text
-            InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
-          />
           <Typography
             component="span"
-            variant="body2"
+            variant="subtitle2"
             sx={{
-              mb: 1,
-              alignSelf: 'flex-end',
+              mb: 7,
               color: 'text.secondary'
             }}
           >
-            ETH
+            Participants
           </Typography>
           <Typography
             component="span"
-            variant="h5"
-            paddingLeft={1}
+            variant="h3"
             sx={{
-              mb: 1,
+              mb: 0,
               alignSelf: 'flex-end',
               color: 'text.secondary'
             }}
           >
-            /
-          </Typography>
-          <TextField
-            sx={{
-              flex: 3 / 6,
-              flexWrap: 'wrap'
-            }}
-            variant="standard"
-            InputLabelProps={{
-              shrink: true
-            }}
-            size="small"
-            value="10"
-            margin="normal"
-            inputProps={{
-              style: { fontSize: 30, textAlign: 'center' }
-            }} // font size of input text
-            InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
-          />
-          <Typography
-            component="span"
-            variant="body2"
-            sx={{
-              mb: 1,
-              alignSelf: 'flex-end',
-              color: 'text.secondary'
-            }}
-          >
-            ETH
+            120
           </Typography>
         </Box>
       </Box>

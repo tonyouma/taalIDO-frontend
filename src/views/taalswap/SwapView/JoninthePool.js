@@ -1,4 +1,7 @@
 import clsx from 'clsx';
+import React from 'react';
+import { Icon } from '@iconify/react';
+import shieldFill from '@iconify-icons/eva/shield-fill';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -40,7 +43,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: theme.spacing(2.5)
+    marginBottom: theme.spacing(2.5),
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -227,19 +231,36 @@ function JoninthePool({ className, pool }) {
         </Typography>
       </div>
 
-      <Box
-        sx={{
-          pt: 1.5,
-          pb: 2.5,
-          display: 'flex',
-          justifyContent: 'space-between'
-        }}
-      >
-        <Typography variant="h6" component="p">
-          Your Purchase Ammount
+      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+
+      <div className={classes.row}>
+        <Typography
+          component="p"
+          variant="subtitle2"
+          sx={{ color: 'text.secondary' }}
+        >
+          Yout Bid Ammount
         </Typography>
-        <Typography variant="h6" component="p">
+        <Typography
+          component="p"
+          variant="body2"
+          sx={{ color: 'text.secondary' }}
+        >
           Blance : {balance !== null ? formatEther(balance) : 'none'} ETH
+        </Typography>
+      </div>
+
+      <Box sx={{ mb: 1.5, display: 'flex', justifyContent: 'flex-end' }}>
+        <Typography
+          component="span"
+          variant="subtitle2"
+          sx={{
+            mb: 1,
+            alignSelf: 'flex-end',
+            color: 'text.secondary'
+          }}
+        >
+          Price : 0.148 ETH
         </Typography>
       </Box>
 
@@ -256,7 +277,6 @@ function JoninthePool({ className, pool }) {
       </div>
 
       <Box sx={{ mb: 2.5, display: 'flex', justifyContent: 'flex-end' }}>
-        {/* <Typography sx={{ color: 'text.secondary' }}>$</Typography> */}
         <Typography variant="h2" sx={{ mx: 1 }}>
           <TextField
             type="number"
@@ -291,7 +311,7 @@ function JoninthePool({ className, pool }) {
         </Typography>
       </Box>
 
-      <Box sx={{ mt: 5, mb: 3 }}>
+      <Box sx={{ mt: 2, mb: 3 }}>
         {/* <Button>
 
         </Button> */}
@@ -316,9 +336,15 @@ function JoninthePool({ className, pool }) {
             justifyContent: 'center'
           }}
         >
-          <Box sx={{ width: 20, height: 20, mr: 1, color: 'primary.main' }} />
-          Have problems Joing? <br />
-          Click here to read instructions.
+          <Box
+            component={Icon}
+            icon={shieldFill}
+            sx={{ width: 20, height: 20, mr: 1, color: 'primary.main' }}
+          />
+          Warning : Balance should be bigger than the price
+        </Typography>
+        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+          Have problems Joing? Click here to read instructions.
         </Typography>
       </Box>
     </div>

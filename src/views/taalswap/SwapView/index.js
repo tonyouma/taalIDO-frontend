@@ -6,8 +6,6 @@ import JoninthePool from './JoninthePool';
 import useBreakpoints from 'src/hooks/useBreakpoints';
 import PaymentInformation from './PaymentInformation';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useLocation } from 'react-router';
-import { MButton } from 'src/theme';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Card, Container } from '@material-ui/core';
 import PoolButton from './PoolButton';
