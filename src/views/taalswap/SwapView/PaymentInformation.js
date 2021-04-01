@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, TextField } from '@material-ui/core';
+import getMax from '../../../utils/getMax';
 
 // ----------------------------------------------------------------------
 
@@ -34,28 +35,28 @@ PaymentInformation.propTypes = {
   className: PropTypes.string
 };
 
-function PaymentInformation({ className }) {
+function PaymentInformation({ className, pool }) {
   const classes = useStyles();
 
   return (
     <div className={clsx(classes.root, className)}>
       <Typography variant="h3" sx={{ mb: 2 }}>
-        0 live
+        0 {pool.status}
       </Typography>
       <div className={classes.row}>
         <Typography variant="h6" component="p">
-          Participant : Public
+          Access : {pool.access}
         </Typography>
       </div>
       <Box className={classes.box2rem}>
         <TextField
-          label="Fixed Swap Ratio"
+          label="Trade Value"
           variant="standard"
           InputLabelProps={{
             shrink: true
           }}
           fullWidth
-          value="1 BNB = 30000 ALICE"
+          value={`${pool.ratio} ${pool.symbol} = 1 ETH`}
         />
       </Box>
       <Box
@@ -64,23 +65,23 @@ function PaymentInformation({ className }) {
         justifyContent="space-between"
       >
         <TextField
-          label="Price, $"
+          label="Max. Individuals"
           variant="standard"
           InputLabelProps={{
             shrink: true
           }}
           style={{ width: '49%' }}
-          value="0.008881"
+          // value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
+          value={`${pool.maxIndividuals} ${pool.symbol}`}
         />
-
         <TextField
-          label="Maximum Allocation per Wallet"
+          label="Price"
           variant="standard"
           InputLabelProps={{
             shrink: true
           }}
           style={{ width: '49%' }}
-          value="5 BNB"
+          value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
         />
       </Box>
       <Box className={classes.box2rem} display="flex">
@@ -122,7 +123,7 @@ function PaymentInformation({ className }) {
               color: 'text.secondary'
             }}
           >
-            bnb
+            ETH
           </Typography>
           <Typography
             component="span"
@@ -162,7 +163,7 @@ function PaymentInformation({ className }) {
               color: 'text.secondary'
             }}
           >
-            bnb
+            ETH
           </Typography>
         </Box>
       </Box>

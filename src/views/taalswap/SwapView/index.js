@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Page from 'src/components/Page';
 import { HeaderDashboard } from 'src/layouts/Common';
@@ -6,6 +6,7 @@ import JoninthePool from './JoninthePool';
 import useBreakpoints from 'src/hooks/useBreakpoints';
 import PaymentInformation from './PaymentInformation';
 import { useFormik, Form, FormikProvider } from 'formik';
+import { useLocation } from 'react-router';
 import { MButton } from 'src/theme';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Card, Container } from '@material-ui/core';
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 function PaymentView(className, ...other) {
   const classes = useStyles();
+  const location = useLocation();
   const upMd = useBreakpoints('up', 'md');
   const formik = useFormik({
     initialValues: {
@@ -35,10 +37,16 @@ function PaymentView(className, ...other) {
     }
   });
 
+  const [pool, setPool] = useState(location.state.selectedPool);
+
   return (
     <Page title="Table-Components | Minimal-UI" className={classes.root}>
       <Container maxWidth="lg">
-        <HeaderDashboard heading="XXXProtocol" links={[{ name: 'Swap' }]} />
+        <HeaderDashboard
+          heading={pool.poolName}
+          links={[{ name: pool.tokenContractAddr }]}
+          subTitle={pool.tokenContractAddr}
+        />
         <div className={clsx(classes.root, className)} {...other}>
           <PoolButton />
         </div>
@@ -47,11 +55,11 @@ function PaymentView(className, ...other) {
             <Form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
               <Grid container spacing={upMd ? 5 : 2}>
                 <Grid item xs={12} md={6}>
-                  <PaymentInformation formik={formik} />
+                  <PaymentInformation formik={formik} pool={pool} />
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <JoninthePool formik={formik} />
+                  <JoninthePool formik={formik} pool={pool} />
                 </Grid>
               </Grid>
             </Form>
