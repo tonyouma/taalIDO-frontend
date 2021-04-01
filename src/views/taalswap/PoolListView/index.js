@@ -17,7 +17,7 @@ function PoolListView() {
   return (
     <Page title="Table-Components | Minimal-UI" className={classes.root}>
       <Container maxWidth="lg">
-        <HeaderDashboard heading="All Pools" links={[{ name: 'Swap' }]} />
+        <HeaderDashboard heading="IDO Pools" links={[{ name: 'textejfiej' }]} />
         <Grid container spacing={5}>
           <Grid item xs={12}>
             <Card>
