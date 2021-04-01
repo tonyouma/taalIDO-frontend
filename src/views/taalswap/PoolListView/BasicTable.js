@@ -154,7 +154,7 @@ function TablePoolRow({ row, handleOpenModal }) {
         {row.poolName}
       </TableCell>
       <TableCell align="right" width="20%">
-        {row.ratio} ETH = 1 {row.symbol}
+        {row.ratio} {row.symbol} = 1 ETH
       </TableCell>
       <TableCell align="right" width="5%">
         {row.access}
