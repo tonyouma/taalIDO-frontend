@@ -13,7 +13,7 @@ import { tokenData } from '../../../contracts';
 import { useWeb3React } from '@web3-react/core';
 import Application from 'taalswap-js/src/models';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import usePoolStatus from 'src/hooks/usePoolStatus';
+// import usePoolStatus from 'src/hooks/usePoolStatus';
 
 // ----------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ PaymentInformation.propTypes = {
 function PaymentInformation({ className, pool, index }) {
   const classes = useStyles();
   const context = useWeb3React();
-  const poolList = usePoolStatus(pool);
+  // const poolList = usePoolStatus(pool);
 
   const [progressValue, setProgressValue] = useState(0);
   const [participants, setParticipants] = useState(0);
@@ -80,7 +80,7 @@ function PaymentInformation({ className, pool, index }) {
   } = context;
 
   useEffect(() => {
-    console.log(poolList);
+    // console.log(poolList);
     if (!!library) {
       const fixedContract = new Contract(
         pool.contractAddress,
@@ -111,14 +111,18 @@ function PaymentInformation({ className, pool, index }) {
         .then((result) => {
           setParticipants(result.length);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
 
       swapContract
         .tokensAllocated()
         .then((result) => {
           setProgressValue(getProgressValue(result, pool.tradeAmount));
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, [pool]);
 
