@@ -12,7 +12,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Card, Button, Typography, Box } from '@material-ui/core';
 import { MLabel } from 'src/theme';
 import getMax from '../../../utils/getMax';
+import getProgressValue from '../../../utils/getProgressValue';
 import { useHistory } from 'react-router-dom';
+import { Contract, ContractFactory } from '@ethersproject/contracts';
+import { fixedData } from '../../../contracts';
+import { tokenData } from '../../../contracts';
+import { useWeb3React } from '@web3-react/core';
+import Application from 'taalswap-js/src/models';
 
 // ----------------------------------------------------------------------
 
@@ -42,9 +48,68 @@ PlanCard.propTypes = {
 function PlanCard({ pool, index, className }) {
   const classes = useStyles();
   const history = useHistory();
+  const context = useWeb3React();
 
   const [max, setMax] = useState(0);
+  const [allocated, setAllocated] = useState(0);
+  const [progressValue, setProgressValue] = useState(0);
+  const [totalRaise, setTotalRaise] = useState(0);
+  const [participants, setParticipants] = useState(0);
+
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
+
   useEffect(() => {
+    if (!!library) {
+      const fixedContract = new Contract(
+        pool.contractAddress,
+        ContractFactory.getInterface(fixedData.abi),
+        library.getSigner(account).connectUnchecked()
+      );
+      const tokenContract = new Contract(
+        pool.tokenContractAddr,
+        ContractFactory.getInterface(tokenData.abi),
+        library.getSigner(account).connectUnchecked()
+      );
+      const taalswapApp = new Application({
+        test: true,
+        mainnet: false,
+        account: account
+      });
+      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+      const swapContract = taalswapApp.getFixedSwapContract({
+        tokenAddress: pool.tokenContractAddr,
+        decimals: 18,
+        contractAddress: pool.contractAddress,
+        fixedContract: fixedContract,
+        tokenContract: tokenContract
+      });
+
+      swapContract
+        .getBuyers()
+        .then((result) => {
+          setParticipants(result.length);
+        })
+        .catch((error) => {});
+
+      swapContract
+        .tokensAllocated()
+        .then((result) => {
+          setAllocated(result);
+          setProgressValue(getProgressValue(result, pool.tradeAmount));
+          setTotalRaise(result * pool.tradeValue);
+        })
+        .catch((error) => {});
+    }
+
     setMax(getMax(pool.maxIndividuals, pool.tradeValue));
   }, [getMax]);
 
@@ -110,43 +175,16 @@ function PlanCard({ pool, index, className }) {
         </Box>
         <Box style={{ textAlign: 'center' }}>
           <Typography variant="body2" sx={{ mx: 1 }}>
-            symbol(연동) / ETH
+            {pool.symbol} / ETH
           </Typography>
         </Box>
       </Box>
 
       <StyledEngineProvider injectFirst>
-        <CirculProgress />
+        <CirculProgress progressValue={progressValue} />
       </StyledEngineProvider>
 
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
-        {/* {card.lists.map((item) => (
-          <Box
-            key={item.text}
-            component="li"
-            sx={{
-              display: 'flex',
-              typography: 'body2',
-              color: item.isAvailable ? 'text.primary' : 'text.disabled',
-              '&:not(:last-of-type)': { mb: 2 }
-            }}
-          >
-            <Box
-              component={Icon}
-              icon={checkmarkFill}
-              sx={{ width: 20, height: 20, mr: 1.5 }}
-            />
-            {item.text}
-            <Box sx={{ flex: 1 }} />
-            
-            <Box sx={{ mr: 1.5 }}>
-              {item.describe.map((item2) => {
-                return <Box sx={{ mr: 1.5 }}>{item2}</Box>;
-              })}
-            </Box>
-          </Box>
-        ))} */}
-
         {/* Ratio */}
         <Box
           key="ratio"
@@ -167,7 +205,9 @@ function PlanCard({ pool, index, className }) {
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{pool.ratio} ETH = 1 Symbol(연동)</Box>
+            <Box sx={{ mr: 1.5 }}>
+              {pool.ratio} {pool.symbol} = 1 ETH
+            </Box>
           </Box>
         </Box>
 
@@ -239,7 +279,7 @@ function PlanCard({ pool, index, className }) {
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>0(연동)</Box>
+            <Box sx={{ mr: 1.5 }}>{participants}</Box>
           </Box>
         </Box>
 
@@ -263,15 +303,12 @@ function PlanCard({ pool, index, className }) {
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>tokensAllocated() * tradeValue (ETH)</Box>
-            {/* <Box sx={{ mr: 1.5 }}>0 ETH</Box> */}
+            <Box sx={{ mr: 1.5 }}>{totalRaise} ETH</Box>
           </Box>
         </Box>
       </Box>
 
       <Button
-        // to={PATH_APP.taalswap.pooldetails}
-        // component={RouterLink}
         fullWidth
         size="large"
         variant="contained"
