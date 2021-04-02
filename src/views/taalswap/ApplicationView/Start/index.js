@@ -128,8 +128,8 @@ function ApplicationStart() {
           // endDate: moment(values.preferredStartDate.toDateString())
           //   .add(30, 'd')
           //   .unix(), // startdate + 30일
-          startDate: moment().add(5, 'minutes').unix(), // preferredStartDate 에포크타임으로 저장
-          endDate: moment().add(10, 'minutes').unix(), // startdate + 30일
+          startDate: moment().add(2, 'hours').unix(), // preferredStartDate 에포크타임으로 저장
+          endDate: moment().add(2, 'd').unix(), // startdate + 30일
           ratio: 1 / values.tradeValue,
           progress: '',
           feeAmount: values.feeAmount,

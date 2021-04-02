@@ -231,7 +231,7 @@ const AdminView = () => {
       enqueueSnackbar('Fund fail', { variant: 'error' });
     } else {
       const app = JSON.parse(JSON.stringify(selectedItem));
-      app.status = 'upcomming';
+      app.status = 'upcoming';
       dispatch(updateApplication(app));
       enqueueSnackbar('Fund success', { variant: 'success' });
     }
