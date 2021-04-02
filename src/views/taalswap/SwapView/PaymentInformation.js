@@ -16,6 +16,8 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 // import usePoolStatus from 'src/hooks/usePoolStatus';
 
 import { PoolStatus } from '../../../utils/poolStatus';
+import { getPoolStatus } from '../../../utils/getPoolStatus';
+import StatusLabel from '../Components/StatusLabel';
 
 // ----------------------------------------------------------------------
 
@@ -69,6 +71,7 @@ function PaymentInformation({ className, pool, index }) {
 
   const [progressValue, setProgressValue] = useState(0);
   const [participants, setParticipants] = useState(0);
+  const [poolStatus, setStatus] = useState('');
 
   const {
     connector,
@@ -81,7 +84,7 @@ function PaymentInformation({ className, pool, index }) {
     error
   } = context;
 
-  useEffect(() => {
+  useEffect(async () => {
     // console.log(poolList);
     if (!!library) {
       const fixedContract = new Contract(
@@ -89,17 +92,19 @@ function PaymentInformation({ className, pool, index }) {
         ContractFactory.getInterface(fixedData.abi),
         library.getSigner(account).connectUnchecked()
       );
+
       const tokenContract = new Contract(
         pool.tokenContractAddr,
         ContractFactory.getInterface(tokenData.abi),
         library.getSigner(account).connectUnchecked()
       );
+
       const taalswapApp = new Application({
         test: true,
         mainnet: false,
         account: account
       });
-      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+
       const swapContract = taalswapApp.getFixedSwapContract({
         tokenAddress: pool.tokenContractAddr,
         decimals: 18,
@@ -108,100 +113,27 @@ function PaymentInformation({ className, pool, index }) {
         tokenContract: tokenContract
       });
 
-      swapContract
+      await swapContract
         .getBuyers()
         .then((result) => {
           setParticipants(result.length);
         })
         .catch((error) => {});
 
-      swapContract
+      await swapContract
         .tokensAllocated()
         .then((result) => {
           setProgressValue(getProgressValue(result, pool.tradeAmount));
         })
         .catch((error) => {});
 
-      // Pool의 현재 상태 확인
-      const isPreStart = await swapContract.isPreStart().catch(() => {});
-      const isFunded = await swapContract.isFunded().catch(() => {});
-      const isOpen = await swapContract.isOpen().catch(() => {});
-      const hasStarted = await swapContract.hasStarted().catch(() => {});
-      const hasFinalized = await swapContract.hasFinalized().catch(() => {});
-      const hasMinimumRaise = await swapContract
-        .hasMinimumRaise()
-        .catch(() => {});
-      const minimumRaiseAchieved = await swapContract
-        .minimumRaiseAchieved()
-        .catch(() => {});
-      console.log('isOpen :', isPreStart);
-      console.log('isOpen :', isOpen);
-      console.log('hasStarted :', hasStarted);
-      console.log('hasFinalized :', hasFinalized);
-      console.log('hasMinimumRaise :', hasMinimumRaise);
-      console.log('minimumRaiseAchieved :', minimumRaiseAchieved);
-
-      let poolStatus;
-      if (isOpen) {
-        poolStatus = PoolStatus.LIVE;
-      } else {
-        if (isPreStart) {
-          if (isFunded) {
-            poolStatus = PoolStatus.UPCOMING;
-          }
-        } else {
-          if (hasMinimumRaise) {
-            if (minimumRaiseAchieved) {
-              // 구매자
-              // getMyPurchases(지갑주소)
-              // -> return uint256[]
-              //    forEach :
-              //      redeemTokens(uint256 purchase_id)
-              // 판매자
-              // withdrawFunds()
-              poolStatus = PoolStatus.FILLED.SUCCESS.ACHIEVED;
-            } else {
-              // 구매자
-              // getMyPurchases(지갑주소)
-              // -> return uint256[]
-              //    forEach :
-              //      redeemGivenMinimumGoalNotAchieved(uint256 purchase_id)
-              // 판매자
-              // withdrawUnsoldTokens()
-              poolStatus = PoolStatus.FILLED.FAILED;
-            }
-          } else {
-            poolStatus = PoolStatus.FILLED.SUCCESS.CLOSED;
-            // 구매자
-            // getMyPurchases(지갑주소)
-            // -> return uint256[]
-            //    forEach :
-            //      redeemTokens(uint256 purchase_id)
-            // 판매자
-            // withdrawFunds()
-            // withdrawUnsoldTokens()
-          }
-        }
-      }
-      console.log('Pool Status :', poolStatus);
+      setStatus(await getPoolStatus(swapContract));
     }
   }, [pool]);
 
   return (
     <div className={clsx(classes.root, className)}>
-      {pool.status === 'candidate' ? (
-        <MLabel color="primary">Candidate</MLabel>
-      ) : null}
-      {pool.status === 'approved' ? (
-        <MLabel color="info">Approved</MLabel>
-      ) : null}
-      {pool.status === 'deployed' ? (
-        <MLabel color="success">Deployed</MLabel>
-      ) : null}
-      {/*
-      <MLabel color="warning">Waring</MLabel>
-      <MLabel color="error">Error</MLabel> */}
-
+      <StatusLabel poolStatus={poolStatus} />
       <Box className={classes.box2rem} display="flex">
         <div className={classes.row}>
           <Typography variant="h6" component="p">
