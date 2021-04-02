@@ -81,7 +81,7 @@ function PaymentInformation({ className, pool, index }) {
     error
   } = context;
 
-  useEffect(() => {
+  useEffect(async () => {
     // console.log(poolList);
     if (!!library) {
       const fixedContract = new Contract(
