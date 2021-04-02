@@ -143,13 +143,12 @@ function JoninthePool({ className, pool }) {
                 setAmount(0);
               })
               .catch((error) => console.log(error));
+            setWarningMessage('');
           } else {
-            console.log('2차 실패');
             setWarningMessage('tokensLeft 보다 적게');
           }
         } else {
           setWarningMessage('최소값 보다 많고, 최대값 보다 적게');
-          console.log('1차 실패');
         }
       }
     } catch (error) {
