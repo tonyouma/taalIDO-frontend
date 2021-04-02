@@ -3,7 +3,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
-import CirculProgress from './CirculProgress';
 import { Icon } from '@iconify/react';
 import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
@@ -153,10 +152,6 @@ function PlanCard({ pool, index, className }) {
           </Typography>
         </Box>
       </Box>
-
-      <StyledEngineProvider injectFirst>
-        <CirculProgress progressValue={progressValue} />
-      </StyledEngineProvider>
 
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
         {/* Ratio */}
