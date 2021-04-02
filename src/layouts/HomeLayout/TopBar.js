@@ -158,38 +158,34 @@ function TopBar() {
 
   // 스마트컨트랙 연동 테스트 코그 >>
   if (!!library) {
-    console.log('library', library);
+    // console.log('library', library);
     // const ERC20TokenAddress = '0x581F2FCA16F9989CA9c46ebbD107410c9D8fA0B8';
     // const contractAddress = '0xd9606583D4e2c9b7d9EB89C0C3De1d359d9DDb5F';
-    const ERC20TokenAddress = '0x581F2FCA16F9989CA9c46ebbD107410c9D8fA0B8';
-    const contractAddress = '0xB4c8796C9A5230D0320A6c32FD7125b0519E486a';
-
-    const fixedContract = new Contract(
-      contractAddress,
-      ContractFactory.getInterface(fixedData.abi),
-      library.getSigner(account).connectUnchecked()
-    );
-
-    const tokenContract = new Contract(
-      contractAddress,
-      ContractFactory.getInterface(tokenData.abi),
-      library.getSigner(account).connectUnchecked()
-    );
-
-    const taalswapApp = new Application({
-      test: true,
-      mainnet: false,
-      account: account
-    });
+    // const ERC20TokenAddress = '0x581F2FCA16F9989CA9c46ebbD107410c9D8fA0B8';
+    // const contractAddress = '0xB4c8796C9A5230D0320A6c32FD7125b0519E486a';
+    // const fixedContract = new Contract(
+    //   contractAddress,
+    //   ContractFactory.getInterface(fixedData.abi),
+    //   library.getSigner(account).connectUnchecked()
+    // );
+    // const tokenContract = new Contract(
+    //   contractAddress,
+    //   ContractFactory.getInterface(tokenData.abi),
+    //   library.getSigner(account).connectUnchecked()
+    // );
+    // const taalswapApp = new Application({
+    //   test: true,
+    //   mainnet: false,
+    //   account: account
+    // });
     // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
-    const swapContract = taalswapApp.getFixedSwapContract({
-      tokenAddress: ERC20TokenAddress,
-      decimals: 18,
-      contractAddress: contractAddress,
-      fixedContract: fixedContract,
-      tokenContract: tokenContract
-    });
-
+    // const swapContract = taalswapApp.getFixedSwapContract({
+    //   tokenAddress: ERC20TokenAddress,
+    //   decimals: 18,
+    //   contractAddress: contractAddress,
+    //   fixedContract: fixedContract,
+    //   tokenContract: tokenContract
+    // });
     // const params = [
     //   ERC20TokenAddress,
     //   Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
@@ -213,7 +209,6 @@ function TopBar() {
     // );
     //
     // taalDeploy(factory).then((r) => console.log('..... Deploy DONE'));
-
     // ethers.Contract;
     // const deployTx = ethers.Contract.getDeployTransaction(
     //   fixedData.bytecode,
@@ -230,11 +225,9 @@ function TopBar() {
     //   .then((tx) => {
     //     console.log(tx);
     //   });
-
     // library.wallet.sendTransaction(deployTx).then((tx) => {
     //   console.log(tx);
     // });
-
     // swapContract
     //   .deploy({
     //     tradeValue: tradeValue,
@@ -248,19 +241,16 @@ function TopBar() {
     //   .then((resp) => {
     //     console.log(swapContract.getAddress());
     //   });
-
     // swapContract.__init__();
     // swapContract.assertERC20Info().then((resp) => {
     //   console.log(resp);
     // });
     // console.log(swapContract);
-
-    swapContract.tokensForSale().then((tokens) => {
-      console.log('tokensForSale', tokens);
-      const xxx = Numbers.toSmartContractDecimals(tokens, 18);
-      console.log(xxx);
-    });
-
+    // swapContract.tokensForSale().then((tokens) => {
+    //   console.log('tokensForSale', tokens);
+    //   const xxx = Numbers.toSmartContractDecimals(tokens, 18);
+    //   console.log(xxx);
+    // });
     // swapContract.tokensAllocated().then((tokens) => {
     //   console.log('tokensAllocated', tokens);
     //   const xxx = Numbers.toSmartContractDecimals(tokens, 18);
@@ -273,11 +263,11 @@ function TopBar() {
     //   // console.log('getBuyers' + xxx);
     // });
     //
-    swapContract.isOpen().then((isOpen) => {
-      console.log('isOpen', isOpen);
-      // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
-      // console.log('getBuyers' + xxx);
-    });
+    // swapContract.isOpen().then((isOpen) => {
+    //   console.log('isOpen', isOpen);
+    // const xxx = Numbers.toSmartContractDecimals(buyers, 18);
+    // console.log('getBuyers' + xxx);
+    // });
     //
     // swapContract.isPreStart().then((isPreStart) => {
     //   console.log('isPreStart', isPreStart);
@@ -300,7 +290,6 @@ function TopBar() {
     //   });
     // }
     // << 스마트컨트랙 연동 테스트 소스
-
     // console.log('2----------> ', activatingConnector);
     // console.log('2----------> ', connector);
     // if (balance !== null) {
