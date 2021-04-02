@@ -22,7 +22,7 @@ const LANGS = [
   },
   {
     value: 'cn',
-    label: 'China',
+    label: '中国',
     icon: '/static/icons/ic_flag_ch.svg'
   }
 ];
