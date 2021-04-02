@@ -18,12 +18,12 @@ const LANGS = [
   {
     value: 'kr',
     label: '대한민국',
-    icon: '/static/icons/ic_flags_kr.svg'
+    icon: '/static/icons/ic_flag_kr.svg'
   },
   {
     value: 'cn',
     label: 'China',
-    icon: '/static/icons/ic_flags_cn.svg'
+    icon: '/static/icons/ic_flag_ch.svg'
   }
 ];
 
