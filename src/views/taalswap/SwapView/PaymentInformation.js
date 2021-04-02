@@ -150,7 +150,7 @@ function PaymentInformation({ className, pool, index }) {
       </Box>
       <Box className={classes.box2rem}>
         <TextField
-          label="Trade Value"
+          label="Ratio"
           variant="standard"
           InputLabelProps={{
             shrink: true
