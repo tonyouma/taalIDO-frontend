@@ -19,6 +19,8 @@ import { fixedData } from '../../../contracts';
 import { tokenData } from '../../../contracts';
 import { useWeb3React } from '@web3-react/core';
 import Application from 'taalswap-js/src/models';
+import { getPoolStatus } from '../../../utils/getPoolStatus';
+import StatusLabel from '../../taalswap/Components/StatusLabel';
 
 // ----------------------------------------------------------------------
 
@@ -55,6 +57,7 @@ function PlanCard({ pool, index, className }) {
   const [progressValue, setProgressValue] = useState(0);
   const [totalRaise, setTotalRaise] = useState(0);
   const [participants, setParticipants] = useState(0);
+  const [poolStatus, setStatus] = useState('');
 
   const {
     connector,
@@ -67,7 +70,7 @@ function PlanCard({ pool, index, className }) {
     error
   } = context;
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!!library) {
       const fixedContract = new Contract(
         pool.contractAddress,
@@ -93,25 +96,32 @@ function PlanCard({ pool, index, className }) {
         tokenContract: tokenContract
       });
 
-      swapContract
+      await swapContract
         .getBuyers()
         .then((result) => {
           setParticipants(result.length);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
 
-      swapContract
+      await swapContract
         .tokensAllocated()
         .then((result) => {
           setAllocated(result);
           setProgressValue(getProgressValue(result, pool.tradeAmount));
           setTotalRaise(result * pool.tradeValue);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
+
+      const status = await getPoolStatus(swapContract, pool.status);
+      setStatus(status);
     }
 
     setMax(getMax(pool.maxIndividuals, pool.tradeValue));
-  }, [getMax]);
+  }, [pool]);
 
   const onClickDetails = () => {
     console.log(pool);
@@ -123,43 +133,7 @@ function PlanCard({ pool, index, className }) {
 
   return (
     <Card className={clsx(classes.root, className)}>
-      {index === 0 && (
-        <MLabel
-          color="info"
-          sx={{
-            top: 16,
-            right: 16,
-            position: 'absolute'
-          }}
-        >
-          Filled
-        </MLabel>
-      )}
-      {index === 1 && (
-        <MLabel
-          color="gray"
-          sx={{
-            top: 16,
-            right: 16,
-            position: 'absolute'
-          }}
-        >
-          Closed
-        </MLabel>
-      )}
-      {index === 2 && (
-        <MLabel
-          color="gray"
-          sx={{
-            top: 16,
-            right: 16,
-            position: 'absolute'
-          }}
-        >
-          Closed
-        </MLabel>
-      )}
-
+      <StatusLabel poolStatus={poolStatus} absolute />
       <Box
         sx={{
           display: 'flex',

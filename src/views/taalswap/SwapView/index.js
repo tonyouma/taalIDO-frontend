@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Card, Container } from '@material-ui/core';
 import PoolButton from './PoolButton';
 import { useLocation } from 'react-router-dom';
+import PoolDetails from '../PoolDetails';
 
 // ----------------------------------------------------------------------
 
@@ -63,6 +64,9 @@ function PaymentView(className, ...other) {
               </Grid>
             </Form>
           </FormikProvider>
+        </Card>
+        <Card style={{ marginTop: '3rem' }}>
+          <PoolDetails />
         </Card>
       </Container>
     </Page>

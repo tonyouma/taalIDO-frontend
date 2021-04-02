@@ -15,6 +15,10 @@ import Application from 'taalswap-js/src/models';
 import LinearProgress from '@material-ui/core/LinearProgress';
 // import usePoolStatus from 'src/hooks/usePoolStatus';
 
+import { PoolStatus } from '../../../utils/poolStatus';
+import { getPoolStatus } from '../../../utils/getPoolStatus';
+import StatusLabel from '../Components/StatusLabel';
+
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -67,6 +71,7 @@ function PaymentInformation({ className, pool, index }) {
 
   const [progressValue, setProgressValue] = useState(0);
   const [participants, setParticipants] = useState(0);
+  const [poolStatus, setStatus] = useState('');
 
   const {
     connector,
@@ -79,7 +84,7 @@ function PaymentInformation({ className, pool, index }) {
     error
   } = context;
 
-  useEffect(() => {
+  useEffect(async () => {
     // console.log(poolList);
     if (!!library) {
       const fixedContract = new Contract(
@@ -87,17 +92,19 @@ function PaymentInformation({ className, pool, index }) {
         ContractFactory.getInterface(fixedData.abi),
         library.getSigner(account).connectUnchecked()
       );
+
       const tokenContract = new Contract(
         pool.tokenContractAddr,
         ContractFactory.getInterface(tokenData.abi),
         library.getSigner(account).connectUnchecked()
       );
+
       const taalswapApp = new Application({
         test: true,
         mainnet: false,
         account: account
       });
-      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+
       const swapContract = taalswapApp.getFixedSwapContract({
         tokenAddress: pool.tokenContractAddr,
         decimals: 18,
@@ -106,7 +113,7 @@ function PaymentInformation({ className, pool, index }) {
         tokenContract: tokenContract
       });
 
-      swapContract
+      await swapContract
         .getBuyers()
         .then((result) => {
           setParticipants(result.length);
@@ -115,7 +122,7 @@ function PaymentInformation({ className, pool, index }) {
           console.log(error);
         });
 
-      swapContract
+      await swapContract
         .tokensAllocated()
         .then((result) => {
           setProgressValue(getProgressValue(result, pool.tradeAmount));
@@ -123,24 +130,14 @@ function PaymentInformation({ className, pool, index }) {
         .catch((error) => {
           console.log(error);
         });
+
+      setStatus(await getPoolStatus(swapContract, pool.status));
     }
   }, [pool]);
 
   return (
     <div className={clsx(classes.root, className)}>
-      {pool.status === 'candidate' ? (
-        <MLabel color="primary">Candidate</MLabel>
-      ) : null}
-      {pool.status === 'approved' ? (
-        <MLabel color="info">Approved</MLabel>
-      ) : null}
-      {pool.status === 'deployed' ? (
-        <MLabel color="success">Deployed</MLabel>
-      ) : null}
-      {/*       
-      <MLabel color="warning">Waring</MLabel>
-      <MLabel color="error">Error</MLabel> */}
-
+      <StatusLabel poolStatus={poolStatus} />
       <Box className={classes.box2rem} display="flex">
         <div className={classes.row}>
           <Typography variant="h6" component="p">
@@ -150,7 +147,7 @@ function PaymentInformation({ className, pool, index }) {
       </Box>
       <Box className={classes.box2rem}>
         <TextField
-          label="Trade Value"
+          label="Ratio"
           variant="standard"
           InputLabelProps={{
             shrink: true

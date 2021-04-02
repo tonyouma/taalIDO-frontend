@@ -23,7 +23,8 @@ export const cloudinaryConfig = {
 export const admin = {
   addresses: [
     '0x3AeFa0a9222D69B535EA0A2fAE25768De8c9BBd1',
-    '0x623C74254371730Ec947CBFb706659F0675A5ff6'
+    '0x623C74254371730Ec947CBFb706659F0675A5ff6',
+    '0xa42f6EE885e29a6915269B34e249f2a1c0A26955'
   ]
 };
 

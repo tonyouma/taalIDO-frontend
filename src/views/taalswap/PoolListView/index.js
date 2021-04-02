@@ -5,22 +5,33 @@ import { Icon } from '@iconify/react';
 import roundAccountBox from '@iconify-icons/ic/round-account-box';
 import { HeaderDashboard } from 'src/layouts/Common';
 import Page from '../../../components/Page';
-import { Tab, Tabs, Card, Container, Grid } from '@material-ui/core';
+import {
+  Tab,
+  Tabs,
+  Card,
+  Container,
+  Grid,
+  Box,
+  Typography
+} from '@material-ui/core';
 import BasicTable from './BasicTable';
 import { useTranslation } from 'react-i18next';
+import MyPools from './MyPools';
 
 // ----------------------------------------------------------------------
 
 const ACCOUNT_TABS = [
   {
-    value: 'All Pools',
+    value: 0,
+    title: 'All Pools',
     icon: <Icon icon={roundAccountBox} width={20} height={20} />,
     component: <BasicTable />
   },
   {
-    value: 'My Pools',
+    value: 1,
+    title: 'My Pools',
     icon: <Icon icon={roundAccountBox} width={20} height={20} />,
-    component: <BasicTable />
+    component: <MyPools />
   }
 ];
 const useStyles = makeStyles((theme) => ({
@@ -30,9 +41,37 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Grid container spacing={5}>
+          <Grid item xs={12}>
+            <Card>{children}</Card>
+          </Grid>
+        </Grid>
+      )}
+    </div>
+  );
+}
+
 function PoolListView() {
   const classes = useStyles();
   const [currentTab, setCurrentTab] = useState('All Pools');
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   const handleChangeTab = (event, newValue) => {
     setCurrentTab(newValue);
   };
@@ -41,38 +80,40 @@ function PoolListView() {
   console.log(t('taalswap.allpools'));
 
   return (
-    <Page title="Table-Components | Minimal-UI" className={classes.root}>
+    <Page title={t('taalswap.allpools')} className={classes.root}>
       <Container maxWidth="lg">
-        <HeaderDashboard
+        {/* <HeaderDashboard
           heading={t('taalswap.allpools')}
           links={[{ name: 'Swap' }]}
+        /> */}
+        <HeaderDashboard
+          heading={t('taalswap.allpools')}
+          links={[{ name: 'textejfiej' }]}
         />
-        <HeaderDashboard heading="IDO Pools" links={[{ name: 'textejfiej' }]} />
         <Tabs
-          value={currentTab}
+          value={value}
           scrollButtons="auto"
           variant="scrollable"
           allowScrollButtonsMobile
-          onChange={handleChangeTab}
+          onChange={handleChange}
           className={classes.tabBar}
         >
           {ACCOUNT_TABS.map((tab) => (
             <Tab
               disableRipple
               key={tab.value}
-              label={capitalCase(tab.value)}
+              label={capitalCase(tab.title)}
               icon={tab.icon}
               value={tab.value}
             />
           ))}
         </Tabs>
-        <Grid container spacing={5}>
-          <Grid item xs={12}>
-            <Card>
-              <BasicTable />
-            </Card>
-          </Grid>
-        </Grid>
+        <TabPanel value={value} index={0}>
+          <BasicTable />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <MyPools />
+        </TabPanel>
       </Container>
     </Page>
   );

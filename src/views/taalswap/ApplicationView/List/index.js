@@ -37,6 +37,7 @@ import { HeaderDashboard } from 'src/layouts/Common';
 import BasicTable from '../../PoolListView/BasicTable';
 import { useSnackbar } from 'notistack';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import { useTranslation } from 'react-i18next';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -404,11 +405,15 @@ export default function ApplicationListView() {
   };
 
   const isSelected = (index) => (selected !== index ? false : true);
+  const { i18n, t } = useTranslation();
 
   return (
-    <Page title="Application List" className={classes.root}>
+    <Page title={t('taalswap.applications')} className={classes.root}>
       <Container maxWidth="lg">
-        <HeaderDashboard heading="Application List" links={[{ name: '' }]} />
+        <HeaderDashboard
+          heading={t('taalswap.applications')}
+          links={[{ name: '' }]}
+        />
         <Grid container spacing={5}>
           <Grid item xs={12}>
             <Card>

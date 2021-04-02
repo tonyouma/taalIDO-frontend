@@ -37,7 +37,7 @@ const ACCOUNT_TABS = [
   }
 ];
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: { marginBottom: theme.spacing(5) },
   tabBar: {
     marginBottom: theme.spacing(5)
   }
@@ -45,14 +45,14 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
-function TableView() {
+function PoolDetails() {
   const classes = useStyles();
   const [currentTab, setCurrentTab] = useState('Pool Details');
   const handleChangeTab = (event, newValue) => {
     setCurrentTab(newValue);
   };
   return (
-    <Page title="Table-Components | Minimal-UI" className={classes.root}>
+    <Page title="My Pools | TaalSwap" className={classes.root}>
       <Container maxWidth="lg">
         <HeaderDashboard
           heading="Pool Details"
@@ -83,4 +83,4 @@ function TableView() {
   );
 }
 
-export default TableView;
+export default PoolDetails;

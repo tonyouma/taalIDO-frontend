@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
-function TableView() {
+function Participate() {
   const classes = useStyles();
   const [currentTab, setCurrentTab] = useState('BasicTable');
   const handleChangeTab = (event, newValue) => {
@@ -97,4 +97,4 @@ function TableView() {
   );
 }
 
-export default TableView;
+export default Participate;
