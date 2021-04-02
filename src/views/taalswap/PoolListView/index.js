@@ -80,13 +80,16 @@ function PoolListView() {
   console.log(t('taalswap.allpools'));
 
   return (
-    <Page title="Table-Components | Minimal-UI" className={classes.root}>
+    <Page title={t('taalswap.allpools')} className={classes.root}>
       <Container maxWidth="lg">
         {/* <HeaderDashboard
           heading={t('taalswap.allpools')}
           links={[{ name: 'Swap' }]}
         /> */}
-        <HeaderDashboard heading="IDO Pools" links={[{ name: 'textejfiej' }]} />
+        <HeaderDashboard
+          heading={t('taalswap.allpools')}
+          links={[{ name: 'textejfiej' }]}
+        />
         <Tabs
           value={value}
           scrollButtons="auto"
