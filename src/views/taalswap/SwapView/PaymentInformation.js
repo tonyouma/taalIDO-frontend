@@ -118,16 +118,20 @@ function PaymentInformation({ className, pool, index }) {
         .then((result) => {
           setParticipants(result.length);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
 
       await swapContract
         .tokensAllocated()
         .then((result) => {
           setProgressValue(getProgressValue(result, pool.tradeAmount));
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
 
-      setStatus(await getPoolStatus(swapContract));
+      setStatus(await getPoolStatus(swapContract, pool.status));
     }
   }, [pool]);
 

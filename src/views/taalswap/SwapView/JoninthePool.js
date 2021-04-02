@@ -121,7 +121,6 @@ function JoninthePool({ className, pool }) {
   const onClickSwap = () => {
     try {
       if (!!library) {
-        getPoolStatus(swapContract);
         console.log(`minAmount  : ${minAmount}`);
 
         console.log(`maxAmount  : ${maxAmount}`);

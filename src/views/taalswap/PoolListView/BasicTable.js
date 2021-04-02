@@ -142,8 +142,8 @@ function TablePoolRow({ row, handleOpenModal }) {
         .catch((error) => {
           console.log(error);
         });
-
-      const status = await getPoolStatus(swapContract);
+      console.log('aaa');
+      const status = await getPoolStatus(swapContract, row.status);
       setStatus(status);
     }
   }, [row]);

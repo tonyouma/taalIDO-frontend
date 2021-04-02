@@ -108,7 +108,6 @@ function PlanCard({ pool, index, className }) {
       await swapContract
         .tokensAllocated()
         .then((result) => {
-          console.log(result);
           setAllocated(result);
           setProgressValue(getProgressValue(result, pool.tradeAmount));
           setTotalRaise(result * pool.tradeValue);
@@ -117,8 +116,7 @@ function PlanCard({ pool, index, className }) {
           console.log(error);
         });
 
-      const status = await getPoolStatus(swapContract);
-      console.log(status);
+      const status = await getPoolStatus(swapContract, pool.status);
       setStatus(status);
     }
 
