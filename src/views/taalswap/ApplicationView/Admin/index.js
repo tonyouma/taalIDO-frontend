@@ -13,7 +13,10 @@ import {
   Typography,
   Grid
 } from '@material-ui/core';
-import { searchApplicationListByCreator } from 'src/redux/slices/pool';
+import {
+  searchApplicationListByCreator,
+  updateApplication
+} from 'src/redux/slices/pool';
 import TotalActiveUsers from '../../../general/DashboardAppView/TotalActiveUsers';
 import TotalInstalled from '../../../general/DashboardAppView/TotalInstalled';
 import TotalDownloads from '../../../general/DashboardAppView/TotalDownloads';
@@ -98,11 +101,9 @@ async function callFund(tokenAmount, application, account, library) {
     console.log(JSON.stringify(error));
     ret.error = error;
   });
-
-  console.log(JSON.stringify(result));
-  return (ret.result = result);
-  // application에 isFunded : true 추가하여 업데이트
-  // isApproved가 true 이면 application.status: upcomming 으로 업데이트
+  ret.result = result;
+  console.log('ret result ', JSON.stringify(ret));
+  return ret;
 }
 
 async function callAddWhiteListAddress(
@@ -205,11 +206,12 @@ const AdminView = () => {
       account,
       library
     );
-    // if (!!result.error) {
-    //   enqueueSnackbar('Approve amount success', { variant: 'error' });
-    // } else {
-    //   enqueueSnackbar('Approve amount fail', { variant: 'success' });
-    // }
+    console.log('Approve result', JSON.stringify(result.error));
+    if (result.error) {
+      enqueueSnackbar('Approvet fail', { variant: 'error' });
+    } else {
+      enqueueSnackbar('Approve success', { variant: 'success' });
+    }
   };
 
   const onClickFund = async () => {
@@ -224,11 +226,15 @@ const AdminView = () => {
       account,
       library
     );
-    // if (!!result.error) {
-    //   enqueueSnackbar('Fund success', { variant: 'error' });
-    // } else {
-    //   enqueueSnackbar('Fund fail', { variant: 'success' });
-    // }
+    console.log('fund result', JSON.stringify(result.error));
+    if (result.error) {
+      enqueueSnackbar('Fund fail', { variant: 'error' });
+    } else {
+      const app = JSON.parse(JSON.stringify(selectedItem));
+      app.status = 'upcomming';
+      dispatch(updateApplication(app));
+      enqueueSnackbar('Fund success', { variant: 'success' });
+    }
   };
 
   const onClickWhiteList = async () => {
@@ -243,11 +249,12 @@ const AdminView = () => {
       account,
       library
     );
-    // if (!!result.error) {
-    //   enqueueSnackbar('Add WhiteListAddress success', { variant: 'error' });
-    // } else {
-    //   enqueueSnackbar('Add WhiteListAddress fail', { variant: 'success' });
-    // }
+    console.log('whitelist result', JSON.stringify(result.error));
+    if (result.error) {
+      enqueueSnackbar('add whitelist fail', { variant: 'error' });
+    } else {
+      enqueueSnackbar('add whitelist success', { variant: 'success' });
+    }
   };
 
   const onClickWithDrawFunds = async () => {
@@ -256,11 +263,12 @@ const AdminView = () => {
       `seleted pool : ${JSON.stringify(selectedItem)}, WithDrawFunds`
     );
     const result = await callWithDrawFunds(selectedItem, account, library);
-    // if (!!result.error) {
-    //   enqueueSnackbar('WithDrawFunds success', { variant: 'error' });
-    // } else {
-    //   enqueueSnackbar('WithDrawFunds fail', { variant: 'success' });
-    // }
+    console.log('WithDrawFunds result', JSON.stringify(result.error));
+    if (result.error) {
+      enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
+    } else {
+      enqueueSnackbar('WithDrawFunds success', { variant: 'success' });
+    }
   };
 
   const onClickWithdrawUnsoldTokens = async () => {
@@ -273,11 +281,12 @@ const AdminView = () => {
       account,
       library
     );
-    // if (!!result.error) {
-    //   enqueueSnackbar('WithDrawUnsoldTokens success', { variant: 'error' });
-    // } else {
-    //   enqueueSnackbar('WithDrawUnsoldTokens fail', { variant: 'success' });
-    // }
+    console.log('WithdrawUnsoldTokens result', JSON.stringify(result.error));
+    if (result.error) {
+      enqueueSnackbar('WithdrawUnsoldTokens fail', { variant: 'error' });
+    } else {
+      enqueueSnackbar('WithdrawUnsoldTokens success', { variant: 'success' });
+    }
   };
 
   useEffect(() => {
