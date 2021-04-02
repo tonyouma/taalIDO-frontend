@@ -13,6 +13,7 @@ import { tokenData } from '../../../contracts';
 import { useWeb3React } from '@web3-react/core';
 import Application from 'taalswap-js/src/models';
 import LinearProgress from '@material-ui/core/LinearProgress';
+// import usePoolStatus from 'src/hooks/usePoolStatus';
 
 import { PoolStatus } from '../../../utils/poolStatus';
 
@@ -64,6 +65,7 @@ PaymentInformation.propTypes = {
 function PaymentInformation({ className, pool, index }) {
   const classes = useStyles();
   const context = useWeb3React();
+  // const poolList = usePoolStatus(pool);
 
   const [progressValue, setProgressValue] = useState(0);
   const [participants, setParticipants] = useState(0);
@@ -79,7 +81,8 @@ function PaymentInformation({ className, pool, index }) {
     error
   } = context;
 
-  useEffect(async () => {
+  useEffect(() => {
+    // console.log(poolList);
     if (!!library) {
       const fixedContract = new Contract(
         pool.contractAddress,
