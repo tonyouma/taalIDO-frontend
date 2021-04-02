@@ -1,6 +1,6 @@
 import { PoolStatus } from './poolStatus';
 
-export const getPoolStatus = async (swapContract) => {
+export const getPoolStatus = async (swapContract, status) => {
   // Pool의 현재 상태 확인
   const isPreStart = await swapContract.isPreStart().catch(() => {});
   const isFunded = await swapContract.isFunded().catch(() => {});
@@ -19,6 +19,19 @@ export const getPoolStatus = async (swapContract) => {
   // console.log('minimumRaiseAchieved :', minimumRaiseAchieved);
 
   let poolStatus;
+
+  if (status === 'approved') {
+    return PoolStatus.APPROVED;
+  }
+
+  if (status === 'candidate') {
+    return PoolStatus.CANDIDATE;
+  }
+
+  if (status === 'deployed') {
+    return PoolStatus.DEPLOYED;
+  }
+
   if (isOpen) {
     poolStatus = PoolStatus.LIVE;
   } else {
