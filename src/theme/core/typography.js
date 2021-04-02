@@ -87,11 +87,11 @@ const typography = {
     lineHeight: 22 / 14
   },
   caption: {
-    fontSize: pxToRem(12),
+    fontSize: pxToRem(13),
     lineHeight: 1.5
   },
   overline: {
-    fontSize: pxToRem(12),
+    fontSize: pxToRem(14), // 사이드 메뉴 폰트 트기
     lineHeight: 1.5,
     fontWeight: 700,
     letterSpacing: 1.2,
