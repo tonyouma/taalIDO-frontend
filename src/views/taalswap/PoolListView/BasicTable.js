@@ -140,7 +140,7 @@ function TablePoolRow({ row, handleOpenModal }) {
           // setTotalRaise(result * pool.tradeValue);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
         });
       console.log('aaa');
       const status = await getPoolStatus(swapContract, row.status);
