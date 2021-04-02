@@ -130,7 +130,7 @@
     "simplebar-react": "^2.3.0",
     "slick-carousel": "^1.8.1",
     "stylis-plugin-rtl": "^2.0.1",
-    "taalswap-js": "^1.2.14",
+    "taalswap-js": "^1.2.19",
     "web3-react": "^5.0.5",
     "yup": "^0.28.5"
   },

@@ -124,10 +124,12 @@ function ApplicationStart() {
           maxIndividuals: values.maxIndividuals,
           atomic: values.isAtomic,
           preferredStartDate: values.preferredStartDate,
-          startDate: moment(values.preferredStartDate.toDateString()).unix(), // preferredStartDate 에포크타임으로 저장
-          endDate: moment(values.preferredStartDate.toDateString())
-            .add(30, 'd')
-            .unix(), // startdate + 30일
+          // startDate: moment(values.preferredStartDate.toDateString()).unix(), // preferredStartDate 에포크타임으로 저장
+          // endDate: moment(values.preferredStartDate.toDateString())
+          //   .add(30, 'd')
+          //   .unix(), // startdate + 30일
+          startDate: moment().add(5, 'minutes').unix(), // preferredStartDate 에포크타임으로 저장
+          endDate: moment().add(10, 'minutes').unix(), // startdate + 30일
           ratio: 1 / values.tradeValue,
           progress: '',
           feeAmount: values.feeAmount,

@@ -23,8 +23,10 @@ import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router';
 import { Contract, ContractFactory } from '@ethersproject/contracts';
 import Application from 'taalswap-js/src/models';
+import Numbers from 'taalswap-js/src/utils/Numbers';
 import { fixedData } from 'src/contracts';
 import { tokenData } from 'src/contracts';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -41,104 +43,87 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getContract(application, account, library) {
-  console.log('application : ' + JSON.stringify(application));
-  console.log('account : ' + account);
-  console.log('library : ' + library);
+  console.log('getContract', application, account);
   const fixedContract = new Contract(
     application.contractAddress,
     ContractFactory.getInterface(fixedData.abi),
     library.getSigner(account).connectUnchecked()
   );
 
-  console.log('fixedContract complete ');
   const tokenContract = new Contract(
     application.tokenContractAddr,
     ContractFactory.getInterface(tokenData.abi),
     library.getSigner(account).connectUnchecked()
   );
 
-  console.log('tokenContract complete ');
   const taalswapApp = new Application({
     test: true,
     mainnet: false,
     account: account
   });
 
-  console.log('taalswapApp complete ');
+  console.log('endGetContract');
   // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
   return taalswapApp.getFixedSwapContract({
     tokenAddress: application.tokenContractAddr,
-    decimals: 18,
+    decimals: application.decimals,
     contractAddress: application.contractAddress,
     fixedContract: fixedContract,
     tokenContract: tokenContract
   });
-
-  console.log('getFixedSwapContract complete ');
 }
 
-async function callApprove(approveAmount, application, account, library) {
-  console.log('approveAmount : ' + approveAmount);
-
+async function callApprove(tokenAmount, application, account, library) {
   const ret = {};
   const swapContract = getContract(application, account, library);
   const result = await swapContract
-    .approveFundERC20(approveAmount)
+    .approveFundERC20({ tokenAmount })
     .catch((error) => {
       console.log(JSON.stringify(error));
       ret.error = error;
     });
 
-  if (!!ret.error) {
-    return ret;
-  }
-
   console.log(JSON.stringify(result));
+  return (ret.result = result);
   // application에 isApproved : true 추가하여 업데이트
   // isFunded가 true 이면 application.status: upcomming 으로 업데이트
 }
 
-async function callFund(fundAmount, application, account, library) {
-  console.log('fundAmount : ' + fundAmount);
+async function callFund(tokenAmount, application, account, library) {
+  console.log('fundAmount : ' + tokenAmount);
 
   const ret = {};
   const swapContract = getContract(application, account, library);
-  const result = await swapContract.fund(fundAmount).catch((error) => {
+  const result = await swapContract.fund({ tokenAmount }).catch((error) => {
     console.log(JSON.stringify(error));
     ret.error = error;
   });
 
-  if (!!ret.error) {
-    return ret;
-  }
-
   console.log(JSON.stringify(result));
+  return (ret.result = result);
   // application에 isFunded : true 추가하여 업데이트
   // isApproved가 true 이면 application.status: upcomming 으로 업데이트
 }
 
 async function callAddWhiteListAddress(
-  whiteListAddress,
+  addresses,
   application,
   account,
   library
 ) {
-  console.log('whiteListAddress : ' + JSON.stringify(whiteListAddress));
+  console.log('whiteListAddress : ' + JSON.stringify(addresses));
 
   const ret = {};
   const swapContract = getContract(application, account, library);
   const result = await swapContract
-    .addWhitelistedAddress(whiteListAddress)
+    .addWhitelistedAddress({ addresses })
     .catch((error) => {
       console.log(JSON.stringify(error));
       ret.error = error;
     });
 
-  if (!!ret.error) {
-    return ret;
-  }
-
   console.log(JSON.stringify(result));
+  return (ret.result = result);
 }
 
 async function callWithDrawFunds(application, account, library) {
@@ -149,11 +134,8 @@ async function callWithDrawFunds(application, account, library) {
     ret.error = error;
   });
 
-  if (!!ret.error) {
-    return ret;
-  }
-
   console.log(JSON.stringify(result));
+  return (ret.result = result);
 }
 
 async function callWithDrawUnsoldTokens(application, account, library) {
@@ -164,11 +146,8 @@ async function callWithDrawUnsoldTokens(application, account, library) {
     ret.error = error;
   });
 
-  if (!!ret.error) {
-    return ret;
-  }
-
   console.log(JSON.stringify(result));
+  return (ret.result = result);
 }
 
 const AdminView = () => {
@@ -177,6 +156,7 @@ const AdminView = () => {
   const context = useWeb3React();
   const { account, library } = context;
   const location = useLocation();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { applicationList } = useSelector((state) => state.pool);
 
@@ -198,13 +178,16 @@ const AdminView = () => {
   };
 
   const handleChange = (e) => {
+    console.log('selected value', e.target.value);
     setSelectedPool(e.target.value);
   };
 
   const getSelectedApp = () => {
+    console.log('getSelectedApp', selectedPool);
     return applicationList.filter(
-      (pool) => pool.id === selectedPool && pool.contractAddress !== ''
-    );
+      (pool) =>
+        pool.id === parseInt(selectedPool) && pool.contractAddress !== ''
+    )[0];
   };
 
   const onClickApprove = async () => {
@@ -215,7 +198,18 @@ const AdminView = () => {
 
     console.log('approveAmount : ' + approveAmount);
     const selectedItem = getSelectedApp();
-    await callApprove(parseInt(approveAmount), selectedItem, account, library);
+    console.log('selected item contractAddress', selectedItem.contractAddress);
+    const result = await callApprove(
+      parseInt(approveAmount),
+      selectedItem,
+      account,
+      library
+    );
+    // if (!!result.error) {
+    //   enqueueSnackbar('Approve amount success', { variant: 'error' });
+    // } else {
+    //   enqueueSnackbar('Approve amount fail', { variant: 'success' });
+    // }
   };
 
   const onClickFund = async () => {
@@ -224,17 +218,36 @@ const AdminView = () => {
       return;
     }
     const selectedItem = getSelectedApp();
-    await callFund(parseInt(fundAmount), selectedItem, account, library);
+    const result = await callFund(
+      parseInt(fundAmount),
+      selectedItem,
+      account,
+      library
+    );
+    // if (!!result.error) {
+    //   enqueueSnackbar('Fund success', { variant: 'error' });
+    // } else {
+    //   enqueueSnackbar('Fund fail', { variant: 'success' });
+    // }
   };
 
   const onClickWhiteList = async () => {
+    if (whiteList.length === 0) {
+      enqueueSnackbar('write WhiteList', { variant: 'error' });
+      return;
+    }
     const selectedItem = getSelectedApp();
-    await callAddWhiteListAddress(
+    const result = await callAddWhiteListAddress(
       whiteList.split(','),
       selectedItem,
       account,
       library
     );
+    // if (!!result.error) {
+    //   enqueueSnackbar('Add WhiteListAddress success', { variant: 'error' });
+    // } else {
+    //   enqueueSnackbar('Add WhiteListAddress fail', { variant: 'success' });
+    // }
   };
 
   const onClickWithDrawFunds = async () => {
@@ -242,7 +255,12 @@ const AdminView = () => {
     console.log(
       `seleted pool : ${JSON.stringify(selectedItem)}, WithDrawFunds`
     );
-    await callWithDrawFunds(selectedItem, account, library);
+    const result = await callWithDrawFunds(selectedItem, account, library);
+    // if (!!result.error) {
+    //   enqueueSnackbar('WithDrawFunds success', { variant: 'error' });
+    // } else {
+    //   enqueueSnackbar('WithDrawFunds fail', { variant: 'success' });
+    // }
   };
 
   const onClickWithdrawUnsoldTokens = async () => {
@@ -250,13 +268,23 @@ const AdminView = () => {
     console.log(
       `seleted pool : ${JSON.stringify(selectedItem)}, WithdrawUnsoldTokens`
     );
-    await callWithDrawUnsoldTokens(selectedItem, account, library);
+    const result = await callWithDrawUnsoldTokens(
+      selectedItem,
+      account,
+      library
+    );
+    // if (!!result.error) {
+    //   enqueueSnackbar('WithDrawUnsoldTokens success', { variant: 'error' });
+    // } else {
+    //   enqueueSnackbar('WithDrawUnsoldTokens fail', { variant: 'success' });
+    // }
   };
 
   useEffect(() => {
     dispatch(searchApplicationListByCreator(account));
-    setSelectedPool(location.state.selectedItem.id);
-  }, [account, applicationList]);
+    setSelectedPool(location.state ? location.state.selectedItem.id : '');
+    console.log('selected pool', selectedPool);
+  }, [account, selectedPool]);
 
   return (
     <Page
@@ -298,7 +326,9 @@ const AdminView = () => {
               style={{ minWidth: '200px' }}
               name="selecteApplication"
               select
-              defaultValue={location.state.selectedItem.id}
+              defaultValue={
+                location.state ? location.state.selectedItem.id : ''
+              }
               label="Applications"
               size="small"
               onChange={handleChange}
