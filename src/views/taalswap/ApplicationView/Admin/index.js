@@ -11,7 +11,8 @@ import {
   CardContent,
   TextField,
   Typography,
-  Grid
+  Grid,
+  CardHeader
 } from '@material-ui/core';
 import {
   searchApplicationListByCreator,
@@ -326,102 +327,133 @@ const AdminView = () => {
             </Grid>
           </Grid>
         </Container>
+
         <CardContent>
-          <Typography variant="h6" component="h2">
-            Select Application
-          </Typography>
-          <Box className={classes.box}>
-            <TextField
-              style={{ minWidth: '200px' }}
-              name="selecteApplication"
-              select
-              defaultValue={
-                location.state ? location.state.selectedItem.id : ''
-              }
-              label="Applications"
-              size="small"
-              onChange={handleChange}
-            >
-              {applicationList.map((app, index) => (
-                <option key={index} value={app.id}>
-                  {app.projectName}
-                </option>
-              ))}
-            </TextField>
-          </Box>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12}>
+              <Card>
+                <CardHeader title="Select Application" />
+                <Box className={classes.box}>
+                  <TextField
+                    style={{ minWidth: '360px' }}
+                    name="selecteApplication"
+                    select
+                    defaultValue={
+                      location.state ? location.state.selectedItem.id : ''
+                    }
+                    label="Applications"
+                    size="small"
+                    onChange={handleChange}
+                  >
+                    {applicationList.map((app, index) => (
+                      <option key={index} value={app.id}>
+                        {app.projectName}
+                      </option>
+                    ))}
+                  </TextField>
+                </Box>
+              </Card>
+            </Grid>
 
-          <Typography variant="h6" component="h2">
-            Approve
-          </Typography>
-          <Box className={classes.box}>
-            <TextField
-              className={classes.textField}
-              name="approveAmount"
-              label="Amount"
-              size="small"
-              value={approveAmount}
-              onChange={onChange}
-            ></TextField>
-            <Button variant="contained" size="medium" onClick={onClickApprove}>
-              Approve
-            </Button>
-          </Box>
+            <Grid item xs={12} md={12}>
+              <Card>
+                <CardHeader title="Approve" />
+                <Box className={classes.box}>
+                  <TextField
+                    className={classes.textField}
+                    name="approveAmount"
+                    label="Amount"
+                    size="small"
+                    value={approveAmount}
+                    onChange={onChange}
+                  ></TextField>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    onClick={onClickApprove}
+                    style={{ minWidth: '100px' }}
+                  >
+                    Approve
+                  </Button>
+                </Box>
+              </Card>
+            </Grid>
 
-          <Typography variant="h6" component="h2">
-            Fund
-          </Typography>
-          <Box className={classes.box}>
-            <TextField
-              className={classes.textField}
-              name="fundAmount"
-              label="Amount"
-              size="small"
-              value={fundAmount}
-              onChange={onChange}
-            ></TextField>
-            <Button variant="contained" size="medium" onClick={onClickFund}>
-              Fund
-            </Button>
-          </Box>
+            <Grid item xs={12} md={12}>
+              <Card>
+                <CardHeader title="Fund" />
+                <Box className={classes.box}>
+                  <TextField
+                    className={classes.textField}
+                    name="fundAmount"
+                    label="Amount"
+                    size="small"
+                    value={fundAmount}
+                    onChange={onChange}
+                  ></TextField>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    onClick={onClickFund}
+                    style={{ minWidth: '100px' }}
+                  >
+                    Fund
+                  </Button>
+                </Box>
+              </Card>
+            </Grid>
 
-          <Typography variant="h6" component="h2">
-            WhiteList
-          </Typography>
-          <Box className={classes.box}>
-            <TextField
-              className={classes.textField}
-              name="whiteList"
-              label="WhiteList"
-              size="small"
-              value={whiteList}
-              onChange={onChange}
-            ></TextField>
-            <Button
-              variant="contained"
-              size="medium"
-              onClick={onClickWhiteList}
-            >
-              Add
-            </Button>
-          </Box>
-          <Box className={classes.box}>
-            <Button
-              variant="contained"
-              size="medium"
-              onClick={onClickWithDrawFunds}
-            >
-              WithDrawFunds
-            </Button>
-          </Box>
-          <Box className={classes.box}>
-            <Button
-              variant="contained"
-              size="medium"
-              onClick={onClickWithdrawUnsoldTokens}
-            >
-              WithdrawUnsoldTokens
-            </Button>
-          </Box>
+            <Grid item xs={12} md={12}>
+              <Card>
+                <CardHeader title="WhiteList" />
+                <Box className={classes.box}>
+                  <TextField
+                    className={classes.textField}
+                    name="whiteList"
+                    label="WhiteList"
+                    size="small"
+                    value={whiteList}
+                    onChange={onChange}
+                  ></TextField>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    onClick={onClickWhiteList}
+                    style={{ minWidth: '100px' }}
+                  >
+                    Add
+                  </Button>
+                </Box>
+              </Card>
+            </Grid>
+
+            <Grid item xs={12} md={12}>
+              <Card>
+                <CardHeader title="Claim" />
+                <Box className={classes.box}>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    onClick={onClickWithDrawFunds}
+                    style={{ minWidth: '200px' }}
+                  >
+                    WithDrawFunds
+                  </Button>
+                </Box>
+                <Box className={classes.box}>
+                  <Button
+                    width="50%"
+                    variant="contained"
+                    size="medium"
+                    onClick={onClickWithdrawUnsoldTokens}
+                    style={{ minWidth: '200px' }}
+                  >
+                    WithdrawUnsoldTokens
+                  </Button>
+                </Box>
+              </Card>
+            </Grid>
+          </Grid>
         </CardContent>
       </Container>
     </Page>

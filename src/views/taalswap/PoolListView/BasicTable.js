@@ -158,20 +158,20 @@ function TablePoolRow({ row, handleOpenModal }) {
       <TableCell component="th" scope="row" width="15%">
         {row.poolName}
       </TableCell>
-      <TableCell align="right" width="20%">
+      <TableCell align="right" width="15%">
         {row.ratio} {row.symbol} = 1 ETH
       </TableCell>
-      <TableCell align="right" width="5%">
+      <TableCell align="right" width="10%">
         {row.access}
       </TableCell>
       {/* <TableCell align="center" width="5%"></TableCell> */}
-      <TableCell align="right" width="40%">
+      <TableCell align="right" width="45%">
         <LinearProgressWithLabel value={progressValue} />
       </TableCell>
-      <TableCell align="right" width="20%">
+      <TableCell align="right" width="10%">
         <StatusLabel poolStatus={poolStatus} />
         {/* <MLabel
-          
+
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
           color={
             (row.status === 'in_progress' && 'warning') ||
@@ -241,11 +241,31 @@ export default function BasicTable() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell component="th">Pool Name</TableCell>
-                <TableCell align="right">Ratio</TableCell>
-                <TableCell align="right">Access</TableCell>
-                <TableCell align="right">Progress</TableCell>
-                <TableCell align="right">Status</TableCell>
+                <TableCell component="th">
+                  <Typography variant="h6" gutterBottom>
+                    Pool Name
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h6" gutterBottom>
+                    Ratio
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h6" gutterBottom>
+                    Access
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h6" gutterBottom>
+                    Progress
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h6" gutterBottom>
+                    Status
+                  </Typography>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -274,13 +294,13 @@ export default function BasicTable() {
                     {row.access}
                   </TableCell>
                   <TableCell align="right" width="35%">
-                   
+
                     <LinearProgressWithLabel
                       value={
                         row.progress === '' || row.progress >= 100
                           ? 100
                           : row.progress
-                   
+
                       }
                     />
                   </TableCell>
@@ -303,7 +323,7 @@ export default function BasicTable() {
             </TableBody>
           </Table>
         </TableContainer>
-        {/* 
+        {/*
         <DialogAnimate open={isOpenModal}>
           <DialogTitle>{'Pool Details'}</DialogTitle>
           <DetailsForm
