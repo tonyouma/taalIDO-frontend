@@ -19,6 +19,7 @@ import {
   setActivatingConnector
 } from '../../../redux/slices/wallet';
 import { formatEther } from '@ethersproject/units';
+import { getPoolStatus } from '../../../utils/getPoolStatus';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -59,11 +60,13 @@ function JoninthePool({ className, pool }) {
   const context = useWeb3React();
   const dispatch = useDispatch();
   const [amount, setAmount] = useState(0);
+  const [price, setPrice] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [isSaleFunded, setIsSaleFunded] = useState(false);
   const [tokensLeft, setTokensLeft] = useState(0);
   const [minAmount, setMinAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(0);
+  const [warningMessage, setWarningMessage] = useState('');
   const [diffTime, setDiffTime] = useState({});
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
   const {
@@ -110,20 +113,30 @@ function JoninthePool({ className, pool }) {
 
   const onChangeAmount = (e) => {
     setAmount(e.target.value);
+    setPrice(e.target.value * pool.tradeValue);
     console.log(e.target.value * pool.tradeValue);
+    console.log(pool.tradeValue);
   };
 
   const onClickSwap = () => {
     try {
       if (!!library) {
-        console.log(`tokensLeft : ${tokensLeft}`);
+        getPoolStatus(swapContract);
         console.log(`minAmount  : ${minAmount}`);
-        console.log(`amount     : ${amount}`);
-        console.log(`maxAmount  : ${maxAmount}`);
-        console.log(`balance    : ${balance}`);
 
-        if (minAmount < amount && amount < maxAmount) {
-          if (amount < tokensLeft) {
+        console.log(`maxAmount  : ${maxAmount}`);
+        console.log(
+          `balance    : ${parseFloat(formatEther(balance)).toFixed(4)}`
+        );
+
+        if (
+          parseFloat(minAmount) < parseFloat(amount) &&
+          parseFloat(amount) < parseFloat(maxAmount)
+        ) {
+          console.log(`amount     : ${amount}`);
+          console.log(`tokensLeft : ${tokensLeft}`);
+
+          if (parseFloat(amount) < parseFloat(tokensLeft)) {
             swapContract
               .swap({ tokenAmount: amount, account: account })
               .then((resp) => {
@@ -133,10 +146,10 @@ function JoninthePool({ className, pool }) {
               .catch((error) => console.log(error));
           } else {
             console.log('2차 실패');
-            alert('tokensLeft보다 작게');
+            setWarningMessage('tokensLeft보다 작게');
           }
         } else {
-          alert('최대값 보다 작고 최소값 보다 크게');
+          setWarningMessage('최대값 보다 작고 최소값 보다 크게');
           console.log('1차 실패');
         }
       }
@@ -200,18 +213,13 @@ function JoninthePool({ className, pool }) {
           setMaxAmount(result);
         })
         .catch((error) => {});
-
-      // await swapContract.().then((result) => {
-      //   setMaxAmount(result);
-      // });
     }
-    console.log(pool.status);
+    console.log(`isOpen : ${isOpen}, isSaleFunded : ${isSaleFunded}`);
   }, [pool]);
 
   useEffect(async () => {
-    if (!!library) {
+    if (!!library && !!balance) {
       await dispatch(getWalletBalance(account, library));
-      console.log(formatEther(balance));
     }
   }, [activatingConnector, connector]);
 
@@ -246,7 +254,7 @@ function JoninthePool({ className, pool }) {
           variant="body2"
           sx={{ color: 'text.secondary' }}
         >
-          Blance : {balance !== null ? formatEther(balance) : 'none'} ETH
+          Blance : {balance !== null ? formatEther(balance) : '0'} ETH
         </Typography>
       </div>
 
@@ -260,7 +268,7 @@ function JoninthePool({ className, pool }) {
             color: 'text.secondary'
           }}
         >
-          Price : 0.148 ETH
+          Price : {price} ETH
         </Typography>
       </Box>
 
@@ -320,29 +328,31 @@ function JoninthePool({ className, pool }) {
           size="large"
           variant="contained"
           onClick={onClickSwap}
-          // disabled={!(isOpen && isSaleFunded)}
+          disabled={!(isOpen && isSaleFunded)}
         >
           Go
         </LoadingButton>
       </Box>
 
       <Box sx={{ textAlign: 'center' }}>
-        <Typography
-          variant="subtitle2"
-          sx={{
-            mb: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <Box
-            component={Icon}
-            icon={shieldFill}
-            sx={{ width: 20, height: 20, mr: 1, color: 'primary.main' }}
-          />
-          Warning : Balance should be bigger than the price
-        </Typography>
+        {warningMessage !== '' && (
+          <Typography
+            variant="subtitle2"
+            sx={{
+              mb: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Box
+              component={Icon}
+              icon={shieldFill}
+              sx={{ width: 20, height: 20, mr: 1, color: 'primary.main' }}
+            />
+            Warning : {warningMessage}
+          </Typography>
+        )}
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
           Have problems Joing? Click here to read instructions.
         </Typography>

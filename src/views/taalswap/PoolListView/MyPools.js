@@ -36,8 +36,6 @@ import { fixedData } from '../../../contracts';
 import { tokenData } from '../../../contracts';
 import { useWeb3React } from '@web3-react/core';
 import Application from 'taalswap-js/src/models';
-import StatusLabel from '../Components/StatusLabel';
-import { getPoolStatus } from '../../../utils/getPoolStatus';
 
 // ----------------------------------------------------------------------
 
@@ -93,7 +91,6 @@ function TablePoolRow({ row, handleOpenModal }) {
   const context = useWeb3React();
   const theme = useTheme();
   const [progressValue, setProgressValue] = useState(0);
-  const [poolStatus, setStatus] = useState('');
 
   const {
     connector,
@@ -106,7 +103,7 @@ function TablePoolRow({ row, handleOpenModal }) {
     error
   } = context;
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!!library) {
       const fixedContract = new Contract(
         row.contractAddress,
@@ -132,19 +129,14 @@ function TablePoolRow({ row, handleOpenModal }) {
         tokenContract: tokenContract
       });
 
-      await swapContract
+      swapContract
         .tokensAllocated()
         .then((result) => {
           // setAllocated(result);
           setProgressValue(getProgressValue(result, row.tradeAmount));
           // setTotalRaise(result * pool.tradeValue);
         })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      const status = await getPoolStatus(swapContract);
-      setStatus(status);
+        .catch((error) => {});
     }
   }, [row]);
 
@@ -164,14 +156,12 @@ function TablePoolRow({ row, handleOpenModal }) {
       <TableCell align="right" width="5%">
         {row.access}
       </TableCell>
-      {/* <TableCell align="center" width="5%"></TableCell> */}
+
       <TableCell align="right" width="40%">
         <LinearProgressWithLabel value={progressValue} />
       </TableCell>
       <TableCell align="right" width="20%">
-        <StatusLabel poolStatus={poolStatus} />
-        {/* <MLabel
-          
+        <MLabel
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
           color={
             (row.status === 'in_progress' && 'warning') ||
@@ -180,13 +170,13 @@ function TablePoolRow({ row, handleOpenModal }) {
           }
         >
           {sentenceCase(row.status)}
-        </MLabel> */}
+        </MLabel>
       </TableCell>
     </TableRow>
   );
 }
 
-export default function BasicTable() {
+export default function MyPools() {
   const classes = useStyles();
   const history = useHistory();
 
@@ -254,64 +244,11 @@ export default function BasicTable() {
                   key={index}
                   row={row}
                   handleOpenModal={handleOpenModal}
-                  // onChangeRatioValue={onChangeRatioValue}
                 />
               ))}
-              {/* {filteredPools.map((row, index) => (
-                <TableRow
-                  key={index}
-                  hover
-                  className={classes.hideLastBorder}
-                  onClick={(event) => handleOpenModal(row)}
-                >
-                  <TableCell component="th" scope="row" width="20%">
-                    {row.poolName}
-                  </TableCell>
-                  <TableCell align="right" width="10%">
-                    {row.ratio}
-                  </TableCell>
-                  <TableCell align="right" width="15%">
-                    {row.access}
-                  </TableCell>
-                  <TableCell align="right" width="35%">
-                   
-                    <LinearProgressWithLabel
-                      value={
-                        row.progress === '' || row.progress >= 100
-                          ? 100
-                          : row.progress
-                   
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="right" width="15%">
-                    <MLabel
-                      variant={
-                        theme.palette.mode === 'light' ? 'ghost' : 'filled'
-                      }
-                      color={
-                        (row.status === 'in_progress' && 'warning') ||
-                        (row.status === 'out_of_date' && 'error') ||
-                        'success'
-                      }
-                    >
-                      {sentenceCase(row.status)}
-                    </MLabel>
-                  </TableCell>
-                </TableRow>
-              ))} */}
             </TableBody>
           </Table>
         </TableContainer>
-        {/* 
-        <DialogAnimate open={isOpenModal}>
-          <DialogTitle>{'Pool Details'}</DialogTitle>
-          <DetailsForm
-            pool={selectedPool}
-            onCancel={handleCloseModal}
-            onClickSwap={handleOnClickSwap}
-          />
-        </DialogAnimate> */}
 
         {selectedPool && (
           <Dialog
@@ -398,7 +335,7 @@ export default function BasicTable() {
       <TablePagination
         page={page}
         component="div"
-        count={BasicTable.length}
+        count={MyPools.length}
         rowsPerPage={rowsPerPage}
         onPageChange={handleChangePage}
         rowsPerPageOptions={[10, 25, 100]}
