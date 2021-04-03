@@ -245,14 +245,14 @@ function JoninthePool({ className, pool }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Yout Bid Ammount
+          Yout Bid Amount
         </Typography>
         <Typography
           component="p"
           variant="body2"
           sx={{ color: 'text.secondary' }}
         >
-          Blance : {balance !== null ? formatEther(balance) : '0'} ETH
+          Balance : {balance !== null ? formatEther(balance) : '0'} ETH
         </Typography>
       </div>
 
@@ -278,7 +278,7 @@ function JoninthePool({ className, pool }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Ammount
+          Amount
         </Typography>
       </div>
 
@@ -352,7 +352,7 @@ function JoninthePool({ className, pool }) {
           </Typography>
         )}
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          Have problems Joing? Click here to read instructions.
+          Have problems Joining? Click here to read instructions.
         </Typography>
       </Box>
     </div>
