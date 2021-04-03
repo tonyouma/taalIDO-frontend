@@ -20,6 +20,7 @@ import { useWeb3React } from '@web3-react/core';
 import Application from 'taalswap-js/src/models';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../../taalswap/Components/StatusLabel';
+import CirculProgress from './CirculProgress';
 
 // ----------------------------------------------------------------------
 
@@ -152,6 +153,10 @@ function PlanCard({ pool, index, className }) {
           </Typography>
         </Box>
       </Box>
+
+      <StyledEngineProvider injectFirst>
+        <CirculProgress progressValue={progressValue} />
+      </StyledEngineProvider>
 
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
         {/* Ratio */}
