@@ -86,7 +86,7 @@ function ApplicationStart() {
   const formik = useFormik({
     initialValues: {
       name: '',
-      category: 'defi',
+      category: 'DeFi',
       projectDesc: '',
       websiteUrl: '',
       email: '',
@@ -96,7 +96,7 @@ function ApplicationStart() {
       tradeValue: '',
       tradeAmount: '',
       minFundRaise: '',
-      access: 'private',
+      access: 'Private',
       minIndividuals: '',
       maxIndividuals: '',
       isAtomic: false,

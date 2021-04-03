@@ -79,7 +79,7 @@ function ToolbarTable({ numSelected, filterName, onFilterName, className }) {
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search by Pool Name..."
+          placeholder="Search by Project Name..."
           startAdornment={
             <InputAdornment position="start">
               <Box
@@ -92,7 +92,7 @@ function ToolbarTable({ numSelected, filterName, onFilterName, className }) {
           className={classes.search}
         />
       )}
-      {/* 
+      {/*
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>

@@ -147,20 +147,20 @@ function TablePoolRow({ row, handleOpenModal }) {
       className={classes.hideLastBorder}
       onClick={(event) => handleOpenModal(row)}
     >
-      <TableCell component="th" scope="row" width="15%">
+      <TableCell component="th" scope="row" width="20%">
         {row.poolName}
       </TableCell>
       <TableCell align="right" width="20%">
         {row.ratio} {row.symbol} = 1 ETH
       </TableCell>
-      <TableCell align="right" width="5%">
+      <TableCell align="right" width="10%">
         {row.access}
       </TableCell>
 
-      <TableCell align="right" width="40%">
+      <TableCell align="right" width="35%">
         <LinearProgressWithLabel value={progressValue} />
       </TableCell>
-      <TableCell align="right" width="20%">
+      <TableCell align="right" width="15%">
         <MLabel
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
           color={
@@ -231,11 +231,31 @@ export default function MyPools() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell component="th">Pool Name</TableCell>
-                <TableCell align="right">Ratio</TableCell>
-                <TableCell align="right">Access</TableCell>
-                <TableCell align="right">Progress</TableCell>
-                <TableCell align="right">Status</TableCell>
+                <TableCell component="th">
+                  <Typography variant="h6" gutterBottom>
+                    Project Name
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h6" gutterBottom>
+                    Ratio
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h6" gutterBottom>
+                    Access
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h6" gutterBottom>
+                    Progress
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h6" gutterBottom>
+                    Status
+                  </Typography>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

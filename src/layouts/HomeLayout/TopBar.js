@@ -51,7 +51,8 @@ import { ethers } from 'ethers';
 
 const MENU_LINKS = [
   { title: 'Home', icon: homeFill, href: '/' },
-  { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap.pools },
+  { title: 'IDO', icon: roundStreetview, href: PATH_APP.taalswap.pools },
+  { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap },
   {
     title: 'Yield Farming',
     icon: roundStreetview,

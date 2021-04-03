@@ -23,13 +23,13 @@ import MyPools from './MyPools';
 const ACCOUNT_TABS = [
   {
     value: 0,
-    title: 'All Pools',
+    title: 'All Projects',
     icon: <Icon icon={roundAccountBox} width={20} height={20} />,
     component: <BasicTable />
   },
   {
     value: 1,
-    title: 'My Pools',
+    title: 'My Projects',
     icon: <Icon icon={roundAccountBox} width={20} height={20} />,
     component: <MyPools />
   }
@@ -77,17 +77,17 @@ function PoolListView() {
   };
   const { i18n, t } = useTranslation();
 
-  console.log(t('taalswap.allpools'));
+  console.log(t('taalswap.projects'));
 
   return (
-    <Page title={t('taalswap.allpools')} className={classes.root}>
+    <Page title={t('taalswap.projects')} className={classes.root}>
       <Container maxWidth="lg">
         {/* <HeaderDashboard
-          heading={t('taalswap.allpools')}
+          heading={t('taalswap.projects')}
           links={[{ name: 'Swap' }]}
         /> */}
         <HeaderDashboard
-          heading={t('taalswap.allpools')}
+          heading={t('taalswap.projects')}
           links={[{ name: 'textejfiej' }]}
         />
         <Tabs

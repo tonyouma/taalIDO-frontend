@@ -18,10 +18,13 @@ import { updateApplication, getApplicationList } from 'src/redux/slices/pool';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import {
+  Box,
   Button,
   Card,
   Container,
   Grid,
+  InputAdornment,
+  OutlinedInput,
   TablePagination
 } from '@material-ui/core';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
@@ -38,6 +41,10 @@ import BasicTable from '../../PoolListView/BasicTable';
 import { useSnackbar } from 'notistack';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import { useTranslation } from 'react-i18next';
+import { Icon } from '@iconify/react';
+import searchFill from '@iconify-icons/eva/search-fill';
+import ToolbarTable from '../../../user/UserListView/ToolbarTable';
+import { filter } from 'lodash';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -109,7 +116,7 @@ async function taalDeploy(factory, application) {
         application.decimals
       ),
       application.feeAmount,
-      application.access === 'private' ? true : false,
+      application.access === 'Private' ? true : false,
       {
         gasLimit: 7000000
       }
@@ -144,17 +151,37 @@ const headCells = [
     id: 'projectName',
     numeric: false,
     disablePadding: true,
+    align: false,
     label: 'Name'
   },
-  { id: 'category', numeric: false, disablePadding: false, label: 'Category' },
+  {
+    id: 'category',
+    numeric: false,
+    disablePadding: false,
+    align: true,
+    label: 'Category'
+  },
   {
     id: 'startDate',
     numeric: false,
     disablePadding: false,
+    align: true,
     label: 'Start Date'
   },
-  { id: 'endDate', numeric: false, disablePadding: false, label: 'End Date' },
-  { id: 'status', numeric: false, disablePadding: false, label: 'Status' }
+  {
+    id: 'endDate',
+    numeric: false,
+    disablePadding: false,
+    align: true,
+    label: 'End Date'
+  },
+  {
+    id: 'status',
+    numeric: false,
+    disablePadding: false,
+    align: true,
+    label: 'Status'
+  }
 ];
 
 function EnhancedTableHead(props) {
@@ -170,7 +197,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.align ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -179,7 +206,9 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label}
+              <Typography variant="h6" gutterBottom>
+                {headCell.label}
+              </Typography>
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -319,6 +348,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+// ----------------------------------------------------------------------
+
+function applyFilter(array, query) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  if (query) {
+    array = filter(array, (_user) => {
+      console.log(array);
+      return _user.poolName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+    });
+    return array;
+  }
+  return stabilizedThis.map((el) => el[0]);
+}
+
 export default function ApplicationListView() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -333,6 +376,12 @@ export default function ApplicationListView() {
   const history = useHistory();
   const context = useWeb3React();
   const { account, library } = context;
+
+  const [filterName, setFilterName] = useState('');
+
+  const handleFilterByName = (event) => {
+    setFilterName(event.target.value);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -407,6 +456,8 @@ export default function ApplicationListView() {
   const isSelected = (index) => (selected !== index ? false : true);
   const { i18n, t } = useTranslation();
 
+  const filteredApplications = applyFilter(applicationList, filterName);
+
   return (
     <Page title={t('taalswap.applications')} className={classes.root}>
       <Container maxWidth="lg">
@@ -417,6 +468,11 @@ export default function ApplicationListView() {
         <Grid container spacing={5}>
           <Grid item xs={12}>
             <Card>
+              <ToolbarTable
+                filterName={filterName}
+                onFilterName={handleFilterByName}
+              />
+
               {selected !== -1 ? (
                 <EnhancedTableToolbar
                   selected={selected}
@@ -430,6 +486,7 @@ export default function ApplicationListView() {
               ) : (
                 <div className={classes.paper}></div>
               )}
+
               <TableContainer>
                 <Table
                   className={classes.table}
@@ -441,11 +498,11 @@ export default function ApplicationListView() {
                     order={order}
                     orderBy={orderBy}
                     onRequestSort={handleRequestSort}
-                    rowCount={applicationList.length}
+                    rowCount={filteredApplications.length}
                   />
                   <TableBody>
                     {stableSort(
-                      applicationList,
+                      filteredApplications,
                       getComparator(order, orderBy)
                     ).map((row, index) => {
                       const isItemSelected = isSelected(row.id);

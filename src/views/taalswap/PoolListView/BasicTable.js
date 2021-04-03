@@ -154,20 +154,20 @@ function TablePoolRow({ row, handleOpenModal }) {
       className={classes.hideLastBorder}
       onClick={(event) => handleOpenModal(row)}
     >
-      <TableCell component="th" scope="row" width="15%">
+      <TableCell component="th" scope="row" width="20%">
         {row.poolName}
       </TableCell>
-      <TableCell align="right" width="15%">
+      <TableCell align="right" width="20%">
         {row.ratio} {row.symbol} = 1 ETH
       </TableCell>
       <TableCell align="right" width="10%">
         {row.access}
       </TableCell>
       {/* <TableCell align="center" width="5%"></TableCell> */}
-      <TableCell align="right" width="45%">
+      <TableCell align="right" width="35%">
         <LinearProgressWithLabel value={progressValue} />
       </TableCell>
-      <TableCell align="right" width="10%">
+      <TableCell align="right" width="15%">
         <StatusLabel poolStatus={poolStatus} />
         {/* <MLabel
 
@@ -242,7 +242,7 @@ export default function BasicTable() {
               <TableRow>
                 <TableCell component="th">
                   <Typography variant="h6" gutterBottom>
-                    Pool Name
+                    Project Name
                   </Typography>
                 </TableCell>
                 <TableCell align="right">

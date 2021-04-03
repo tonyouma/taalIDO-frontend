@@ -19,14 +19,14 @@ import moment from 'moment';
 // ----------------------------------------------------------------------
 
 const CATEGORIES = [
-  { value: 'defi', label: 'DeFi' },
-  { value: 'nft', label: 'NFT' },
-  { value: 'others', label: 'Others' }
+  { value: 'DeFi', label: 'DeFi' },
+  { value: 'NFT', label: 'NFT' },
+  { value: 'Others', label: 'Others' }
 ];
 
 const ACCESS = [
-  { value: 'private', label: 'Private' },
-  { value: 'public', label: 'Public' }
+  { value: 'Private', label: 'Private' },
+  { value: 'Public', label: 'Public' }
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -82,7 +82,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                     <TextField
                       fullWidth
                       size="small"
-                      label="Pool Name"
+                      label="Project Name"
                       {...getFieldProps('poolName')}
                       error={Boolean(touched.poolName && errors.poolName)}
                       helperText={touched.poolName && errors.poolName}
