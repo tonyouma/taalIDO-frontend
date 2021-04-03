@@ -35,7 +35,7 @@ const navConfig = [
     subheader: 'ido',
     items: [
       {
-        title: 'pools',
+        title: 'Projects',
         href: PATH_APP.taalswap.pools,
         icon: ICONS.elements
       },
