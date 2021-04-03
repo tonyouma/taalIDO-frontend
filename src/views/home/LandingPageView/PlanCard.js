@@ -6,7 +6,6 @@ import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
 import { Icon } from '@iconify/react';
 import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
-import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Button, Typography, Box } from '@material-ui/core';
 import { MLabel } from 'src/theme';
@@ -153,10 +152,6 @@ function PlanCard({ pool, index, className }) {
           </Typography>
         </Box>
       </Box>
-
-      <StyledEngineProvider injectFirst>
-        <CirculProgress progressValue={progressValue} />
-      </StyledEngineProvider>
 
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
         {/* Ratio */}
