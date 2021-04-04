@@ -152,7 +152,7 @@ const headCells = [
     numeric: false,
     disablePadding: true,
     align: false,
-    label: 'Name'
+    label: 'Project'
   },
   {
     id: 'category',
