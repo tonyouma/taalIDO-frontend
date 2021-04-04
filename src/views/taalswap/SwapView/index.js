@@ -66,7 +66,7 @@ function PaymentView(className, ...other) {
           </FormikProvider>
         </Card>
         <Card style={{ marginTop: '3rem' }}>
-          <PoolDetails />
+          <PoolDetails pool={pool} />
         </Card>
       </Container>
     </Page>

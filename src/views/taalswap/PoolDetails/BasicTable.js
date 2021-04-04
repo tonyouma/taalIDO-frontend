@@ -30,7 +30,7 @@ General.propTypes = {
   className: PropTypes.string
 };
 
-function General({ className }) {
+function General({ className, pool }) {
   const classes = useStyles();
 
   return (
@@ -58,7 +58,7 @@ function General({ className }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      February5th 2021, 2:30 PM UTC
+                      February5th 2021, 2:30 PM UTC (연동예정)
                     </Typography>
                   </div>
 
@@ -96,7 +96,7 @@ function General({ className }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      0.31 ETH
+                      0.31 ETH (연동예정)
                     </Typography>
                   </div>
 
@@ -115,7 +115,7 @@ function General({ className }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      30 ETH
+                      30 ETH (연동예정)
                     </Typography>
                   </div>
 
@@ -134,7 +134,7 @@ function General({ className }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Private
+                      {pool.access}
                     </Typography>
                   </div>
                 </Grid>
@@ -165,7 +165,7 @@ function General({ className }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Finxflo
+                      {pool.poolName}
                     </Typography>
                   </div>
 
@@ -184,7 +184,7 @@ function General({ className }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      0x8a40c222996f9F343f623B1251ef1e5f1
+                      {pool.tokenContractAddr}
                     </Typography>
                   </div>
 
@@ -203,7 +203,7 @@ function General({ className }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      150,000,000.0
+                      150,000,000.0 (연동예정)
                     </Typography>
                   </div>
 
@@ -222,7 +222,7 @@ function General({ className }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      6,223
+                      6,223 (연동예정)
                     </Typography>
                   </div>
 
@@ -241,7 +241,7 @@ function General({ className }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      35,576
+                      35,576 (연동예정)
                     </Typography>
                   </div>
                 </Grid>

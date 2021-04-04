@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
-function PoolDetails() {
+function PoolDetails({ pool }) {
   const classes = useStyles();
   const [currentTab, setCurrentTab] = useState('Pool Details');
   const handleChangeTab = (event, newValue) => {
@@ -77,7 +77,7 @@ function PoolDetails() {
             />
           ))}
         </Tabs>
-        <BasicTable />
+        <BasicTable pool={pool} />
       </Container>
     </Page>
   );
