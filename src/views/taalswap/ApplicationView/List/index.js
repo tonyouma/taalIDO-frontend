@@ -371,6 +371,7 @@ export default function ApplicationListView() {
   const dispatch = useDispatch();
   const { applicationList, update } = useSelector((state) => state.pool);
   const [page, setPage] = useState(0);
+  const [secret, setSecret] = React.useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
@@ -407,9 +408,14 @@ export default function ApplicationListView() {
   const handleClickSend = () => {
     console.log(`send item index : ${selected}`);
     // 상태를 승인상태로 변경해준다.
-    const item = JSON.parse(JSON.stringify(selectedItem));
-    item.status = 'approved';
-    dispatch(updateApplication(item));
+    dispatch(
+      updateApplication(
+        selectedItem.id,
+        { status: 'approved' },
+        account,
+        secret
+      )
+    );
     enqueueSnackbar('Application approved', { variant: 'success' });
     setSelected(-1);
   };
@@ -422,9 +428,17 @@ export default function ApplicationListView() {
       console.log('error');
       enqueueSnackbar('Application Deploy fail', { variant: 'fail' });
     } else {
-      item.status = 'deployed';
-      item.contractAddress = ret.address;
-      dispatch(updateApplication(item));
+      dispatch(
+        updateApplication(
+          selectedItem.id,
+          {
+            status: 'deployed',
+            contractAddress: ret.address
+          },
+          account,
+          secret
+        )
+      );
       console.log('deploy success.');
       enqueueSnackbar('Application Deploy success', { variant: 'success' });
       setSelected(-1);

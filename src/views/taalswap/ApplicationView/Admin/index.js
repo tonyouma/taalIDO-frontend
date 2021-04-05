@@ -218,6 +218,7 @@ const AdminView = () => {
   const onClickFund = async () => {
     if (!Number.isInteger(parseInt(fundAmount))) {
       //fundAmount 는 int 여야함.
+      enqueueSnackbar('Fund Amount is integer', { variant: 'error' });
       return;
     }
     const selectedItem = getSelectedApp();
@@ -231,9 +232,9 @@ const AdminView = () => {
     if (result.error) {
       enqueueSnackbar('Fund fail', { variant: 'error' });
     } else {
-      const app = JSON.parse(JSON.stringify(selectedItem));
-      app.status = 'upcoming';
-      dispatch(updateApplication(app));
+      dispatch(
+        updateApplication(selectedItem.id, { status: 'upcoming' }, account)
+      );
       enqueueSnackbar('Fund success', { variant: 'success' });
     }
   };
@@ -294,7 +295,7 @@ const AdminView = () => {
     dispatch(searchApplicationListByCreator(account));
     setSelectedPool(location.state ? location.state.selectedItem.id : '');
     console.log('selected pool', selectedPool);
-  }, [account, selectedPool]);
+  }, [account]);
 
   return (
     <Page
@@ -317,14 +318,6 @@ const AdminView = () => {
             <Grid item xs={12} md={4}>
               <TotalDownloads />
             </Grid>
-
-            <Grid item xs={12} md={6} lg={4}>
-              <CurrentDownload />
-            </Grid>
-
-            <Grid item xs={12} md={6} lg={8}>
-              <AreaInstalled />
-            </Grid>
           </Grid>
         </Container>
 
@@ -338,11 +331,10 @@ const AdminView = () => {
                     style={{ minWidth: '360px' }}
                     name="selecteApplication"
                     select
-                    defaultValue={
-                      location.state ? location.state.selectedItem.id : ''
-                    }
                     label="Applications"
                     size="small"
+                    defaultValue={selectedPool}
+                    value={selectedPool}
                     onChange={handleChange}
                   >
                     {applicationList.map((app, index) => (

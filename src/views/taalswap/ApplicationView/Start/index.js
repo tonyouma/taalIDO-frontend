@@ -14,30 +14,14 @@ import { useWeb3React } from '@web3-react/core';
 import { Contract, ContractFactory } from '@ethersproject/contracts';
 import { tokenData } from 'src/contracts';
 import { useHistory } from 'react-router-dom';
+import Taalswap from 'src/utils/taalswap';
+const crypto = require('crypto');
 
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   root: {}
 }));
-
-async function getSymbol(address, account, library) {
-  const tokenContract = new Contract(
-    address,
-    ContractFactory.getInterface(tokenData.abi),
-    library.getSigner(account).connectUnchecked()
-  );
-  return await tokenContract.symbol();
-}
-
-async function getDecimals(address, account, library) {
-  const tokenContract = new Contract(
-    address,
-    ContractFactory.getInterface(tokenData.abi),
-    library.getSigner(account).connectUnchecked()
-  );
-  return await tokenContract.decimals();
-}
 
 function ApplicationStart() {
   const classes = useStyles();
@@ -80,7 +64,8 @@ function ApplicationStart() {
       .integer('Fee Amount is positive integer')
       .min(2)
       .max(100)
-      .required('Fee Amount is required')
+      .required('Fee Amount is required'),
+    secret: Yup.string().required('Password is required')
   });
 
   const formik = useFormik({
@@ -138,36 +123,29 @@ function ApplicationStart() {
         };
         console.log('======>');
         const result = {};
-        // symbol , decimal 을 가져와서 셋팅한다.
-        newApplication.symbol = await getSymbol(
-          values.tokenContractAddr,
+        const taalswap = new Taalswap({
           account,
-          library
-        ).catch((error) => {
-          result.error = error;
+          library,
+          tokenAddress: values.tokenContractAddr
         });
-        newApplication.decimals = await getDecimals(
-          values.tokenContractAddr,
-          account,
-          library
-        ).catch((error) => {
-          result.error = error;
-        });
-        console.log('======>' + JSON.stringify(newApplication));
-
-        if (!!result.error) {
+        try {
+          newApplication.symbol = await taalswap.symbolAsync();
+          newApplication.decimals = await taalswap.decimalsAsync();
+        } catch (e) {
           console.log('error : ' + JSON.stringify(result.error));
           enqueueSnackbar('Create Application fail', { variant: 'fail' });
           return;
         }
+        newApplication.secret = crypto
+          .createHash('sha256')
+          .update(values.secret)
+          .digest('base64');
+        console.log('======>' + JSON.stringify(newApplication));
         dispatch(createApplication(newApplication));
         enqueueSnackbar('Create Application success', { variant: 'success' });
         history.push({
           pathname: '/app/taalswap/application/list'
         });
-        // resetForm();
-        // setSubmitting(false);
-        // enqueueSnackbar('Create Application success', { variant: 'success' });
       } catch (error) {
         console.error(error);
         setSubmitting(false);
