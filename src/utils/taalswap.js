@@ -230,8 +230,8 @@ class Taalswap {
    */
   async minimumRaise() {
     return Numbers.fromDecimals(
-      (await this.params.fixedContract.minimumRaise(),
-      this.params.application.decimals)
+      await this.params.fixedContract.minimumRaise(),
+      this.params.application.decimals
     );
   }
 
