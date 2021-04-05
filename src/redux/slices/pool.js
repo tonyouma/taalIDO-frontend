@@ -119,7 +119,7 @@ export function searchApplicationListByCreator(creator) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3001/pools?id_lte=' + creator
+        'http://133.186.222.82:3001/pools?creator_lte=' + creator
       );
       dispatch(slice.actions.getApplicationListSuccess(response.data));
     } catch (error) {
@@ -143,13 +143,19 @@ export function createApplication(newApplication) {
   };
 }
 
-export function updateApplication(application) {
+export function updateApplication(id, updateItem, creator, secret) {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.put(
-        'http://133.186.222.82:3001/pools/' + application.id,
-        application
+      const response = await axios.patch(
+        'http://133.186.222.82:3001/pools/' + id,
+        updateItem,
+        {
+          auth: {
+            creator: creator,
+            secret: secret
+          }
+        }
       );
       console.log('response ' + response);
       dispatch(slice.actions.updateApplicationSuccess(response.data));

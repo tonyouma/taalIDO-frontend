@@ -339,6 +339,17 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                       />
                     </Box>
                   </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      {...getFieldProps('secret')}
+                      error={Boolean(touched.secret && errors.secret)}
+                      helperText={touched.secret && errors.secret}
+                      fullWidth
+                      label="Password"
+                      type="password"
+                    />
+                  </Grid>
                 </Grid>
 
                 <Box
