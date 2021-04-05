@@ -13,14 +13,11 @@ import { MLabel } from 'src/theme';
 import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
 import { useHistory } from 'react-router-dom';
-import { Contract, ContractFactory } from '@ethersproject/contracts';
-import { fixedData } from '../../../contracts';
-import { tokenData } from '../../../contracts';
 import { useWeb3React } from '@web3-react/core';
-import Application from 'taalswap-js/src/models';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../../taalswap/Components/StatusLabel';
 import CirculProgress from './CirculProgress';
+import Taalswap from 'src/utils/taalswap';
 
 // ----------------------------------------------------------------------
 
@@ -59,64 +56,28 @@ function PlanCard({ pool, index, className }) {
   const [participants, setParticipants] = useState(0);
   const [poolStatus, setStatus] = useState('');
 
-  const {
-    connector,
-    library,
-    chainId,
-    account,
-    activate,
-    deactivate,
-    active,
-    error
-  } = context;
+  const { library, account } = context;
 
   useEffect(async () => {
     if (!!library) {
-      const fixedContract = new Contract(
-        pool.contractAddress,
-        ContractFactory.getInterface(fixedData.abi),
-        library.getSigner(account).connectUnchecked()
-      );
-      const tokenContract = new Contract(
-        pool.tokenContractAddr,
-        ContractFactory.getInterface(tokenData.abi),
-        library.getSigner(account).connectUnchecked()
-      );
-      const taalswapApp = new Application({
-        test: true,
-        mainnet: false,
-        account: account
-      });
-      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
-      const swapContract = taalswapApp.getFixedSwapContract({
-        tokenAddress: pool.tokenContractAddr,
-        decimals: 18,
-        contractAddress: pool.contractAddress,
-        fixedContract: fixedContract,
-        tokenContract: tokenContract
+      const taalswap = new Taalswap({
+        application: pool,
+        account,
+        library
       });
 
-      await swapContract
-        .getBuyers()
-        .then((result) => {
-          setParticipants(result.length);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      await taalswap.getBuyers().then((result) => {
+        console.log(result);
+        setParticipants(result.length);
+      });
 
-      await swapContract
-        .tokensAllocated()
-        .then((result) => {
-          setAllocated(result);
-          setProgressValue(getProgressValue(result, pool.tradeAmount));
-          setTotalRaise(result * pool.tradeValue);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      await taalswap.tokensAllocated().then((result) => {
+        setAllocated(result);
+        setProgressValue(getProgressValue(result, pool.tradeAmount));
+        setTotalRaise(result * pool.tradeValue);
+      });
 
-      const status = await getPoolStatus(swapContract, pool.status);
+      const status = await getPoolStatus(taalswap, pool.status);
       setStatus(status);
     }
 

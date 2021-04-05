@@ -35,7 +35,10 @@ import { Contract, ContractFactory } from '@ethersproject/contracts';
 import { fixedData } from '../../../contracts';
 import { tokenData } from '../../../contracts';
 import { useWeb3React } from '@web3-react/core';
-import Application from 'taalswap-js/src/models';
+import { getSwapList } from '../../../redux/slices/pool';
+import StatusLabel from '../Components/StatusLabel';
+import { getPoolStatus } from '../../../utils/getPoolStatus';
+import Taalswap from 'src/utils/taalswap';
 
 // ----------------------------------------------------------------------
 
@@ -90,53 +93,26 @@ function TablePoolRow({ row, handleOpenModal }) {
   const classes = useStyles();
   const context = useWeb3React();
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [progressValue, setProgressValue] = useState(0);
+  const [poolStatus, setStatus] = useState('');
 
-  const {
-    connector,
-    library,
-    chainId,
-    account,
-    activate,
-    deactivate,
-    active,
-    error
-  } = context;
+  const { library, account } = context;
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!!library) {
-      const fixedContract = new Contract(
-        row.contractAddress,
-        ContractFactory.getInterface(fixedData.abi),
-        library.getSigner(account).connectUnchecked()
-      );
-      const tokenContract = new Contract(
-        row.tokenContractAddr,
-        ContractFactory.getInterface(tokenData.abi),
-        library.getSigner(account).connectUnchecked()
-      );
-      const taalswapApp = new Application({
-        test: true,
-        mainnet: false,
-        account: account
-      });
-      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
-      const swapContract = taalswapApp.getFixedSwapContract({
-        tokenAddress: row.tokenContractAddr,
-        decimals: 18,
-        contractAddress: row.contractAddress,
-        fixedContract: fixedContract,
-        tokenContract: tokenContract
+      const taalswap = new Taalswap({
+        application: row,
+        account,
+        library
       });
 
-      swapContract
-        .tokensAllocated()
-        .then((result) => {
-          // setAllocated(result);
-          setProgressValue(getProgressValue(result, row.tradeAmount));
-          // setTotalRaise(result * pool.tradeValue);
-        })
-        .catch((error) => {});
+      await taalswap.tokensAllocated().then((result) => {
+        setProgressValue(getProgressValue(result, row.tradeAmount));
+      });
+
+      const status = await getPoolStatus(taalswap, row.status);
+      setStatus(status);
     }
   }, [row]);
 
@@ -161,16 +137,7 @@ function TablePoolRow({ row, handleOpenModal }) {
         <LinearProgressWithLabel value={progressValue} />
       </TableCell>
       <TableCell align="right" width="15%">
-        <MLabel
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={
-            (row.status === 'in_progress' && 'warning') ||
-            (row.status === 'out_of_date' && 'error') ||
-            'success'
-          }
-        >
-          {sentenceCase(row.status)}
-        </MLabel>
+        <StatusLabel poolStatus={poolStatus} />
       </TableCell>
     </TableRow>
   );
@@ -181,9 +148,23 @@ export default function MyPools() {
   const history = useHistory();
 
   const [filterName, setFilterName] = useState('');
+  const [filterPoolList, setFilterPoolList] = useState([]);
   const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const context = useWeb3React();
+
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -193,12 +174,16 @@ export default function MyPools() {
     setPage(0);
   };
   const dispatch = useDispatch();
-  const { poolList, isOpenModal, selectedPool } = useSelector(
+  const { poolList, swapList, isOpenModal, selectedPool } = useSelector(
     (state) => state.pool
   );
 
-  useEffect(() => {
-    dispatch(getPoolList());
+  useEffect(async () => {
+    if (!!library) {
+      await dispatch(getPoolList());
+      await dispatch(getSwapList(account));
+      await getMySwapList();
+    }
   }, [dispatch]);
 
   const handleFilterByName = (event) => {
@@ -221,7 +206,21 @@ export default function MyPools() {
     });
   };
 
-  const filteredPools = applyFilter(poolList, filterName);
+  const getMySwapList = () => {
+    const myPoolList = swapList.map((pool) => pool.poolName);
+    const filterPoolNames = myPoolList.filter(
+      (pool, index) => myPoolList.indexOf(pool) === index
+    );
+
+    setFilterPoolList(
+      poolList.filter(
+        (pool) => filterPoolNames.includes(pool.poolName) === true
+      )
+    );
+  };
+
+  const filteredPools = applyFilter(filterPoolList, filterName);
+  // const filteredPools = applyFilter(poolList, filterName);
 
   return (
     <div className={classes.root}>

@@ -20,6 +20,9 @@ import {
 } from '../../../redux/slices/wallet';
 import { formatEther } from '@ethersproject/units';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
+import { createSwap, getSwapList } from '../../../redux/slices/pool';
+import Taalswap from 'src/utils/taalswap';
+
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -66,9 +69,11 @@ function JoninthePool({ className, pool }) {
   const [tokensLeft, setTokensLeft] = useState(0);
   const [minAmount, setMinAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(0);
+  const [swappedAmount, setSwappedAmount] = useState(0);
   const [warningMessage, setWarningMessage] = useState('');
   const [diffTime, setDiffTime] = useState({});
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
+  const { swapList } = useSelector((state) => state.pool);
   const {
     connector,
     library,
@@ -85,6 +90,14 @@ function JoninthePool({ className, pool }) {
     !!library &&
     (pool.contractAddress !== '') & (pool.tokenContractAddr !== '')
   ) {
+    const taalswap = new Taalswap({
+      application: pool,
+      account,
+      library,
+      tokenAddress: pool.tokenContractAddr,
+      contractAddress: pool.contractAddress
+    });
+
     const fixedContract = new Contract(
       pool.contractAddress,
       ContractFactory.getInterface(fixedData.abi),
@@ -114,15 +127,26 @@ function JoninthePool({ className, pool }) {
   const onChangeAmount = (e) => {
     setAmount(e.target.value);
     setPrice(e.target.value * pool.tradeValue);
-    console.log(e.target.value * pool.tradeValue);
-    console.log(pool.tradeValue);
   };
 
-  const onClickSwap = () => {
+  const addSwap = () => {
+    const swap = {
+      walletAddress: account,
+      tokenContractAddress: pool.tokenContractAddr,
+      poolName: pool.poolName,
+      amount: amount,
+      joinDate: moment().unix()
+    };
+    console.log(swap);
+
+    dispatch(createSwap(swap));
+  };
+
+  const onClickSwap = async () => {
     try {
+      // addSwap();
       if (!!library) {
         console.log(`minAmount  : ${minAmount}`);
-
         console.log(`maxAmount  : ${maxAmount}`);
         console.log(
           `balance    : ${parseFloat(formatEther(balance)).toFixed(4)}`
@@ -136,14 +160,16 @@ function JoninthePool({ className, pool }) {
           console.log(`tokensLeft : ${tokensLeft}`);
 
           if (parseFloat(amount) < parseFloat(tokensLeft)) {
-            swapContract
-              .swap({ tokenAmount: amount, account: account })
-              .then((resp) => {
-                console.log(resp);
-                setAmount(0);
-              })
-              .catch((error) => console.log(error));
-            setWarningMessage('');
+            const result = await swapContract.swap({
+              tokenAmount: amount,
+              account: account
+            });
+            if (!!result.error) {
+              console.log('error : ' + JSON.stringify(result.error));
+            } else {
+              setWarningMessage('');
+              addSwap();
+            }
           } else {
             setWarningMessage('tokensLeft 보다 적게');
           }
@@ -176,7 +202,9 @@ function JoninthePool({ className, pool }) {
   // };
 
   useEffect(async () => {
-    if (!!library && !!swapContract) {
+    await dispatch(getSwapList(account));
+
+    if (!!library) {
       await swapContract
         .isOpen()
         .then((result) => {
@@ -211,6 +239,16 @@ function JoninthePool({ className, pool }) {
           setMaxAmount(result);
         })
         .catch((error) => {});
+
+      if (!!swapList) {
+        setSwappedAmount(
+          await swapList
+            .filter((swap) => swap.poolName === pool.poolName)
+            .reduce(function (prevPool, currPool) {
+              return parseFloat(prevPool) + parseFloat(currPool.amount);
+            }, 0)
+        );
+      }
     }
     console.log(`isOpen : ${isOpen}, isSaleFunded : ${isSaleFunded}`);
   }, [pool]);
@@ -224,7 +262,7 @@ function JoninthePool({ className, pool }) {
   return (
     <div className={clsx(classes.root, className)}>
       <Typography variant="h3" sx={{ mb: 2 }}>
-        Join the Pool
+        Join the Pool {swappedAmount}
       </Typography>
 
       <div className={classes.row}>
@@ -252,7 +290,9 @@ function JoninthePool({ className, pool }) {
           variant="body2"
           sx={{ color: 'text.secondary' }}
         >
-          Balance : {balance !== null ? formatEther(balance) : '0'} ETH
+          Balance :{' '}
+          {balance !== null ? parseFloat(formatEther(balance)).toFixed(4) : '0'}
+          ETH
         </Typography>
       </div>
 
@@ -326,7 +366,7 @@ function JoninthePool({ className, pool }) {
           size="large"
           variant="contained"
           onClick={onClickSwap}
-          disabled={!(isOpen && isSaleFunded)}
+          // disabled={!(isOpen && isSaleFunded)}
         >
           Go
         </LoadingButton>
