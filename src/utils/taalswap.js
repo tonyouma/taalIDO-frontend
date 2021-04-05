@@ -134,7 +134,7 @@ class Taalswap {
   async tokensAllocated() {
     return Numbers.fromDecimals(
       await this.params.fixedContract.tokensAllocated(),
-      this.getDecimals()
+      this.params.application.decimals
     );
   }
 
@@ -146,7 +146,7 @@ class Taalswap {
   async tokensForSale() {
     return Numbers.fromDecimals(
       await this.params.fixedContract.tokensForSale(),
-      this.getDecimals()
+      this.params.application.decimals
     );
   }
 
@@ -230,7 +230,8 @@ class Taalswap {
    */
   async minimumRaise() {
     return Numbers.fromDecimals(
-      (await this.params.fixedContract.minimumRaise(), this.getDecimals())
+      (await this.params.fixedContract.minimumRaise(),
+      this.params.application.decimals)
     );
   }
 
@@ -335,7 +336,7 @@ class Taalswap {
   async swap({ tokenAmount, account }) {
     let amountWithDecimals = Numbers.toSmartContractDecimals(
       tokenAmount,
-      this.getDecimals()
+      this.params.application.decimals
     );
     let ETHCost = await this.getETHCostFromTokens({
       tokenAmount
