@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,7 +11,13 @@ import {
   Divider,
   Typography
 } from '@material-ui/core';
-
+import { Contract, ContractFactory } from '@ethersproject/contracts';
+import { fixedData } from '../../../contracts';
+import { tokenData } from '../../../contracts';
+import { useWeb3React } from '@web3-react/core';
+import Application from 'taalswap-js/src/models';
+import getMax from '../../../utils/getMax';
+import moment from 'moment';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +38,74 @@ General.propTypes = {
 
 function General({ className, pool }) {
   const classes = useStyles();
+  const context = useWeb3React();
+
+  const [minSwapLevel, setMinSwapLevel] = useState(0);
+  const [max, setMax] = useState(0);
+  const [min, setMin] = useState(0);
+  const [totalRaise, setTotalRaise] = useState(0);
+
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
+
+  useEffect(async () => {
+    if (!!library) {
+      const fixedContract = new Contract(
+        pool.contractAddress,
+        ContractFactory.getInterface(fixedData.abi),
+        library.getSigner(account).connectUnchecked()
+      );
+      const tokenContract = new Contract(
+        pool.tokenContractAddr,
+        ContractFactory.getInterface(tokenData.abi),
+        library.getSigner(account).connectUnchecked()
+      );
+      const taalswapApp = new Application({
+        test: true,
+        mainnet: false,
+        account: account
+      });
+      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+      const swapContract = taalswapApp.getFixedSwapContract({
+        tokenAddress: pool.tokenContractAddr,
+        decimals: 18,
+        contractAddress: pool.contractAddress,
+        fixedContract: fixedContract,
+        tokenContract: tokenContract
+      });
+
+      console.log(swapContract);
+
+      await swapContract
+        .minimumRaise()
+        .then((result) => setMinSwapLevel(result))
+        .catch((error) => console.log(error));
+      // console.log(temp);
+
+      await swapContract
+        .tokensAllocated()
+        .then((result) => {
+          setTotalRaise(result * pool.tradeValue);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    setMax(getMax(pool.maxIndividuals, pool.tradeValue));
+    setMin(pool.minIndividuals * pool.tradeValue);
+
+    const temp = '1000000';
+    console.log(temp.toLocaleString());
+  }, [pool]);
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -58,7 +132,28 @@ function General({ className, pool }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      February5th 2021, 2:30 PM UTC (연동예정)
+                      {moment
+                        .unix(pool.startDate)
+                        .format('YYYY-MM-DD HH:mm:ss')}
+                    </Typography>
+                  </div>
+
+                  <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+
+                  <div className={classes.row}>
+                    <Typography
+                      component="p"
+                      variant="subtitle2"
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      Max. Allocation
+                    </Typography>
+                    <Typography
+                      component="p"
+                      variant="body2"
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      {max} ETH
                     </Typography>
                   </div>
 
@@ -77,26 +172,7 @@ function General({ className, pool }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      No minimum ETH
-                    </Typography>
-                  </div>
-
-                  <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
-
-                  <div className={classes.row}>
-                    <Typography
-                      component="p"
-                      variant="subtitle2"
-                      sx={{ color: 'text.secondary' }}
-                    >
-                      Min. Allocation
-                    </Typography>
-                    <Typography
-                      component="p"
-                      variant="body2"
-                      sx={{ color: 'text.secondary' }}
-                    >
-                      0.31 ETH (연동예정)
+                      {min === 0 ? 'No minimum' : { min }} ETH
                     </Typography>
                   </div>
 
@@ -115,7 +191,7 @@ function General({ className, pool }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      30 ETH (연동예정)
+                      {parseFloat(minSwapLevel).toLocaleString()}
                     </Typography>
                   </div>
 
@@ -196,14 +272,14 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Total Supply
+                      Total Raise
                     </Typography>
                     <Typography
                       component="p"
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      150,000,000.0 (연동예정)
+                      {totalRaise} ETH
                     </Typography>
                   </div>
 
