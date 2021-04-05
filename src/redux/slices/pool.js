@@ -61,6 +61,18 @@ const slice = createSlice({
     updateApplicationSuccess(state, action) {
       state.isLoading = false;
       state.update = action.payload;
+    },
+
+    // GET SWAPS
+    getSwapListSuccess(state, action) {
+      state.isLoading = false;
+      state.swapList = action.payload;
+    },
+
+    // CREATE SWAPS
+    createSwapSuccess(state, action) {
+      state.isLoading = false;
+      state.update = action.payload;
     }
   }
 });
@@ -147,6 +159,35 @@ export function updateApplication(id, updateItem, creator, secret) {
       );
       console.log('response ' + response);
       dispatch(slice.actions.updateApplicationSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getSwapList(walletAddress) {
+  return async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.get(
+        'http://133.186.222.82:3001/swaps?walletAddress=' + walletAddress
+      );
+      dispatch(slice.actions.getSwapListSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function createSwap(newSwap) {
+  return async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.post(
+        'http://133.186.222.82:3001/swaps',
+        newSwap
+      );
+      dispatch(slice.actions.createSwapSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
