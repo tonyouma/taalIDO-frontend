@@ -304,8 +304,8 @@ class Taalswap {
     return res.map((id) => Numbers.fromHex(id));
   }
 
-  async Purchases({ id }) {
-    return await this.params.fixedContract.Purchases(id);
+  async purchases({ id }) {
+    return await this.params.fixedContract.purchases(id);
   }
 
   /**
