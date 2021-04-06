@@ -5,10 +5,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
+  isOpenModal: false,
   error: false,
   poolList: [],
   applicationList: [],
-  update: {}
+  update: {},
+  maxId: 0
 };
 
 const slice = createSlice({
@@ -73,6 +75,12 @@ const slice = createSlice({
     createSwapSuccess(state, action) {
       state.isLoading = false;
       state.update = action.payload;
+    },
+
+    // CREATE SWAPS
+    getMaxIdSuccess(state, action) {
+      state.isLoading = false;
+      state.maxId = action.payload;
     }
   }
 });
@@ -88,7 +96,7 @@ export function getPoolList() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('http://133.186.222.82:3001/pools');
+      const response = await axios.get('http://133.186.222.82:3002/pools');
       // response.data.map((resp) => {
       //   resp.ratio = 0.03 + resp.id;
       //   resp.access = 'Private';
@@ -106,7 +114,7 @@ export function getApplicationList() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('http://133.186.222.82:3001/pools');
+      const response = await axios.get('http://133.186.222.82:3002/pools');
       dispatch(slice.actions.getApplicationListSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -119,7 +127,7 @@ export function searchApplicationListByCreator(creator) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3001/pools?creator_lte=' + creator
+        'http://133.186.222.82:3002/pools?creator=' + creator
       );
       dispatch(slice.actions.getApplicationListSuccess(response.data));
     } catch (error) {
@@ -128,13 +136,14 @@ export function searchApplicationListByCreator(creator) {
   };
 }
 
-export function createApplication(newApplication) {
+export function createApplication(newApplication, accessToken) {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.post(
-        'http://133.186.222.82:3001/pools',
-        newApplication
+        'http://133.186.222.82:3002/pools',
+        newApplication,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
       );
       dispatch(slice.actions.createApplicationSuccess(response.data));
     } catch (error) {
@@ -143,19 +152,17 @@ export function createApplication(newApplication) {
   };
 }
 
-export function updateApplication(id, updateItem, creator, secret) {
+export function updateApplication(id, updateItem, accessToken) {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
+      console.log(updateItem);
+      console.log(id);
+      console.log(accessToken);
       const response = await axios.patch(
-        'http://133.186.222.82:3001/pools/' + id,
+        'http://taalswap.finance:3002/pools/' + id,
         updateItem,
-        {
-          auth: {
-            creator: creator,
-            secret: secret
-          }
-        }
+        { headers: { Authorization: `Bearer ${accessToken}` } }
       );
       console.log('response ' + response);
       dispatch(slice.actions.updateApplicationSuccess(response.data));
@@ -170,7 +177,7 @@ export function getSwapList(walletAddress) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3001/swaps?walletAddress=' + walletAddress
+        'http://133.186.222.82:3002/swaps?walletAddress=' + walletAddress
       );
       dispatch(slice.actions.getSwapListSuccess(response.data));
     } catch (error) {
@@ -184,12 +191,25 @@ export function createSwap(newSwap) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.post(
-        'http://133.186.222.82:3001/swaps',
+        'http://133.186.222.82:3002/swaps',
         newSwap
       );
       dispatch(slice.actions.createSwapSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
+  };
+}
+
+export async function getMaxId() {
+  return async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    const response = await axios
+      .get('http://133.186.222.82:3002/pools')
+      .catch((error) => {
+        console.log(error);
+      });
+    const maxId = response.data[0].id ? response.data[0].id + 1 : 1;
+    dispatch(slice.actions.getMaxIdSuccess(maxId));
   };
 }

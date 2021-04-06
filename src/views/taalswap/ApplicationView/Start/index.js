@@ -17,6 +17,7 @@ import { useHistory } from 'react-router-dom';
 import Taalswap from 'src/utils/taalswap';
 import { useLocation } from 'react-router';
 import { PoolStatus } from 'src/utils/poolStatus';
+import { register, getMaxId } from 'src/utils/auth';
 
 const crypto = require('crypto');
 
@@ -80,7 +81,7 @@ function ApplicationStart() {
       category: location.state ? location.state.selectedItem.category : 'DeFi',
       projectDesc: location.state
         ? location.state.selectedItem.projectDesc
-        : ' ',
+        : '',
       websiteUrl: location.state ? location.state.selectedItem.websiteUrl : '',
       email: location.state ? location.state.selectedItem.email : '',
       telegramHandle: location.state
@@ -144,26 +145,23 @@ function ApplicationStart() {
           creator: account
         };
         console.log('======>');
-        const result = {};
         const taalswap = new Taalswap({
           account,
           library,
           tokenAddress: values.tokenContractAddr
         });
-        try {
-          newApplication.symbol = await taalswap.symbolAsync();
-          newApplication.decimals = await taalswap.decimalsAsync();
-        } catch (e) {
-          console.log('error : ' + JSON.stringify(result.error));
-          enqueueSnackbar('Create Application fail', { variant: 'fail' });
-          return;
-        }
-        newApplication.secret = crypto
-          .createHash('sha256')
-          .update(values.secret)
-          .digest('base64');
-        console.log('======>' + JSON.stringify(newApplication));
-        dispatch(createApplication(newApplication));
+        newApplication.symbol = await taalswap.symbolAsync();
+        newApplication.decimals = await taalswap.decimalsAsync();
+        const key = await getMaxId();
+        const ret = await register({
+          creator: account,
+          password: values.secret,
+          key
+        });
+        const { accessToken, userId } = ret;
+        newApplication.userId = userId;
+        console.log('======>', newApplication);
+        dispatch(createApplication(newApplication, accessToken));
         enqueueSnackbar('Create Application success', { variant: 'success' });
         history.push({
           pathname: '/app/taalswap/application/list'
@@ -171,12 +169,12 @@ function ApplicationStart() {
       } catch (error) {
         console.error(error);
         setSubmitting(false);
+        enqueueSnackbar('Create Application fail', { variant: 'fail' });
         setErrors({ afterSubmit: error.code });
       }
     }
   });
 
-  console.log(formik);
   return (
     <Page
       title="New Application-Management | Minimal-UI"
@@ -187,7 +185,11 @@ function ApplicationStart() {
           heading="Create a new application"
           links={[{ name: 'New Application' }]}
         />
-        <NewApplicationForm formik={formik} account={account} edit={edit} />
+        <NewApplicationForm
+          formik={formik}
+          account={account}
+          edit={edit.toString()}
+        />
       </Container>
     </Page>
   );

@@ -236,8 +236,8 @@ const AdminView = () => {
       dispatch(
         updateApplication(
           selectedItem.id,
-          { status: PoolStatus.UPCOMING },
-          account
+          { status: PoolStatus.UPCOMING, userId: location.state.userId },
+          location.state.accessToken
         )
       );
       enqueueSnackbar('Fund success', { variant: 'success' });
@@ -338,6 +338,7 @@ const AdminView = () => {
                     select
                     label="Applications"
                     size="small"
+                    disabled
                     defaultValue={selectedPool}
                     value={selectedPool}
                     onChange={handleChange}

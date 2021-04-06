@@ -52,11 +52,10 @@ import { useSnackbar } from 'notistack';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import EditIcon from '@material-ui/icons/Edit';
 import { useTranslation } from 'react-i18next';
-import { Icon } from '@iconify/react';
-import searchFill from '@iconify-icons/eva/search-fill';
 import ToolbarTable from '../../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
 import { PoolStatus } from 'src/utils/poolStatus';
+import { login } from 'src/utils/auth';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -435,54 +434,59 @@ export default function ApplicationListView() {
     return admin.addresses.includes(account);
   };
 
-  const handleClickAdmin = () => {
+  const handleClickAdmin = async () => {
     console.log(`admin item index :  ${selected}`);
-    // if (checkAdmin()) {
-    //   history.push({
-    //     pathname: '/app/taalswap/application/admin',
-    //     state: { selectedItem: selectedItem }
-    //   });
-    // } else handleOpenModal(selectedItem, 'admin');
     handleOpenModal(selectedItem, 'admin');
   };
 
   const handleConfirmClick = async () => {
+    const isAdmin = checkAdmin();
     if (secret.trim().length === 0) {
       alert('password를 입력하세요.');
       return;
     }
-    // 패스워드 체크가 들어가야 한다. /login 호출 jwt token 을 받아서 인증에 사용한다.
 
+    // 패스워드 체크가 들어가야 한다. /login 호출 jwt token 을 받아서 인증에 사용한다.
+    let isError = false;
+    const ret = await login({
+      creator: account,
+      password: isAdmin ? '1234' : secret,
+      key: isAdmin ? selectedItem.userId : selectedItem.id
+    }).catch((error) => {
+      alert('인증에 실패하였습니다.');
+      isError = true;
+    });
+    if (isError) return;
+    console.log(ret);
+    const { accessToken, userId } = ret;
     handleCloseModal();
     if (modalType === 'admin') {
-      console.log('-----------', secret);
-      // history.push({
-      //   pathname: '/app/taalswap/application/admin',
-      //   state: { selectedItem: selectedItem, password: inputs.password }
-      // });
+      history.push({
+        pathname: '/app/taalswap/application/admin',
+        state: { selectedItem: selectedItem, accessToken: accessToken, userId }
+      });
     } else if (modalType === 'deploy') {
       const item = JSON.parse(JSON.stringify(selectedItem));
-      console.log('=========', secret);
-      // const ret = await deployFixedSwap(item, account, library);
-      // if (!!ret.err) {
-      //   console.log('error');
-      //   enqueueSnackbar('Application Deploy fail', { variant: 'fail' });
-      // } else {
-      //   dispatch(
-      //     updateApplication(
-      //       selectedItem.id,
-      //       {
-      //         status: PoolStatus.DEPLOYED,
-      //         contractAddress: ret.address
-      //       },
-      //       account,
-      //       secret
-      //     )
-      //   );
-      //   console.log('deploy success.');
-      //   enqueueSnackbar('Application Deploy success', { variant: 'success' });
-      //   setSelected(-1);
-      // }
+      const ret = await deployFixedSwap(item, account, library);
+      if (!!ret.err) {
+        console.log('error');
+        enqueueSnackbar('Application Deploy fail', { variant: 'fail' });
+      } else {
+        dispatch(
+          updateApplication(
+            selectedItem.id,
+            {
+              status: PoolStatus.DEPLOYED,
+              contractAddress: ret.address,
+              userId: userId
+            },
+            accessToken
+          )
+        );
+        console.log('deploy success.');
+        enqueueSnackbar('Application Deploy success', { variant: 'success' });
+        setSelected(-1);
+      }
     }
   };
 
@@ -494,15 +498,22 @@ export default function ApplicationListView() {
     });
   };
 
-  const handleClickSend = () => {
+  const handleClickSend = async () => {
     console.log(`send item index : ${selected}`);
+    const ret = await login({
+      creator: account,
+      password: '12345678',
+      key: selectedItem.userId
+    });
+
+    console.log('========', ret);
+    const { accessToken, userId } = ret;
     // 상태를 승인상태로 변경해준다.
     dispatch(
       updateApplication(
         selectedItem.id,
-        { status: PoolStatus.APPROVED },
-        account,
-        secret
+        { status: PoolStatus.APPROVED, userId: userId },
+        accessToken
       )
     );
     enqueueSnackbar('Application approved', { variant: 'success' });
@@ -511,12 +522,6 @@ export default function ApplicationListView() {
 
   const handleClickDeploy = async () => {
     console.log(`deploy item index : ${selected}`);
-    // if (checkAdmin()) {
-    //   history.push({
-    //     pathname: '/app/taalswap/application/admin',
-    //     state: { selectedItem: selectedItem }
-    //   });
-    // } else handleOpenModal(selectedItem, 'admin');
     handleOpenModal(selectedItem, 'deploy');
   };
 

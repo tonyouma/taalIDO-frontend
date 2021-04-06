@@ -61,10 +61,10 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
     getFieldProps
   } = formik;
   const account = other.account;
-  const isEdit = other.edit;
+  const isEdit = other.edit === 'true' ? true : false;
   const history = useHistory();
 
-  console.log('account : ' + JSON.stringify(account));
+  // console.log('account : ' + JSON.stringify(account));
   return (
     <FormikProvider value={formik}>
       <Form
