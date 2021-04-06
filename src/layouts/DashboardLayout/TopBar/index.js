@@ -26,6 +26,7 @@ import {
 } from '../../../redux/slices/wallet';
 import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
 import WalletDialog from '../../../views/taalswap/Components/WalletDialog';
+import WalletInfo from './WalletInfo';
 import { MIconButton } from '../../../theme';
 import settings2Fill from '@iconify-icons/eva/settings-2-fill';
 
@@ -147,6 +148,9 @@ function TopBar({ onOpenNav, className }) {
         >
           <Languages />
           {/* <Notifications /> */}
+          {connector && (
+            <WalletInfo walletAddress={account} balance={balance} />
+          )}
           <Settings />
           {/* <Account /> */}
           {renderConnectWallet()}
