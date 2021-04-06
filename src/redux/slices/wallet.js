@@ -22,7 +22,8 @@ const initialState = {
   error: false,
   activatingConnector: {},
   account: null,
-  balance: null
+  balance: null,
+  talBalance: null
 };
 
 const ethers = require('ethers');
@@ -44,6 +45,11 @@ const slice = createSlice({
     // BALANCE
     setBalance(state, action) {
       state.balance = action.payload;
+    },
+
+    // TAL BALANCE
+    setTalBalance(state, action) {
+      state.talBalance = action.payload;
     }
   }
 });
@@ -52,7 +58,12 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-export const { hasError, setActivatingConnector, setBalance } = slice.actions;
+export const {
+  hasError,
+  setActivatingConnector,
+  setBalance,
+  setTalBalance
+} = slice.actions;
 
 // ----------------------------------------------------------------------
 

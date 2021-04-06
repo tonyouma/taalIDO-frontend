@@ -16,7 +16,8 @@ import {
   TextField,
   Box,
   IconButton,
-  Icon
+  Icon,
+  Typography
 } from '@material-ui/core';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import EllipsisText from 'react-text-overflow-middle-ellipsis';
@@ -26,34 +27,50 @@ import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '250px',
+    width: '500px',
     height: '40px',
+    margin: 1,
     padding: theme.spacing(1),
     border: '1px solid',
     borderColor: theme.palette.primary.main,
     color: theme.palette.text.primary,
-    borderRadius: '15px',
+    borderRadius: '20px',
     textAlign: 'center',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     fontSize: 13
   },
-  balance: {
-    width: '30%',
+  balance1: {
+    width: '40%',
     height: '30px',
-    backgroundColor: theme.palette.primary.main,
-    color: 'white',
-    borderRadius: '10px'
-    // padding: theme.spacing(1)
+    margin: 1,
+    backgroundColor: theme.palette.primary.light,
+    color: 'block',
+    borderRadius: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  balance2: {
+    width: '40%',
+    height: '30px',
+    margin: 1,
+    backgroundColor: theme.palette.primary.light,
+    color: 'black',
+    borderRadius: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   address: {
-    width: '60%',
+    width: '20%',
     display: 'flex',
+    margin: 1,
     justifyContent: 'flex-start',
-    padding: theme.spacing(1)
+    padding: theme.spacing(1),
+    fontWeight: 'fontWeightBold'
   },
-
   icon: {
     width: '10%',
     '&:hover': {
@@ -63,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const WalletInfo = ({ walletAddress, balance }) => {
+const WalletInfo = ({ walletAddress, balance, talBalance }) => {
   const classes = useStyles();
   const addressRef = useRef();
   const { enqueueSnackbar } = useSnackbar();
@@ -78,11 +95,20 @@ const WalletInfo = ({ walletAddress, balance }) => {
     }
   };
 
+  console.log(balance);
+  console.log(talBalance);
   return (
     <Box className={classes.root}>
-      <Box className={classes.balance}>
-        {balance !== null ? parseFloat(formatEther(balance)).toFixed(2) : '0'}{' '}
-        ETH
+      <Box className={classes.balance1}>
+        <Typography variant="overline">
+          {balance !== null ? parseFloat(formatEther(balance)).toFixed(2) : '0'}{' '}
+          ETH
+        </Typography>
+      </Box>
+      <Box className={classes.balance2}>
+        <Typography variant="overline">
+          {talBalance !== null ? parseFloat(talBalance).toFixed(2) : '0'} TAL
+        </Typography>
       </Box>
       <Box className={classes.address}>
         <EllipsisText text={walletAddress} ref={addressRef} />
