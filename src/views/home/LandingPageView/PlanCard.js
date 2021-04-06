@@ -50,7 +50,6 @@ function PlanCard({ pool, index, className }) {
   const context = useWeb3React();
 
   const [max, setMax] = useState(0);
-  const [allocated, setAllocated] = useState(0);
   const [progressValue, setProgressValue] = useState(0);
   const [totalRaise, setTotalRaise] = useState(0);
   const [participants, setParticipants] = useState(0);
@@ -59,30 +58,35 @@ function PlanCard({ pool, index, className }) {
   const { library, account } = context;
 
   useEffect(async () => {
-    if (!!library) {
-      const taalswap = new Taalswap({
-        application: pool,
-        account,
-        library,
-        tokenContractAddress: pool.tokenContractAddr,
-        fixedContractAddress: pool.contractAddress
-      });
+    try {
+      if (!!library) {
+        const taalswap = new Taalswap({
+          application: pool,
+          account,
+          library,
+          tokenContractAddress: pool.tokenContractAddr,
+          fixedContractAddress: pool.contractAddress
+        });
 
-      await taalswap.getBuyers().then((result) => {
-        setParticipants(result.length);
-      });
+        await taalswap.getBuyers().then((result) => {
+          setParticipants(result.length);
+        });
 
-      await taalswap.tokensAllocated().then((result) => {
-        setProgressValue(getProgressValue(result, pool.tradeAmount));
-        setTotalRaise(result * pool.tradeValue);
-      });
+        await taalswap.tokensAllocated().then((result) => {
+          setProgressValue(getProgressValue(result, pool.tradeAmount));
+          setTotalRaise(result * pool.tradeValue);
+        });
 
-      const status = await getPoolStatus(taalswap, pool.status);
-      setStatus(status);
+        setStatus(
+          await getPoolStatus(taalswap, pool.status, pool.minFundRaise)
+        );
+      }
+
+      setMax(getMax(pool.maxIndividuals, pool.tradeValue));
+    } catch (error) {
+      console.log(error);
     }
-
-    setMax(getMax(pool.maxIndividuals, pool.tradeValue));
-  }, [pool]);
+  }, [pool, library]);
 
   const onClickDetails = () => {
     history.push({
@@ -233,7 +237,7 @@ function PlanCard({ pool, index, className }) {
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{totalRaise} ETH</Box>
+            <Box sx={{ mr: 1.5 }}>{parseFloat(totalRaise).toFixed(4)} ETH</Box>
           </Box>
         </Box>
       </Box>

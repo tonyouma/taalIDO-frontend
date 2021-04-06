@@ -103,10 +103,14 @@ function TablePoolRow({ row, handleOpenModal }) {
         setProgressValue(getProgressValue(result, row.tradeAmount));
       });
 
-      const status = await getPoolStatus(taalswap, row.status);
+      const status = await getPoolStatus(
+        taalswap,
+        row.status,
+        row.minFundRaise
+      );
       setStatus(status);
     }
-  }, [row]);
+  }, [row, library]);
 
   return (
     <TableRow

@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '1rem'
   },
   button: {
-    width: '105px'
+    width: '130px'
   },
   dialogTitle: {
     color: theme.palette.primary.main
@@ -95,6 +95,7 @@ function TablePoolRow({ row, handleOpenModal }) {
   const { library, account } = context;
 
   useEffect(async () => {
+    console.log(row);
     if (!!library) {
       const taalswap = new Taalswap({
         application: row,
@@ -106,10 +107,14 @@ function TablePoolRow({ row, handleOpenModal }) {
         setProgressValue(getProgressValue(result, row.tradeAmount));
       });
 
-      const status = await getPoolStatus(taalswap, row.status);
+      const status = await getPoolStatus(
+        taalswap,
+        row.status,
+        row.minFundRaise
+      );
       setStatus(status);
     }
-  }, [row]);
+  }, [row, library]);
 
   return (
     <TableRow
@@ -172,13 +177,9 @@ export default function MyPools() {
   };
 
   useEffect(async () => {
-    if (!!library) {
-      await dispatch(getPoolList());
-      await dispatch(getSwapList(account));
-      await getMySwapList();
-      console.log(poolStatus);
-    }
-  }, [dispatch]);
+    await dispatch(getSwapList(account));
+    await getMySwapList();
+  }, [getMySwapList, dispatch]);
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
@@ -204,14 +205,26 @@ export default function MyPools() {
   const handleOnClickClaimETH = async () => {
     try {
       if (!!library) {
-        console.log(taalswap);
-        // const result = await taalswap.redeemGivenMinimumGoalNotAchieved();
-        // if (result.error) {
-        //   console.log(result.error);
-        // } else {
-        //   console.log('aaa');
-        // }
+        const myPurchases = await taalswap.getAddressPurchaseIds({
+          address: account
+        });
+
+        console.log(myPurchases);
+
+        if (!!myPurchases.error) {
+          console.log(myPurchases.error);
+        } else {
+          myPurchases.map(async (purchases) => {
+            await taalswap
+              .redeemGivenMinimumGoalNotAchieved({
+                purchase_id: purchases
+              })
+              .then((result) => console.log(result))
+              .catch((error) => console.log(error));
+          });
+        }
       }
+
       dispatch(closeModal());
     } catch (error) {
       console.log(error);
@@ -221,22 +234,46 @@ export default function MyPools() {
   const handleOnClickClaimTokens = async () => {
     try {
       console.log('Claim Tokens');
+      if (!!library) {
+        const myPurchases = await taalswap.getAddressPurchaseIds({
+          address: account
+        });
+
+        console.log(myPurchases);
+
+        if (!!myPurchases.error) {
+          console.log(myPurchases.error);
+        } else {
+          myPurchases.map(async (purchases) => {
+            await taalswap
+              .redeemTokens({
+                purchase_id: purchases
+              })
+              .then((result) => console.log(result))
+              .catch((error) => console.log(error));
+          });
+        }
+      }
+
+      dispatch(closeModal());
     } catch (error) {
       console.log(error);
     }
   };
 
   const getMySwapList = () => {
-    const myPoolList = swapList.map((pool) => pool.poolName);
-    const filterPoolNames = myPoolList.filter(
-      (pool, index) => myPoolList.indexOf(pool) === index
-    );
+    if (!!swapList && swapList.length > 0) {
+      const myPoolList = swapList.map((pool) => pool.poolName);
+      const filterPoolNames = myPoolList.filter(
+        (pool, index) => myPoolList.indexOf(pool) === index
+      );
 
-    setFilterPoolList(
-      poolList.filter(
-        (pool) => filterPoolNames.includes(pool.poolName) === true
-      )
-    );
+      setFilterPoolList(
+        poolList.filter(
+          (pool) => filterPoolNames.includes(pool.poolName) === true
+        )
+      );
+    }
   };
 
   const filteredPools = applyFilter(filterPoolList, filterName);
