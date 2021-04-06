@@ -146,11 +146,11 @@ function TopBar({ onOpenNav, className }) {
             }
           }}
         >
-          <Languages />
-          {/* <Notifications /> */}
           {connector && (
             <WalletInfo walletAddress={account} balance={balance} />
           )}
+          <Languages />
+          {/* <Notifications /> */}
           <Settings />
           {/* <Account /> */}
           {renderConnectWallet()}

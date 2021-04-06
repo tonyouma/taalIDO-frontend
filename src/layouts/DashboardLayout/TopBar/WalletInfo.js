@@ -26,7 +26,7 @@ import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '250px',
+    width: '270px',
     height: '40px',
     padding: theme.spacing(1),
     border: '1px solid',
@@ -40,18 +40,24 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 13
   },
   balance: {
-    width: '30%',
+    width: '50%',
     height: '30px',
     backgroundColor: theme.palette.primary.main,
     color: 'white',
-    borderRadius: '10px'
+    borderRadius: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    fontWeight: 'fontWeightBold'
     // padding: theme.spacing(1)
   },
   address: {
-    width: '60%',
+    width: '50%',
     display: 'flex',
+    margin: 1,
     justifyContent: 'flex-start',
-    padding: theme.spacing(1)
+    padding: theme.spacing(1),
+    fontWeight: 'fontWeightBold'
   },
 
   icon: {
