@@ -63,16 +63,16 @@ function PlanCard({ pool, index, className }) {
       const taalswap = new Taalswap({
         application: pool,
         account,
-        library
+        library,
+        tokenContractAddress: pool.tokenContractAddr,
+        fixedContractAddress: pool.contractAddress
       });
 
       await taalswap.getBuyers().then((result) => {
-        console.log(result);
         setParticipants(result.length);
       });
 
       await taalswap.tokensAllocated().then((result) => {
-        setAllocated(result);
         setProgressValue(getProgressValue(result, pool.tradeAmount));
         setTotalRaise(result * pool.tradeValue);
       });
@@ -85,7 +85,6 @@ function PlanCard({ pool, index, className }) {
   }, [pool]);
 
   const onClickDetails = () => {
-    console.log(pool);
     history.push({
       pathname: '/app/taalswap/swap',
       state: { selectedPool: pool }
