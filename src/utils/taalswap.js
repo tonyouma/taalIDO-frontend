@@ -258,6 +258,42 @@ class Taalswap {
   }
 
   /**
+   * @function individualMinimumAmount
+   * @description Get Individual Minimum Amount for each address
+   * @returns {Integer}
+   */
+  async individualMinimumAmount() {
+    return Numbers.fromDecimals(
+      await this.params.fixedContract.individualMinimumAmount(),
+      this.params.application.decimals
+    );
+  }
+
+  /**
+   * @function individualMaximumAmount
+   * @description Get Individual Maximum Amount for each address
+   * @returns {Integer}
+   */
+  async individualMaximumAmount() {
+    return Numbers.fromDecimals(
+      await this.params.fixedContract.individualMaximumAmount(),
+      this.params.application.decimals
+    );
+  }
+
+  /**
+   * @function tokensLeft
+   * @description Get Total tokens available to be sold in the pool
+   * @returns {Integer} Amount in Tokens
+   */
+  async tokensLeft() {
+    return Numbers.fromDecimals(
+      await this.params.fixedContract.tokensLeft(),
+      this.params.application.decimals
+    );
+  }
+
+  /**
    * @function getPurchaseIds
    * @description Get All Purchase Ids filter by Address/Purchaser
    * @param {Address} address

@@ -1,10 +1,11 @@
 import React from 'react';
 import { MLabel } from 'src/theme';
+import { PoolStatus } from 'src/utils/poolStatus';
 
 const StatusLabel = ({ poolStatus, absolute }) => {
   return (
     <div>
-      {poolStatus === 'Candidate' ? (
+      {poolStatus === PoolStatus.CANDIDATE ? (
         <MLabel
           sx={{
             top: 16,
@@ -16,7 +17,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           Candidate
         </MLabel>
       ) : null}
-      {poolStatus === 'Approved' ? (
+      {poolStatus === PoolStatus.APPROVED ? (
         <MLabel
           sx={{
             top: 16,
@@ -28,7 +29,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           Approved
         </MLabel>
       ) : null}
-      {poolStatus === 'Deployed' ? (
+      {poolStatus === PoolStatus.DEPLOYED ? (
         <MLabel
           sx={{
             top: 16,
@@ -40,7 +41,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           Deployed
         </MLabel>
       ) : null}
-      {poolStatus === 'Upcoming' ? (
+      {poolStatus === PoolStatus.UPCOMING ? (
         <MLabel
           sx={{
             top: 16,
@@ -52,7 +53,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           Upcoming
         </MLabel>
       ) : null}
-      {poolStatus === 'Live' ? (
+      {poolStatus === PoolStatus.LIVE ? (
         <MLabel
           sx={{
             top: 16,
@@ -64,19 +65,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           Live
         </MLabel>
       ) : null}
-      {poolStatus === 'deployed' ? (
-        <MLabel
-          sx={{
-            top: 16,
-            right: 16,
-            position: absolute && 'absolute'
-          }}
-          color="success"
-        >
-          Deployed
-        </MLabel>
-      ) : null}
-      {poolStatus === 'closed' ? (
+      {poolStatus === PoolStatus.FILLED.SUCCESS.ACHIEVED ? (
         <MLabel
           sx={{
             top: 16,
@@ -85,10 +74,22 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           }}
           color="failed"
         >
-          Close
+          Achieved
         </MLabel>
       ) : null}
-      {poolStatus === 'failed' ? (
+      {poolStatus === PoolStatus.FILLED.SUCCESS.CLOSED ? (
+        <MLabel
+          sx={{
+            top: 16,
+            right: 16,
+            position: absolute && 'absolute'
+          }}
+          color="failed"
+        >
+          Closed
+        </MLabel>
+      ) : null}
+      {poolStatus === PoolStatus.FILLED.FAILED ? (
         <MLabel
           sx={{
             top: 16,

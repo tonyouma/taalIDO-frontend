@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import React, { useState, useEffect } from 'react';
-import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -11,13 +10,11 @@ import {
   Divider,
   Typography
 } from '@material-ui/core';
-import { Contract, ContractFactory } from '@ethersproject/contracts';
-import { fixedData } from '../../../contracts';
-import { tokenData } from '../../../contracts';
 import { useWeb3React } from '@web3-react/core';
-import Application from 'taalswap-js/src/models';
 import getMax from '../../../utils/getMax';
 import moment from 'moment';
+import Taalswap from 'src/utils/taalswap';
+
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -40,64 +37,31 @@ function General({ className, pool }) {
   const classes = useStyles();
   const context = useWeb3React();
 
+  const [name, setName] = useState('');
+  const [totalSupply, setTotalSupply] = useState(0);
   const [minSwapLevel, setMinSwapLevel] = useState(0);
   const [max, setMax] = useState(0);
   const [min, setMin] = useState(0);
-  const [totalRaise, setTotalRaise] = useState(0);
 
-  const {
-    connector,
-    library,
-    chainId,
-    account,
-    activate,
-    deactivate,
-    active,
-    error
-  } = context;
+  const { library, account } = context;
 
   useEffect(async () => {
     if (!!library) {
-      const fixedContract = new Contract(
-        pool.contractAddress,
-        ContractFactory.getInterface(fixedData.abi),
-        library.getSigner(account).connectUnchecked()
-      );
-      const tokenContract = new Contract(
-        pool.tokenContractAddr,
-        ContractFactory.getInterface(tokenData.abi),
-        library.getSigner(account).connectUnchecked()
-      );
-      const taalswapApp = new Application({
-        test: true,
-        mainnet: false,
-        account: account
-      });
-      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
-      const swapContract = taalswapApp.getFixedSwapContract({
-        tokenAddress: pool.tokenContractAddr,
-        decimals: 18,
-        contractAddress: pool.contractAddress,
-        fixedContract: fixedContract,
-        tokenContract: tokenContract
+      const taalswap = new Taalswap({
+        application: pool,
+        account,
+        library
+        // tokenAddress: pool.tokenContractAddr,
+        // contractAddress: pool.contractAddress
       });
 
-      console.log(swapContract);
+      const decimals = await taalswap.decimalsAsync();
 
-      await swapContract
-        .minimumRaise()
-        .then((result) => setMinSwapLevel(result))
-        .catch((error) => console.log(error));
-      // console.log(temp);
-
-      await swapContract
-        .tokensAllocated()
-        .then((result) => {
-          setTotalRaise(result * pool.tradeValue);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      await taalswap.nameAsync().then((result) => setName(result));
+      await taalswap
+        .totalSupplyAsync()
+        .then((result) => setTotalSupply(result * Math.pow(10, decimals * -1)));
+      await taalswap.minimumRaise().then((result) => setMinSwapLevel(result));
     }
 
     setMax(getMax(pool.maxIndividuals, pool.tradeValue));
@@ -241,7 +205,7 @@ function General({ className, pool }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      {pool.poolName}
+                      {name}
                     </Typography>
                   </div>
 
@@ -272,14 +236,14 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Total Raise
+                      Total Supply
                     </Typography>
                     <Typography
                       component="p"
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      {totalRaise} ETH
+                      {parseFloat(totalSupply).toFixed(4)}
                     </Typography>
                   </div>
 

@@ -3,7 +3,6 @@ import Scrollbars from 'src/components/Scrollbars';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
-import { sentenceCase } from 'change-case';
 import {
   Button,
   Table,
@@ -18,8 +17,7 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Box,
-  Hidden
+  Box
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,16 +26,12 @@ import { getPoolList } from '../../../redux/slices/pool';
 import ToolbarTable from '../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
 import { closeModal, openModal } from '../../../redux/slices/pool';
-import { MLabel } from 'src/theme';
 import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
-import { Contract, ContractFactory } from '@ethersproject/contracts';
-import { fixedData } from '../../../contracts';
-import { tokenData } from '../../../contracts';
 import { useWeb3React } from '@web3-react/core';
-import Application from 'taalswap-js/src/models';
 import StatusLabel from '../Components/StatusLabel';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
+import Taalswap from 'src/utils/taalswap';
 
 // ----------------------------------------------------------------------
 
@@ -95,54 +89,21 @@ function TablePoolRow({ row, handleOpenModal }) {
   const [progressValue, setProgressValue] = useState(0);
   const [poolStatus, setStatus] = useState('');
 
-  const {
-    connector,
-    library,
-    chainId,
-    account,
-    activate,
-    deactivate,
-    active,
-    error
-  } = context;
+  const { library, account } = context;
 
   useEffect(async () => {
-    if (!!library) {
-      const fixedContract = new Contract(
-        row.contractAddress,
-        ContractFactory.getInterface(fixedData.abi),
-        library.getSigner(account).connectUnchecked()
-      );
-      const tokenContract = new Contract(
-        row.tokenContractAddr,
-        ContractFactory.getInterface(tokenData.abi),
-        library.getSigner(account).connectUnchecked()
-      );
-      const taalswapApp = new Application({
-        test: true,
-        mainnet: false,
-        account: account
-      });
-      // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
-      const swapContract = taalswapApp.getFixedSwapContract({
-        tokenAddress: row.tokenContractAddr,
-        decimals: 18,
-        contractAddress: row.contractAddress,
-        fixedContract: fixedContract,
-        tokenContract: tokenContract
+    if (!!library && row.contractAddress !== '') {
+      const taalswap = new Taalswap({
+        application: row,
+        account,
+        library
       });
 
-      await swapContract
-        .tokensAllocated()
-        .then((result) => {
-          // setAllocated(result);
-          setProgressValue(getProgressValue(result, row.tradeAmount));
-          // setTotalRaise(result * pool.tradeValue);
-        })
-        .catch((error) => {
-          // console.log(error);
-        });
-      const status = await getPoolStatus(swapContract, row.status);
+      await taalswap.tokensAllocated().then((result) => {
+        setProgressValue(getProgressValue(result, row.tradeAmount));
+      });
+
+      const status = await getPoolStatus(taalswap, row.status);
       setStatus(status);
     }
   }, [row]);
@@ -169,17 +130,6 @@ function TablePoolRow({ row, handleOpenModal }) {
       </TableCell>
       <TableCell align="right" width="15%">
         <StatusLabel poolStatus={poolStatus} />
-        {/* <MLabel
-
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={
-            (row.status === 'in_progress' && 'warning') ||
-            (row.status === 'out_of_date' && 'error') ||
-            'success'
-          }
-        >
-          {sentenceCase(row.status)}
-        </MLabel> */}
       </TableCell>
     </TableRow>
   );
@@ -230,7 +180,10 @@ export default function BasicTable() {
     });
   };
 
-  const filteredPools = applyFilter(poolList, filterName);
+  const filteredPools = applyFilter(
+    poolList.filter((pool) => pool.contractAddress !== ''),
+    filterName
+  );
 
   return (
     <div className={classes.root}>
@@ -377,7 +330,7 @@ export default function BasicTable() {
                 value={`${getMax(
                   selectedPool.maxIndividuals,
                   selectedPool.tradeValue
-                )} Token`}
+                )} ETH`}
                 fullWidth
               />
               <TextField

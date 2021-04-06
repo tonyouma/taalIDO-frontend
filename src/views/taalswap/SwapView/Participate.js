@@ -41,12 +41,12 @@ function Participate() {
   return (
     <Page title="Table-Components | Minimal-UI" className={classes.root}>
       <Container maxWidth="lg">
-        <HeaderDashboard
+        {/* <HeaderDashboard
           heading="Protocol"
           links={[{ name: 'SubText Display Area' }]}
-        />
+        /> */}
 
-        <Tabs
+        {/* <Tabs
           value={currentTab}
           scrollButtons="auto"
           variant="scrollable"
@@ -63,7 +63,7 @@ function Participate() {
               value={tab.value}
             />
           ))}
-        </Tabs>
+        </Tabs> */}
 
         <Box display="flex" alignItems="center">
           <Box

@@ -5,12 +5,17 @@ import { HeaderDashboard } from 'src/layouts/Common';
 import JoninthePool from './JoninthePool';
 import useBreakpoints from 'src/hooks/useBreakpoints';
 import PaymentInformation from './PaymentInformation';
+import Participate from '../SwapView/Participate';
+import AboutTheProject from '../SwapView/AboutTheProject';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Card, Container } from '@material-ui/core';
+import { Grid, Card, Container, Tab, Tabs } from '@material-ui/core';
 import PoolButton from './PoolButton';
 import { useLocation } from 'react-router-dom';
 import PoolDetails from '../PoolDetails';
+import { capitalCase } from 'change-case';
+import { Icon } from '@iconify/react';
+import roundAccountBox from '@iconify-icons/ic/round-account-box';
 
 // ----------------------------------------------------------------------
 
@@ -20,10 +25,55 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingBottom: theme.spacing(5)
+  },
+  tabBar: {
+    marginBottom: theme.spacing(5)
   }
 }));
 
+const TABS = [
+  {
+    value: 0,
+    title: 'Join the Pool',
+    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    // component: <PaymentInformation />
+  },
+  {
+    value: 1,
+    title: 'Pool Detail',
+    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    // component: <JoninthePool />
+  },
+  {
+    value: 2,
+    title: 'Participate',
+    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    // component: <Participate />
+  },
+  {
+    value: 3,
+    title: 'About The Porject',
+    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    // component: <AboutTheProject />
+  }
+];
+
 // ----------------------------------------------------------------------
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <>{children}</>}
+    </div>
+  );
+}
 
 function PaymentView(className, ...other) {
   const classes = useStyles();
@@ -36,8 +86,12 @@ function PaymentView(className, ...other) {
       address: ''
     }
   });
-
+  const [value, setValue] = useState(0);
   const [pool, setPool] = useState(location.state.selectedPool);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <Page title="Table-Components | Minimal-UI" className={classes.root}>
@@ -47,7 +101,49 @@ function PaymentView(className, ...other) {
           links={[{ name: pool.tokenContractAddr }]}
           subTitle={pool.tokenContractAddr}
         />
-        <div className={clsx(classes.root, className)} {...other}>
+
+        <Tabs
+          value={value}
+          scrollButtons="auto"
+          variant="scrollable"
+          allowScrollButtonsMobile
+          onChange={handleChange}
+          className={classes.tabBar}
+        >
+          {TABS.map((tab) => (
+            <Tab
+              disableRipple
+              key={tab.value}
+              label={capitalCase(tab.title)}
+              icon={tab.icon}
+              value={tab.value}
+            />
+          ))}
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <Card>
+            <Grid container spacing={upMd ? 5 : 2}>
+              <Grid item xs={12} md={6}>
+                <PaymentInformation formik={formik} pool={pool} />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <JoninthePool formik={formik} pool={pool} />
+              </Grid>
+            </Grid>
+          </Card>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <PoolDetails pool={pool} />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <Participate pool={pool} />
+        </TabPanel>
+        {/* <TabPanel value={value} index={3}>
+          <AboutTheProject pool={pool} />
+        </TabPanel> */}
+
+        {/* <div className={clsx(classes.root, className)} {...other}>
           <PoolButton />
         </div>
         <Card>
@@ -67,7 +163,7 @@ function PaymentView(className, ...other) {
         </Card>
         <Card style={{ marginTop: '3rem' }}>
           <PoolDetails pool={pool} />
-        </Card>
+        </Card> */}
       </Container>
     </Page>
   );
