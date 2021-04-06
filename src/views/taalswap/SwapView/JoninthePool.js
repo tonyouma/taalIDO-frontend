@@ -216,7 +216,7 @@ function JoninthePool({ className, pool }) {
   return (
     <div className={clsx(classes.root, className)}>
       <Typography variant="h3" sx={{ mb: 2 }}>
-        Join the Pool {swappedAmount}
+        Join the Pool
       </Typography>
 
       <div className={classes.row}>
