@@ -15,6 +15,10 @@ import { Contract, ContractFactory } from '@ethersproject/contracts';
 import { tokenData } from 'src/contracts';
 import { useHistory } from 'react-router-dom';
 import Taalswap from 'src/utils/taalswap';
+import { useLocation } from 'react-router';
+import { PoolStatus } from 'src/utils/poolStatus';
+import { register, getMaxId } from 'src/utils/auth';
+
 const crypto = require('crypto');
 
 // ----------------------------------------------------------------------
@@ -26,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
 function ApplicationStart() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -35,6 +41,7 @@ function ApplicationStart() {
 
   useEffect(() => {
     console.log('test : ' + account);
+    setEdit(location.state ? true : false);
   }, [account]);
 
   const NewApplicationSchema = Yup.object().shape({
@@ -70,25 +77,41 @@ function ApplicationStart() {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      category: 'DeFi',
-      projectDesc: '',
-      websiteUrl: '',
-      email: '',
-      telegramHandle: '',
-      poolName: '',
-      tokenContractAddr: '',
-      tradeValue: '',
-      tradeAmount: '',
-      minFundRaise: '',
-      access: 'Private',
-      minIndividuals: '',
-      maxIndividuals: '',
-      isAtomic: false,
-      preferredStartDate: moment().add(1, 'd').toDate(),
-      feeAmount: 2
+      name: location.state ? location.state.selectedItem.projectName : '',
+      category: location.state ? location.state.selectedItem.category : 'DeFi',
+      projectDesc: location.state
+        ? location.state.selectedItem.projectDesc
+        : '',
+      websiteUrl: location.state ? location.state.selectedItem.websiteUrl : '',
+      email: location.state ? location.state.selectedItem.email : '',
+      telegramHandle: location.state
+        ? location.state.selectedItem.telegramHandle
+        : '',
+      poolName: location.state ? location.state.selectedItem.poolName : '',
+      tokenContractAddr: location.state
+        ? location.state.selectedItem.tokenContractAddr
+        : '',
+      tradeValue: location.state ? location.state.selectedItem.tradeValue : '',
+      tradeAmount: location.state
+        ? location.state.selectedItem.tradeAmount
+        : '',
+      minFundRaise: location.state
+        ? location.state.selectedItem.minFundRaise
+        : '',
+      access: location.state ? location.state.selectedItem.access : 'Private',
+      minIndividuals: location.state
+        ? location.state.selectedItem.minIndividuals
+        : '',
+      maxIndividuals: location.state
+        ? location.state.selectedItem.maxIndividuals
+        : '',
+      isAtomic: location.state ? location.state.selectedItem.atomic : false,
+      preferredStartDate: location.state
+        ? moment(location.state.selectedItem.preferredStartDate).toDate()
+        : moment().add(1, 'd').toDate(),
+      feeAmount: location.state ? location.state.selectedItem.feeAmount : 2
     },
-    validationSchema: NewApplicationSchema,
+    validationSchema: location.state ? undefined : NewApplicationSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         const newApplication = {
@@ -118,30 +141,27 @@ function ApplicationStart() {
           ratio: 1 / values.tradeValue,
           progress: '',
           feeAmount: values.feeAmount,
-          status: 'candidate',
+          status: PoolStatus.CANDIDATE,
           creator: account
         };
         console.log('======>');
-        const result = {};
         const taalswap = new Taalswap({
           account,
           library,
           tokenAddress: values.tokenContractAddr
         });
-        try {
-          newApplication.symbol = await taalswap.symbolAsync();
-          newApplication.decimals = await taalswap.decimalsAsync();
-        } catch (e) {
-          console.log('error : ' + JSON.stringify(result.error));
-          enqueueSnackbar('Create Application fail', { variant: 'fail' });
-          return;
-        }
-        newApplication.secret = crypto
-          .createHash('sha256')
-          .update(values.secret)
-          .digest('base64');
-        console.log('======>' + JSON.stringify(newApplication));
-        dispatch(createApplication(newApplication));
+        newApplication.symbol = await taalswap.symbolAsync();
+        newApplication.decimals = await taalswap.decimalsAsync();
+        const key = await getMaxId();
+        const ret = await register({
+          creator: account,
+          password: values.secret,
+          key
+        });
+        const { accessToken, userId } = ret;
+        newApplication.userId = userId;
+        console.log('======>', newApplication);
+        dispatch(createApplication(newApplication, accessToken));
         enqueueSnackbar('Create Application success', { variant: 'success' });
         history.push({
           pathname: '/app/taalswap/application/list'
@@ -149,6 +169,7 @@ function ApplicationStart() {
       } catch (error) {
         console.error(error);
         setSubmitting(false);
+        enqueueSnackbar('Create Application fail', { variant: 'fail' });
         setErrors({ afterSubmit: error.code });
       }
     }
@@ -164,7 +185,11 @@ function ApplicationStart() {
           heading="Create a new application"
           links={[{ name: 'New Application' }]}
         />
-        <NewApplicationForm formik={formik} account={account} />
+        <NewApplicationForm
+          formik={formik}
+          account={account}
+          edit={edit.toString()}
+        />
       </Container>
     </Page>
   );
