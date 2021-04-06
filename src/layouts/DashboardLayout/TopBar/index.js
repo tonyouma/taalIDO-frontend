@@ -22,13 +22,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
 import {
   getWalletBalance,
-  setActivatingConnector
+  setActivatingConnector,
+  setTalBalance
 } from '../../../redux/slices/wallet';
 import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
 import WalletDialog from '../../../views/taalswap/Components/WalletDialog';
 import WalletInfo from './WalletInfo';
 import { MIconButton } from '../../../theme';
 import settings2Fill from '@iconify-icons/eva/settings-2-fill';
+import Taalswap from '../../../utils/taalswap';
+
+const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
 
 // ----------------------------------------------------------------------
 
@@ -67,7 +71,9 @@ function TopBar({ onOpenNav, className }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const { activatingConnector, balance } = useSelector((state) => state.wallet);
+  const { activatingConnector, balance, talBalance } = useSelector(
+    (state) => state.wallet
+  );
 
   const context = useWeb3React();
   const {
@@ -81,15 +87,27 @@ function TopBar({ onOpenNav, className }) {
     error
   } = context;
 
-  useEffect(() => {
+  useEffect(async () => {
     // console.log('1----------> ', activatingConnector);
     // console.log('1----------> ', connector);
     if (activatingConnector && activatingConnector === connector) {
       dispatch(setActivatingConnector(undefined));
     }
-    dispatch(getWalletBalance(account, library));
-    // dispatch(getContractDecimals(account, library));
-  }, [activatingConnector, connector]);
+
+    if (!!library && !!account) {
+      dispatch(getWalletBalance(account, library));
+      // dispatch(getContractDecimals(account, library));
+
+      const taalswap = new Taalswap({
+        account,
+        library,
+        tokenAddress: TAL_TOKEN_ADDRESS
+      });
+
+      const talBalance = await taalswap.balanceOf(account);
+      dispatch(setTalBalance(talBalance));
+    }
+  }, [activatingConnector, connector, account, library]);
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
   const triedEager = useEagerConnect();
@@ -147,7 +165,11 @@ function TopBar({ onOpenNav, className }) {
           }}
         >
           {connector && (
-            <WalletInfo walletAddress={account} balance={balance} />
+            <WalletInfo
+              walletAddress={account}
+              balance={balance}
+              talBalance={talBalance}
+            />
           )}
           <Languages />
           {/* <Notifications /> */}

@@ -100,6 +100,18 @@ class Taalswap {
   }
 
   /**
+   * @function balancdOf
+   * @description Get balance of an address
+   * @returns {Integer} Integer
+   */
+  async balanceOf(address) {
+    return Numbers.fromDecimals(
+      await this.params.tokenContract.balanceOf(address),
+      18
+    );
+  }
+
+  /**
    * @function symbol
    * @description Get symbol
    * @returns {String} symbol
