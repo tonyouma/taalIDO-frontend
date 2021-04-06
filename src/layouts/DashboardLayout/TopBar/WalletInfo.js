@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid',
     borderColor: theme.palette.primary.main,
     color: theme.palette.text.primary,
-    borderRadius: '15px',
+    borderRadius: '20px',
     textAlign: 'center',
     display: 'flex',
     alignItems: 'center',
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 1,
     backgroundColor: theme.palette.primary.light,
     color: 'block',
-    borderRadius: '10px',
+    borderRadius: '20px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center'
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 1,
     backgroundColor: theme.palette.primary.light,
     color: 'black',
-    borderRadius: '10px',
+    borderRadius: '20px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center'
