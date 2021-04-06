@@ -31,6 +31,7 @@ import Numbers from 'taalswap-js/src/utils/Numbers';
 import { fixedData } from 'src/contracts';
 import { tokenData } from 'src/contracts';
 import { useSnackbar } from 'notistack';
+import { PoolStatus } from 'src/utils/poolStatus';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -233,7 +234,11 @@ const AdminView = () => {
       enqueueSnackbar('Fund fail', { variant: 'error' });
     } else {
       dispatch(
-        updateApplication(selectedItem.id, { status: 'upcoming' }, account)
+        updateApplication(
+          selectedItem.id,
+          { status: PoolStatus.UPCOMING, userId: location.state.userId },
+          location.state.accessToken
+        )
       );
       enqueueSnackbar('Fund success', { variant: 'success' });
     }
@@ -333,6 +338,7 @@ const AdminView = () => {
                     select
                     label="Applications"
                     size="small"
+                    disabled
                     defaultValue={selectedPool}
                     value={selectedPool}
                     onChange={handleChange}

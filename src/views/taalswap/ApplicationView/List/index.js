@@ -14,7 +14,12 @@ import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import { updateApplication, getApplicationList } from 'src/redux/slices/pool';
+import {
+  updateApplication,
+  getApplicationList,
+  openModal,
+  closeModal
+} from 'src/redux/slices/pool';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import {
@@ -22,10 +27,15 @@ import {
   Button,
   Card,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   InputAdornment,
   OutlinedInput,
-  TablePagination
+  TablePagination,
+  TextField
 } from '@material-ui/core';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
@@ -40,11 +50,12 @@ import { HeaderDashboard } from 'src/layouts/Common';
 import BasicTable from '../../PoolListView/BasicTable';
 import { useSnackbar } from 'notistack';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import EditIcon from '@material-ui/icons/Edit';
 import { useTranslation } from 'react-i18next';
-import { Icon } from '@iconify/react';
-import searchFill from '@iconify-icons/eva/search-fill';
 import ToolbarTable from '../../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
+import { PoolStatus } from 'src/utils/poolStatus';
+import { login } from 'src/utils/auth';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -257,6 +268,7 @@ const EnhancedTableToolbar = (props) => {
     selectedItem,
     onClickDeploy,
     onClickAdmin,
+    onClickEdit,
     onClickSend,
     checkAdmin,
     account
@@ -283,17 +295,17 @@ const EnhancedTableToolbar = (props) => {
 
       {selected !== -1 ? (
         <div style={{ display: 'flex' }}>
-          {selectedItem.status === 'approved' &&
+          {selectedItem.status === PoolStatus.APPROVED &&
           selectedItem.creator === account ? (
             <Tooltip title="Deploy">
-              <IconButton aria-label="Send" onClick={onClickDeploy}>
+              <IconButton aria-label="Deploy" onClick={onClickDeploy}>
                 <CloudUploadIcon />
               </IconButton>
             </Tooltip>
           ) : (
             ''
           )}
-          {selectedItem.status === 'candidate' && checkAdmin() ? (
+          {selectedItem.status === PoolStatus.CANDIDATE && checkAdmin() ? (
             <Tooltip title="Approve">
               <IconButton aria-label="Approve" onClick={onClickSend}>
                 <AssignmentTurnedInIcon />
@@ -303,8 +315,17 @@ const EnhancedTableToolbar = (props) => {
             ''
           )}
           {selectedItem.creator === account || checkAdmin() ? (
+            <Tooltip title="Edit">
+              <IconButton aria-label="Edit" onClick={onClickEdit}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            ''
+          )}
+          {selectedItem.creator === account || checkAdmin() ? (
             <Tooltip title="Admin">
-              <IconButton aria-label="Edit" onClick={onClickAdmin}>
+              <IconButton aria-label="Admin" onClick={onClickAdmin}>
                 <SupervisorAccountIcon />
               </IconButton>
             </Tooltip>
@@ -366,10 +387,13 @@ export default function ApplicationListView() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
+  const [modalType, setModalType] = React.useState('');
   const [selected, setSelected] = React.useState(-1);
   const [selectedItem, setSelectedItem] = React.useState({});
   const dispatch = useDispatch();
-  const { applicationList, update } = useSelector((state) => state.pool);
+  const { applicationList, isOpenModal, update } = useSelector(
+    (state) => state.pool
+  );
   const [page, setPage] = useState(0);
   const [secret, setSecret] = React.useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -377,16 +401,29 @@ export default function ApplicationListView() {
   const history = useHistory();
   const context = useWeb3React();
   const { account, library } = context;
-
+  const [inputs, setInputs] = useState({
+    password: ''
+  });
   const [filterName, setFilterName] = useState('');
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
 
+  const handleOpenModal = (row, type) => {
+    setModalType(type);
+    dispatch(openModal(row));
+  };
+
+  const handleCloseModal = () => {
+    setModalType('');
+    dispatch(closeModal());
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -397,23 +434,86 @@ export default function ApplicationListView() {
     return admin.addresses.includes(account);
   };
 
-  const handleClickAdmin = () => {
+  const handleClickAdmin = async () => {
     console.log(`admin item index :  ${selected}`);
+    handleOpenModal(selectedItem, 'admin');
+  };
+
+  const handleConfirmClick = async () => {
+    const isAdmin = checkAdmin();
+    if (secret.trim().length === 0) {
+      alert('password를 입력하세요.');
+      return;
+    }
+
+    // 패스워드 체크가 들어가야 한다. /login 호출 jwt token 을 받아서 인증에 사용한다.
+    let isError = false;
+    const ret = await login({
+      creator: account,
+      password: isAdmin ? '1234' : secret,
+      key: isAdmin ? selectedItem.userId : selectedItem.id
+    }).catch((error) => {
+      alert('인증에 실패하였습니다.');
+      isError = true;
+    });
+    if (isError) return;
+    console.log(ret);
+    const { accessToken, userId } = ret;
+    handleCloseModal();
+    if (modalType === 'admin') {
+      history.push({
+        pathname: '/app/taalswap/application/admin',
+        state: { selectedItem: selectedItem, accessToken: accessToken, userId }
+      });
+    } else if (modalType === 'deploy') {
+      const item = JSON.parse(JSON.stringify(selectedItem));
+      const ret = await deployFixedSwap(item, account, library);
+      if (!!ret.err) {
+        console.log('error');
+        enqueueSnackbar('Application Deploy fail', { variant: 'fail' });
+      } else {
+        dispatch(
+          updateApplication(
+            selectedItem.id,
+            {
+              status: PoolStatus.DEPLOYED,
+              contractAddress: ret.address,
+              userId: userId
+            },
+            accessToken
+          )
+        );
+        console.log('deploy success.');
+        enqueueSnackbar('Application Deploy success', { variant: 'success' });
+        setSelected(-1);
+      }
+    }
+  };
+
+  const handleClickEdit = () => {
+    console.log(`edit item index :  ${selected}`);
     history.push({
-      pathname: '/app/taalswap/application/admin',
+      pathname: '/app/taalswap/application/start',
       state: { selectedItem: selectedItem }
     });
   };
 
-  const handleClickSend = () => {
+  const handleClickSend = async () => {
     console.log(`send item index : ${selected}`);
+    const ret = await login({
+      creator: account,
+      password: '12345678',
+      key: selectedItem.userId
+    });
+
+    console.log('========', ret);
+    const { accessToken, userId } = ret;
     // 상태를 승인상태로 변경해준다.
     dispatch(
       updateApplication(
         selectedItem.id,
-        { status: 'approved' },
-        account,
-        secret
+        { status: PoolStatus.APPROVED, userId: userId },
+        accessToken
       )
     );
     enqueueSnackbar('Application approved', { variant: 'success' });
@@ -422,27 +522,7 @@ export default function ApplicationListView() {
 
   const handleClickDeploy = async () => {
     console.log(`deploy item index : ${selected}`);
-    const item = JSON.parse(JSON.stringify(selectedItem));
-    const ret = await deployFixedSwap(item, account, library);
-    if (!!ret.err) {
-      console.log('error');
-      enqueueSnackbar('Application Deploy fail', { variant: 'fail' });
-    } else {
-      dispatch(
-        updateApplication(
-          selectedItem.id,
-          {
-            status: 'deployed',
-            contractAddress: ret.address
-          },
-          account,
-          secret
-        )
-      );
-      console.log('deploy success.');
-      enqueueSnackbar('Application Deploy success', { variant: 'success' });
-      setSelected(-1);
-    }
+    handleOpenModal(selectedItem, 'deploy');
   };
 
   useEffect(() => {
@@ -465,6 +545,11 @@ export default function ApplicationListView() {
       setSelected(row.id);
       setSelectedItem(row);
     }
+  };
+
+  const onChange = (e) => {
+    const { value } = e.target;
+    setSecret(value);
   };
 
   const isSelected = (index) => (selected !== index ? false : true);
@@ -494,6 +579,7 @@ export default function ApplicationListView() {
                   onClickAdmin={handleClickAdmin}
                   onClickSend={handleClickSend}
                   onClickDeploy={handleClickDeploy}
+                  onClickEdit={handleClickEdit}
                   checkAdmin={checkAdmin}
                   account={account}
                 />
@@ -582,6 +668,52 @@ export default function ApplicationListView() {
             </div>
           </Grid>
         </Grid>
+        {isSelected && (
+          <Dialog
+            open={isOpenModal}
+            onClose={handleCloseModal}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle
+              className={classes.dialogTitle}
+              id="customized-dialog-title"
+              onClose={handleCloseModal}
+            >
+              Password
+            </DialogTitle>
+            <DialogContent dividers>
+              <TextField
+                className={classes.contentTextField}
+                name="password"
+                type="password"
+                variant="standard"
+                onChange={onChange}
+                value={secret}
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                className={classes.button}
+                variant="outlined"
+                color="inherit"
+                onClick={handleCloseModal}
+              >
+                Cancel
+              </Button>
+              <Button
+                className={classes.button}
+                variant="contained"
+                onClick={handleConfirmClick}
+                color="primary"
+                autoFocus
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
       </Container>
     </Page>
   );

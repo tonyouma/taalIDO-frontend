@@ -3,7 +3,8 @@ import React from 'react';
 import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography, Link } from '@material-ui/core';
+import { Box, Typography, Link, IconButton } from '@material-ui/core';
+import LinkIcon from '@material-ui/icons/Link';
 // import { MBreadcrumbs } from 'src/theme';
 
 // ----------------------------------------------------------------------
@@ -31,9 +32,14 @@ function HeaderDashboard({
   moreLink = '' || [],
   className,
   subTitle,
+  url,
   ...other
 }) {
   const classes = useStyles();
+
+  const handleClickUrl = () => {
+    console.log(url);
+  };
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -46,6 +52,11 @@ function HeaderDashboard({
           <Typography variant="body4" color="#888888" gutterBottom>
             {subTitle}
           </Typography>
+          {url && (
+            <IconButton onClick={handleClickUrl}>
+              <LinkIcon />
+            </IconButton>
+          )}
         </Box>
 
         {action && <Box sx={{ flexShrink: 0 }}>{action}</Box>}

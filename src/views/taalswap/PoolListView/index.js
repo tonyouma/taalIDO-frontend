@@ -17,6 +17,9 @@ import {
 import BasicTable from './BasicTable';
 import { useTranslation } from 'react-i18next';
 import MyPools from './MyPools';
+import { useWeb3React } from '@web3-react/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSwapList, getPoolList } from '../../../redux/slices/pool';
 
 // ----------------------------------------------------------------------
 
@@ -65,9 +68,11 @@ function TabPanel(props) {
 
 function PoolListView() {
   const classes = useStyles();
+  const context = useWeb3React();
+  const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState('All Pools');
   const [value, setValue] = useState(0);
-
+  const { library, account } = context;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -77,7 +82,10 @@ function PoolListView() {
   };
   const { i18n, t } = useTranslation();
 
-  console.log(t('taalswap.projects'));
+  useEffect(async () => {
+    await dispatch(getPoolList());
+    await dispatch(getSwapList(account));
+  }, [dispatch]);
 
   return (
     <Page title={t('taalswap.projects')} className={classes.root}>

@@ -4,7 +4,7 @@ import { PoolStatus } from 'src/utils/poolStatus';
 
 const StatusLabel = ({ poolStatus, absolute }) => {
   return (
-    <div>
+    <>
       {poolStatus === PoolStatus.CANDIDATE ? (
         <MLabel
           sx={{
@@ -101,7 +101,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           Failed
         </MLabel>
       ) : null}
-    </div>
+    </>
   );
 };
 

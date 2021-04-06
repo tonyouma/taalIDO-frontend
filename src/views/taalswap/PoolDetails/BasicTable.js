@@ -69,7 +69,7 @@ function General({ className, pool }) {
 
     const temp = '1000000';
     console.log(temp.toLocaleString());
-  }, [pool]);
+  }, [pool, library]);
 
   return (
     <div className={clsx(classes.root, className)}>
