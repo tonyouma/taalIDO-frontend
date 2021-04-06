@@ -412,11 +412,13 @@ export default function ApplicationListView() {
 
   const handleOpenModal = (row, type) => {
     setModalType(type);
+    setSecret('');
     dispatch(openModal(row));
   };
 
   const handleCloseModal = () => {
     setModalType('');
+    setSecret('');
     dispatch(closeModal());
   };
 
