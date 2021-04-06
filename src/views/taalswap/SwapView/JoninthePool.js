@@ -2,26 +2,18 @@ import clsx from 'clsx';
 import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import shieldFill from '@iconify-icons/eva/shield-fill';
-
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Divider, Typography, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-import { Contract, ContractFactory } from '@ethersproject/contracts';
-import { fixedData } from '../../../contracts';
-import { tokenData } from '../../../contracts';
 import { useWeb3React } from '@web3-react/core';
-import Application from 'taalswap-js/src/models';
 import moment from 'moment';
-import {
-  getWalletBalance,
-  setActivatingConnector
-} from '../../../redux/slices/wallet';
+import { getWalletBalance } from '../../../redux/slices/wallet';
 import { formatEther } from '@ethersproject/units';
-import { getPoolStatus } from '../../../utils/getPoolStatus';
 import { createSwap, getSwapList } from '../../../redux/slices/pool';
 import Taalswap from 'src/utils/taalswap';
+import Numbers from 'src/utils/Numbers';
 
 // ----------------------------------------------------------------------
 
@@ -74,53 +66,15 @@ function JoninthePool({ className, pool }) {
   const [diffTime, setDiffTime] = useState({});
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
   const { swapList } = useSelector((state) => state.pool);
-  const {
-    connector,
-    library,
-    chainId,
-    account,
-    activate,
-    deactivate,
-    active,
-    error
-  } = context;
-  let swapContract;
+  const { connector, library, account } = context;
 
-  if (
-    !!library &&
-    (pool.contractAddress !== '') & (pool.tokenContractAddr !== '')
-  ) {
-    const taalswap = new Taalswap({
+  let taalswap;
+
+  if (!!library) {
+    taalswap = new Taalswap({
       application: pool,
       account,
-      library,
-      tokenAddress: pool.tokenContractAddr,
-      contractAddress: pool.contractAddress
-    });
-
-    const fixedContract = new Contract(
-      pool.contractAddress,
-      ContractFactory.getInterface(fixedData.abi),
-      library.getSigner(account).connectUnchecked()
-    );
-
-    const tokenContract = new Contract(
-      pool.tokenContractAddr,
-      ContractFactory.getInterface(tokenData.abi),
-      library.getSigner(account).connectUnchecked()
-    );
-    const taalswapApp = new Application({
-      test: true,
-      mainnet: false,
-      account: account
-    });
-
-    swapContract = taalswapApp.getFixedSwapContract({
-      tokenAddress: pool.tokenContractAddr,
-      decimals: 18,
-      contractAddress: pool.contractAddress,
-      fixedContract: fixedContract,
-      tokenContract: tokenContract
+      library
     });
   }
 
@@ -144,7 +98,6 @@ function JoninthePool({ className, pool }) {
 
   const onClickSwap = async () => {
     try {
-      // addSwap();
       if (!!library) {
         console.log(`minAmount  : ${minAmount}`);
         console.log(`maxAmount  : ${maxAmount}`);
@@ -160,15 +113,27 @@ function JoninthePool({ className, pool }) {
           console.log(`tokensLeft : ${tokensLeft}`);
 
           if (parseFloat(amount) < parseFloat(tokensLeft)) {
-            const result = await swapContract.swap({
-              tokenAmount: amount,
-              account: account
-            });
-            if (!!result.error) {
-              console.log('error : ' + JSON.stringify(result.error));
+            const temp = 5;
+
+            if (
+              Numbers.toFloat(pool.maxIndividuals) >=
+              Numbers.toFloat(amount) + Numbers.toFloat(swappedAmount)
+            ) {
+              const result = await taalswap.swap({
+                tokenAmount: amount,
+                account: account
+              });
+
+              if (!!result.error) {
+                console.log('error : ' + JSON.stringify(result.error));
+              } else {
+                setWarningMessage('');
+                addSwap();
+              }
             } else {
-              setWarningMessage('');
-              addSwap();
+              setWarningMessage(
+                `개인 구매 한도량 초과 (${swappedAmount} / ${temp})`
+              );
             }
           } else {
             setWarningMessage('tokensLeft 보다 적게');
@@ -202,60 +167,58 @@ function JoninthePool({ className, pool }) {
   // };
 
   useEffect(async () => {
-    await dispatch(getSwapList(account));
+    try {
+      await dispatch(getSwapList(account));
 
-    if (!!library) {
-      await swapContract
-        .isOpen()
-        .then((result) => {
+      if (!!library) {
+        await taalswap.isOpen((result) => {
+          console.log(result);
           setIsOpen(result);
-        })
-        .catch((error) => {});
+        });
 
-      await swapContract
-        .isFunded()
-        .then((result) => {
+        await taalswap.isFunded((result) => {
+          console.log(result);
           setIsSaleFunded(result);
-        })
-        .catch((error) => {});
+        });
 
-      await swapContract
-        .tokensLeft()
-        .then((result) => {
+        await taalswap.tokensLeft().then((result) => {
+          console.log(result);
           setTokensLeft(result);
-        })
-        .catch((error) => {});
+        });
 
-      await swapContract
-        .individualMinimumAmount()
-        .then((result) => {
+        await taalswap.individualMinimumAmount().then((result) => {
+          console.log(result);
           setMinAmount(result);
-        })
-        .catch((error) => {});
+        });
 
-      await swapContract
-        .individualMaximumAmount()
-        .then((result) => {
+        await taalswap.individualMaximumAmount().then((result) => {
+          console.log(result);
           setMaxAmount(result);
-        })
-        .catch((error) => {});
+        });
 
-      if (!!swapList) {
-        setSwappedAmount(
-          await swapList
-            .filter((swap) => swap.poolName === pool.poolName)
-            .reduce(function (prevPool, currPool) {
-              return parseFloat(prevPool) + parseFloat(currPool.amount);
-            }, 0)
-        );
+        if (!!swapList) {
+          setSwappedAmount(
+            await swapList
+              .filter((swap) => swap.poolName === pool.poolName)
+              .reduce(function (prevPool, currPool) {
+                return parseFloat(prevPool) + parseFloat(currPool.amount);
+              }, 0)
+          );
+        }
       }
+      console.log(`isOpen : ${isOpen}, isSaleFunded : ${isSaleFunded}`);
+    } catch (error) {
+      console.log(error);
     }
-    console.log(`isOpen : ${isOpen}, isSaleFunded : ${isSaleFunded}`);
   }, [pool]);
 
   useEffect(async () => {
-    if (!!library && !!balance) {
-      await dispatch(getWalletBalance(account, library));
+    try {
+      if (!!library && !!balance) {
+        await dispatch(getWalletBalance(account, library));
+      }
+    } catch (error) {
+      console.log();
     }
   }, [activatingConnector, connector]);
 
@@ -358,15 +321,12 @@ function JoninthePool({ className, pool }) {
       </Box>
 
       <Box sx={{ mt: 2, mb: 3 }}>
-        {/* <Button>
-
-        </Button> */}
         <LoadingButton
           fullWidth
           size="large"
           variant="contained"
           onClick={onClickSwap}
-          // disabled={!(isOpen && isSaleFunded)}
+          disabled={!(isOpen && isSaleFunded)}
         >
           Go
         </LoadingButton>
