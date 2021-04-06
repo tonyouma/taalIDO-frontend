@@ -15,6 +15,9 @@ import { Contract, ContractFactory } from '@ethersproject/contracts';
 import { tokenData } from 'src/contracts';
 import { useHistory } from 'react-router-dom';
 import Taalswap from 'src/utils/taalswap';
+import { useLocation } from 'react-router';
+import { PoolStatus } from 'src/utils/poolStatus';
+
 const crypto = require('crypto');
 
 // ----------------------------------------------------------------------
@@ -26,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
 function ApplicationStart() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -35,6 +40,7 @@ function ApplicationStart() {
 
   useEffect(() => {
     console.log('test : ' + account);
+    setEdit(location.state ? true : false);
   }, [account]);
 
   const NewApplicationSchema = Yup.object().shape({
@@ -70,25 +76,41 @@ function ApplicationStart() {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      category: 'DeFi',
-      projectDesc: '',
-      websiteUrl: '',
-      email: '',
-      telegramHandle: '',
-      poolName: '',
-      tokenContractAddr: '',
-      tradeValue: '',
-      tradeAmount: '',
-      minFundRaise: '',
-      access: 'Private',
-      minIndividuals: '',
-      maxIndividuals: '',
-      isAtomic: false,
-      preferredStartDate: moment().add(1, 'd').toDate(),
-      feeAmount: 2
+      name: location.state ? location.state.selectedItem.projectName : '',
+      category: location.state ? location.state.selectedItem.category : 'DeFi',
+      projectDesc: location.state
+        ? location.state.selectedItem.projectDesc
+        : ' ',
+      websiteUrl: location.state ? location.state.selectedItem.websiteUrl : '',
+      email: location.state ? location.state.selectedItem.email : '',
+      telegramHandle: location.state
+        ? location.state.selectedItem.telegramHandle
+        : '',
+      poolName: location.state ? location.state.selectedItem.poolName : '',
+      tokenContractAddr: location.state
+        ? location.state.selectedItem.tokenContractAddr
+        : '',
+      tradeValue: location.state ? location.state.selectedItem.tradeValue : '',
+      tradeAmount: location.state
+        ? location.state.selectedItem.tradeAmount
+        : '',
+      minFundRaise: location.state
+        ? location.state.selectedItem.minFundRaise
+        : '',
+      access: location.state ? location.state.selectedItem.access : 'Private',
+      minIndividuals: location.state
+        ? location.state.selectedItem.minIndividuals
+        : '',
+      maxIndividuals: location.state
+        ? location.state.selectedItem.maxIndividuals
+        : '',
+      isAtomic: location.state ? location.state.selectedItem.atomic : false,
+      preferredStartDate: location.state
+        ? moment(location.state.selectedItem.preferredStartDate).toDate()
+        : moment().add(1, 'd').toDate(),
+      feeAmount: location.state ? location.state.selectedItem.feeAmount : 2
     },
-    validationSchema: NewApplicationSchema,
+    validationSchema: location.state ? undefined : NewApplicationSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         const newApplication = {
@@ -118,7 +140,7 @@ function ApplicationStart() {
           ratio: 1 / values.tradeValue,
           progress: '',
           feeAmount: values.feeAmount,
-          status: 'candidate',
+          status: PoolStatus.CANDIDATE,
           creator: account
         };
         console.log('======>');
@@ -154,6 +176,7 @@ function ApplicationStart() {
     }
   });
 
+  console.log(formik);
   return (
     <Page
       title="New Application-Management | Minimal-UI"
@@ -164,7 +187,7 @@ function ApplicationStart() {
           heading="Create a new application"
           links={[{ name: 'New Application' }]}
         />
-        <NewApplicationForm formik={formik} account={account} />
+        <NewApplicationForm formik={formik} account={account} edit={edit} />
       </Container>
     </Page>
   );
