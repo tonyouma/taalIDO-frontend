@@ -20,6 +20,7 @@ class Taalswap {
         if (tokenAddress) tokenContractAddress = tokenAddress;
         if (contractAddress) fixedContractAddress = contractAddress;
       }
+
       const fixedContract =
         fixedContractAddress === ''
           ? {}
@@ -58,7 +59,25 @@ class Taalswap {
     );
 
     this.params.tokenContract
-      .approve(this.params.tokenContractAddress, amountWithDecimals)
+      .approve(this.params.fixedContractAddress, amountWithDecimals, {
+        gasLimit: 300000
+      })
+      .catch((error) => {
+        console.log(error);
+        throw error;
+      });
+  }
+
+  async fund({ tokenAmount }) {
+    let amountWithDecimals = Numbers.toSmartContractDecimals(
+      tokenAmount,
+      this.params.application.decimals
+    );
+
+    this.params.fixedContract
+      .fund(amountWithDecimals, {
+        gasLimit: 3000000
+      })
       .catch((error) => {
         console.log(error);
         throw error;
@@ -75,19 +94,32 @@ class Taalswap {
       throw new Error('Addresses not well setup');
     }
 
-    let oldAddresses = await this.getWhitelistedAddresses();
-    oldAddresses = oldAddresses.map((a) => String(a).toLowerCase());
-    addresses = addresses.map((a) => String(a).toLowerCase());
+    // let oldAddresses = await this.getWhitelistedAddresses();
+    // oldAddresses = oldAddresses.map((a) => String(a).toLowerCase());
+    // addresses = addresses.map((a) => String(a).toLowerCase());
+    //
+    // var addressesClean = [];
+    // addresses = addresses.filter((item) => {
+    //   if (oldAddresses.indexOf(item) < 0 && addressesClean.indexOf(item) < 0) {
+    //     // Does not exist
+    //     addressesClean.push(item);
+    //   }
+    // });
+    // console.log('========>', addressesClean.toString());
 
-    var addressesClean = [];
-    addresses = addresses.filter((item) => {
-      if (oldAddresses.indexOf(item) < 0 && addressesClean.indexOf(item) < 0) {
-        // Does not exist
-        addressesClean.push(item);
-      }
+    // return await this.params.fixedContract.add(addressesClean);
+    return await this.params.fixedContract.add(addresses, {
+      gasLimit: 3000000
     });
+  }
 
-    return await this.params.fixedContract.add(addressesClean);
+  /**
+   * @function getWhitelistedAddresses
+   * @description Get White List
+   * @returns {Address} Array
+   */
+  async getWhitelistedAddresses() {
+    return await this.params.fixedContract.getWhitelistedAddresses();
   }
 
   /**

@@ -42,7 +42,7 @@ import { useWeb3React } from '@web3-react/core';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { admin } from 'src/config';
-import Numbers from 'taalswap-js/src/utils/Numbers';
+import Numbers from '../../../../utils/Numbers';
 import { ContractFactory } from '@ethersproject/contracts';
 import { fixedData } from 'src/contracts';
 import Page from 'src/components/Page';
