@@ -157,16 +157,17 @@ const AdminView = () => {
     whiteList: ''
   });
 
-  // const taalswap = (pool) => {
-  //   console.log(pool);
-  //   if (!!library && !!account) {
-  //     return new Taalswap({
-  //       pool,
-  //       account,
-  //       library
-  //     });
-  //   }
-  // };
+  // TODO : 여기서 한번 호출하는 경우, swapContract = undefined 되는 경우가 종종 있음.
+  // const [swapContract, setSwapContract] = useState('');
+  // useEffect(() => {
+  //   const selectedItem = getSelectedApp();
+  //   const taalswap = new Taalswap({
+  //     application: selectedItem,
+  //     account,
+  //     library
+  //   });
+  //   setSwapContract(taalswap);
+  // }, [account, library]);
 
   const { approveAmount, fundAmount, whiteList } = inputs;
 
@@ -291,12 +292,12 @@ const AdminView = () => {
       library
     });
     const result = await callWithDrawFunds(selectedItem, swapContract);
-    console.log('WithDrawFunds result', JSON.stringify(result.error));
-    if (result.error) {
-      enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
-    } else {
-      enqueueSnackbar('WithDrawFunds success', { variant: 'success' });
-    }
+    // console.log('WithDrawFunds result', JSON.stringify(result.error));
+    // if (result.error) {
+    //   enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
+    // } else {
+    //   enqueueSnackbar('WithDrawFunds success', { variant: 'success' });
+    // }
   };
 
   const onClickWithdrawUnsoldTokens = async () => {
