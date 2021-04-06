@@ -12,8 +12,10 @@ import moment from 'moment';
 import { getWalletBalance } from '../../../redux/slices/wallet';
 import { formatEther } from '@ethersproject/units';
 import { createSwap, getSwapList } from '../../../redux/slices/pool';
-import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
+import Taalswap from 'src/utils/taalswap';
+import { PoolStatus } from 'src/utils/poolStatus';
+import { getPoolStatus } from '../../../utils/getPoolStatus';
 
 // ----------------------------------------------------------------------
 
@@ -56,13 +58,12 @@ function JoninthePool({ className, pool }) {
   const dispatch = useDispatch();
   const [amount, setAmount] = useState(0);
   const [price, setPrice] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isSaleFunded, setIsSaleFunded] = useState(false);
   const [tokensLeft, setTokensLeft] = useState(0);
   const [minAmount, setMinAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(0);
   const [swappedAmount, setSwappedAmount] = useState(0);
   const [warningMessage, setWarningMessage] = useState('');
+  const [status, setStatus] = useState('');
   const [diffTime, setDiffTime] = useState({});
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
   const { swapList } = useSelector((state) => state.pool);
@@ -171,16 +172,6 @@ function JoninthePool({ className, pool }) {
       await dispatch(getSwapList(account));
 
       if (!!library) {
-        await taalswap.isOpen((result) => {
-          console.log(result);
-          setIsOpen(result);
-        });
-
-        await taalswap.isFunded((result) => {
-          console.log(result);
-          setIsSaleFunded(result);
-        });
-
         await taalswap.tokensLeft().then((result) => {
           console.log(result);
           setTokensLeft(result);
@@ -205,8 +196,8 @@ function JoninthePool({ className, pool }) {
               }, 0)
           );
         }
+        setStatus(await getPoolStatus(taalswap, pool.status));
       }
-      console.log(`isOpen : ${isOpen}, isSaleFunded : ${isSaleFunded}`);
     } catch (error) {
       console.log(error);
     }
@@ -326,7 +317,7 @@ function JoninthePool({ className, pool }) {
           size="large"
           variant="contained"
           onClick={onClickSwap}
-          disabled={!(isOpen && isSaleFunded)}
+          disabled={status !== PoolStatus.LIVE}
         >
           Go
         </LoadingButton>

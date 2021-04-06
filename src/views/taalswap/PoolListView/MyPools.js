@@ -3,7 +3,6 @@ import Scrollbars from 'src/components/Scrollbars';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
-import { sentenceCase } from 'change-case';
 import {
   Button,
   Table,
@@ -18,8 +17,7 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Box,
-  Hidden
+  Box
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,17 +26,14 @@ import { getPoolList } from '../../../redux/slices/pool';
 import ToolbarTable from '../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
 import { closeModal, openModal } from '../../../redux/slices/pool';
-import { MLabel } from 'src/theme';
 import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
-import { Contract, ContractFactory } from '@ethersproject/contracts';
-import { fixedData } from '../../../contracts';
-import { tokenData } from '../../../contracts';
 import { useWeb3React } from '@web3-react/core';
 import { getSwapList } from '../../../redux/slices/pool';
 import StatusLabel from '../Components/StatusLabel';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import Taalswap from 'src/utils/taalswap';
+import { PoolStatus } from 'src/utils/poolStatus';
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '1rem'
   },
   button: {
-    width: '100px'
+    width: '105px'
   },
   dialogTitle: {
     color: theme.palette.primary.main
@@ -121,7 +116,7 @@ function TablePoolRow({ row, handleOpenModal }) {
       key={row.poolName}
       hover
       className={classes.hideLastBorder}
-      onClick={(event) => handleOpenModal(row)}
+      onClick={(event) => handleOpenModal(row, poolStatus)}
     >
       <TableCell component="th" scope="row" width="20%">
         {row.poolName}
@@ -152,19 +147,21 @@ export default function MyPools() {
   const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
+  const [poolStatus, setPoolStatus] = useState('');
   const context = useWeb3React();
-
-  const {
-    connector,
-    library,
-    chainId,
-    account,
-    activate,
-    deactivate,
-    active,
-    error
-  } = context;
+  const dispatch = useDispatch();
+  const { poolList, swapList, isOpenModal, selectedPool } = useSelector(
+    (state) => state.pool
+  );
+  const { library, account } = context;
+  let taalswap;
+  if (!!library) {
+    taalswap = new Taalswap({
+      application: selectedPool,
+      account,
+      library
+    });
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -173,16 +170,13 @@ export default function MyPools() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const dispatch = useDispatch();
-  const { poolList, swapList, isOpenModal, selectedPool } = useSelector(
-    (state) => state.pool
-  );
 
   useEffect(async () => {
     if (!!library) {
       await dispatch(getPoolList());
       await dispatch(getSwapList(account));
       await getMySwapList();
+      console.log(poolStatus);
     }
   }, [dispatch]);
 
@@ -190,7 +184,8 @@ export default function MyPools() {
     setFilterName(event.target.value);
   };
 
-  const handleOpenModal = (row) => {
+  const handleOpenModal = (row, poolStatus) => {
+    setPoolStatus(poolStatus);
     dispatch(openModal(row));
   };
 
@@ -204,6 +199,31 @@ export default function MyPools() {
       pathname: '/app/taalswap/swap',
       state: { selectedPool: selectedPool }
     });
+  };
+
+  const handleOnClickClaimETH = async () => {
+    try {
+      if (!!library) {
+        console.log(taalswap);
+        // const result = await taalswap.redeemGivenMinimumGoalNotAchieved();
+        // if (result.error) {
+        //   console.log(result.error);
+        // } else {
+        //   console.log('aaa');
+        // }
+      }
+      dispatch(closeModal());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleOnClickClaimTokens = async () => {
+    try {
+      console.log('Claim Tokens');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getMySwapList = () => {
@@ -338,15 +358,41 @@ export default function MyPools() {
               >
                 Cancel
               </Button>
-              <Button
-                className={classes.button}
-                variant="contained"
-                onClick={handleOnClickSwap}
-                color="primary"
-                autoFocus
-              >
-                Swap
-              </Button>
+              {poolStatus === PoolStatus.LIVE && (
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  onClick={handleOnClickSwap}
+                  color="primary"
+                  autoFocus
+                >
+                  Swap
+                </Button>
+              )}
+
+              {poolStatus === PoolStatus.FILLED.FAILED && (
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  onClick={handleOnClickClaimETH}
+                  color="primary"
+                  autoFocus
+                >
+                  Claim ETH
+                </Button>
+              )}
+              {(poolStatus === PoolStatus.FILLED.SUCCESS.ACHIEVED ||
+                poolStatus === PoolStatus.FILLED.SUCCESS.CLOSED) && (
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  onClick={handleOnClickClaimTokens}
+                  color="primary"
+                  autoFocus
+                >
+                  Claim Tokens
+                </Button>
+              )}
             </DialogActions>
           </Dialog>
         )}
