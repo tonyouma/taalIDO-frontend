@@ -102,7 +102,9 @@ function JoninthePool({ className, pool }) {
     try {
       if (!!library) {
         if (pool.access === 'Private' && !isWhiteList) {
-          setWarningMessage('등록되지 않은 지갑 주소');
+          setWarningMessage(
+            'Not white listed address! Please contact to the pool owner.'
+          );
         } else {
           if (
             parseFloat(minAmount) < parseFloat(amount) &&
@@ -129,14 +131,16 @@ function JoninthePool({ className, pool }) {
                   });
               } else {
                 setWarningMessage(
-                  `개인 구매 한도량 초과 (${swappedAmount} / ${temp})`
+                  `Should be less than individual maximum! (${swappedAmount} / ${temp})`
                 );
               }
             } else {
-              setWarningMessage('tokensLeft 보다 적게');
+              setWarningMessage('Should be less than the amount tokens left!');
             }
           } else {
-            setWarningMessage('최소값 보다 많고, 최대값 보다 적게');
+            setWarningMessage(
+              'Please select an amount between individual minimum ans maximum!'
+            );
           }
         }
       }
