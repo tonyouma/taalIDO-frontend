@@ -13,7 +13,8 @@ import {
   Grid,
   CardHeader,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  Typography
 } from '@material-ui/core';
 import {
   getApplicationList,
@@ -39,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
     margin: '10px'
   },
   textField: {
-    marginRight: '1rem'
+    marginRight: '1rem',
+    width: '50%'
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -371,7 +373,7 @@ const AdminView = () => {
                 </Card>
               </Grid>
 
-              <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={6}>
                 <Card>
                   <CardHeader title="Approve" />
                   <Box className={classes.box}>
@@ -395,7 +397,7 @@ const AdminView = () => {
                 </Card>
               </Grid>
 
-              <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={6}>
                 <Card>
                   <CardHeader title="Fund" />
                   <Box className={classes.box}>
@@ -439,33 +441,47 @@ const AdminView = () => {
                     >
                       Add
                     </Button>
+                    <Typography m={2}>
+                      Ex. address,address,address,...
+                    </Typography>
                   </Box>
                 </Card>
               </Grid>
 
-              <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={6}>
                 <Card>
-                  <CardHeader title="Claim" />
+                  <CardHeader title="Claim Funds" />
                   <Box className={classes.box}>
                     <Button
                       variant="contained"
                       size="medium"
                       onClick={onClickWithDrawFunds}
-                      style={{ minWidth: '200px' }}
+                      style={{ minWidth: '100px' }}
                     >
                       WithDrawFunds
                     </Button>
+                    <Typography m={2} varient="">
+                      Funding success or no min. raise...
+                    </Typography>
                   </Box>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Card>
+                  <CardHeader title="Claim Tokens" />
                   <Box className={classes.box}>
                     <Button
-                      width="50%"
                       variant="contained"
                       size="medium"
                       onClick={onClickWithdrawUnsoldTokens}
-                      style={{ minWidth: '200px' }}
+                      style={{ minWidth: '100px' }}
                     >
                       WithdrawUnsoldTokens
                     </Button>
+                    <Typography m={2} varient="">
+                      Funding failed...
+                    </Typography>
                   </Box>
                 </Card>
               </Grid>
