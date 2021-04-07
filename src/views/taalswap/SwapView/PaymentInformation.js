@@ -10,6 +10,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../Components/StatusLabel';
 import Taalswap from 'src/utils/taalswap';
+import Numbers from 'src/utils/Numbers';
 
 // ----------------------------------------------------------------------
 
@@ -103,7 +104,7 @@ function PaymentInformation({ className, pool, index }) {
             shrink: true
           }}
           fullWidth
-          value={`${pool.ratio} ${pool.symbol} = 1 ETH`}
+          value={`${Numbers.toFloat4(pool.ratio)} ${pool.symbol} = 1 ETH`}
         />
       </Box>
       <Box
@@ -119,7 +120,7 @@ function PaymentInformation({ className, pool, index }) {
           }}
           style={{ width: '49%' }}
           // value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
-          value={`${pool.maxIndividuals} ${pool.symbol}`}
+          value={`${Numbers.toFloat4(pool.maxIndividuals)} ${pool.symbol}`}
         />
 
         <TextField

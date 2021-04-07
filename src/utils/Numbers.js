@@ -50,6 +50,10 @@ class numbers {
     return parseFloat(parseFloat(number).toFixed(2));
   }
 
+  toFloat4(number) {
+    return parseFloat(parseFloat(number).toFixed(4));
+  }
+
   timeToSmartContractTime(time) {
     return parseInt(new Date(time).getTime() / 1000);
   }
