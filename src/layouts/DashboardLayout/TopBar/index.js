@@ -33,7 +33,7 @@ import settings2Fill from '@iconify-icons/eva/settings-2-fill';
 import Taalswap from '../../../utils/taalswap';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
-import { BorderColor } from '@material-ui/icons';
+// import { BorderColor } from '@material-ui/icons';
 
 // ----------------------------------------------------------------------
 
