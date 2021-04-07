@@ -123,6 +123,15 @@ class Taalswap {
   }
 
   /**
+   * @function isWhitelisted
+   * @description Get whether ans address is in White List or not
+   * @returns {boolelan} Boolean
+   */
+  async isWhitelisted(address) {
+    return await this.params.fixedContract.isWhitelisted(address);
+  }
+
+  /**
    * @function decimals
    * @description Get Decimals
    * @returns {Integer} Integer
