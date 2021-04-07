@@ -64,6 +64,7 @@ function JoninthePool({ className, pool }) {
   const [swappedAmount, setSwappedAmount] = useState(0);
   const [warningMessage, setWarningMessage] = useState('');
   const [status, setStatus] = useState('');
+  const [isWhiteList, setIsWhiteList] = useState(false);
   const [diffTime, setDiffTime] = useState({});
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
   const { swapList } = useSelector((state) => state.pool);
@@ -100,47 +101,42 @@ function JoninthePool({ className, pool }) {
   const onClickSwap = async () => {
     try {
       if (!!library) {
-        console.log(`minAmount  : ${minAmount}`);
-        console.log(`maxAmount  : ${maxAmount}`);
-        console.log(
-          `balance    : ${parseFloat(formatEther(balance)).toFixed(4)}`
-        );
+        if (pool.access === 'Private' && !isWhiteList) {
+          setWarningMessage('등록되지 않은 지갑 주소');
+        } else {
+          if (
+            parseFloat(minAmount) < parseFloat(amount) &&
+            parseFloat(amount) < parseFloat(maxAmount)
+          ) {
+            if (parseFloat(amount) < parseFloat(tokensLeft)) {
+              const temp = 5;
 
-        if (
-          parseFloat(minAmount) < parseFloat(amount) &&
-          parseFloat(amount) < parseFloat(maxAmount)
-        ) {
-          console.log(`amount     : ${amount}`);
-          console.log(`tokensLeft : ${tokensLeft}`);
+              if (
+                Numbers.toFloat(pool.maxIndividuals) >=
+                Numbers.toFloat(amount) + Numbers.toFloat(swappedAmount)
+              ) {
+                const result = await taalswap.swap({
+                  tokenAmount: amount,
+                  account: account
+                });
 
-          if (parseFloat(amount) < parseFloat(tokensLeft)) {
-            const temp = 5;
-
-            if (
-              Numbers.toFloat(pool.maxIndividuals) >=
-              Numbers.toFloat(amount) + Numbers.toFloat(swappedAmount)
-            ) {
-              const result = await taalswap.swap({
-                tokenAmount: amount,
-                account: account
-              });
-
-              if (!!result.error) {
-                console.log('error : ' + JSON.stringify(result.error));
+                if (!!result.error) {
+                  console.log('error : ' + JSON.stringify(result.error));
+                } else {
+                  await setWarningMessage('');
+                  await addSwap();
+                }
               } else {
-                setWarningMessage('');
-                addSwap();
+                setWarningMessage(
+                  `개인 구매 한도량 초과 (${swappedAmount} / ${temp})`
+                );
               }
             } else {
-              setWarningMessage(
-                `개인 구매 한도량 초과 (${swappedAmount} / ${temp})`
-              );
+              setWarningMessage('tokensLeft 보다 적게');
             }
           } else {
-            setWarningMessage('tokensLeft 보다 적게');
+            setWarningMessage('최소값 보다 많고, 최대값 보다 적게');
           }
-        } else {
-          setWarningMessage('최소값 보다 많고, 최대값 보다 적게');
         }
       }
     } catch (error) {
@@ -173,19 +169,26 @@ function JoninthePool({ className, pool }) {
 
       if (!!library) {
         await taalswap.tokensLeft().then((result) => {
-          console.log(result);
           setTokensLeft(result);
         });
 
         await taalswap.individualMinimumAmount().then((result) => {
-          console.log(result);
           setMinAmount(result);
         });
 
         await taalswap.individualMaximumAmount().then((result) => {
-          console.log(result);
           setMaxAmount(result);
         });
+
+        if (pool.access === 'Private') {
+          await taalswap
+            .isWhitelisted(account)
+            .then((result) => {
+              console.log(result);
+              setIsWhiteList(result);
+            })
+            .catch((error) => console.log(error));
+        }
 
         if (!!swapList) {
           setSwappedAmount(
@@ -314,15 +317,29 @@ function JoninthePool({ className, pool }) {
       </Box>
 
       <Box sx={{ mt: 2, mb: 3 }}>
-        <LoadingButton
-          fullWidth
-          size="large"
-          variant="contained"
-          onClick={onClickSwap}
-          disabled={status !== PoolStatus.LIVE}
-        >
-          Go
-        </LoadingButton>
+        {pool.access === 'Public' && (
+          <LoadingButton
+            fullWidth
+            size="large"
+            variant="contained"
+            onClick={onClickSwap}
+            disabled={status !== PoolStatus.LIVE}
+          >
+            Go
+          </LoadingButton>
+        )}
+
+        {pool.access === 'Private' && (
+          <LoadingButton
+            fullWidth
+            size="large"
+            variant="contained"
+            onClick={onClickSwap}
+            disabled={status !== PoolStatus.LIVE || isWhiteList === false}
+          >
+            Go
+          </LoadingButton>
+        )}
       </Box>
 
       <Box sx={{ textAlign: 'center' }}>
