@@ -17,7 +17,9 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Box
+  Box,
+  Backdrop,
+  CircularProgress
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,6 +53,10 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     color: theme.palette.primary.main
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff'
   }
 }));
 
@@ -154,6 +160,7 @@ export default function MyPools() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [poolStatus, setPoolStatus] = useState('');
+  const [open, setOpen] = useState(false);
   const context = useWeb3React();
   const dispatch = useDispatch();
   const { poolList, swapList, isOpenModal, selectedPool } = useSelector(
@@ -206,6 +213,7 @@ export default function MyPools() {
   const handleOnClickClaimETH = async () => {
     try {
       if (!!library) {
+        setOpen(true);
         const myPurchases = await taalswap.getAddressPurchaseIds({
           address: account
         });
@@ -216,17 +224,18 @@ export default function MyPools() {
           console.log(myPurchases.error);
         } else {
           myPurchases.map(async (purchases) => {
-            await taalswap
+            const result = await taalswap
               .redeemGivenMinimumGoalNotAchieved({
                 purchase_id: purchases
               })
-              .then((result) => console.log(result))
               .catch((error) => console.log(error));
+
+            if (result !== undefined) await result.wait();
           });
         }
+        setOpen(false);
+        dispatch(closeModal());
       }
-
-      dispatch(closeModal());
     } catch (error) {
       console.log(error);
     }
@@ -234,29 +243,28 @@ export default function MyPools() {
 
   const handleOnClickClaimTokens = async () => {
     try {
-      console.log('Claim Tokens');
       if (!!library) {
+        setOpen(true);
         const myPurchases = await taalswap.getAddressPurchaseIds({
           address: account
         });
-
-        console.log(myPurchases);
 
         if (!!myPurchases.error) {
           console.log(myPurchases.error);
         } else {
           myPurchases.map(async (purchases) => {
-            await taalswap
+            const result = await taalswap
               .redeemTokens({
                 purchase_id: purchases
               })
-              .then((result) => console.log(result))
               .catch((error) => console.log(error));
+
+            if (result !== undefined) await result.wait();
           });
         }
+        setOpen(false);
+        dispatch(closeModal());
       }
-
-      dispatch(closeModal());
     } catch (error) {
       console.log(error);
     }
@@ -445,6 +453,9 @@ export default function MyPools() {
           </Dialog>
         )}
       </Scrollbars>
+      <Backdrop className={classes.backdrop} open={open}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 }

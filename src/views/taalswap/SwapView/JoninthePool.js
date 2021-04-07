@@ -5,7 +5,14 @@ import shieldFill from '@iconify-icons/eva/shield-fill';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Divider, Typography, TextField } from '@material-ui/core';
+import {
+  Box,
+  Divider,
+  Typography,
+  TextField,
+  Backdrop,
+  CircularProgress
+} from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
@@ -43,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     marginBottom: theme.spacing(2.5),
     marginTop: theme.spacing(2)
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff'
   }
 }));
 
@@ -67,6 +78,7 @@ function JoninthePool({ className, pool }) {
   const [isWhiteList, setIsWhiteList] = useState(false);
   const [time, setTime] = useState({});
   const [diffTime, setDiffTime] = useState({});
+  const [open, setOpen] = useState(false);
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
   const { swapList } = useSelector((state) => state.pool);
   const { connector, library, account } = context;
@@ -111,27 +123,30 @@ function JoninthePool({ className, pool }) {
             parseFloat(amount) < parseFloat(maxAmount)
           ) {
             if (parseFloat(amount) < parseFloat(tokensLeft)) {
-              const temp = 5;
-
               if (
                 Numbers.toFloat(pool.maxIndividuals) >=
                 Numbers.toFloat(amount) + Numbers.toFloat(swappedAmount)
               ) {
-                await taalswap
+                setOpen(true);
+                const result = await taalswap
                   .swap({
                     tokenAmount: amount,
                     account: account
                   })
-                  .then(async (result) => {
-                    await setWarningMessage('');
-                    await addSwap();
-                  })
                   .catch((error) => {
                     console.log('error : ' + JSON.stringify(error));
                   });
+
+                const receipt = await result.wait();
+                if (receipt.status === 1) {
+                  await setWarningMessage('');
+                  await addSwap();
+                }
+
+                setOpen(false);
               } else {
                 setWarningMessage(
-                  `Should be less than individual maximum! (${swappedAmount} / ${temp})`
+                  `Should be less than individual maximum! (${swappedAmount} / ${amount})`
                 );
               }
             } else {
@@ -364,6 +379,9 @@ function JoninthePool({ className, pool }) {
           Have problems Joining? Click here to read instructions.
         </Typography>
       </Box>
+      <Backdrop className={classes.backdrop} open={open}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 }
