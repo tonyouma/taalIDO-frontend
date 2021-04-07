@@ -27,17 +27,6 @@ const useStyles = makeStyles((theme) => {
       justifyContent: 'space-between',
       padding: theme.spacing(0, 0, 0, 0)
     },
-    search: {
-      width: 240,
-      transition: theme.transitions.create(['box-shadow', 'width'], {
-        easing: theme.transitions.easing.easeInOut,
-        duration: theme.transitions.duration.shorter
-      }),
-      '& fieldset': {
-        borderWidth: `1px !important`,
-        borderColor: `${theme.palette.grey[500_32]} !important`
-      }
-    },
     highlight: isLight
       ? {
           color: theme.palette.primary.main,

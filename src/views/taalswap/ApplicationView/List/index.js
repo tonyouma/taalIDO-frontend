@@ -385,7 +385,7 @@ const useStyles = makeStyles((theme) => ({
     height: '70px'
   },
   tableTab: { width: '100%' },
-  tableSearch: { width: '240px', textAlign: 'right', height: '40px' }
+  tableSearch: { width: '320px', textAlign: 'right' }
 }));
 
 // ----------------------------------------------------------------------
