@@ -16,6 +16,7 @@ import {
   CircularProgress
 } from '@material-ui/core';
 import {
+  getApplicationList,
   searchApplicationListByCreator,
   updateApplication
 } from 'src/redux/slices/pool';
@@ -50,61 +51,61 @@ async function callApprove(tokenAmount, application, swapContract) {
   const result = await swapContract
     .approveFundERC20({ tokenAmount })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
       throw error;
     });
-  console.log('approveFundERC20', result);
+  // console.log('approveFundERC20', result);
   const receipt = await result.wait();
-  console.log('receipt ', receipt);
+  // console.log('receipt ', receipt);
   return receipt;
 }
 
 async function callFund(tokenAmount, application, swapContract) {
-  console.log('fundAmount : ' + tokenAmount);
+  // console.log('fundAmount : ' + tokenAmount);
   const result = await swapContract.fund({ tokenAmount }).catch((error) => {
-    console.log(error);
+    // console.log(error);
     throw error;
   });
-  console.log('callFund', result);
+  // console.log('callFund', result);
   const receipt = await result.wait();
-  console.log('receipt ', receipt);
+  // console.log('receipt ', receipt);
   return receipt;
 }
 
 async function callAddWhiteListAddress(addresses, application, swapContract) {
-  console.log('whiteListAddress : ', addresses);
-  console.log('app : ', application);
+  // console.log('whiteListAddress : ', addresses);
+  // console.log('app : ', application);
   const result = await swapContract
     .addWhitelistedAddress({ addresses })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
       throw error;
     });
-  console.log('callAddWhiteListAddress', result);
+  // console.log('callAddWhiteListAddress', result);
   const receipt = await result.wait();
-  console.log('receipt ', receipt);
+  // console.log('receipt ', receipt);
   return receipt;
 }
 
 async function callWithDrawFunds(application, swapContract) {
   const result = await swapContract.withdrawFunds().catch((error) => {
-    console.log('callWithDrawFunds', error);
+    // console.log('callWithDrawFunds', error);
     throw error;
   });
-  console.log('callWithDrawFunds', result);
+  // console.log('callWithDrawFunds', result);
   const receipt = await result.wait();
-  console.log('receipt ', receipt);
+  // console.log('receipt ', receipt);
   return receipt;
 }
 
 async function callWithDrawUnsoldTokens(application, swapContract) {
   const result = await swapContract.withdrawUnsoldTokens().catch((error) => {
-    console.log('callWithDrawUnsoldTokens', error);
+    // console.log('callWithDrawUnsoldTokens', error);
     throw error;
   });
-  console.log('callWithDrawUnsoldTokens', result);
+  // console.log('callWithDrawUnsoldTokens', result);
   const receipt = await result.wait();
-  console.log('receipt ', receipt);
+  // console.log('receipt ', receipt);
   return receipt;
 }
 
@@ -136,12 +137,12 @@ const AdminView = () => {
   };
 
   const handleChange = (e) => {
-    console.log('selected value', e.target.value);
+    // console.log('selected value', e.target.value);
     setSelectedPool(e.target.value);
   };
 
   const getSelectedApp = () => {
-    console.log('getSelectedApp', selectedPool);
+    // console.log('getSelectedApp', selectedPool);
     return applicationList.filter(
       (pool) =>
         pool.id === parseInt(selectedPool) && pool.contractAddress !== ''
@@ -171,7 +172,7 @@ const AdminView = () => {
     ).catch((error) => {
       ret.error = error;
     });
-    console.log('Approve result', receipt);
+    // console.log('Approve result', receipt);
     if (ret.error) {
       enqueueSnackbar('Approve fail', { variant: 'error' });
     } else {
@@ -203,7 +204,7 @@ const AdminView = () => {
     ).catch((error) => {
       ret.error = error;
     });
-    console.log('fund result', receipt);
+    // console.log('fund result', receipt);
     if (ret.error) {
       enqueueSnackbar('Fund fail', { variant: 'error' });
     } else {
@@ -241,7 +242,7 @@ const AdminView = () => {
     ).catch((error) => {
       ret.error = error;
     });
-    console.log('whitelist result', receipt);
+    // console.log('whitelist result', receipt);
     if (ret.error) {
       enqueueSnackbar('add whitelist fail', { variant: 'error' });
     } else {
@@ -255,9 +256,9 @@ const AdminView = () => {
   const onClickWithDrawFunds = async () => {
     setOpen(true);
     const selectedItem = getSelectedApp();
-    console.log(
-      `seleted pool : ${JSON.stringify(selectedItem)}, WithDrawFunds`
-    );
+    // console.log(
+    //   `seleted pool : ${JSON.stringify(selectedItem)}, WithDrawFunds`
+    // );
     const swapContract = new Taalswap({
       application: selectedItem,
       account,
@@ -269,7 +270,7 @@ const AdminView = () => {
         ret.error = error;
       }
     );
-    console.log('WithDrawFunds result', receipt);
+    // console.log('WithDrawFunds result', receipt);
     if (ret.error) {
       enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
     } else {
@@ -283,9 +284,9 @@ const AdminView = () => {
   const onClickWithdrawUnsoldTokens = async () => {
     setOpen(true);
     const selectedItem = getSelectedApp();
-    console.log(
-      `seleted pool : ${JSON.stringify(selectedItem)}, WithdrawUnsoldTokens`
-    );
+    // console.log(
+    //   `seleted pool : ${JSON.stringify(selectedItem)}, WithdrawUnsoldTokens`
+    // );
     const swapContract = new Taalswap({
       application: selectedItem,
       account,
@@ -298,7 +299,7 @@ const AdminView = () => {
     ).catch((error) => {
       ret.error = error;
     });
-    console.log('WithdrawUnsoldTokens result', receipt);
+    // console.log('WithdrawUnsoldTokens result', receipt);
     if (ret.error) {
       enqueueSnackbar('WithdrawUnsoldTokens fail', { variant: 'error' });
     } else {
@@ -310,9 +311,9 @@ const AdminView = () => {
   };
 
   useEffect(() => {
-    dispatch(searchApplicationListByCreator(account));
+    dispatch(getApplicationList());
     setSelectedPool(location.state ? location.state.selectedItem.id : '');
-    console.log('selected pool', selectedPool);
+    // console.log('selected pool', selectedPool);
   }, [account, open]);
 
   return (
