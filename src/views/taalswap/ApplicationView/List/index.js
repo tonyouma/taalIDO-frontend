@@ -7,23 +7,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import {
-  updateApplication,
-  getApplicationList,
-  openModal,
-  closeModal
-} from 'src/redux/slices/pool';
-import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
-import {
-  Box,
   Button,
   Card,
   Container,
@@ -32,25 +16,40 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  InputAdornment,
-  OutlinedInput,
   TablePagination,
-  TextField
+  TextField,
+  Backdrop,
+  Tooltip,
+  IconButton,
+  Checkbox,
+  Typography,
+  Toolbar,
+  TableSortLabel,
+  TableRow,
+  CircularProgress
 } from '@material-ui/core';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
+import {
+  updateApplication,
+  getApplicationList,
+  openModal,
+  closeModal
+} from 'src/redux/slices/pool';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import EditIcon from '@material-ui/icons/Edit';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { useWeb3React } from '@web3-react/core';
 import { admin } from 'src/config';
-import Numbers from '../../../../utils/Numbers';
+import Numbers from 'src/utils/Numbers';
 import { ContractFactory } from '@ethersproject/contracts';
 import { fixedData } from 'src/contracts';
 import Page from 'src/components/Page';
 import { HeaderDashboard } from 'src/layouts/Common';
 import BasicTable from '../../PoolListView/BasicTable';
 import { useSnackbar } from 'notistack';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import EditIcon from '@material-ui/icons/Edit';
 import { useTranslation } from 'react-i18next';
 import ToolbarTable from '../../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
@@ -368,6 +367,10 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: 20,
     width: 1
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff'
   }
 }));
 
@@ -388,6 +391,7 @@ function applyFilter(array, query) {
 export default function ApplicationListView() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
+  const [open, setOpen] = React.useState(false);
   const [orderBy, setOrderBy] = React.useState('name');
   const [modalType, setModalType] = React.useState('');
   const [selected, setSelected] = React.useState(-1);
@@ -564,6 +568,9 @@ export default function ApplicationListView() {
   return (
     <Page title={t('taalswap.applications')} className={classes.root}>
       <Container maxWidth="lg">
+        <Backdrop className={classes.backdrop} open={open}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <HeaderDashboard
           heading={t('taalswap.applications')}
           links={[{ name: '' }]}

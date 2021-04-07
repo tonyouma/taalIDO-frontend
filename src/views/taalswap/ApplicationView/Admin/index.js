@@ -10,9 +10,10 @@ import {
   Card,
   CardContent,
   TextField,
-  Typography,
   Grid,
-  CardHeader
+  CardHeader,
+  Backdrop,
+  CircularProgress
 } from '@material-ui/core';
 import {
   searchApplicationListByCreator,
@@ -21,17 +22,11 @@ import {
 import TotalActiveUsers from '../../../general/DashboardAppView/TotalActiveUsers';
 import TotalInstalled from '../../../general/DashboardAppView/TotalInstalled';
 import TotalDownloads from '../../../general/DashboardAppView/TotalDownloads';
-import CurrentDownload from '../../../general/DashboardAppView/CurrentDownload';
-import AreaInstalled from '../../../general/DashboardAppView/AreaInstalled';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router';
-import { Contract, ContractFactory } from '@ethersproject/contracts';
-import { fixedData } from 'src/contracts';
-import { tokenData } from 'src/contracts';
 import { useSnackbar } from 'notistack';
 import { PoolStatus } from 'src/utils/poolStatus';
-import Taalswap from '../../../../utils/taalswap';
-import Numbers from '../../../../utils/Numbers';
+import Taalswap from 'src/utils/taalswap';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -44,100 +39,73 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     marginRight: '1rem'
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff'
   }
 }));
 
-// function getContract(application, account, library) {
-//   console.log('getContract', application, account);
-//   const fixedContract = new Contract(
-//     application.contractAddress,
-//     ContractFactory.getInterface(fixedData.abi),
-//     library.getSigner(account).connectUnchecked()
-//   );
-//
-//   const tokenContract = new Contract(
-//     application.tokenContractAddr,
-//     ContractFactory.getInterface(tokenData.abi),
-//     library.getSigner(account).connectUnchecked()
-//   );
-//
-//   const taalswapApp = new Taalswap({
-//     test: true,
-//     mainnet: false,
-//     account: account
-//   });
-//
-//   console.log('endGetContract');
-//   // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
-//   return taalswapApp.getFixedSwapContract({
-//     tokenAddress: application.tokenContractAddr,
-//     decimals: application.decimals,
-//     contractAddress: application.contractAddress,
-//     fixedContract: fixedContract,
-//     tokenContract: tokenContract
-//   });
-// }
-
 async function callApprove(tokenAmount, application, swapContract) {
-  const ret = {};
-
   const result = await swapContract
     .approveFundERC20({ tokenAmount })
     .catch((error) => {
-      console.log(JSON.stringify(error));
-      ret.error = error;
+      console.log(error);
+      throw error;
     });
-
-  // console.log(JSON.stringify(result));
-  // return (ret.result = result);
-  // application에 isApproved : true 추가하여 업데이트
-  // isFunded가 true 이면 application.status: upcomming 으로 업데이트
+  console.log('approveFundERC20', result);
+  const receipt = await result.wait();
+  console.log('receipt ', receipt);
+  return receipt;
 }
 
 async function callFund(tokenAmount, application, swapContract) {
   console.log('fundAmount : ' + tokenAmount);
-
-  const ret = {};
-
   const result = await swapContract.fund({ tokenAmount }).catch((error) => {
-    console.log(JSON.stringify(error));
-    ret.error = error;
+    console.log(error);
+    throw error;
   });
-  ret.result = result;
-  console.log('ret result ', JSON.stringify(ret));
-  return ret;
+  console.log('callFund', result);
+  const receipt = await result.wait();
+  console.log('receipt ', receipt);
+  return receipt;
 }
 
 async function callAddWhiteListAddress(addresses, application, swapContract) {
-  console.log('whiteListAddress : ' + JSON.stringify(addresses));
-
-  const ret = {};
-  const result = await swapContract.addWhitelistedAddress({ addresses });
-
-  console.log(JSON.stringify(result));
-  return (ret.result = result);
+  console.log('whiteListAddress : ', addresses);
+  console.log('app : ', application);
+  const result = await swapContract
+    .addWhitelistedAddress({ addresses })
+    .catch((error) => {
+      console.log(error);
+      throw error;
+    });
+  console.log('callAddWhiteListAddress', result);
+  const receipt = await result.wait();
+  console.log('receipt ', receipt);
+  return receipt;
 }
 
 async function callWithDrawFunds(application, swapContract) {
-  const ret = {};
   const result = await swapContract.withdrawFunds().catch((error) => {
-    console.log(JSON.stringify(error));
-    ret.error = error;
+    console.log('callWithDrawFunds', error);
+    throw error;
   });
-
-  console.log(JSON.stringify(result));
-  return (ret.result = result);
+  console.log('callWithDrawFunds', result);
+  const receipt = await result.wait();
+  console.log('receipt ', receipt);
+  return receipt;
 }
 
 async function callWithDrawUnsoldTokens(application, swapContract) {
-  const ret = {};
   const result = await swapContract.withdrawUnsoldTokens().catch((error) => {
-    console.log(JSON.stringify(error));
-    ret.error = error;
+    console.log('callWithDrawUnsoldTokens', error);
+    throw error;
   });
-
-  console.log(JSON.stringify(result));
-  return (ret.result = result);
+  console.log('callWithDrawUnsoldTokens', result);
+  const receipt = await result.wait();
+  console.log('receipt ', receipt);
+  return receipt;
 }
 
 const AdminView = () => {
@@ -147,7 +115,7 @@ const AdminView = () => {
   const { account, library } = context;
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
-
+  const [open, setOpen] = useState(false);
   const { applicationList } = useSelector((state) => state.pool);
 
   const [selectedPool, setSelectedPool] = useState('');
@@ -156,18 +124,6 @@ const AdminView = () => {
     fundAmount: '',
     whiteList: ''
   });
-
-  // TODO : 여기서 한번 호출하는 경우, swapContract = undefined 되는 경우가 종종 있음.
-  // const [swapContract, setSwapContract] = useState('');
-  // useEffect(() => {
-  //   const selectedItem = getSelectedApp();
-  //   const taalswap = new Taalswap({
-  //     application: selectedItem,
-  //     account,
-  //     library
-  //   });
-  //   setSwapContract(taalswap);
-  // }, [account, library]);
 
   const { approveAmount, fundAmount, whiteList } = inputs;
 
@@ -195,34 +151,35 @@ const AdminView = () => {
   const onClickApprove = async () => {
     if (!Number.isInteger(parseInt(approveAmount))) {
       //approveAmount 는 int 여야함.
+      alert('approveAmount는 정수여야합니다.');
       return;
     }
 
-    console.log('approveAmount : ' + approveAmount);
+    setOpen(true);
     const selectedItem = getSelectedApp();
-    console.log('selected item contractAddress', selectedItem.contractAddress);
-    console.log(
-      'selected item tokenContractAddr',
-      selectedItem.tokenContractAddr
-    );
-
     const swapContract = new Taalswap({
       application: selectedItem,
       account,
       library
     });
 
-    const result = await callApprove(
+    const ret = {};
+    const receipt = await callApprove(
       parseInt(approveAmount),
       selectedItem,
       swapContract
-    );
-    // console.log('Approve result', JSON.stringify(result.error));
-    // if (result.error) {
-    //   enqueueSnackbar('Approvet fail', { variant: 'error' });
-    // } else {
-    //   enqueueSnackbar('Approve success', { variant: 'success' });
-    // }
+    ).catch((error) => {
+      ret.error = error;
+    });
+    console.log('Approve result', receipt);
+    if (ret.error) {
+      enqueueSnackbar('Approve fail', { variant: 'error' });
+    } else {
+      if (receipt.status === 1)
+        enqueueSnackbar('Approve success', { variant: 'success' });
+      else enqueueSnackbar('Approve fail', { variant: 'error' });
+    }
+    setOpen(false);
   };
 
   const onClickFund = async () => {
@@ -237,23 +194,28 @@ const AdminView = () => {
       account,
       library
     });
-    const result = await callFund(
+    const ret = {};
+    const receipt = await callFund(
       parseInt(fundAmount),
       selectedItem,
       swapContract
-    );
-    console.log('fund result', JSON.stringify(result.error));
-    if (result.error) {
+    ).catch((error) => {
+      ret.error = error;
+    });
+    console.log('fund result', receipt);
+    if (ret.error) {
       enqueueSnackbar('Fund fail', { variant: 'error' });
     } else {
-      dispatch(
-        updateApplication(
-          selectedItem.id,
-          { status: PoolStatus.UPCOMING, userId: location.state.userId },
-          location.state.accessToken
-        )
-      );
-      enqueueSnackbar('Fund success', { variant: 'success' });
+      if (receipt.status === 1) {
+        dispatch(
+          updateApplication(
+            selectedItem.id,
+            { status: PoolStatus.UPCOMING, userId: location.state.userId },
+            location.state.accessToken
+          )
+        );
+        enqueueSnackbar('Fund success', { variant: 'success' });
+      } else enqueueSnackbar('Fund fail', { variant: 'error' });
     }
   };
 
@@ -268,17 +230,22 @@ const AdminView = () => {
       account,
       library
     });
-    const result = await callAddWhiteListAddress(
+    const ret = {};
+    const receipt = await callAddWhiteListAddress(
       whiteList.split(','),
       selectedItem,
       swapContract
-    );
-    // console.log('whitelist result', JSON.stringify(result.error));
-    // if (result.error) {
-    //   enqueueSnackbar('add whitelist fail', { variant: 'error' });
-    // } else {
-    //   enqueueSnackbar('add whitelist success', { variant: 'success' });
-    // }
+    ).catch((error) => {
+      ret.error = error;
+    });
+    console.log('whitelist result', receipt);
+    if (ret.error) {
+      enqueueSnackbar('add whitelist fail', { variant: 'error' });
+    } else {
+      if (receipt.status === 1)
+        enqueueSnackbar('add whitelist success', { variant: 'success' });
+      else enqueueSnackbar('add whitelist fail', { variant: 'error' });
+    }
   };
 
   const onClickWithDrawFunds = async () => {
@@ -291,13 +258,20 @@ const AdminView = () => {
       account,
       library
     });
-    const result = await callWithDrawFunds(selectedItem, swapContract);
-    // console.log('WithDrawFunds result', JSON.stringify(result.error));
-    // if (result.error) {
-    //   enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
-    // } else {
-    //   enqueueSnackbar('WithDrawFunds success', { variant: 'success' });
-    // }
+    const ret = {};
+    const receipt = await callWithDrawFunds(selectedItem, swapContract).catch(
+      (error) => {
+        ret.error = error;
+      }
+    );
+    console.log('WithDrawFunds result', receipt);
+    if (ret.error) {
+      enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
+    } else {
+      if (receipt.status === 1)
+        enqueueSnackbar('WithDrawFunds success', { variant: 'success' });
+      else enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
+    }
   };
 
   const onClickWithdrawUnsoldTokens = async () => {
@@ -310,174 +284,187 @@ const AdminView = () => {
       account,
       library
     });
-    const result = await callWithDrawUnsoldTokens(selectedItem, swapContract);
-    // console.log('WithdrawUnsoldTokens result', JSON.stringify(result.error));
-    // if (result.error) {
-    //   enqueueSnackbar('WithdrawUnsoldTokens fail', { variant: 'error' });
-    // } else {
-    //   enqueueSnackbar('WithdrawUnsoldTokens success', { variant: 'success' });
-    // }
+    const ret = {};
+    const receipt = await callWithDrawUnsoldTokens(
+      selectedItem,
+      swapContract
+    ).catch((error) => {
+      ret.error = error;
+    });
+    console.log('WithdrawUnsoldTokens result', receipt);
+    if (ret.error) {
+      enqueueSnackbar('WithdrawUnsoldTokens fail', { variant: 'error' });
+    } else {
+      if (receipt.status === 1)
+        enqueueSnackbar('WithdrawUnsoldTokens success', { variant: 'success' });
+      else enqueueSnackbar('WithdrawUnsoldTokens fail', { variant: 'error' });
+    }
   };
 
   useEffect(() => {
     dispatch(searchApplicationListByCreator(account));
     setSelectedPool(location.state ? location.state.selectedItem.id : '');
     console.log('selected pool', selectedPool);
-  }, [account]);
+  }, [account, open]);
 
   return (
-    <Page
-      title="New Application-Management | Minimal-UI"
-      className={classes.root}
-    >
-      <Container>
-        <HeaderDashboard heading="Admin" links={[{ name: 'settings' }]} />
+    <>
+      <Backdrop className={classes.backdrop} open={open}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Page
+        title="New Application-Management | Minimal-UI"
+        className={classes.root}
+      >
+        <Container>
+          <HeaderDashboard heading="Admin" links={[{ name: 'settings' }]} />
 
-        <Container maxWidth="xl">
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={4}>
-              <TotalActiveUsers />
-            </Grid>
+          <Container maxWidth="xl">
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={4}>
+                <TotalActiveUsers />
+              </Grid>
 
-            <Grid item xs={12} md={4}>
-              <TotalInstalled />
-            </Grid>
+              <Grid item xs={12} md={4}>
+                <TotalInstalled />
+              </Grid>
 
-            <Grid item xs={12} md={4}>
-              <TotalDownloads />
+              <Grid item xs={12} md={4}>
+                <TotalDownloads />
+              </Grid>
             </Grid>
-          </Grid>
+          </Container>
+
+          <CardContent>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={12}>
+                <Card>
+                  <CardHeader title="Select Application" />
+                  <Box className={classes.box}>
+                    <TextField
+                      style={{ minWidth: '360px' }}
+                      name="selecteApplication"
+                      select
+                      label="Applications"
+                      size="small"
+                      disabled
+                      defaultValue={selectedPool}
+                      value={selectedPool}
+                      onChange={handleChange}
+                    >
+                      {applicationList.map((app, index) => (
+                        <option key={index} value={app.id}>
+                          {app.projectName}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Box>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={12}>
+                <Card>
+                  <CardHeader title="Approve" />
+                  <Box className={classes.box}>
+                    <TextField
+                      className={classes.textField}
+                      name="approveAmount"
+                      label="Amount"
+                      size="small"
+                      value={approveAmount}
+                      onChange={onChange}
+                    ></TextField>
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      onClick={onClickApprove}
+                      style={{ minWidth: '100px' }}
+                    >
+                      Approve
+                    </Button>
+                  </Box>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={12}>
+                <Card>
+                  <CardHeader title="Fund" />
+                  <Box className={classes.box}>
+                    <TextField
+                      className={classes.textField}
+                      name="fundAmount"
+                      label="Amount"
+                      size="small"
+                      value={fundAmount}
+                      onChange={onChange}
+                    ></TextField>
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      onClick={onClickFund}
+                      style={{ minWidth: '100px' }}
+                    >
+                      Fund
+                    </Button>
+                  </Box>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={12}>
+                <Card>
+                  <CardHeader title="WhiteList" />
+                  <Box className={classes.box}>
+                    <TextField
+                      className={classes.textField}
+                      name="whiteList"
+                      label="WhiteList"
+                      size="small"
+                      value={whiteList}
+                      onChange={onChange}
+                    ></TextField>
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      onClick={onClickWhiteList}
+                      style={{ minWidth: '100px' }}
+                    >
+                      Add
+                    </Button>
+                  </Box>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={12}>
+                <Card>
+                  <CardHeader title="Claim" />
+                  <Box className={classes.box}>
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      onClick={onClickWithDrawFunds}
+                      style={{ minWidth: '200px' }}
+                    >
+                      WithDrawFunds
+                    </Button>
+                  </Box>
+                  <Box className={classes.box}>
+                    <Button
+                      width="50%"
+                      variant="contained"
+                      size="medium"
+                      onClick={onClickWithdrawUnsoldTokens}
+                      style={{ minWidth: '200px' }}
+                    >
+                      WithdrawUnsoldTokens
+                    </Button>
+                  </Box>
+                </Card>
+              </Grid>
+            </Grid>
+          </CardContent>
         </Container>
-
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={12}>
-              <Card>
-                <CardHeader title="Select Application" />
-                <Box className={classes.box}>
-                  <TextField
-                    style={{ minWidth: '360px' }}
-                    name="selecteApplication"
-                    select
-                    label="Applications"
-                    size="small"
-                    disabled
-                    defaultValue={selectedPool}
-                    value={selectedPool}
-                    onChange={handleChange}
-                  >
-                    {applicationList.map((app, index) => (
-                      <option key={index} value={app.id}>
-                        {app.projectName}
-                      </option>
-                    ))}
-                  </TextField>
-                </Box>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} md={12}>
-              <Card>
-                <CardHeader title="Approve" />
-                <Box className={classes.box}>
-                  <TextField
-                    className={classes.textField}
-                    name="approveAmount"
-                    label="Amount"
-                    size="small"
-                    value={approveAmount}
-                    onChange={onChange}
-                  ></TextField>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    onClick={onClickApprove}
-                    style={{ minWidth: '100px' }}
-                  >
-                    Approve
-                  </Button>
-                </Box>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} md={12}>
-              <Card>
-                <CardHeader title="Fund" />
-                <Box className={classes.box}>
-                  <TextField
-                    className={classes.textField}
-                    name="fundAmount"
-                    label="Amount"
-                    size="small"
-                    value={fundAmount}
-                    onChange={onChange}
-                  ></TextField>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    onClick={onClickFund}
-                    style={{ minWidth: '100px' }}
-                  >
-                    Fund
-                  </Button>
-                </Box>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} md={12}>
-              <Card>
-                <CardHeader title="WhiteList" />
-                <Box className={classes.box}>
-                  <TextField
-                    className={classes.textField}
-                    name="whiteList"
-                    label="WhiteList"
-                    size="small"
-                    value={whiteList}
-                    onChange={onChange}
-                  ></TextField>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    onClick={onClickWhiteList}
-                    style={{ minWidth: '100px' }}
-                  >
-                    Add
-                  </Button>
-                </Box>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} md={12}>
-              <Card>
-                <CardHeader title="Claim" />
-                <Box className={classes.box}>
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    onClick={onClickWithDrawFunds}
-                    style={{ minWidth: '200px' }}
-                  >
-                    WithDrawFunds
-                  </Button>
-                </Box>
-                <Box className={classes.box}>
-                  <Button
-                    width="50%"
-                    variant="contained"
-                    size="medium"
-                    onClick={onClickWithdrawUnsoldTokens}
-                    style={{ minWidth: '200px' }}
-                  >
-                    WithdrawUnsoldTokens
-                  </Button>
-                </Box>
-              </Card>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Container>
-    </Page>
+      </Page>
+    </>
   );
 };
 

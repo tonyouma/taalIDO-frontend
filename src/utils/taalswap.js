@@ -98,6 +98,7 @@ class Taalswap {
    * @param { Array | Addresses} Addresses
    */
   async addWhitelistedAddress({ addresses }) {
+    console.log('=====', addresses);
     if (!addresses || !addresses.length || addresses.length == 0) {
       throw new Error('Addresses not well setup');
     }
