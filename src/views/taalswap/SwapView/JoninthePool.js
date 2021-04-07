@@ -135,6 +135,7 @@ function JoninthePool({ className, pool }) {
                   })
                   .catch((error) => {
                     console.log('error : ' + JSON.stringify(error));
+                    setOpen(false);
                   });
 
                 const receipt = await result.wait();
