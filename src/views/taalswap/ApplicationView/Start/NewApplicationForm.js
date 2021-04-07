@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   },
   helperText: {
     padding: theme.spacing(0, 2)
+  },
+  visible: {
+    visibility: 'hidden'
   }
 }));
 
@@ -362,7 +365,16 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
 
                   <Grid item xs={12}>
                     {isEdit ? (
-                      ''
+                      <TextField
+                        className={clsx(classes.visible, className)}
+                        disabled={isEdit}
+                        {...getFieldProps('secret')}
+                        error={Boolean(touched.secret && errors.secret)}
+                        helperText={touched.secret && errors.secret}
+                        fullWidth
+                        label="Password"
+                        type="password"
+                      />
                     ) : (
                       <TextField
                         disabled={isEdit}

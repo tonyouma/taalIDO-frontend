@@ -26,12 +26,12 @@ import AreaInstalled from '../../../general/DashboardAppView/AreaInstalled';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router';
 import { Contract, ContractFactory } from '@ethersproject/contracts';
-import Application from 'taalswap-js/src/models';
-import Numbers from 'taalswap-js/src/utils/Numbers';
 import { fixedData } from 'src/contracts';
 import { tokenData } from 'src/contracts';
 import { useSnackbar } from 'notistack';
 import { PoolStatus } from 'src/utils/poolStatus';
+import Taalswap from '../../../../utils/taalswap';
+import Numbers from '../../../../utils/Numbers';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -47,40 +47,40 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function getContract(application, account, library) {
-  console.log('getContract', application, account);
-  const fixedContract = new Contract(
-    application.contractAddress,
-    ContractFactory.getInterface(fixedData.abi),
-    library.getSigner(account).connectUnchecked()
-  );
+// function getContract(application, account, library) {
+//   console.log('getContract', application, account);
+//   const fixedContract = new Contract(
+//     application.contractAddress,
+//     ContractFactory.getInterface(fixedData.abi),
+//     library.getSigner(account).connectUnchecked()
+//   );
+//
+//   const tokenContract = new Contract(
+//     application.tokenContractAddr,
+//     ContractFactory.getInterface(tokenData.abi),
+//     library.getSigner(account).connectUnchecked()
+//   );
+//
+//   const taalswapApp = new Taalswap({
+//     test: true,
+//     mainnet: false,
+//     account: account
+//   });
+//
+//   console.log('endGetContract');
+//   // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
+//   return taalswapApp.getFixedSwapContract({
+//     tokenAddress: application.tokenContractAddr,
+//     decimals: application.decimals,
+//     contractAddress: application.contractAddress,
+//     fixedContract: fixedContract,
+//     tokenContract: tokenContract
+//   });
+// }
 
-  const tokenContract = new Contract(
-    application.tokenContractAddr,
-    ContractFactory.getInterface(tokenData.abi),
-    library.getSigner(account).connectUnchecked()
-  );
-
-  const taalswapApp = new Application({
-    test: true,
-    mainnet: false,
-    account: account
-  });
-
-  console.log('endGetContract');
-  // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
-  return taalswapApp.getFixedSwapContract({
-    tokenAddress: application.tokenContractAddr,
-    decimals: application.decimals,
-    contractAddress: application.contractAddress,
-    fixedContract: fixedContract,
-    tokenContract: tokenContract
-  });
-}
-
-async function callApprove(tokenAmount, application, account, library) {
+async function callApprove(tokenAmount, application, swapContract) {
   const ret = {};
-  const swapContract = getContract(application, account, library);
+
   const result = await swapContract
     .approveFundERC20({ tokenAmount })
     .catch((error) => {
@@ -88,17 +88,17 @@ async function callApprove(tokenAmount, application, account, library) {
       ret.error = error;
     });
 
-  console.log(JSON.stringify(result));
-  return (ret.result = result);
+  // console.log(JSON.stringify(result));
+  // return (ret.result = result);
   // application에 isApproved : true 추가하여 업데이트
   // isFunded가 true 이면 application.status: upcomming 으로 업데이트
 }
 
-async function callFund(tokenAmount, application, account, library) {
+async function callFund(tokenAmount, application, swapContract) {
   console.log('fundAmount : ' + tokenAmount);
 
   const ret = {};
-  const swapContract = getContract(application, account, library);
+
   const result = await swapContract.fund({ tokenAmount }).catch((error) => {
     console.log(JSON.stringify(error));
     ret.error = error;
@@ -108,30 +108,18 @@ async function callFund(tokenAmount, application, account, library) {
   return ret;
 }
 
-async function callAddWhiteListAddress(
-  addresses,
-  application,
-  account,
-  library
-) {
+async function callAddWhiteListAddress(addresses, application, swapContract) {
   console.log('whiteListAddress : ' + JSON.stringify(addresses));
 
   const ret = {};
-  const swapContract = getContract(application, account, library);
-  const result = await swapContract
-    .addWhitelistedAddress({ addresses })
-    .catch((error) => {
-      console.log(JSON.stringify(error));
-      ret.error = error;
-    });
+  const result = await swapContract.addWhitelistedAddress({ addresses });
 
   console.log(JSON.stringify(result));
   return (ret.result = result);
 }
 
-async function callWithDrawFunds(application, account, library) {
+async function callWithDrawFunds(application, swapContract) {
   const ret = {};
-  const swapContract = getContract(application, account, library);
   const result = await swapContract.withdrawFunds().catch((error) => {
     console.log(JSON.stringify(error));
     ret.error = error;
@@ -141,9 +129,8 @@ async function callWithDrawFunds(application, account, library) {
   return (ret.result = result);
 }
 
-async function callWithDrawUnsoldTokens(application, account, library) {
+async function callWithDrawUnsoldTokens(application, swapContract) {
   const ret = {};
-  const swapContract = getContract(application, account, library);
   const result = await swapContract.withdrawUnsoldTokens().catch((error) => {
     console.log(JSON.stringify(error));
     ret.error = error;
@@ -169,6 +156,18 @@ const AdminView = () => {
     fundAmount: '',
     whiteList: ''
   });
+
+  // TODO : 여기서 한번 호출하는 경우, swapContract = undefined 되는 경우가 종종 있음.
+  // const [swapContract, setSwapContract] = useState('');
+  // useEffect(() => {
+  //   const selectedItem = getSelectedApp();
+  //   const taalswap = new Taalswap({
+  //     application: selectedItem,
+  //     account,
+  //     library
+  //   });
+  //   setSwapContract(taalswap);
+  // }, [account, library]);
 
   const { approveAmount, fundAmount, whiteList } = inputs;
 
@@ -202,18 +201,28 @@ const AdminView = () => {
     console.log('approveAmount : ' + approveAmount);
     const selectedItem = getSelectedApp();
     console.log('selected item contractAddress', selectedItem.contractAddress);
+    console.log(
+      'selected item tokenContractAddr',
+      selectedItem.tokenContractAddr
+    );
+
+    const swapContract = new Taalswap({
+      application: selectedItem,
+      account,
+      library
+    });
+
     const result = await callApprove(
       parseInt(approveAmount),
       selectedItem,
-      account,
-      library
+      swapContract
     );
-    console.log('Approve result', JSON.stringify(result.error));
-    if (result.error) {
-      enqueueSnackbar('Approvet fail', { variant: 'error' });
-    } else {
-      enqueueSnackbar('Approve success', { variant: 'success' });
-    }
+    // console.log('Approve result', JSON.stringify(result.error));
+    // if (result.error) {
+    //   enqueueSnackbar('Approvet fail', { variant: 'error' });
+    // } else {
+    //   enqueueSnackbar('Approve success', { variant: 'success' });
+    // }
   };
 
   const onClickFund = async () => {
@@ -223,11 +232,15 @@ const AdminView = () => {
       return;
     }
     const selectedItem = getSelectedApp();
+    const swapContract = new Taalswap({
+      application: selectedItem,
+      account,
+      library
+    });
     const result = await callFund(
       parseInt(fundAmount),
       selectedItem,
-      account,
-      library
+      swapContract
     );
     console.log('fund result', JSON.stringify(result.error));
     if (result.error) {
@@ -250,18 +263,22 @@ const AdminView = () => {
       return;
     }
     const selectedItem = getSelectedApp();
+    const swapContract = new Taalswap({
+      application: selectedItem,
+      account,
+      library
+    });
     const result = await callAddWhiteListAddress(
       whiteList.split(','),
       selectedItem,
-      account,
-      library
+      swapContract
     );
-    console.log('whitelist result', JSON.stringify(result.error));
-    if (result.error) {
-      enqueueSnackbar('add whitelist fail', { variant: 'error' });
-    } else {
-      enqueueSnackbar('add whitelist success', { variant: 'success' });
-    }
+    // console.log('whitelist result', JSON.stringify(result.error));
+    // if (result.error) {
+    //   enqueueSnackbar('add whitelist fail', { variant: 'error' });
+    // } else {
+    //   enqueueSnackbar('add whitelist success', { variant: 'success' });
+    // }
   };
 
   const onClickWithDrawFunds = async () => {
@@ -269,13 +286,18 @@ const AdminView = () => {
     console.log(
       `seleted pool : ${JSON.stringify(selectedItem)}, WithDrawFunds`
     );
-    const result = await callWithDrawFunds(selectedItem, account, library);
-    console.log('WithDrawFunds result', JSON.stringify(result.error));
-    if (result.error) {
-      enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
-    } else {
-      enqueueSnackbar('WithDrawFunds success', { variant: 'success' });
-    }
+    const swapContract = new Taalswap({
+      application: selectedItem,
+      account,
+      library
+    });
+    const result = await callWithDrawFunds(selectedItem, swapContract);
+    // console.log('WithDrawFunds result', JSON.stringify(result.error));
+    // if (result.error) {
+    //   enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
+    // } else {
+    //   enqueueSnackbar('WithDrawFunds success', { variant: 'success' });
+    // }
   };
 
   const onClickWithdrawUnsoldTokens = async () => {
@@ -283,17 +305,18 @@ const AdminView = () => {
     console.log(
       `seleted pool : ${JSON.stringify(selectedItem)}, WithdrawUnsoldTokens`
     );
-    const result = await callWithDrawUnsoldTokens(
-      selectedItem,
+    const swapContract = new Taalswap({
+      application: selectedItem,
       account,
       library
-    );
-    console.log('WithdrawUnsoldTokens result', JSON.stringify(result.error));
-    if (result.error) {
-      enqueueSnackbar('WithdrawUnsoldTokens fail', { variant: 'error' });
-    } else {
-      enqueueSnackbar('WithdrawUnsoldTokens success', { variant: 'success' });
-    }
+    });
+    const result = await callWithDrawUnsoldTokens(selectedItem, swapContract);
+    // console.log('WithdrawUnsoldTokens result', JSON.stringify(result.error));
+    // if (result.error) {
+    //   enqueueSnackbar('WithdrawUnsoldTokens fail', { variant: 'error' });
+    // } else {
+    //   enqueueSnackbar('WithdrawUnsoldTokens success', { variant: 'success' });
+    // }
   };
 
   useEffect(() => {

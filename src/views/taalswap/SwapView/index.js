@@ -46,7 +46,7 @@ const TABS = [
   },
   {
     value: 2,
-    title: 'Participate',
+    title: 'Participants',
     icon: <Icon icon={roundAccountBox} width={20} height={20} />
     // component: <Participate />
   },
@@ -100,6 +100,7 @@ function PaymentView(className, ...other) {
           heading={pool.poolName}
           links={[{ name: pool.tokenContractAddr }]}
           subTitle={pool.tokenContractAddr}
+          url={`https://rinkeby.etherscan.io/address/${pool.tokenContractAddr}`}
         />
 
         <Tabs

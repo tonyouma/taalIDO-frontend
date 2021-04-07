@@ -81,9 +81,9 @@ function PaymentInformation({ className, pool, index }) {
         setProgressValue(getProgressValue(result, pool.tradeAmount));
       });
 
-      setStatus(await getPoolStatus(taalswap, pool.status));
+      setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
     }
-  }, [pool]);
+  }, [pool, library]);
 
   return (
     <div className={clsx(classes.root, className)}>

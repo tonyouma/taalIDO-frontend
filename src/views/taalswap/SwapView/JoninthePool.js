@@ -196,12 +196,14 @@ function JoninthePool({ className, pool }) {
               }, 0)
           );
         }
-        setStatus(await getPoolStatus(taalswap, pool.status));
+        setStatus(
+          await getPoolStatus(taalswap, pool.status, pool.minFundRaise)
+        );
       }
     } catch (error) {
       console.log(error);
     }
-  }, [pool]);
+  }, [pool, library]);
 
   useEffect(async () => {
     try {

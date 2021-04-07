@@ -17,7 +17,8 @@ import {
   Box,
   IconButton,
   Icon,
-  Typography
+  Typography,
+  Chip
 } from '@material-ui/core';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import EllipsisText from 'react-text-overflow-middle-ellipsis';
@@ -27,49 +28,16 @@ import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '500px',
+    width: '400px',
     height: '40px',
     margin: 1,
     padding: theme.spacing(1),
-    border: '1px solid',
-    borderColor: theme.palette.primary.main,
     color: theme.palette.text.primary,
-    borderRadius: '20px',
     textAlign: 'center',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     fontSize: 13
-  },
-  balance1: {
-    width: '40%',
-    height: '30px',
-    margin: 1,
-    backgroundColor: theme.palette.primary.light,
-    color: 'block',
-    borderRadius: '20px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center'
-  },
-  balance2: {
-    width: '40%',
-    height: '30px',
-    margin: 1,
-    backgroundColor: theme.palette.primary.light,
-    color: 'black',
-    borderRadius: '20px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center'
-  },
-  address: {
-    width: '20%',
-    display: 'flex',
-    margin: 1,
-    justifyContent: 'flex-start',
-    padding: theme.spacing(1),
-    fontWeight: 'fontWeightBold'
   },
   icon: {
     width: '10%',
@@ -97,22 +65,19 @@ const WalletInfo = ({ walletAddress, balance, talBalance }) => {
 
   console.log(balance);
   console.log(talBalance);
+  const ethStr =
+    balance !== null ? parseFloat(formatEther(balance)).toFixed(2) : '0';
+  const talStr = talBalance !== null ? parseFloat(talBalance).toFixed(2) : '0';
+  const n = walletAddress.length;
+  const walletStr =
+    walletAddress.substr(0, 5) + '...' + walletAddress.substr(n - 5, n);
   return (
     <Box className={classes.root}>
-      <Box className={classes.balance1}>
-        <Typography variant="overline">
-          {balance !== null ? parseFloat(formatEther(balance)).toFixed(2) : '0'}{' '}
-          ETH
-        </Typography>
-      </Box>
-      <Box className={classes.balance2}>
-        <Typography variant="overline">
-          {talBalance !== null ? parseFloat(talBalance).toFixed(2) : '0'} TAL
-        </Typography>
-      </Box>
-      <Box className={classes.address}>
-        <EllipsisText text={walletAddress} ref={addressRef} />
-      </Box>
+      <div>
+        <Chip className={classes.chip} label={`${ethStr} ETH`} />
+        <Chip className={classes.chip} label={`${talStr} TAL`} />
+        <Chip className={classes.chip} label={walletStr} />
+      </div>
       <Box className={classes.icon}>
         <FileCopyIcon fontSize="small" onClick={onClickCopy} />
       </Box>
