@@ -657,7 +657,13 @@ export default function ApplicationListView() {
                               {moment.unix(row.endDate).format('YYYY-MM-DD')}
                             </TableCell>
                             <TableCell align="right">
-                              <StatusLabel poolStatus={row.status} />
+                              <StatusLabel
+                                poolStatus={
+                                  row.status === PoolStatus.UPCOMING
+                                    ? 'Ready'
+                                    : row.status
+                                }
+                              />
                             </TableCell>
                           </TableRow>
                         );

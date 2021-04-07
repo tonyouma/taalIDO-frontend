@@ -53,6 +53,18 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           Upcoming
         </MLabel>
       ) : null}
+      {poolStatus === 'Ready' ? (
+        <MLabel
+          sx={{
+            top: 16,
+            right: 16,
+            position: absolute && 'absolute'
+          }}
+          color="secondary"
+        >
+          Ready
+        </MLabel>
+      ) : null}
       {poolStatus === PoolStatus.LIVE ? (
         <MLabel
           sx={{
