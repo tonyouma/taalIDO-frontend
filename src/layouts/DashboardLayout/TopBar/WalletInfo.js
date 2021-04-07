@@ -55,7 +55,25 @@ const WalletInfo = ({ walletAddress, balance, talBalance }) => {
 
   const onClickCopy = () => {
     try {
-      navigator.clipboard.writeText(walletAddress);
+      // navigator.clipboard.writeText(walletAddress);
+      if (navigator.clipboard && window.isSecureContext && false) {
+        navigator.clipboard.writeText(walletAddress);
+      } else {
+        let textArea = document.createElement('textarea');
+        textArea.value = walletAddress;
+        // make the textarea out of viewport
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        new Promise((res, rej) => {
+          // here the magic happens
+          document.execCommand('copy') ? res() : rej();
+          textArea.remove();
+        });
+      }
       enqueueSnackbar('copied!!', { variant: 'success' });
     } catch (error) {
       enqueueSnackbar('failed!!', { variant: 'error' });
