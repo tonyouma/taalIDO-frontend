@@ -3,7 +3,7 @@ import React from 'react';
 import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography, Link, IconButton } from '@material-ui/core';
+import { Box, Typography, Link, IconButton, Button } from '@material-ui/core';
 import LinkIcon from '@material-ui/icons/Link';
 // import { MBreadcrumbs } from 'src/theme';
 
@@ -53,7 +53,7 @@ function HeaderDashboard({
             {subTitle}
           </Typography>
           {url && (
-            <IconButton onClick={handleClickUrl}>
+            <IconButton variant="link" href={url} target="_blank">
               <LinkIcon />
             </IconButton>
           )}

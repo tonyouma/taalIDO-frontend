@@ -100,7 +100,7 @@ function PaymentView(className, ...other) {
           heading={pool.poolName}
           links={[{ name: pool.tokenContractAddr }]}
           subTitle={pool.tokenContractAddr}
-          url={'www.naver.com'}
+          url={`https://rinkeby.etherscan.io/address/${pool.tokenContractAddr}`}
         />
 
         <Tabs
