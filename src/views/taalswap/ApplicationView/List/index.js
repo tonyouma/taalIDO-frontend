@@ -48,13 +48,13 @@ import { ContractFactory } from '@ethersproject/contracts';
 import { fixedData } from 'src/contracts';
 import Page from 'src/components/Page';
 import { HeaderDashboard } from 'src/layouts/Common';
-import BasicTable from '../../PoolListView/BasicTable';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import ToolbarTable from '../../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
 import { PoolStatus } from 'src/utils/poolStatus';
 import { login } from 'src/utils/auth';
+import StatusLabel from '../../Components/StatusLabel';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -450,7 +450,7 @@ export default function ApplicationListView() {
   const handleConfirmClick = async () => {
     const isAdmin = checkAdmin();
     if (secret.trim().length === 0) {
-      alert('password를 입력하세요.');
+      enqueueSnackbar('password를 입력하세요.', { variant: 'fail' });
       return;
     }
 
@@ -461,7 +461,7 @@ export default function ApplicationListView() {
       password: isAdmin ? '1234' : secret,
       key: isAdmin ? selectedItem.userId : selectedItem.id
     }).catch((error) => {
-      alert('인증에 실패하였습니다.');
+      enqueueSnackbar('인증에 실패하였습니다.', { variant: 'fail' });
       isError = true;
     });
     if (isError) return;
@@ -474,6 +474,7 @@ export default function ApplicationListView() {
         state: { selectedItem: selectedItem, accessToken: accessToken, userId }
       });
     } else if (modalType === 'deploy') {
+      setOpen(true);
       const item = JSON.parse(JSON.stringify(selectedItem));
       const ret = await deployFixedSwap(item, account, library);
       if (!!ret.err) {
@@ -496,6 +497,7 @@ export default function ApplicationListView() {
         setSelected(-1);
       }
     }
+    setOpen(false);
   };
 
   const handleClickEdit = () => {
@@ -536,7 +538,7 @@ export default function ApplicationListView() {
   useEffect(() => {
     console.log(applicationList);
     dispatch(getApplicationList());
-  }, [update]);
+  }, [update, open]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -654,7 +656,9 @@ export default function ApplicationListView() {
                             <TableCell align="right">
                               {moment.unix(row.endDate).format('YYYY-MM-DD')}
                             </TableCell>
-                            <TableCell align="right">{row.status}</TableCell>
+                            <TableCell align="right">
+                              <StatusLabel poolStatus={row.status} />
+                            </TableCell>
                           </TableRow>
                         );
                       })}

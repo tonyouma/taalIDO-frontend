@@ -188,6 +188,7 @@ const AdminView = () => {
       enqueueSnackbar('Fund Amount is integer', { variant: 'error' });
       return;
     }
+    setOpen(true);
     const selectedItem = getSelectedApp();
     const swapContract = new Taalswap({
       application: selectedItem,
@@ -217,6 +218,7 @@ const AdminView = () => {
         enqueueSnackbar('Fund success', { variant: 'success' });
       } else enqueueSnackbar('Fund fail', { variant: 'error' });
     }
+    setOpen(false);
   };
 
   const onClickWhiteList = async () => {
@@ -224,6 +226,7 @@ const AdminView = () => {
       enqueueSnackbar('write WhiteList', { variant: 'error' });
       return;
     }
+    setOpen(true);
     const selectedItem = getSelectedApp();
     const swapContract = new Taalswap({
       application: selectedItem,
@@ -246,9 +249,11 @@ const AdminView = () => {
         enqueueSnackbar('add whitelist success', { variant: 'success' });
       else enqueueSnackbar('add whitelist fail', { variant: 'error' });
     }
+    setOpen(false);
   };
 
   const onClickWithDrawFunds = async () => {
+    setOpen(true);
     const selectedItem = getSelectedApp();
     console.log(
       `seleted pool : ${JSON.stringify(selectedItem)}, WithDrawFunds`
@@ -272,9 +277,11 @@ const AdminView = () => {
         enqueueSnackbar('WithDrawFunds success', { variant: 'success' });
       else enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
     }
+    setOpen(false);
   };
 
   const onClickWithdrawUnsoldTokens = async () => {
+    setOpen(true);
     const selectedItem = getSelectedApp();
     console.log(
       `seleted pool : ${JSON.stringify(selectedItem)}, WithdrawUnsoldTokens`
@@ -299,6 +306,7 @@ const AdminView = () => {
         enqueueSnackbar('WithdrawUnsoldTokens success', { variant: 'success' });
       else enqueueSnackbar('WithdrawUnsoldTokens fail', { variant: 'error' });
     }
+    setOpen(false);
   };
 
   useEffect(() => {
