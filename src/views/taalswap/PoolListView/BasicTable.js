@@ -49,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     color: theme.palette.primary.main
+  },
+  row: {
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }));
 
@@ -116,7 +121,7 @@ function TablePoolRow({ row, handleOpenModal }) {
     <TableRow
       key={row.poolName}
       hover
-      className={classes.hideLastBorder}
+      className={(classes.hideLastBorder, classes.row)}
       onClick={(event) => handleOpenModal(row)}
     >
       <TableCell component="th" scope="row" width="20%">
@@ -244,7 +249,7 @@ export default function BasicTable() {
           count={filteredPools.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[2, 10, 25, 100]}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
         {selectedPool && (

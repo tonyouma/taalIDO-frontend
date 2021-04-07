@@ -57,6 +57,11 @@ const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff'
+  },
+  row: {
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }));
 
@@ -129,7 +134,7 @@ function TablePoolRow({ row, handleOpenModal }) {
     <TableRow
       key={row.poolName}
       hover
-      className={classes.hideLastBorder}
+      className={(classes.hideLastBorder, classes.row)}
       onClick={(event) => handleOpenModal(row, poolStatus)}
     >
       <TableCell component="th" scope="row" width="20%">
