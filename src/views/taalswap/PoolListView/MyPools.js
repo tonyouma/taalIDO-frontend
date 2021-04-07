@@ -86,7 +86,6 @@ function applyFilter(array, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   if (query) {
     array = filter(array, (_user) => {
-      console.log(array);
       return _user.poolName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
     });
     return array;
