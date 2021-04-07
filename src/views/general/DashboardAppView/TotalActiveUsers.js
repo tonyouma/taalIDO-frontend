@@ -78,7 +78,7 @@ function TotalActiveUsers({ className, ...other }) {
   return (
     <Card className={clsx(classes.root, className)} {...other}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle2">Total Active Users</Typography>
+        <Typography variant="subtitle2">Total Allocated Tokens</Typography>
         <div className={classes.trending}>
           <div
             className={clsx(classes.trendingIcon, {
