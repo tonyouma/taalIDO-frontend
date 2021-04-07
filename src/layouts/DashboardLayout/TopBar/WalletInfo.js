@@ -59,12 +59,9 @@ const WalletInfo = ({ walletAddress, balance, talBalance }) => {
       enqueueSnackbar('copied!!', { variant: 'success' });
     } catch (error) {
       enqueueSnackbar('failed!!', { variant: 'error' });
-      console.log(error);
     }
   };
 
-  console.log(balance);
-  console.log(talBalance);
   const ethStr =
     balance !== null ? parseFloat(formatEther(balance)).toFixed(2) : '0';
   const talStr = talBalance !== null ? parseFloat(talBalance).toFixed(2) : '0';
