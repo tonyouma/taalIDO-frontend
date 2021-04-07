@@ -480,7 +480,7 @@ const AdminView = () => {
                       WithdrawUnsoldTokens
                     </Button>
                     <Typography m={2} varient="">
-                      Funding failed...
+                      Tokens left or Funding failed...
                     </Typography>
                   </Box>
                 </Card>
