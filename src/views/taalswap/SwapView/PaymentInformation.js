@@ -130,7 +130,9 @@ function PaymentInformation({ className, pool, index }) {
             shrink: true
           }}
           style={{ width: '49%' }}
-          value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
+          value={`${Numbers.toFloat4(
+            getMax(pool.maxIndividuals, pool.tradeValue)
+          )} ETH`}
         />
       </Box>
       <Box
