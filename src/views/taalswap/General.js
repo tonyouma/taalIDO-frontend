@@ -44,9 +44,6 @@ function General({ className }) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      displayName: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
       phoneNumber: user.phoneNumber,
       country: user.country,
       address: user.address,

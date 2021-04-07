@@ -10,6 +10,7 @@ import Settings from 'src/layouts/Common/Settings';
 import menu2Fill from '@iconify-icons/eva/menu-2-fill';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import { Box, AppBar, Hidden, Toolbar, IconButton } from '@material-ui/core';
+import { BorderColor } from '@material-ui/icons';
 
 // ----------------------------------------------------------------------
 
@@ -84,6 +85,7 @@ function TopBar({ onOpenNav, className }) {
           <Account />
         </Box>
       </Toolbar>
+      <Box border={1} borderColor={'#e5e8eb'}></Box>
     </AppBar>
   );
 }
