@@ -71,7 +71,7 @@ const WalletInfo = ({ walletAddress, balance, talBalance }) => {
   return (
     <Box className={classes.root}>
       <Chip className={classes.chip} label={`${ethStr} ETH`} />
-      <Chip className={classes.chip} label={`${talStr} TAL`} />
+      {/* <Chip className={classes.chip} label={`${talStr} TAL`} /> */}
       <Chip className={classes.chip} label={walletStr} />
       <Box className={classes.icon}>
         <FileCopyIcon fontSize="small" onClick={onClickCopy} />
