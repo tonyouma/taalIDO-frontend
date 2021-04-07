@@ -9,7 +9,15 @@ import Participate from '../SwapView/Participate';
 import AboutTheProject from '../SwapView/AboutTheProject';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Card, Container, Tab, Tabs } from '@material-ui/core';
+import {
+  Grid,
+  Card,
+  Container,
+  Tab,
+  Tabs,
+  Backdrop,
+  CircularProgress
+} from '@material-ui/core';
 import PoolButton from './PoolButton';
 import { useLocation } from 'react-router-dom';
 import PoolDetails from '../PoolDetails';
@@ -28,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
   },
   tabBar: {
     marginBottom: theme.spacing(5)
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff'
   }
 }));
 
@@ -88,14 +100,22 @@ function PaymentView(className, ...other) {
   });
   const [value, setValue] = useState(0);
   const [pool, setPool] = useState(location.state.selectedPool);
+  const [open, setOpen] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const handleBackdrop = (open) => {
+    setOpen(open);
+  };
+
   return (
     <Page title="Table-Components | Minimal-UI" className={classes.root}>
       <Container maxWidth="lg">
+        <Backdrop className={classes.backdrop} open={open}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <HeaderDashboard
           heading={pool.poolName}
           links={[{ name: pool.tokenContractAddr }]}
@@ -129,7 +149,11 @@ function PaymentView(className, ...other) {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <JoninthePool formik={formik} pool={pool} />
+                <JoninthePool
+                  formik={formik}
+                  pool={pool}
+                  onBackdrop={handleBackdrop}
+                />
               </Grid>
             </Grid>
           </Card>
