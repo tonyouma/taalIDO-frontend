@@ -16,6 +16,7 @@ import Numbers from 'src/utils/Numbers';
 import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -60,6 +61,7 @@ function JoninthePool({ className, pool, onBackdrop }) {
   const classes = useStyles();
   const context = useWeb3React();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const [amount, setAmount] = useState(0);
   const [price, setPrice] = useState(0);
   const [tokensLeft, setTokensLeft] = useState(0);
@@ -127,11 +129,17 @@ function JoninthePool({ className, pool, onBackdrop }) {
                   })
                   .catch((error) => {
                     console.log('error : ' + JSON.stringify(error));
+                    enqueueSnackbar('Swap fail', {
+                      variant: 'fail'
+                    });
                     onBackdrop(false);
                   });
 
                 const receipt = await result.wait();
                 if (receipt.status === 1) {
+                  enqueueSnackbar('Swap success', {
+                    variant: 'success'
+                  });
                   await setWarningMessage('');
                   await addSwap();
                 }
@@ -172,6 +180,7 @@ function JoninthePool({ className, pool, onBackdrop }) {
   useEffect(async () => {
     try {
       setDate();
+      setAmount(0);
 
       await dispatch(getSwapList(account));
       if (!!library) {

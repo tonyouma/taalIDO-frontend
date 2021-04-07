@@ -108,6 +108,10 @@ function PaymentView(className, ...other) {
 
   const handleBackdrop = (open) => {
     setOpen(open);
+    if (!open) {
+      setPool({ ...pool });
+      console.log('---', pool);
+    }
   };
 
   return (
