@@ -26,7 +26,8 @@ import {
   Toolbar,
   TableSortLabel,
   TableRow,
-  CircularProgress
+  CircularProgress,
+  Box
 } from '@material-ui/core';
 import {
   updateApplication,
@@ -376,7 +377,15 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       cursor: 'pointer'
     }
-  }
+  },
+  tableTop: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    // alignItems: 'center',
+    height: '70px'
+  },
+  tableTab: { width: '100%' },
+  tableSearch: { width: '240px', textAlign: 'right', height: '40px' }
 }));
 
 // ----------------------------------------------------------------------
@@ -578,18 +587,23 @@ export default function ApplicationListView() {
         <Backdrop className={classes.backdrop} open={open}>
           <CircularProgress color="inherit" />
         </Backdrop>
-        <HeaderDashboard
-          heading={t('taalswap.applications')}
-          links={[{ name: '' }]}
-        />
+        <Box className={classes.tableTop}>
+          <Box className={classes.tableTab}>
+            <HeaderDashboard
+              heading={t('taalswap.applications')}
+              links={[{ name: '' }]}
+            />
+          </Box>
+          <Box className={classes.tableSearch}>
+            <ToolbarTable
+              filterName={filterName}
+              onFilterName={handleFilterByName}
+            />
+          </Box>
+        </Box>
         <Grid container spacing={5}>
           <Grid item xs={12}>
             <Card>
-              <ToolbarTable
-                filterName={filterName}
-                onFilterName={handleFilterByName}
-              />
-
               {selected !== -1 ? (
                 <EnhancedTableToolbar
                   selected={selected}
