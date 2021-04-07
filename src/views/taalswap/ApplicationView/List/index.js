@@ -323,7 +323,9 @@ const EnhancedTableToolbar = (props) => {
           ) : (
             ''
           )}
-          {selectedItem.creator === account || checkAdmin() ? (
+          {(selectedItem.creator === account || checkAdmin()) &&
+          selectedItem.status !== PoolStatus.CANDIDATE &&
+          selectedItem.status !== PoolStatus.APPROVED ? (
             <Tooltip title="Admin">
               <IconButton aria-label="Admin" onClick={onClickAdmin}>
                 <SupervisorAccountIcon />
