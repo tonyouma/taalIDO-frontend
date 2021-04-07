@@ -25,7 +25,8 @@ const ICONS = {
   upload: <MIcon src={path('ic_upload')} />,
   copy: <MIcon src={path('ic_copy')} />,
   carousel: <MIcon src={path('ic_carousel')} />,
-  language: <MIcon src={path('ic_language')} />
+  language: <MIcon src={path('ic_language')} />,
+  github: <MIcon src={path('ic_github')} />
 };
 
 const navConfig = [
@@ -82,6 +83,16 @@ const navConfig = [
   {
     subheader: 'farms',
     items: []
+  },
+  {
+    subheader: 'docs',
+    items: [
+      {
+        title: 'Whitepaper',
+        href: 'https://taalswap.gitbook.io/taalswap-documents/',
+        icon: ICONS.github
+      }
+    ]
   }
   // GENERAL
   // ----------------------------------------------------------------------
