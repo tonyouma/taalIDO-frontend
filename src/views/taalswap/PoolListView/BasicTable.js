@@ -32,6 +32,7 @@ import { useWeb3React } from '@web3-react/core';
 import StatusLabel from '../Components/StatusLabel';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import Taalswap from 'src/utils/taalswap';
+import Numbers from 'src/utils/Numbers';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +73,6 @@ function applyFilter(array, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   if (query) {
     array = filter(array, (_user) => {
-      console.log(array);
       return _user.poolName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
     });
     return array;
@@ -123,7 +123,7 @@ function TablePoolRow({ row, handleOpenModal }) {
         {row.poolName}
       </TableCell>
       <TableCell align="right" width="20%">
-        {row.ratio} {row.symbol} = 1 ETH
+        {Numbers.toFloat4(row.ratio)} {row.symbol} = 1 ETH
       </TableCell>
       <TableCell align="right" width="10%">
         {row.access}
@@ -225,70 +225,28 @@ export default function BasicTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredPools.map((row, index) => (
-                <TablePoolRow
-                  key={index}
-                  row={row}
-                  handleOpenModal={handleOpenModal}
-                  // onChangeRatioValue={onChangeRatioValue}
-                />
-              ))}
-              {/* {filteredPools.map((row, index) => (
-                <TableRow
-                  key={index}
-                  hover
-                  className={classes.hideLastBorder}
-                  onClick={(event) => handleOpenModal(row)}
-                >
-                  <TableCell component="th" scope="row" width="20%">
-                    {row.poolName}
-                  </TableCell>
-                  <TableCell align="right" width="10%">
-                    {row.ratio}
-                  </TableCell>
-                  <TableCell align="right" width="15%">
-                    {row.access}
-                  </TableCell>
-                  <TableCell align="right" width="35%">
-
-                    <LinearProgressWithLabel
-                      value={
-                        row.progress === '' || row.progress >= 100
-                          ? 100
-                          : row.progress
-
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="right" width="15%">
-                    <MLabel
-                      variant={
-                        theme.palette.mode === 'light' ? 'ghost' : 'filled'
-                      }
-                      color={
-                        (row.status === 'in_progress' && 'warning') ||
-                        (row.status === 'out_of_date' && 'error') ||
-                        'success'
-                      }
-                    >
-                      {sentenceCase(row.status)}
-                    </MLabel>
-                  </TableCell>
-                </TableRow>
-              ))} */}
+              {filteredPools
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => (
+                  <TablePoolRow
+                    key={index}
+                    row={row}
+                    handleOpenModal={handleOpenModal}
+                    // onChangeRatioValue={onChangeRatioValue}
+                  />
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
-        {/*
-        <DialogAnimate open={isOpenModal}>
-          <DialogTitle>{'Pool Details'}</DialogTitle>
-          <DetailsForm
-            pool={selectedPool}
-            onCancel={handleCloseModal}
-            onClickSwap={handleOnClickSwap}
-          />
-        </DialogAnimate> */}
-
+        <TablePagination
+          page={page}
+          component="div"
+          count={filteredPools.length}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          rowsPerPageOptions={[10, 25, 100]}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
         {selectedPool && (
           <Dialog
             open={isOpenModal}
@@ -371,15 +329,6 @@ export default function BasicTable() {
           </Dialog>
         )}
       </Scrollbars>
-      <TablePagination
-        page={page}
-        component="div"
-        count={BasicTable.length}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        rowsPerPageOptions={[10, 25, 100]}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </div>
   );
 }

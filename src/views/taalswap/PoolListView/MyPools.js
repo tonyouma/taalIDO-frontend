@@ -34,6 +34,7 @@ import StatusLabel from '../Components/StatusLabel';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
+import Numbers from 'src/utils/Numbers';
 
 // ----------------------------------------------------------------------
 
@@ -127,7 +128,7 @@ function TablePoolRow({ row, handleOpenModal }) {
         {row.poolName}
       </TableCell>
       <TableCell align="right" width="20%">
-        {row.ratio} {row.symbol} = 1 ETH
+        {Numbers.toFloat4(row.ratio)} {row.symbol} = 1 ETH
       </TableCell>
       <TableCell align="right" width="10%">
         {row.access}
@@ -315,17 +316,27 @@ export default function MyPools() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredPools.map((row, index) => (
-                <TablePoolRow
-                  key={index}
-                  row={row}
-                  handleOpenModal={handleOpenModal}
-                />
-              ))}
+              {filteredPools
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => (
+                  <TablePoolRow
+                    key={index}
+                    row={row}
+                    handleOpenModal={handleOpenModal}
+                  />
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
-
+        <TablePagination
+          page={page}
+          component="div"
+          count={filteredPools.length}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          rowsPerPageOptions={[10, 25, 100]}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
         {selectedPool && (
           <Dialog
             open={isOpenModal}
@@ -434,15 +445,6 @@ export default function MyPools() {
           </Dialog>
         )}
       </Scrollbars>
-      <TablePagination
-        page={page}
-        component="div"
-        count={MyPools.length}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        rowsPerPageOptions={[10, 25, 100]}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </div>
   );
 }

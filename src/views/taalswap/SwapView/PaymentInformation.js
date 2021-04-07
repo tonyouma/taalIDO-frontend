@@ -124,7 +124,7 @@ function PaymentInformation({ className, pool, index }) {
         />
 
         <TextField
-          label="Price"
+          label="Maximum"
           variant="standard"
           InputLabelProps={{
             shrink: true
