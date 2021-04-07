@@ -66,9 +66,6 @@ function General({ className, pool }) {
 
     setMax(getMax(pool.maxIndividuals, pool.tradeValue));
     setMin(pool.minIndividuals * pool.tradeValue);
-
-    const temp = '1000000';
-    console.log(temp.toLocaleString());
   }, [pool, library]);
 
   return (

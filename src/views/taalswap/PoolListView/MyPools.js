@@ -121,6 +121,8 @@ function TablePoolRow({ row, handleOpenModal }) {
       );
       setStatus(status);
     }
+
+    return;
   }, [row, library]);
 
   return (

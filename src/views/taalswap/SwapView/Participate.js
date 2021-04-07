@@ -48,19 +48,6 @@ function Participate({ pool }) {
     setCurrentTab(newValue);
   };
   const { library, account } = context;
-  // let taalswap;
-
-  // if (!!library && taalswap == undefined) {
-  //   taalswap = new Taalswap({
-  //     application: pool,
-  //     account,
-  //     library,
-  //     tokenContractAddress: pool.tokenContractAddr,
-  //     fixedContractAddress: pool.contractAddress
-  //   });
-  // }
-
-  // console.log(taalswap);
 
   useEffect(async () => {
     try {
@@ -80,7 +67,6 @@ function Participate({ pool }) {
         const purchaseids = await taalswap.getAddressPurchaseIds({
           address: account
         });
-        console.log(`purchaseids.length    : ${purchaseids.length}`);
 
         if (purchaseids.length > 0) {
           purchaseids.map(async (purchaseid) => {
@@ -97,16 +83,12 @@ function Participate({ pool }) {
                     .format('YYYY-MM-DD HH:mm'),
                   wasFinalized: result.wasFinalized
                 };
-                // console.log(newRow);
-                // setPurchaseList(purchaseList.concat(newRow));
-                // console.log('bbb');
+
                 tempList = tempList.concat(newRow);
                 setPurchaseList(tempList);
               })
               .catch((error) => console.log(error));
           });
-        } else {
-          console.log('stop');
         }
       }
     } catch (error) {
