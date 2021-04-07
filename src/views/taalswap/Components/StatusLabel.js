@@ -60,7 +60,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
             right: 16,
             position: absolute && 'absolute'
           }}
-          color="success"
+          color="info"
         >
           Live
         </MLabel>

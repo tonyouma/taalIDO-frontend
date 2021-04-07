@@ -3,15 +3,15 @@ import { PoolStatus } from './poolStatus';
 export const getPoolStatus = async (swapContract, status, minFundRaise) => {
   let poolStatus;
 
-  if (status === 'approved') {
+  if (status === 'Approved') {
     return PoolStatus.APPROVED;
   }
 
-  if (status === 'candidate') {
+  if (status === 'Candidate') {
     return PoolStatus.CANDIDATE;
   }
 
-  if (status === 'deployed') {
+  if (status === 'Deployed') {
     return PoolStatus.DEPLOYED;
   }
 
