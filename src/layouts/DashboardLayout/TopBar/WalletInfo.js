@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     fontSize: 13
   },
   icon: {
@@ -73,11 +73,9 @@ const WalletInfo = ({ walletAddress, balance, talBalance }) => {
     walletAddress.substr(0, 5) + '...' + walletAddress.substr(n - 5, n);
   return (
     <Box className={classes.root}>
-      <div>
-        <Chip className={classes.chip} label={`${ethStr} ETH`} />
-        <Chip className={classes.chip} label={`${talStr} TAL`} />
-        <Chip className={classes.chip} label={walletStr} />
-      </div>
+      <Chip className={classes.chip} label={`${ethStr} ETH`} />
+      <Chip className={classes.chip} label={`${talStr} TAL`} />
+      <Chip className={classes.chip} label={walletStr} />
       <Box className={classes.icon}>
         <FileCopyIcon fontSize="small" onClick={onClickCopy} />
       </Box>

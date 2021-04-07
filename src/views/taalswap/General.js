@@ -44,17 +44,14 @@ function General({ className }) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      // displayName: user.displayName,
-      // email: user.email,
-      // photoURL: user.photoURL,
-      // phoneNumber: user.phoneNumber,
-      // country: user.country,
-      // address: user.address,
-      // state: user.state,
-      // city: user.city,
-      // zipCode: user.zipCode,
-      // about: user.about,
-      // isPublic: user.isPublic
+      phoneNumber: user.phoneNumber,
+      country: user.country,
+      address: user.address,
+      state: user.state,
+      city: user.city,
+      zipCode: user.zipCode,
+      about: user.about,
+      isPublic: user.isPublic
     },
 
     validationSchema: UpdateUserSchema,

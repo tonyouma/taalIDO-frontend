@@ -33,6 +33,7 @@ import settings2Fill from '@iconify-icons/eva/settings-2-fill';
 import Taalswap from '../../../utils/taalswap';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
+// import { BorderColor } from '@material-ui/icons';
 
 // ----------------------------------------------------------------------
 
@@ -183,6 +184,7 @@ function TopBar({ onOpenNav, className }) {
           />
         </Box>
       </Toolbar>
+      <Box border={1} borderColor={'#e5e8eb'}></Box>
     </AppBar>
   );
 }

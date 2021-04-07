@@ -18,7 +18,7 @@ import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../../taalswap/Components/StatusLabel';
 import CirculProgress from './CirculProgress';
 import Taalswap from 'src/utils/taalswap';
-
+import Numbers from 'src/utils/Numbers';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -140,7 +140,7 @@ function PlanCard({ pool, index, className }) {
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>
-              {pool.ratio} {pool.symbol} = 1 ETH
+              {Numbers.toFloat4(pool.ratio)} {pool.symbol} = 1 ETH
             </Box>
           </Box>
         </Box>
@@ -165,7 +165,7 @@ function PlanCard({ pool, index, className }) {
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{max} ETH</Box>
+            <Box sx={{ mr: 1.5 }}>{Numbers.toFloat4(max)} ETH</Box>
           </Box>
         </Box>
 
@@ -237,7 +237,7 @@ function PlanCard({ pool, index, className }) {
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{parseFloat(totalRaise).toFixed(4)} ETH</Box>
+            <Box sx={{ mr: 1.5 }}>{Numbers.toFloat4(totalRaise)} ETH</Box>
           </Box>
         </Box>
       </Box>
