@@ -131,7 +131,6 @@ function NavItem({
       </>
     );
   }
-  console.log(href.indexOf('http'));
   return href.indexOf('http') >= 0 ? (
     <ListItem
       button
