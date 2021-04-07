@@ -83,9 +83,9 @@ function stableSort(array, comparator) {
 }
 
 async function deployFixedSwap(application, account, library) {
-  console.log('application : ' + JSON.stringify(application));
-  console.log('account : ' + account);
-  console.log('library : ' + library);
+  // console.log('application : ' + JSON.stringify(application));
+  // console.log('account : ' + account);
+  // console.log('library : ' + library);
 
   const factory = new ContractFactory(
     fixedData.abi,
@@ -97,7 +97,7 @@ async function deployFixedSwap(application, account, library) {
 }
 
 async function taalDeploy(factory, application) {
-  console.log('taalDeploy start!');
+  // console.log('taalDeploy start!');
   const ret = {};
   const contract = await factory
     .deploy(
@@ -132,22 +132,22 @@ async function taalDeploy(factory, application) {
       }
     )
     .catch(function (err) {
-      console.log(err);
+      // console.log(err);
       ret.err = err;
     });
 
   if (!!ret.err) return ret;
 
-  console.log('test========');
+  // console.log('test========');
   const receipt = await contract.deployTransaction.wait().catch(function (err) {
-    console.log(err);
+    // console.log(err);
     ret.err = err;
   });
   if (!!ret.err) return ret;
   const { confirmations } = receipt;
   ret.confirmations = confirmations;
   if (confirmations === 1) {
-    console.log('fixedSwap contract deploy... confirmed!!');
+    // console.log('fixedSwap contract deploy... confirmed!!');
     const { address } = contract;
     ret.address = address;
   } else {
@@ -380,7 +380,7 @@ function applyFilter(array, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   if (query) {
     array = filter(array, (_user) => {
-      console.log(array);
+      // console.log(array);
       return _user.poolName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
     });
     return array;
@@ -438,12 +438,12 @@ export default function ApplicationListView() {
   };
 
   const checkAdmin = () => {
-    console.log('isAdmin : ' + admin.addresses.includes(account));
+    // console.log('isAdmin : ' + admin.addresses.includes(account));
     return admin.addresses.includes(account);
   };
 
   const handleClickAdmin = async () => {
-    console.log(`admin item index :  ${selected}`);
+    // console.log(`admin item index :  ${selected}`);
     handleOpenModal(selectedItem, 'admin');
   };
 
@@ -465,7 +465,7 @@ export default function ApplicationListView() {
       isError = true;
     });
     if (isError) return;
-    console.log(ret);
+    // console.log(ret);
     const { accessToken, userId } = ret;
     handleCloseModal();
     if (modalType === 'admin') {
@@ -478,7 +478,7 @@ export default function ApplicationListView() {
       const item = JSON.parse(JSON.stringify(selectedItem));
       const ret = await deployFixedSwap(item, account, library);
       if (!!ret.err) {
-        console.log('error');
+        // console.log('error');
         enqueueSnackbar('Application Deploy fail', { variant: 'fail' });
       } else {
         dispatch(
@@ -492,7 +492,7 @@ export default function ApplicationListView() {
             accessToken
           )
         );
-        console.log('deploy success.');
+        // console.log('deploy success.');
         enqueueSnackbar('Application Deploy success', { variant: 'success' });
         setSelected(-1);
       }
@@ -501,7 +501,7 @@ export default function ApplicationListView() {
   };
 
   const handleClickEdit = () => {
-    console.log(`edit item index :  ${selected}`);
+    // console.log(`edit item index :  ${selected}`);
     history.push({
       pathname: '/app/taalswap/application/start',
       state: { selectedItem: selectedItem }
@@ -509,14 +509,14 @@ export default function ApplicationListView() {
   };
 
   const handleClickSend = async () => {
-    console.log(`send item index : ${selected}`);
+    // console.log(`send item index : ${selected}`);
     const ret = await login({
       creator: account,
       password: '12345678',
       key: selectedItem.userId
     });
 
-    console.log('========', ret);
+    // console.log('========', ret);
     const { accessToken, userId } = ret;
     // 상태를 승인상태로 변경해준다.
     dispatch(
@@ -531,12 +531,12 @@ export default function ApplicationListView() {
   };
 
   const handleClickDeploy = async () => {
-    console.log(`deploy item index : ${selected}`);
+    // console.log(`deploy item index : ${selected}`);
     handleOpenModal(selectedItem, 'deploy');
   };
 
   useEffect(() => {
-    console.log(applicationList);
+    // console.log(applicationList);
     dispatch(getApplicationList());
   }, [update, open]);
 
@@ -547,7 +547,7 @@ export default function ApplicationListView() {
   };
 
   const handleClick = (event, row) => {
-    console.log('row : ' + JSON.stringify(row));
+    // console.log('row : ' + JSON.stringify(row));
     if (selected === row.id) {
       setSelected(-1);
       setSelectedItem({});

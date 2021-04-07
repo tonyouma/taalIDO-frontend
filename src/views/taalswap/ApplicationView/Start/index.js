@@ -11,8 +11,6 @@ import { useFormik } from 'formik';
 import { createApplication } from 'src/redux/slices/pool';
 import moment from 'moment';
 import { useWeb3React } from '@web3-react/core';
-import { Contract, ContractFactory } from '@ethersproject/contracts';
-import { tokenData } from 'src/contracts';
 import { useHistory } from 'react-router-dom';
 import Taalswap from 'src/utils/taalswap';
 import { useLocation } from 'react-router';
@@ -40,7 +38,7 @@ function ApplicationStart() {
   const { account, library } = context;
 
   useEffect(() => {
-    console.log('test : ' + account);
+    // console.log('test : ' + account);
     setEdit(location.state ? true : false);
   }, [account]);
 
@@ -144,7 +142,7 @@ function ApplicationStart() {
           status: PoolStatus.CANDIDATE,
           creator: account
         };
-        console.log('======>');
+        // console.log('======>');
         const taalswap = new Taalswap({
           account,
           library,
@@ -160,14 +158,14 @@ function ApplicationStart() {
         });
         const { accessToken, userId } = ret;
         newApplication.userId = userId;
-        console.log('======>', newApplication);
+        // console.log('======>', newApplication);
         dispatch(createApplication(newApplication, accessToken));
         enqueueSnackbar('Create Application success', { variant: 'success' });
         history.push({
           pathname: '/app/taalswap/application/list'
         });
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         setSubmitting(false);
         enqueueSnackbar('Create Application fail', { variant: 'fail' });
         setErrors({ afterSubmit: error.code });
