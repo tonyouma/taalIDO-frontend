@@ -132,6 +132,15 @@ class Taalswap {
   }
 
   /**
+   * @function hasWhitelisting
+   * @description Get the pool is private
+   * @returns {boolelan} Boolean
+   */
+  async hasWhitelisting() {
+    return await this.params.fixedContract.hasWhitelisting();
+  }
+
+  /**
    * @function decimals
    * @description Get Decimals
    * @returns {Integer} Integer
