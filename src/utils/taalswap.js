@@ -52,13 +52,21 @@ class Taalswap {
     }
   }
 
+  getFixedContract() {
+    return this.params.fixedContract;
+  }
+
+  getTokenContract() {
+    return this.params.tokenContract;
+  }
+
   async approveFundERC20({ tokenAmount }) {
     let amountWithDecimals = Numbers.toSmartContractDecimals(
       tokenAmount,
       this.params.application.decimals
     );
 
-    this.params.tokenContract
+    return await this.params.tokenContract
       .approve(this.params.fixedContractAddress, amountWithDecimals, {
         gasLimit: 300000
       })
@@ -74,7 +82,7 @@ class Taalswap {
       this.params.application.decimals
     );
 
-    this.params.fixedContract
+    return await this.params.fixedContract
       .fund(amountWithDecimals, {
         gasLimit: 3000000
       })
