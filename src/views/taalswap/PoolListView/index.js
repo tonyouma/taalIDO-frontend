@@ -12,7 +12,9 @@ import {
   Container,
   Grid,
   Box,
-  Typography
+  Typography,
+  OutlinedInput,
+  InputAdornment
 } from '@material-ui/core';
 import BasicTable from './BasicTable';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +22,8 @@ import MyPools from './MyPools';
 import { useWeb3React } from '@web3-react/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSwapList, getPoolList } from '../../../redux/slices/pool';
+import ToolbarTable from '../../user/UserListView/ToolbarTable';
+import searchFill from '@iconify-icons/eva/search-fill';
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +45,15 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   tabBar: {
     marginBottom: theme.spacing(5)
-  }
+  },
+  tableTop: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    // alignItems: 'center',
+    height: '70px'
+  },
+  tableTab: { width: '100%' },
+  tableSearch: { width: '400px', textAlign: 'right' }
 }));
 
 function TabPanel(props) {
@@ -72,6 +84,7 @@ function PoolListView() {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState('All Pools');
   const [value, setValue] = useState(0);
+  const [filterName, setFilterName] = useState('');
   const { library, account } = context;
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -81,6 +94,10 @@ function PoolListView() {
     setCurrentTab(newValue);
   };
   const { i18n, t } = useTranslation();
+
+  const onFilterName = (e) => {
+    setFilterName(e.target.value);
+  };
 
   useEffect(async () => {
     await dispatch(getPoolList());
@@ -98,29 +115,51 @@ function PoolListView() {
           heading={t('taalswap.projects')}
           links={[{ name: 'textejfiej' }]}
         />
-        <Tabs
-          value={value}
-          scrollButtons="auto"
-          variant="scrollable"
-          allowScrollButtonsMobile
-          onChange={handleChange}
-          className={classes.tabBar}
-        >
-          {ACCOUNT_TABS.map((tab) => (
-            <Tab
-              disableRipple
-              key={tab.value}
-              label={capitalCase(tab.title)}
-              icon={tab.icon}
-              value={tab.value}
+        <Box className={classes.tableTop}>
+          <Box className={classes.tableTab}>
+            <Tabs
+              value={value}
+              scrollButtons="auto"
+              variant="scrollable"
+              allowScrollButtonsMobile
+              onChange={handleChange}
+              className={classes.tabBar}
+            >
+              {ACCOUNT_TABS.map((tab) => (
+                <Tab
+                  disableRipple
+                  key={tab.value}
+                  label={capitalCase(tab.title)}
+                  icon={tab.icon}
+                  value={tab.value}
+                />
+              ))}
+            </Tabs>
+          </Box>
+          <Box className={classes.tableSearch}>
+            <OutlinedInput
+              value={filterName}
+              onChange={onFilterName}
+              placeholder="Search by Project Name..."
+              size="small"
+              startAdornment={
+                <InputAdornment position="start">
+                  <Box
+                    component={Icon}
+                    icon={searchFill}
+                    sx={{ color: 'text.disabled' }}
+                  />
+                </InputAdornment>
+              }
+              className={classes.search}
             />
-          ))}
-        </Tabs>
+          </Box>
+        </Box>
         <TabPanel value={value} index={0}>
-          <BasicTable />
+          <BasicTable filterName={filterName} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <MyPools />
+          <MyPools filterName={filterName} />
         </TabPanel>
       </Container>
     </Page>
