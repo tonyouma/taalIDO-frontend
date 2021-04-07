@@ -49,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     color: theme.palette.primary.main
+  },
+  row: {
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }));
 
@@ -116,7 +121,7 @@ function TablePoolRow({ row, handleOpenModal }) {
     <TableRow
       key={row.poolName}
       hover
-      className={classes.hideLastBorder}
+      className={(classes.hideLastBorder, classes.row)}
       onClick={(event) => handleOpenModal(row)}
     >
       <TableCell component="th" scope="row" width="20%">
@@ -139,11 +144,11 @@ function TablePoolRow({ row, handleOpenModal }) {
   );
 }
 
-export default function BasicTable() {
+export default function BasicTable({ filterName }) {
   const classes = useStyles();
   const history = useHistory();
 
-  const [filterName, setFilterName] = useState('');
+  // const [filterName, setFilterName] = useState('');
   const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -164,9 +169,9 @@ export default function BasicTable() {
     dispatch(getPoolList());
   }, [dispatch]);
 
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-  };
+  // const handleFilterByName = (event) => {
+  //   setFilterName(event.target.value);
+  // };
 
   const handleOpenModal = (row) => {
     dispatch(openModal(row));
@@ -191,7 +196,7 @@ export default function BasicTable() {
 
   return (
     <div className={classes.root}>
-      <ToolbarTable filterName={filterName} onFilterName={handleFilterByName} />
+      {/* <ToolbarTable filterName={filterName} onFilterName={handleFilterByName} /> */}
       <Scrollbars>
         <TableContainer sx={{ minWidth: 800, mt: 3 }}>
           <Table>
@@ -244,7 +249,7 @@ export default function BasicTable() {
           count={filteredPools.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[2, 10, 25, 100]}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
         {selectedPool && (

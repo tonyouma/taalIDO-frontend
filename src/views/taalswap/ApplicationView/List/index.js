@@ -371,6 +371,11 @@ const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff'
+  },
+  row: {
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }));
 
@@ -627,6 +632,7 @@ export default function ApplicationListView() {
                         const labelId = `enhanced-table-checkbox-${index}`;
                         return (
                           <TableRow
+                            className={classes.row}
                             hover
                             onClick={(event) => handleClick(event, row)}
                             role="checkbox"

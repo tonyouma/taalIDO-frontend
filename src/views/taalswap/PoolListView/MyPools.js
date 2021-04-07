@@ -57,6 +57,11 @@ const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff'
+  },
+  row: {
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 }));
 
@@ -102,7 +107,6 @@ function TablePoolRow({ row, handleOpenModal }) {
   const { library, account } = context;
 
   useEffect(async () => {
-    console.log(row);
     if (!!library) {
       const taalswap = new Taalswap({
         application: row,
@@ -129,7 +133,7 @@ function TablePoolRow({ row, handleOpenModal }) {
     <TableRow
       key={row.poolName}
       hover
-      className={classes.hideLastBorder}
+      className={(classes.hideLastBorder, classes.row)}
       onClick={(event) => handleOpenModal(row, poolStatus)}
     >
       <TableCell component="th" scope="row" width="20%">
@@ -152,11 +156,11 @@ function TablePoolRow({ row, handleOpenModal }) {
   );
 }
 
-export default function MyPools() {
+export default function MyPools({ filterName }) {
   const classes = useStyles();
   const history = useHistory();
 
-  const [filterName, setFilterName] = useState('');
+  // const [filterName, setFilterName] = useState('');
   const [filterPoolList, setFilterPoolList] = useState([]);
   const theme = useTheme();
   const [page, setPage] = useState(0);
@@ -191,9 +195,9 @@ export default function MyPools() {
     await getMySwapList();
   }, [getMySwapList, dispatch]);
 
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
-  };
+  // const handleFilterByName = (event) => {
+  //   setFilterName(event.target.value);
+  // };
 
   const handleOpenModal = (row, poolStatus) => {
     setPoolStatus(poolStatus);
@@ -292,7 +296,7 @@ export default function MyPools() {
 
   return (
     <div className={classes.root}>
-      <ToolbarTable filterName={filterName} onFilterName={handleFilterByName} />
+      {/* <ToolbarTable filterName={filterName} onFilterName={handleFilterByName} /> */}
       <Scrollbars>
         <TableContainer sx={{ minWidth: 800, mt: 3 }}>
           <Table>

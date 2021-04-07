@@ -18,7 +18,12 @@ import {
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles({
-  root: {}
+  root: {},
+  row: {
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  }
 });
 
 // ----------------------------------------------------------------------
@@ -68,7 +73,10 @@ export default function BasicTable({ purchaseList }) {
                   .sort(date_ascending)
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
-                    <TableRow key={index} className={classes.hideLastBorder}>
+                    <TableRow
+                      key={index}
+                      className={(classes.hideLastBorder, classes.row)}
+                    >
                       <TableCell component="th" scope="row">
                         {row.purchaser}
                       </TableCell>
