@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Card, Box } from '@material-ui/core';
 import getMax from '../../../utils/getMax';
 import EllipsisText from 'react-text-overflow-middle-ellipsis';
+import Numbers from 'src/utils/Numbers';
 
 // ----------------------------------------------------------------------
 
@@ -230,7 +231,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.0
               }}
             />
-            {getMax(pool.maxIndividuals, pool.tradeValue)}
+            {Numbers.toFloat4(getMax(pool.maxIndividuals, pool.tradeValue))}
           </Box>
         </Box>
 
