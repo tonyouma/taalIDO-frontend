@@ -1,11 +1,8 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import Search from './Search';
-import Account from './Account';
 import PropTypes from 'prop-types';
 import Languages from './Languages';
 import { Icon } from '@iconify/react';
-import Notifications from './Notifications';
 import Settings from 'src/layouts/Common/Settings';
 import menu2Fill from '@iconify-icons/eva/menu-2-fill';
 import { alpha, makeStyles } from '@material-ui/core/styles';
@@ -28,13 +25,11 @@ import {
 import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
 import WalletDialog from '../../../views/taalswap/Components/WalletDialog';
 import WalletInfo from './WalletInfo';
-import { MIconButton } from '../../../theme';
-import settings2Fill from '@iconify-icons/eva/settings-2-fill';
-import Taalswap from '../../../utils/taalswap';
+import Taalswap from 'src/utils/taalswap';
 import { useSnackbar } from 'notistack';
+import { targetNetwork, targetNetworkMsg } from 'src/config';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
-// import { BorderColor } from '@material-ui/icons';
 
 // ----------------------------------------------------------------------
 
@@ -98,11 +93,10 @@ function TopBar({ onOpenNav, className }) {
     }
 
     if (!!library && !!account) {
-      console.log(library.provider.chainId);
-      if (library.provider.chainId !== '0x4') {
-        enqueueSnackbar('Rinkeby 테스트 네트워크가 선택되지 않았습니다.', {
+      if (library.provider.chainId !== targetNetwork) {
+        enqueueSnackbar(targetNetworkMsg, {
           variant: 'warning',
-          autoHideDuration: 5000,
+          autoHideDuration: 3000,
           anchorOrigin: {
             vertical: 'top',
             horizontal: 'center'

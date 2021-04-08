@@ -45,6 +45,8 @@ import Numbers from '../../utils/Numbers';
 import { Contract, ContractFactory } from '@ethersproject/contracts';
 import moment from 'moment';
 import { ethers } from 'ethers';
+import { targetNetwork, targetNetworkMsg } from '../../config';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -119,6 +121,7 @@ function TopBar() {
   const offset = useOffSetTop(100);
   const [openMenu, setOpenMenu] = useState(false);
   const isHome = pathname === '/';
+  const { enqueueSnackbar } = useSnackbar();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
@@ -136,14 +139,17 @@ function TopBar() {
   } = context;
 
   useEffect(() => {
-    // console.log('1----------> ', activatingConnector);
-    // console.log('1----------> ', connector);
-    // if (activatingConnector && activatingConnector === connector) {
-    //   dispatch(setActivatingConnector(undefined));
-    // }
-    // dispatch(getWalletBalance(account, library));
-    // dispatch(getContractDecimals(account, library));
-  }, [activatingConnector, connector]);
+    if (!!library && library.provider.chainId !== targetNetwork) {
+      enqueueSnackbar(targetNetworkMsg, {
+        variant: 'warning',
+        autoHideDuration: 3000,
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'center'
+        }
+      });
+    }
+  }, [activatingConnector, connector, library]);
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
   const triedEager = useEagerConnect();

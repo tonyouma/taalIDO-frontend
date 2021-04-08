@@ -43,7 +43,7 @@ import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import EditIcon from '@material-ui/icons/Edit';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
-import { admin } from 'src/config';
+import { admin, targetNetwork, targetNetworkMsg } from 'src/config';
 import Numbers from 'src/utils/Numbers';
 import { ContractFactory } from '@ethersproject/contracts';
 import { fixedData } from 'src/contracts';
@@ -550,9 +550,19 @@ export default function ApplicationListView() {
   };
 
   useEffect(() => {
-    // console.log(applicationList);
+    if (!!library && library.provider.chainId !== targetNetwork) {
+      enqueueSnackbar(targetNetworkMsg, {
+        variant: 'warning',
+        autoHideDuration: 3000,
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'center'
+        }
+      });
+      return;
+    }
     dispatch(getApplicationList());
-  }, [update, open]);
+  }, [update, open, library]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
