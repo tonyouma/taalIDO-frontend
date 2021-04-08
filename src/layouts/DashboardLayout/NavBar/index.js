@@ -198,9 +198,9 @@ function NavBar({ isOpenNav, onCloseNav }) {
 
       <Box sx={{ px: 4.5, pb: 3, mt: 10 }}>
         <div className={classes.doc}>
-          <Logo />
           <Typography
             gutterBottom
+            align="center"
             variant="subtitle2"
             sx={{ mb: 1, color: 'text.disabled', display: 'block' }}
           >
