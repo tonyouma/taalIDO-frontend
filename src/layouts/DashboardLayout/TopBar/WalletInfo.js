@@ -28,7 +28,7 @@ import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '400px',
+    // width: '400px',
     height: '40px',
     margin: 1,
     padding: theme.spacing(1),
@@ -38,9 +38,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     fontSize: 13
+    // border: '1px solid red'
   },
   icon: {
     width: '10%',
+    marginLeft: '5px',
     '&:hover': {
       cursor: 'pointer',
       opacity: 0.72
