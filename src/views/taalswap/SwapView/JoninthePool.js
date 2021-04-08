@@ -23,19 +23,20 @@ import { useSnackbar } from 'notistack';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3),
+    backgroundColor:
+      theme.palette.grey[theme.palette.mode === 'light' ? 200 : 700],
     [theme.breakpoints.up('md')]: {
       height: 'calc(100% - 16px)',
       marginTop: theme.spacing(1),
       marginRight: theme.spacing(1),
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(5),
-      borderRadius: theme.shape.borderRadiusMd,
-      backgroundColor:
-        theme.palette.grey[theme.palette.mode === 'light' ? 200 : 700]
+      borderRadius: theme.shape.borderRadiusMd
     },
     [theme.breakpoints.up('lg')]: {
       paddingLeft: theme.spacing(5),
-      paddingRight: theme.spacing(5)
+      paddingRight: theme.spacing(5),
+      borderRadius: theme.shape.borderRadiusMd
     }
   },
   row: {
