@@ -105,6 +105,7 @@ function PaymentInformation({ className, pool, index }) {
           }}
           fullWidth
           value={`${Numbers.toFloat4(pool.ratio)} ${pool.symbol} = 1 ETH`}
+          inputProps={{ disabled: 'true' }}
         />
       </Box>
       <Box
@@ -121,6 +122,7 @@ function PaymentInformation({ className, pool, index }) {
           style={{ width: '49%' }}
           // value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
           value={`${Numbers.toFloat4(pool.maxIndividuals)} ${pool.symbol}`}
+          inputProps={{ disabled: 'true' }}
         />
 
         <TextField
@@ -133,6 +135,7 @@ function PaymentInformation({ className, pool, index }) {
           value={`${Numbers.toFloat4(
             getMax(pool.maxIndividuals, pool.tradeValue)
           )} ETH`}
+          inputProps={{ disabled: 'true' }}
         />
       </Box>
       <Box
