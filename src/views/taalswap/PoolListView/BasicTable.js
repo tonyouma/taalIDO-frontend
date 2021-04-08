@@ -34,6 +34,8 @@ import StatusLabel from '../Components/StatusLabel';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
+import { targetNetwork, targetNetworkMsg } from '../../../config';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -103,10 +105,22 @@ function TablePoolRow({ row, handleOpenModal }) {
   const theme = useTheme();
   const [progressValue, setProgressValue] = useState(0);
   const [poolStatus, setStatus] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
 
   const { library, account } = context;
 
   useEffect(async () => {
+    if (!!library && library.provider.chainId !== targetNetwork) {
+      enqueueSnackbar(targetNetworkMsg, {
+        variant: 'warning',
+        autoHideDuration: 3000,
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'center'
+        }
+      });
+      return;
+    }
     if (!!library && row.contractAddress !== '') {
       const taalswap = new Taalswap({
         application: row,
@@ -114,9 +128,12 @@ function TablePoolRow({ row, handleOpenModal }) {
         library
       });
 
-      await taalswap.tokensAllocated().then((result) => {
-        setProgressValue(getProgressValue(result, row.tradeAmount));
-      });
+      await taalswap
+        .tokensAllocated()
+        .then((result) => {
+          setProgressValue(getProgressValue(result, row.tradeAmount));
+        })
+        .catch((error) => console.log(error));
 
       const status = await getPoolStatus(
         taalswap,
