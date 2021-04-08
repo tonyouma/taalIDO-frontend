@@ -174,10 +174,7 @@ function ApplicationStart() {
   });
 
   return (
-    <Page
-      title="New Application-Management | Minimal-UI"
-      className={classes.root}
-    >
+    <Page title="IDO Admin | TaalSwap" className={classes.root}>
       <Container>
         <HeaderDashboard
           heading="Create a new application"

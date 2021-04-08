@@ -323,10 +323,7 @@ const AdminView = () => {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Page
-        title="New Application-Management | Minimal-UI"
-        className={classes.root}
-      >
+      <Page title="IDO Application | TaalSwap" className={classes.root}>
         <Container>
           <HeaderDashboard heading="Admin" links={[{ name: 'settings' }]} />
 

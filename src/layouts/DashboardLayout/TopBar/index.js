@@ -31,6 +31,7 @@ import WalletInfo from './WalletInfo';
 import { MIconButton } from '../../../theme';
 import settings2Fill from '@iconify-icons/eva/settings-2-fill';
 import Taalswap from '../../../utils/taalswap';
+import { useSnackbar } from 'notistack';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
 // import { BorderColor } from '@material-ui/icons';
@@ -71,6 +72,7 @@ TopBar.propTypes = {
 function TopBar({ onOpenNav, className }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { activatingConnector, balance, talBalance } = useSelector(
     (state) => state.wallet
@@ -96,17 +98,30 @@ function TopBar({ onOpenNav, className }) {
     }
 
     if (!!library && !!account) {
-      dispatch(getWalletBalance(account, library));
-      // dispatch(getContractDecimals(account, library));
+      console.log(library.provider.chainId);
+      if (library.provider.chainId !== '0x4') {
+        enqueueSnackbar('Rinkeby 테스트 네트워크가 선택되지 않았습니다.', {
+          variant: 'warning',
+          autoHideDuration: 5000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center'
+          }
+        });
+      } else {
+        dispatch(getWalletBalance(account, library));
 
-      const taalswap = new Taalswap({
-        account,
-        library,
-        tokenAddress: TAL_TOKEN_ADDRESS
-      });
+        // dispatch(getContractDecimals(account, library));
 
-      const talBalance = await taalswap.balanceOf(account);
-      dispatch(setTalBalance(talBalance));
+        const taalswap = new Taalswap({
+          account,
+          library,
+          tokenAddress: TAL_TOKEN_ADDRESS
+        });
+
+        const talBalance = await taalswap.balanceOf(account);
+        dispatch(setTalBalance(talBalance));
+      }
     }
   }, [activatingConnector, connector, account, library]);
 
