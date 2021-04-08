@@ -77,10 +77,14 @@ function PaymentInformation({ className, pool, index }) {
 
       await taalswap
         .getBuyers()
-        .then((result) => setParticipants(result.length));
-      await taalswap.tokensAllocated().then((result) => {
-        setProgressValue(getProgressValue(result, pool.tradeAmount));
-      });
+        .then((result) => setParticipants(result.length))
+        .catch((error) => console.log(error));
+      await taalswap
+        .tokensAllocated()
+        .then((result) => {
+          setProgressValue(getProgressValue(result, pool.tradeAmount));
+        })
+        .catch((error) => console.log(error));
 
       setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
     }

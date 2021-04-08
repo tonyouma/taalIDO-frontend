@@ -55,13 +55,22 @@ function General({ className, pool }) {
         // contractAddress: pool.contractAddress
       });
 
-      const decimals = await taalswap.decimalsAsync();
+      const decimals = await taalswap
+        .decimalsAsync()
+        .catch((error) => console.log(error));
 
-      await taalswap.nameAsync().then((result) => setName(result));
+      await taalswap
+        .nameAsync()
+        .then((result) => setName(result))
+        .catch((error) => console.log(error));
       await taalswap
         .totalSupplyAsync()
-        .then((result) => setTotalSupply(result * Math.pow(10, decimals * -1)));
-      await taalswap.minimumRaise().then((result) => setMinSwapLevel(result));
+        .then((result) => setTotalSupply(result * Math.pow(10, decimals * -1)))
+        .catch((error) => console.log(error));
+      await taalswap
+        .minimumRaise()
+        .then((result) => setMinSwapLevel(result))
+        .catch((error) => console.log(error));
     }
 
     setMax(getMax(pool.maxIndividuals, pool.tradeValue));

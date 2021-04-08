@@ -113,7 +113,9 @@ function TopBar({ onOpenNav, className }) {
           tokenAddress: TAL_TOKEN_ADDRESS
         });
 
-        const talBalance = await taalswap.balanceOf(account);
+        const talBalance = await taalswap
+          .balanceOf(account)
+          .catch((error) => console.log(error));
         dispatch(setTalBalance(talBalance));
       }
     }

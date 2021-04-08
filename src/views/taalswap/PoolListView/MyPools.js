@@ -114,9 +114,12 @@ function TablePoolRow({ row, handleOpenModal }) {
         library
       });
 
-      await taalswap.tokensAllocated().then((result) => {
-        setProgressValue(getProgressValue(result, row.tradeAmount));
-      });
+      await taalswap
+        .tokensAllocated()
+        .then((result) => {
+          setProgressValue(getProgressValue(result, row.tradeAmount));
+        })
+        .catch((error) => console.log(error));
 
       const status = await getPoolStatus(
         taalswap,

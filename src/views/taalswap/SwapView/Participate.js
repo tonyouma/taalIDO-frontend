@@ -60,13 +60,21 @@ function Participate({ pool }) {
           fixedContractAddress: pool.contractAddress
         });
 
-        await taalswap.nameAsync().then((result) => setName(result));
-        await taalswap.tokensAllocated().then((result) => setAllocated(result));
+        await taalswap
+          .nameAsync()
+          .then((result) => setName(result))
+          .catch((error) => console.log(error));
+        await taalswap
+          .tokensAllocated()
+          .then((result) => setAllocated(result))
+          .catch((error) => console.log(error));
 
         let tempList = [];
-        const purchaseids = await taalswap.getAddressPurchaseIds({
-          address: account
-        });
+        const purchaseids = await taalswap
+          .getAddressPurchaseIds({
+            address: account
+          })
+          .catch((error) => console.log(error));
 
         if (purchaseids.length > 0) {
           purchaseids.map(async (purchaseid) => {

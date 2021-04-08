@@ -68,14 +68,20 @@ function PlanCard({ pool, index, className }) {
           fixedContractAddress: pool.contractAddress
         });
 
-        await taalswap.getBuyers().then((result) => {
-          setParticipants(result.length);
-        });
+        await taalswap
+          .getBuyers()
+          .then((result) => {
+            setParticipants(result.length);
+          })
+          .catch((error) => console.log(error));
 
-        await taalswap.tokensAllocated().then((result) => {
-          setProgressValue(getProgressValue(result, pool.tradeAmount));
-          setTotalRaise(result * pool.tradeValue);
-        });
+        await taalswap
+          .tokensAllocated()
+          .then((result) => {
+            setProgressValue(getProgressValue(result, pool.tradeAmount));
+            setTotalRaise(result * pool.tradeValue);
+          })
+          .catch((error) => console.log(error));
 
         setStatus(
           await getPoolStatus(taalswap, pool.status, pool.minFundRaise)

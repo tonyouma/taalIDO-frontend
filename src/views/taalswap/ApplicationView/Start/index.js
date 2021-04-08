@@ -148,8 +148,12 @@ function ApplicationStart() {
           library,
           tokenAddress: values.tokenContractAddr
         });
-        newApplication.symbol = await taalswap.symbolAsync();
-        newApplication.decimals = await taalswap.decimalsAsync();
+        newApplication.symbol = await taalswap
+          .symbolAsync()
+          .catch((error) => console.log(error));
+        newApplication.decimals = await taalswap
+          .decimalsAsync()
+          .catch((error) => console.log(error));
         const key = await getMaxId();
         const ret = await register({
           creator: account,
