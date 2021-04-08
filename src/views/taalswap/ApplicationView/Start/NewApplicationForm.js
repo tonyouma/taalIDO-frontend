@@ -132,7 +132,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                     <TextField
                       fullWidth
                       size="small"
-                      label="Trade Amount"
+                      label="Total Raise"
                       disabled={isEdit}
                       {...getFieldProps('tradeAmount')}
                       error={Boolean(touched.tradeAmount && errors.tradeAmount)}
@@ -147,7 +147,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                     <TextField
                       fullWidth
                       size="small"
-                      label="Min. Fund Raise"
+                      label="Minimum Raise"
                       disabled={isEdit}
                       {...getFieldProps('minFundRaise')}
                       error={Boolean(
@@ -155,7 +155,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                       )}
                       helperText={
                         (touched.minFundRaise && errors.minFundRaise) ||
-                        '(Min. # of tokens sold at least)'
+                        '(Min. # of tokens to be sold)'
                       }
                     />
                   </Grid>
@@ -183,7 +183,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                     <TextField
                       fullWidth
                       size="small"
-                      label="Min. Individuals"
+                      label="Min. Allocation"
                       disabled={isEdit}
                       {...getFieldProps('minIndividuals')}
                       error={Boolean(
@@ -200,7 +200,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                     <TextField
                       fullWidth
                       size="small"
-                      label="Max. Individuals"
+                      label="Max. Allocation"
                       disabled={isEdit}
                       {...getFieldProps('maxIndividuals')}
                       error={Boolean(

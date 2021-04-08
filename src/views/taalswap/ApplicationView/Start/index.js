@@ -53,17 +53,13 @@ function ApplicationStart() {
       'Token Contract Address is required'
     ),
     tradeValue: Yup.number().positive().required('Trade Value is required'),
-    tradeAmount: Yup.number().positive().required('Trade Amount is required'),
-    minFundRaise: Yup.number()
-      .positive()
-      .required('Min. Fund Raise is required'),
+    tradeAmount: Yup.number().positive().required('Total Raise is required'),
+    minFundRaise: Yup.number().positive().required('Minimum Raise is required'),
     access: Yup.string().required('Access is required'),
-    minIndividuals: Yup.number()
-      .min(0)
-      .required('Min. Individuals is required'),
+    minIndividuals: Yup.number().min(0).required('Min. Allocation is required'),
     maxIndividuals: Yup.number()
       .positive()
-      .required('Max. Individuals is required'),
+      .required('Max. Allocation is required'),
     feeAmount: Yup.number()
       .positive('Fee Amount is positive integer')
       .integer('Fee Amount is positive integer')
