@@ -27,7 +27,8 @@ import {
   TableSortLabel,
   TableRow,
   CircularProgress,
-  Box
+  Box,
+  Hidden
 } from '@material-ui/core';
 import {
   updateApplication,
@@ -56,6 +57,7 @@ import { filter } from 'lodash';
 import { PoolStatus } from 'src/utils/poolStatus';
 import { login } from 'src/utils/auth';
 import StatusLabel from '../../Components/StatusLabel';
+import { HideImageRounded } from '@material-ui/icons';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -157,43 +159,43 @@ async function taalDeploy(factory, application) {
   return ret;
 }
 
-const headCells = [
-  {
-    id: 'projectName',
-    numeric: false,
-    disablePadding: true,
-    align: false,
-    label: 'Project'
-  },
-  {
-    id: 'category',
-    numeric: false,
-    disablePadding: false,
-    align: true,
-    label: 'Category'
-  },
-  {
-    id: 'startDate',
-    numeric: false,
-    disablePadding: false,
-    align: true,
-    label: 'Start Date'
-  },
-  {
-    id: 'endDate',
-    numeric: false,
-    disablePadding: false,
-    align: true,
-    label: 'End Date'
-  },
-  {
-    id: 'status',
-    numeric: false,
-    disablePadding: false,
-    align: true,
-    label: 'Status'
-  }
-];
+// const headCells = [
+// {
+//   id: 'projectName',
+//   numeric: false,
+//   disablePadding: true,
+//   align: false,
+//   label: 'Project'
+// },
+// {
+//   id: 'category',
+//   numeric: false,
+//   disablePadding: false,
+//   align: true,
+//   label: 'Category'
+// },
+// {
+//   id: 'startDate',
+//   numeric: false,
+//   disablePadding: false,
+//   align: true,
+//   label: 'Start Date'
+// },
+// {
+//   id: 'endDate',
+//   numeric: false,
+//   disablePadding: false,
+//   align: true,
+//   label: 'End Date'
+// },
+// {
+//   id: 'status',
+//   numeric: false,
+//   disablePadding: false,
+//   align: true,
+//   label: 'Status'
+// }
+// ];
 
 function EnhancedTableHead(props) {
   const { classes, order, orderBy, onRequestSort } = props;
@@ -205,6 +207,119 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox"></TableCell>
+        <TableCell
+          key="projectName"
+          align="left"
+          padding="none"
+          sortDirection={orderBy === 'projectName' ? order : false}
+        >
+          <TableSortLabel
+            active={orderBy === 'projectName'}
+            direction={orderBy === 'projectName' ? order : 'asc'}
+            onClick={createSortHandler('projectName')}
+          >
+            <Typography variant="h6" gutterBottom>
+              Project
+            </Typography>
+            {orderBy === 'Project' ? (
+              <span className={classes.visuallyHidden}>
+                {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+              </span>
+            ) : null}
+          </TableSortLabel>
+        </TableCell>
+
+        <Hidden smDown>
+          <TableCell
+            key="category"
+            align="right"
+            padding="default"
+            sortDirection={orderBy === 'category' ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === 'category'}
+              direction={orderBy === 'category' ? order : 'asc'}
+              onClick={createSortHandler('category')}
+            >
+              <Typography variant="h6" gutterBottom>
+                Category
+              </Typography>
+              {orderBy === 'Category' ? (
+                <span className={classes.visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </span>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        </Hidden>
+        <TableCell
+          key="startDate"
+          align="right"
+          padding="default"
+          className={classes.tableDateCell}
+          sortDirection={orderBy === 'startDate' ? order : false}
+        >
+          <TableSortLabel
+            active={orderBy === 'startDate'}
+            direction={orderBy === 'startDate' ? order : 'asc'}
+            onClick={createSortHandler('startDate')}
+          >
+            <Typography variant="h6" gutterBottom>
+              Start Date
+            </Typography>
+            {orderBy === 'startDate' ? (
+              <span className={classes.visuallyHidden}>
+                {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+              </span>
+            ) : null}
+          </TableSortLabel>
+        </TableCell>
+        <Hidden smDown>
+          <TableCell
+            key="endDate"
+            align="right"
+            padding="default"
+            className={classes.tableDateCell}
+            sortDirection={orderBy === 'endDate' ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === 'endDate'}
+              direction={orderBy === 'endDate' ? order : 'asc'}
+              onClick={createSortHandler('endDate')}
+            >
+              <Typography variant="h6" gutterBottom>
+                End Date
+              </Typography>
+              {orderBy === 'endDate' ? (
+                <span className={classes.visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </span>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        </Hidden>
+        <TableCell
+          key="status"
+          align="right"
+          padding="default"
+          sortDirection={orderBy === 'status' ? order : false}
+        >
+          <TableSortLabel
+            active={orderBy === 'status'}
+            direction={orderBy === 'status' ? order : 'asc'}
+            onClick={createSortHandler('status')}
+          >
+            <Typography variant="h6" gutterBottom>
+              Status
+            </Typography>
+            {orderBy === 'status' ? (
+              <span className={classes.visuallyHidden}>
+                {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+              </span>
+            ) : null}
+          </TableSortLabel>
+        </TableCell>
+        {/* 
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -227,7 +342,7 @@ function EnhancedTableHead(props) {
               ) : null}
             </TableSortLabel>
           </TableCell>
-        ))}
+        ))} */}
       </TableRow>
     </TableHead>
   );
@@ -356,7 +471,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   table: {
-    minWidth: 750
+    // minWidth: 750
   },
   visuallyHidden: {
     border: 0,
@@ -385,7 +500,10 @@ const useStyles = makeStyles((theme) => ({
     height: '70px'
   },
   tableTab: { width: '100%' },
-  tableSearch: { width: '320px', textAlign: 'right' }
+  tableSearch: { width: '320px', textAlign: 'right' },
+  tableDateCell: {
+    minWidth: '160px'
+  }
 }));
 
 // ----------------------------------------------------------------------
@@ -679,13 +797,19 @@ export default function ApplicationListView() {
                             >
                               {row.projectName}
                             </TableCell>
-                            <TableCell align="right">{row.category}</TableCell>
+                            <Hidden smDown>
+                              <TableCell align="right">
+                                {row.category}
+                              </TableCell>
+                            </Hidden>
                             <TableCell align="right">
                               {moment.unix(row.startDate).format('YYYY-MM-DD')}
                             </TableCell>
-                            <TableCell align="right">
-                              {moment.unix(row.endDate).format('YYYY-MM-DD')}
-                            </TableCell>
+                            <Hidden smDown>
+                              <TableCell align="right">
+                                {moment.unix(row.endDate).format('YYYY-MM-DD')}
+                              </TableCell>
+                            </Hidden>
                             <TableCell align="right">
                               <StatusLabel
                                 poolStatus={
