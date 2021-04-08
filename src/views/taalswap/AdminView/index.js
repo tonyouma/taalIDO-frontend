@@ -80,10 +80,7 @@ const AdminView = () => {
   }, [poolList]);
 
   return (
-    <Page
-      title="New Application-Management | Minimal-UI"
-      className={classes.root}
-    >
+    <Page title="Admin View | TaalSwap" className={classes.root}>
       <Container>
         <HeaderDashboard heading="Admin" links={[{ name: 'settings' }]} />
 

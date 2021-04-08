@@ -97,7 +97,7 @@ function Participate({ pool }) {
   }, [pool, account]);
 
   return (
-    <Page title="Table-Components | Minimal-UI" className={classes.root}>
+    <Page title="Participants | TaalSwap" className={classes.root}>
       <Container maxWidth="lg">
         <Box display="flex" alignItems="center">
           <Box

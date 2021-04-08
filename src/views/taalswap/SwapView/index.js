@@ -115,7 +115,7 @@ function PaymentView(className, ...other) {
   };
 
   return (
-    <Page title="Table-Components | Minimal-UI" className={classes.root}>
+    <Page title="Swap | TaalSwap" className={classes.root}>
       <Container maxWidth="lg">
         <Backdrop className={classes.backdrop} open={open}>
           <CircularProgress color="inherit" />
