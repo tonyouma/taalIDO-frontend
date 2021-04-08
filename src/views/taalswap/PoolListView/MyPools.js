@@ -19,7 +19,8 @@ import {
   TextField,
   Box,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  Hidden
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -138,13 +139,14 @@ function TablePoolRow({ row, handleOpenModal }) {
       <TableCell component="th" scope="row" width="20%">
         {row.poolName}
       </TableCell>
-      <TableCell align="right" width="20%">
-        {Numbers.toFloat4(row.ratio)} {row.symbol} = 1 ETH
-      </TableCell>
-      <TableCell align="right" width="10%">
-        {row.access}
-      </TableCell>
-
+      <Hidden smDown>
+        <TableCell align="right" width="20%">
+          {Numbers.toFloat4(row.ratio)} {row.symbol} = 1 ETH
+        </TableCell>
+        <TableCell align="right" width="10%">
+          {row.access}
+        </TableCell>
+      </Hidden>
       <TableCell align="right" width="35%">
         <LinearProgressWithLabel value={progressValue} />
       </TableCell>
@@ -297,7 +299,7 @@ export default function MyPools({ filterName }) {
     <div className={classes.root}>
       {/* <ToolbarTable filterName={filterName} onFilterName={handleFilterByName} /> */}
       <Scrollbars>
-        <TableContainer sx={{ minWidth: 800, mt: 3 }}>
+        <TableContainer sx={{ mt: 3 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -306,16 +308,18 @@ export default function MyPools({ filterName }) {
                     Project Name
                   </Typography>
                 </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6" gutterBottom>
-                    Ratio
-                  </Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6" gutterBottom>
-                    Access
-                  </Typography>
-                </TableCell>
+                <Hidden smDown>
+                  <TableCell align="right">
+                    <Typography variant="h6" gutterBottom>
+                      Ratio
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography variant="h6" gutterBottom>
+                      Access
+                    </Typography>
+                  </TableCell>
+                </Hidden>
                 <TableCell align="right">
                   <Typography variant="h6" gutterBottom>
                     Progress

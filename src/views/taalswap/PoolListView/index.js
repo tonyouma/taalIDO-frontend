@@ -50,10 +50,28 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     // alignItems: 'center',
-    height: '70px'
+    // height: '70px',
+    [theme.breakpoints.down('sm')]: {
+      // border: '1px solid red',
+      flexDirection: 'column'
+    }
   },
-  tableTab: { width: '100%' },
-  tableSearch: { width: '400px', textAlign: 'right' }
+  tableTab: {
+    width: '100%',
+    // border: '1px solid blue',
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: '0px'
+    }
+  },
+  tableSearch: {
+    width: '400px',
+    textAlign: 'right',
+    // border: '1px solid black',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'left',
+      marginBottom: '1rem'
+    }
+  }
 }));
 
 function TabPanel(props) {

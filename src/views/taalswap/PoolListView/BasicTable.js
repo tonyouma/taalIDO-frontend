@@ -17,7 +17,8 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Box
+  Box,
+  Hidden
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 function LinearProgressWithLabel(props) {
   return (
     <Box display="flex" alignItems="center">
+      {/* <Hidden smDown> */}
       <Box width="100%" mr={1}>
         <LinearProgress variant="determinate" {...props} />
       </Box>
@@ -68,6 +70,14 @@ function LinearProgressWithLabel(props) {
           props.value
         )}%`}</Typography>
       </Box>
+      {/* </Hidden>
+      <Hidden smUp>
+        <Box minWidth={35}>
+          <Typography variant="body2" color="textSecondary">{`${Math.round(
+            props.value
+          )}%`}</Typography>
+        </Box>
+      </Hidden> */}
     </Box>
   );
 }
@@ -127,12 +137,14 @@ function TablePoolRow({ row, handleOpenModal }) {
       <TableCell component="th" scope="row" width="20%">
         {row.poolName}
       </TableCell>
-      <TableCell align="right" width="20%">
-        {Numbers.toFloat4(row.ratio)} {row.symbol} = 1 ETH
-      </TableCell>
-      <TableCell align="right" width="10%">
-        {row.access}
-      </TableCell>
+      <Hidden smDown>
+        <TableCell align="right" width="20%">
+          {Numbers.toFloat4(row.ratio)} {row.symbol} = 1 ETH
+        </TableCell>
+        <TableCell align="right" width="10%">
+          {row.access}
+        </TableCell>
+      </Hidden>
       {/* <TableCell align="center" width="5%"></TableCell> */}
       <TableCell align="right" width="35%">
         <LinearProgressWithLabel value={progressValue} />
@@ -198,7 +210,7 @@ export default function BasicTable({ filterName }) {
     <div className={classes.root}>
       {/* <ToolbarTable filterName={filterName} onFilterName={handleFilterByName} /> */}
       <Scrollbars>
-        <TableContainer sx={{ minWidth: 800, mt: 3 }}>
+        <TableContainer sx={{ mt: 3 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -207,16 +219,18 @@ export default function BasicTable({ filterName }) {
                     Project Name
                   </Typography>
                 </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6" gutterBottom>
-                    Ratio
-                  </Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6" gutterBottom>
-                    Access
-                  </Typography>
-                </TableCell>
+                <Hidden smDown>
+                  <TableCell align="right">
+                    <Typography variant="h6" gutterBottom>
+                      Ratio
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography variant="h6" gutterBottom>
+                      Access
+                    </Typography>
+                  </TableCell>
+                </Hidden>
                 <TableCell align="right">
                   <Typography variant="h6" gutterBottom>
                     Progress
