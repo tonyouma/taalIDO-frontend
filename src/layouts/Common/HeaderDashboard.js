@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -50,13 +50,21 @@ function HeaderDashboard({
   ...other
 }) {
   const classes = useStyles();
+  const [walletAddress, setWalletAddress] = useState('');
 
   const handleClickUrl = () => {
     console.log(url);
   };
 
-  const n = subTitle.length;
-  const walletStr = subTitle.substr(0, 15) + '...' + subTitle.substr(n - 15, n);
+  useEffect(() => {
+    if (subTitle !== undefined) {
+      const n = subTitle.length;
+      const shortAddress =
+        subTitle.substr(0, 15) + '...' + subTitle.substr(n - 15, n);
+
+      setWalletAddress(shortAddress);
+    }
+  }, []);
 
   return (
     <Box className={clsx(classes.root, className)}>
@@ -88,7 +96,7 @@ function HeaderDashboard({
                 variant="body4"
                 color="#888888"
               >
-                {walletStr}
+                {walletAddress}
               </Typography>
             </Hidden>
 
