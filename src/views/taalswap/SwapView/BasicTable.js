@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 
 import {
   Box,
+  Hidden,
   Table,
   TableRow,
   TableHead,
@@ -56,15 +57,20 @@ export default function BasicTable({ purchaseList }) {
   return (
     <div className={classes.root}>
       <Scrollbars>
-        <TableContainer sx={{ minWidth: 800, mt: 3 }}>
+        <TableContainer sx={{ mt: 3 }}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Purchaser</TableCell>
+                <Hidden smDown>
+                  <TableCell>Purchaser</TableCell>
+                </Hidden>
                 <TableCell align="right">Amount</TableCell>
-                <TableCell align="right">ethAmount</TableCell>
-                <TableCell align="center">timestamp</TableCell>
-                <TableCell align="center">wasFinalized</TableCell>
+                <TableCell align="right">Eth Amount</TableCell>
+
+                <TableCell align="center">Timestamp</TableCell>
+                <Hidden smDown>
+                  <TableCell align="center">wasFinalized</TableCell>
+                </Hidden>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -77,15 +83,20 @@ export default function BasicTable({ purchaseList }) {
                       key={index}
                       className={(classes.hideLastBorder, classes.row)}
                     >
-                      <TableCell component="th" scope="row">
-                        {row.purchaser}
-                      </TableCell>
+                      <Hidden smDown>
+                        <TableCell component="th" scope="row">
+                          {row.purchaser}
+                        </TableCell>
+                      </Hidden>
                       <TableCell align="right">{row.amount}</TableCell>
                       <TableCell align="right">{row.ethAmount}</TableCell>
+
                       <TableCell align="right">{row.timestamp}</TableCell>
-                      <TableCell align="center" width="10%">
-                        {row.wasFinalized.toString()}
-                      </TableCell>
+                      <Hidden smDown>
+                        <TableCell align="center" width="10%">
+                          {row.wasFinalized.toString()}
+                        </TableCell>
+                      </Hidden>
                     </TableRow>
                   ))}
             </TableBody>
