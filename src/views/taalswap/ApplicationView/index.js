@@ -37,10 +37,6 @@ function DashboardAppView() {
         >
           TaalSwap IDO Governance
         </Typography>
-        <Typography variant="h6" gutterBottom className={classes.text}>
-          TaalSwap ultimately pursues a permissions and interoperable IDO
-          Platform.
-        </Typography>
         <Typography align="justify" variant="body1" gutterBottom>
           With this goal in mind, TaalSwap, in its initial stage of operation,
           aims at the perfect match of promising projects with strong-willed
