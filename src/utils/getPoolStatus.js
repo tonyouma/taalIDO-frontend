@@ -1,3 +1,4 @@
+import { FastField } from 'formik';
 import { PoolStatus } from './poolStatus';
 
 export const getPoolStatus = async (swapContract, status, minFundRaise) => {
@@ -52,10 +53,10 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
         }
       } else {
         if (hasMinimumRaise) {
-          if (minFundRaise == '0') {
+          if (parseInt(minFundRaise) === 0) {
             poolStatus = PoolStatus.FILLED.SUCCESS.CLOSED;
           } else {
-            if (tokensAllocated > minFundRaise) {
+            if (parseFloat(tokensAllocated) > parseFloat(minFundRaise)) {
               // 구매자
               // getMyPurchases(지갑주소)
               // -> return uint256[]
