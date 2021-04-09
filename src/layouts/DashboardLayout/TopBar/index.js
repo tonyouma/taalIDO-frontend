@@ -1,5 +1,5 @@
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import Languages from './Languages';
 import { Icon } from '@iconify/react';
@@ -29,9 +29,10 @@ import WalletInfo from './WalletInfo';
 import Taalswap from 'src/utils/taalswap';
 import { useSnackbar } from 'notistack';
 import { targetNetwork, targetNetworkMsg } from 'src/config';
+import { BorderColor } from '@material-ui/icons';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
-import { BorderColor } from '@material-ui/icons';
+
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;
