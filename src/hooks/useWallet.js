@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
-import { injected } from '../connectors';
+import { injected, walletconnect } from '../connectors';
 
 export function useEagerConnect() {
   const { activate, active } = useWeb3React();
@@ -18,6 +18,8 @@ export function useEagerConnect() {
         setTried(true);
       }
     });
+    const wc = walletconnect(false);
+    activate(wc);
   }, []); // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
