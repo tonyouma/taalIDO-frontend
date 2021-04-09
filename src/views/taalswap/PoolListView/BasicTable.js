@@ -213,7 +213,7 @@ export default function BasicTable({ filterName }) {
   const handleOnClickSwap = () => {
     dispatch(closeModal());
     history.push({
-      pathname: '/app/taalswap/swap',
+      pathname: '/app/taalswap/pools/swap',
       state: { selectedPool: selectedPool }
     });
   };

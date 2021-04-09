@@ -161,21 +161,23 @@ function PaymentView(className, ...other) {
           ))}
         </Tabs>
         <TabPanel value={value} index={0}>
-          <Card>
-            <Grid container spacing={upMd ? 5 : 2}>
-              <Grid item xs={12} md={6}>
-                <PaymentInformation formik={formik} pool={pool} />
-              </Grid>
+          <Container>
+            <Card>
+              <Grid container spacing={upMd ? 5 : 2}>
+                <Grid item xs={12} md={6}>
+                  <PaymentInformation formik={formik} pool={pool} />
+                </Grid>
 
-              <Grid item xs={12} md={6}>
-                <JoninthePool
-                  formik={formik}
-                  pool={pool}
-                  onBackdrop={handleBackdrop}
-                />
+                <Grid item xs={12} md={6}>
+                  <JoninthePool
+                    formik={formik}
+                    pool={pool}
+                    onBackdrop={handleBackdrop}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-          </Card>
+            </Card>
+          </Container>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <PoolDetails pool={pool} />

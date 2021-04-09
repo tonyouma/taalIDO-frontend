@@ -212,7 +212,7 @@ export default function MyPools({ filterName, onBackdrop }) {
   const handleOnClickSwap = () => {
     dispatch(closeModal());
     history.push({
-      pathname: '/app/taalswap/swap',
+      pathname: '/app/taalswap/pools/swap',
       state: { selectedPool: selectedPool }
     });
   };
