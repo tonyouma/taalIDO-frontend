@@ -190,7 +190,7 @@ function PlanCard({ pool, index, className }) {
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>
-              {Numbers.toFloat4(pool.ratio)} {pool.symbol} = 1 ETH
+              {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
             </Box>
           </Box>
         </Box>
@@ -215,7 +215,7 @@ function PlanCard({ pool, index, className }) {
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{Numbers.toFloat4(max)} ETH</Box>
+            <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(max)} ETH</Box>
           </Box>
         </Box>
 
@@ -287,7 +287,7 @@ function PlanCard({ pool, index, className }) {
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{Numbers.toFloat4(totalRaise)} ETH</Box>
+            <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(totalRaise)} ETH</Box>
           </Box>
         </Box>
       </Box>

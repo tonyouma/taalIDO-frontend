@@ -167,7 +167,7 @@ function TablePoolRow({ row, handleOpenModal }) {
       </TableCell>
       <Hidden smDown>
         <TableCell align="right" width="20%">
-          {Numbers.toFloat4(row.ratio)} {row.symbol} = 1 ETH
+          {Numbers.toFloat(row.ratio)} {row.symbol} = 1 ETH
         </TableCell>
         <TableCell align="right" width="10%">
           {row.access}

@@ -108,7 +108,7 @@ function PaymentInformation({ className, pool, index }) {
             shrink: true
           }}
           fullWidth
-          value={`${Numbers.toFloat4(pool.ratio)} ${pool.symbol} = 1 ETH`}
+          value={`${Numbers.toFloat(pool.ratio)} ${pool.symbol} = 11 ETH`}
           inputProps={{ disabled: 'true' }}
         />
       </Box>
@@ -125,7 +125,7 @@ function PaymentInformation({ className, pool, index }) {
           }}
           style={{ width: '49%' }}
           // value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
-          value={`${Numbers.toFloat4(pool.maxIndividuals)} ${pool.symbol}`}
+          value={`${Numbers.toFloat(pool.maxIndividuals)} ${pool.symbol}`}
           inputProps={{ disabled: 'true' }}
         />
 
@@ -136,7 +136,7 @@ function PaymentInformation({ className, pool, index }) {
             shrink: true
           }}
           style={{ width: '49%' }}
-          value={`${Numbers.toFloat4(
+          value={`${Numbers.toFloat(
             getMax(pool.maxIndividuals, pool.tradeValue)
           )} ETH`}
           inputProps={{ disabled: 'true' }}

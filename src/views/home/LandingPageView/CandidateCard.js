@@ -231,7 +231,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.0
               }}
             />
-            {Numbers.toFloat4(getMax(pool.maxIndividuals, pool.tradeValue))}
+            {Numbers.toFloat(getMax(pool.maxIndividuals, pool.tradeValue))}
           </Box>
         </Box>
 
