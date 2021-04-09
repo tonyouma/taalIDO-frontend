@@ -380,7 +380,7 @@ function PlanCard({ pool, index, className }) {
             color="primary"
             autoFocus
           >
-            Swap
+            Proceed
           </Button>
         </DialogActions>
       </Dialog>

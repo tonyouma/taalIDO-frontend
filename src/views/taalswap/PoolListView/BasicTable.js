@@ -388,7 +388,7 @@ export default function BasicTable({ filterName }) {
                 color="primary"
                 autoFocus
               >
-                Swap
+                Proceed
               </Button>
             </DialogActions>
           </Dialog>
