@@ -261,7 +261,6 @@ export default function MyPools({ filterName, onBackdrop }) {
   const handleOnClickClaimTokens = async () => {
     try {
       if (!!library) {
-        onBackdrop(true);
         const myPurchases = await taalswap.getAddressPurchaseIds({
           address: account
         });
@@ -270,16 +269,30 @@ export default function MyPools({ filterName, onBackdrop }) {
           console.log(myPurchases.error);
         } else {
           myPurchases.map(async (purchases) => {
+            onBackdrop(true);
             const result = await taalswap
               .redeemTokens({
                 purchase_id: purchases
               })
-              .catch((error) => console.log(error));
+              .catch((error) => {
+                console.log(error);
+                enqueueSnackbar('Claim Tokens fail', {
+                  variant: 'fail'
+                });
+              });
 
-            if (result !== undefined) await result.wait();
+            if (result !== undefined) {
+              const receipt = await result.wait();
+              if (receipt.status === 1) {
+                enqueueSnackbar('Claim Tokens success', {
+                  variant: 'success'
+                });
+              }
+            }
+            onBackdrop(false);
           });
         }
-        onBackdrop(false);
+
         dispatch(closeModal());
       }
     } catch (error) {
