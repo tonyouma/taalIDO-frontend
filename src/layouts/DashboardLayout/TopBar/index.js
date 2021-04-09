@@ -29,8 +29,6 @@ import WalletInfo from './WalletInfo';
 import Taalswap from 'src/utils/taalswap';
 import { useSnackbar } from 'notistack';
 import { targetNetwork, targetNetworkMsg } from 'src/config';
-import { BorderColor } from '@material-ui/icons';
-import parse from 'autosuggest-highlight/parse';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
 
@@ -91,6 +89,8 @@ function TopBar({ onOpenNav, className }) {
   useEffect(async () => {
     // console.log('1----------> ', activatingConnector);
     // console.log('1----------> ', connector);
+    // console.log('1----------> ', active);
+    // console.log('1----------> ', activate);
     if (activatingConnector && activatingConnector === connector) {
       dispatch(setActivatingConnector(undefined));
     }
@@ -137,7 +137,7 @@ function TopBar({ onOpenNav, className }) {
     setIsOpenModal(false);
   };
   const renderConnectWallet = () => {
-    if (!connector) {
+    if (!library) {
       return (
         <Box p={0.8}>
           <Button
@@ -184,7 +184,7 @@ function TopBar({ onOpenNav, className }) {
             }
           }}
         >
-          {connector && (
+          {!!library && (
             <WalletInfo
               walletAddress={account}
               balance={balance}
