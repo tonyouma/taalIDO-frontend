@@ -33,7 +33,7 @@ const navConfig = [
   // TAALSWAP IDO
   // ----------------------------------------------------------------------
   {
-    subheader: 'ido',
+    subheader: 'IDO',
     items: [
       {
         title: 'Projects',
@@ -75,17 +75,17 @@ const navConfig = [
   // TAALSWAP POOL
   // ----------------------------------------------------------------------
   {
-    subheader: 'pools',
+    subheader: 'Pools',
     items: []
   },
   // TAALSWAP FARMS
   // ----------------------------------------------------------------------
   {
-    subheader: 'farms',
+    subheader: 'Farms',
     items: []
   },
   {
-    subheader: 'docs',
+    subheader: 'Docs',
     items: [
       {
         title: 'Whitepaper',
