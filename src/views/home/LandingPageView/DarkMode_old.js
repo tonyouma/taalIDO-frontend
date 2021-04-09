@@ -171,13 +171,13 @@ function DarkMode({ className }) {
               >
                 About <br />
                 About US <br />
-                Privacy <br />
-                Terms
+                {/* Privacy <br />
+                Terms */}
               </Typography>
             </div>
           </Grid>
 
-          <Grid item xs={5} md={2}>
+          {/* <Grid item xs={5} md={2}>
             <div className={classes.content}>
               <Typography
                 gutterBottom
@@ -189,7 +189,7 @@ function DarkMode({ className }) {
                 Support Center <br />
               </Typography>
             </div>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </div>

@@ -96,7 +96,7 @@ function PlanCard({ pool, index, className }) {
 
   const onClickDetails = () => {
     history.push({
-      pathname: '/app/taalswap/swap',
+      pathname: '/app/taalswap/pools/swap',
       state: { selectedPool: pool }
     });
   };
