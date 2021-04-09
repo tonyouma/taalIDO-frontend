@@ -208,22 +208,30 @@ function NavBar({ isOpenNav, onCloseNav }) {
           </Typography>
         </div>
         <div className={classes.listIcon}>
-          <motion.img
-            variants={varFadeInRight}
-            src="/static/icons/ic_s_facebook.svg"
-          />
-          <motion.img
-            variants={varFadeInRight}
-            src="/static/icons/ic_s_linkin.svg"
-          />
-          <motion.img
-            variants={varFadeInRight}
-            src="/static/icons/ic_s_instagram.svg"
-          />
-          <motion.img
-            variants={varFadeInRight}
-            src="/static/icons/ic_s_tweet.svg"
-          />
+          <a href="">
+            <motion.img
+              variants={varFadeInRight}
+              src="/static/icons/ic_s_facebook.svg"
+            />
+          </a>
+          <a href="">
+            <motion.img
+              variants={varFadeInRight}
+              src="/static/icons/ic_s_linkin.svg"
+            />
+          </a>
+          <a href="">
+            <motion.img
+              variants={varFadeInRight}
+              src="/static/icons/ic_s_instagram.svg"
+            />
+          </a>
+          <a href="https://twitter.com/taalswap" target="_blank">
+            <motion.img
+              variants={varFadeInRight}
+              src="/static/icons/ic_s_tweet.svg"
+            />
+          </a>
         </div>
       </Box>
     </Scrollbars>

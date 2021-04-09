@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import { BASE_IMG } from 'src/utils/getImages';
 import Logo from 'src/components/Logo';
 import { PATH_APP, PATH_HOME } from 'src/routes/paths';
-import { Link as ScrollLink } from 'react-scroll';
 import useSettings from 'src/hooks/useSettings';
 import {
   varFadeInUp,
@@ -112,22 +111,30 @@ function DarkMode({ className }) {
                 </Typography>
               </MotionInView>
               <div className={classes.listIcon}>
-                <motion.img
-                  variants={varFadeInRight}
-                  src="/static/icons/ic_m_facebook.svg"
-                />
-                <motion.img
-                  variants={varFadeInRight}
-                  src="/static/icons/ic_m_linkin.svg"
-                />
-                <motion.img
-                  variants={varFadeInRight}
-                  src="/static/icons/ic_m_instagram.svg"
-                />
-                <motion.img
-                  variants={varFadeInRight}
-                  src="/static/icons/ic_m_tweet.svg"
-                />
+                <a href="">
+                  <motion.img
+                    variants={varFadeInRight}
+                    src="/static/icons/ic_m_facebook.svg"
+                  />
+                </a>
+                <a href="">
+                  <motion.img
+                    variants={varFadeInRight}
+                    src="/static/icons/ic_m_linkin.svg"
+                  />
+                </a>
+                <a href="">
+                  <motion.img
+                    variants={varFadeInRight}
+                    src="/static/icons/ic_m_instagram.svg"
+                  />
+                </a>
+                <a href="https://twitter.com/taalswap" target="_blank">
+                  <motion.img
+                    variants={varFadeInRight}
+                    src="/static/icons/ic_m_tweet.svg"
+                  />
+                </a>
               </div>
             </div>
           </Grid>
