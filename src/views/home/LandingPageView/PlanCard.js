@@ -8,6 +8,7 @@ import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
 import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
 import { makeStyles } from '@material-ui/core/styles';
+import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
 import {
   Card,
   Button,
@@ -313,7 +314,14 @@ function PlanCard({ pool, index, className }) {
           id="customized-dialog-title"
           onClose={handleCloseModal}
         >
-          Token Safety Alert!
+          <Box display="flex" justifyContent="flex-start">
+            <Box>
+              <ErrorOutlineOutlinedIcon style={{ color: 'red' }} />
+            </Box>
+            <Box marginLeft="0.5rem">
+              <Typography color="red">Token Safety Alert!</Typography>
+            </Box>
+          </Box>
         </DialogTitle>
 
         <DialogContent>
@@ -350,7 +358,7 @@ function PlanCard({ pool, index, className }) {
           </Box>
           {showWarningMessage === true && (
             <Box>
-              <Typography textAlign="center" color={'red'}>
+              <Typography textAlign="center" color="red">
                 You should check to proceed.
               </Typography>
             </Box>

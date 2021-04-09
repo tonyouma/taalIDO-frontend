@@ -3,6 +3,7 @@ import Scrollbars from 'src/components/Scrollbars';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
+import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
 import {
   Button,
   Table,
@@ -321,7 +322,14 @@ export default function BasicTable({ filterName }) {
               id="customized-dialog-title"
               onClose={handleCloseModal}
             >
-              Token Safety Alert!
+              <Box display="flex" justifyContent="flex-start">
+                <Box>
+                  <ErrorOutlineOutlinedIcon style={{ color: 'red' }} />
+                </Box>
+                <Box marginLeft="0.5rem">
+                  <Typography color="red">Token Safety Alert!</Typography>
+                </Box>
+              </Box>
             </DialogTitle>
 
             <DialogContent>
