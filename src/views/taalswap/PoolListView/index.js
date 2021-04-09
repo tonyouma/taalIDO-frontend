@@ -14,7 +14,9 @@ import {
   Box,
   Typography,
   OutlinedInput,
-  InputAdornment
+  InputAdornment,
+  Backdrop,
+  CircularProgress
 } from '@material-ui/core';
 import BasicTable from './BasicTable';
 import { useTranslation } from 'react-i18next';
@@ -71,6 +73,10 @@ const useStyles = makeStyles((theme) => ({
       textAlign: 'left',
       marginBottom: '1rem'
     }
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff'
   }
 }));
 
@@ -103,6 +109,7 @@ function PoolListView() {
   const [currentTab, setCurrentTab] = useState('All Pools');
   const [value, setValue] = useState(0);
   const [filterName, setFilterName] = useState('');
+  const [open, setOpen] = useState(false);
   const { library, account } = context;
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -117,6 +124,11 @@ function PoolListView() {
     setFilterName(e.target.value);
   };
 
+  const handleBackdrop = (open) => {
+    console.log(open);
+    setOpen(open);
+  };
+
   useEffect(async () => {
     await dispatch(getPoolList());
     await dispatch(getSwapList(account));
@@ -124,6 +136,10 @@ function PoolListView() {
 
   return (
     <Page title={t('taalswap.projects')} className={classes.root}>
+      <Backdrop className={classes.backdrop} open={open}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
       <Container maxWidth="lg">
         {/* <HeaderDashboard
           heading={t('taalswap.projects')}
@@ -177,7 +193,7 @@ function PoolListView() {
           <BasicTable filterName={filterName} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <MyPools filterName={filterName} />
+          <MyPools filterName={filterName} onBackdrop={handleBackdrop} />
         </TabPanel>
       </Container>
     </Page>

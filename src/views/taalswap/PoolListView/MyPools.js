@@ -18,7 +18,6 @@ import {
   DialogActions,
   TextField,
   Box,
-  Backdrop,
   CircularProgress,
   Hidden
 } from '@material-ui/core';
@@ -38,6 +37,7 @@ import { getPoolStatus } from '../../../utils/getPoolStatus';
 import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
 import Numbers from 'src/utils/Numbers';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -55,10 +55,7 @@ const useStyles = makeStyles((theme) => ({
   dialogTitle: {
     color: theme.palette.primary.main
   },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff'
-  },
+
   row: {
     '&:hover': {
       cursor: 'pointer'
@@ -160,7 +157,7 @@ function TablePoolRow({ row, handleOpenModal }) {
   );
 }
 
-export default function MyPools({ filterName }) {
+export default function MyPools({ filterName, onBackdrop }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -170,7 +167,7 @@ export default function MyPools({ filterName }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [poolStatus, setPoolStatus] = useState('');
-  const [open, setOpen] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const context = useWeb3React();
   const dispatch = useDispatch();
   const { poolList, swapList, isOpenModal, selectedPool } = useSelector(
@@ -223,27 +220,37 @@ export default function MyPools({ filterName }) {
   const handleOnClickClaimETH = async () => {
     try {
       if (!!library) {
-        setOpen(true);
         const myPurchases = await taalswap.getAddressPurchaseIds({
           address: account
         });
 
-        console.log(myPurchases);
-
         if (!!myPurchases.error) {
-          console.log(myPurchases.error);
         } else {
           myPurchases.map(async (purchases) => {
+            onBackdrop(true);
             const result = await taalswap
               .redeemGivenMinimumGoalNotAchieved({
                 purchase_id: purchases
               })
-              .catch((error) => console.log(error));
+              .catch((error) => {
+                console.log(error);
+                enqueueSnackbar('Claim ETH fail', {
+                  variant: 'fail'
+                });
+              });
 
-            if (result !== undefined) await result.wait();
+            if (result !== undefined) {
+              const receipt = await result.wait();
+              if (receipt.status === 1) {
+                enqueueSnackbar('Claim ETH success', {
+                  variant: 'success'
+                });
+              }
+            }
+            onBackdrop(false);
           });
         }
-        setOpen(false);
+
         dispatch(closeModal());
       }
     } catch (error) {
@@ -254,7 +261,7 @@ export default function MyPools({ filterName }) {
   const handleOnClickClaimTokens = async () => {
     try {
       if (!!library) {
-        setOpen(true);
+        onBackdrop(true);
         const myPurchases = await taalswap.getAddressPurchaseIds({
           address: account
         });
@@ -272,7 +279,7 @@ export default function MyPools({ filterName }) {
             if (result !== undefined) await result.wait();
           });
         }
-        setOpen(false);
+        onBackdrop(false);
         dispatch(closeModal());
       }
     } catch (error) {
@@ -465,9 +472,6 @@ export default function MyPools({ filterName }) {
           </Dialog>
         )}
       </Scrollbars>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </div>
   );
 }
