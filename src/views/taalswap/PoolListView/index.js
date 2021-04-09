@@ -26,10 +26,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSwapList, getPoolList } from '../../../redux/slices/pool';
 import ToolbarTable from '../../user/UserListView/ToolbarTable';
 import searchFill from '@iconify-icons/eva/search-fill';
+import { useLocation } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
-const ACCOUNT_TABS = [
+const POOLS_TABS = [
   {
     value: 0,
     title: 'All Projects',
@@ -106,6 +107,7 @@ function PoolListView() {
   const classes = useStyles();
   const context = useWeb3React();
   const dispatch = useDispatch();
+  const location = useLocation();
   const [currentTab, setCurrentTab] = useState('All Pools');
   const [value, setValue] = useState(0);
   const [filterName, setFilterName] = useState('');
@@ -132,6 +134,9 @@ function PoolListView() {
   useEffect(async () => {
     await dispatch(getPoolList());
     await dispatch(getSwapList(account));
+    if (location.state !== null) {
+      setValue(location.state.tabValue);
+    }
   }, [dispatch]);
 
   return (
@@ -159,7 +164,7 @@ function PoolListView() {
               onChange={handleChange}
               className={classes.tabBar}
             >
-              {ACCOUNT_TABS.map((tab) => (
+              {POOLS_TABS.map((tab) => (
                 <Tab
                   disableRipple
                   key={tab.value}

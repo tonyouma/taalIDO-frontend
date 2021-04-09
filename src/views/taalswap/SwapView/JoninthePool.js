@@ -17,6 +17,7 @@ import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import { useSnackbar } from 'notistack';
+import { useHistory } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -62,6 +63,8 @@ function JoninthePool({ className, pool, onBackdrop }) {
   const classes = useStyles();
   const context = useWeb3React();
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const { enqueueSnackbar } = useSnackbar();
   const [amount, setAmount] = useState(0);
   const [price, setPrice] = useState(0);
@@ -143,6 +146,11 @@ function JoninthePool({ className, pool, onBackdrop }) {
                   });
                   await setWarningMessage('');
                   await addSwap();
+
+                  history.push({
+                    pathname: '/app/taalswap/pools',
+                    state: { tabValue: 1 }
+                  });
                 }
 
                 onBackdrop(false);

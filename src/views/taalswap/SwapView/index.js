@@ -10,13 +10,15 @@ import AboutTheProject from '../SwapView/AboutTheProject';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Box,
   Grid,
   Card,
   Container,
   Tab,
   Tabs,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  Typography
 } from '@material-ui/core';
 import PoolButton from './PoolButton';
 import { useLocation } from 'react-router-dom';
@@ -117,8 +119,21 @@ function PaymentView(className, ...other) {
   return (
     <Page title="Swap | TaalSwap" className={classes.root}>
       <Container maxWidth="lg">
-        <Backdrop className={classes.backdrop} open={open}>
-          <CircularProgress color="inherit" />
+        <Backdrop
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column'
+          }}
+          className={classes.backdrop}
+          open={open}
+        >
+          <Box>
+            <CircularProgress color="inherit" />
+          </Box>
+          <Box>
+            <Typography>in progress.. Please wait</Typography>
+          </Box>
         </Backdrop>
         <HeaderDashboard
           heading={pool.poolName}
