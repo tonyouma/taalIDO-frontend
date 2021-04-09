@@ -7,11 +7,11 @@ import {
   DialogContent,
   Typography
 } from '@material-ui/core';
-import { Height, PaddingTwoTone } from '@material-ui/icons';
 
 import { injected, walletconnect } from 'src/connectors';
 import { setActivatingConnector } from 'src/redux/slices/wallet';
 import { useDispatch } from 'react-redux';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -71,9 +71,11 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
         await activate(injected);
         dispatch(setActivatingConnector(injected));
       } else if (wallet.name === 'WalletConnect') {
-        await activate(walletconnect);
-        dispatch(setActivatingConnector(walletconnect));
+        console.log('await');
+        const wc = walletconnect(true);
+        await activate(wc, undefined, true);
       }
+      console.log('end', wallet);
     } catch (e) {
       console.log(e);
     }
