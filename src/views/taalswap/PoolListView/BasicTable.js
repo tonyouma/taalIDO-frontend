@@ -110,17 +110,25 @@ function TablePoolRow({ row, handleOpenModal }) {
   const { library, account } = context;
 
   useEffect(async () => {
-    if (!!library && library.provider.chainId !== targetNetwork) {
-      enqueueSnackbar(targetNetworkMsg, {
-        variant: 'warning',
-        autoHideDuration: 3000,
-        anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'center'
-        }
-      });
-      return;
+    if (!!library) {
+      if (
+        (library.provider.isMetaMask &&
+          library.provider.chainId !== targetNetwork) ||
+        (!library.provider.isMetaMask &&
+          library.provider.chainId !== parseInt(targetNetwork))
+      ) {
+        enqueueSnackbar(targetNetworkMsg, {
+          variant: 'warning',
+          autoHideDuration: 3000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center'
+          }
+        });
+        return;
+      }
     }
+
     if (!!library && row.contractAddress !== '') {
       const taalswap = new Taalswap({
         application: row,

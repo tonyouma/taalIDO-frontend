@@ -139,15 +139,22 @@ function TopBar() {
   } = context;
 
   useEffect(() => {
-    if (!!library && library.provider.chainId !== targetNetwork) {
-      enqueueSnackbar(targetNetworkMsg, {
-        variant: 'warning',
-        autoHideDuration: 3000,
-        anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'center'
-        }
-      });
+    if (!!library) {
+      if (
+        (library.provider.isMetaMask &&
+          library.provider.chainId !== targetNetwork) ||
+        (!library.provider.isMetaMask &&
+          library.provider.chainId !== parseInt(targetNetwork))
+      ) {
+        enqueueSnackbar(targetNetworkMsg, {
+          variant: 'warning',
+          autoHideDuration: 3000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center'
+          }
+        });
+      }
     }
   }, [activatingConnector, connector, library]);
 
