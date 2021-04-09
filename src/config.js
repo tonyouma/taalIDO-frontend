@@ -20,7 +20,7 @@ export const cloudinaryConfig = {
   cloudinaryUrl: process.env.REACT_APP_CLOUDINARY_URL
 };
 
-export const targetNetwork = 4;
+export const targetNetwork = '0x4';
 export const targetNetworkMsg =
   'Rinkeby 테스트 네트워크가 선택되지 않았습니다.';
 
