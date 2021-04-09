@@ -90,6 +90,7 @@ function DarkMode({ className }) {
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
+  const fiiter = true;
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -104,7 +105,7 @@ function DarkMode({ className }) {
                 {/* <Typography variant="h4" paragraph>
                   TaalSwap
                 </Typography> */}
-                <Logo />
+                <Logo footer />
               </MotionInView>
               <MotionInView
                 variants={varFadeInUp}
