@@ -30,6 +30,7 @@ import Taalswap from 'src/utils/taalswap';
 import { useSnackbar } from 'notistack';
 import { targetNetwork, targetNetworkMsg } from 'src/config';
 import { BorderColor } from '@material-ui/icons';
+import parse from 'autosuggest-highlight/parse';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
 
@@ -95,7 +96,12 @@ function TopBar({ onOpenNav, className }) {
     }
 
     if (!!library && !!account) {
-      if (library.provider.chainId !== targetNetwork) {
+      if (
+        (library.provider.isMetaMask &&
+          library.provider.chainId !== targetNetwork) ||
+        (!library.provider.isMetaMask &&
+          library.provider.chainId !== parseInt(targetNetwork))
+      ) {
         enqueueSnackbar(targetNetworkMsg, {
           variant: 'warning',
           autoHideDuration: 3000,

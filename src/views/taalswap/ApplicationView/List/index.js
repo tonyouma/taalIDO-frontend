@@ -319,7 +319,7 @@ function EnhancedTableHead(props) {
             ) : null}
           </TableSortLabel>
         </TableCell>
-        {/* 
+        {/*
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -668,17 +668,26 @@ export default function ApplicationListView() {
   };
 
   useEffect(() => {
-    if (!!library && library.provider.chainId !== targetNetwork) {
-      enqueueSnackbar(targetNetworkMsg, {
-        variant: 'warning',
-        autoHideDuration: 3000,
-        anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'center'
-        }
-      });
-      return;
+    if (!!library) {
+      if (
+        (library.provider.isMetaMask &&
+          library.provider.chainId !== targetNetwork) ||
+        (!library.provider.isMetaMask &&
+          library.provider.chainId !== parseInt(targetNetwork))
+      ) {
+        enqueueSnackbar(targetNetworkMsg, {
+          variant: 'warning',
+          autoHideDuration: 3000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center'
+          }
+        });
+        return;
+      }
     }
+    dispatch(getApplicationList());
+
     dispatch(getApplicationList());
   }, [update, open, library]);
 
