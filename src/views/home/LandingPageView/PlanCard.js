@@ -8,7 +8,18 @@ import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
 import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Button, Typography, Box } from '@material-ui/core';
+import {
+  Card,
+  Button,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Box,
+  Divider,
+  Checkbox
+} from '@material-ui/core';
 import { MLabel } from 'src/theme';
 import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
@@ -54,8 +65,39 @@ function PlanCard({ pool, index, className }) {
   const [totalRaise, setTotalRaise] = useState(0);
   const [participants, setParticipants] = useState(0);
   const [poolStatus, setStatus] = useState('');
+  const [isOpenModal, setOpenModal] = useState(false);
+  const [checkWarning, setCheckWarning] = useState(false);
+  const [showWarningMessage, setShowWarningMessage] = useState(false);
 
   const { library, account } = context;
+
+  const handleOpenModal = (row) => {
+    setOpenModal(row);
+  };
+
+  const handleCloseModal = () => {
+    setCheckWarning(false);
+    setOpenModal();
+  };
+
+  const handleOnClickSwap = () => {
+    if (checkWarning) {
+      setCheckWarning(false);
+      history.push({
+        pathname: '/app/taalswap/pools/swap',
+        state: { selectedPool: pool }
+      });
+    } else {
+      setShowWarningMessage(true);
+    }
+  };
+
+  const handleCheckWarningChange = () => {
+    setCheckWarning(!checkWarning);
+    checkWarning === true
+      ? setShowWarningMessage(true)
+      : setShowWarningMessage(false);
+  };
 
   useEffect(async () => {
     try {
@@ -95,10 +137,11 @@ function PlanCard({ pool, index, className }) {
   }, [pool, library]);
 
   const onClickDetails = () => {
-    history.push({
-      pathname: '/app/taalswap/pools/swap',
-      state: { selectedPool: pool }
-    });
+    setOpenModal(true);
+    // history.push({
+    //   pathname: '/app/taalswap/pools/swap',
+    //   state: { selectedPool: pool }
+    // });
   };
 
   return (
@@ -256,6 +299,83 @@ function PlanCard({ pool, index, className }) {
       >
         Details
       </Button>
+
+      <Dialog
+        open={isOpenModal}
+        onClose={handleCloseModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        maxWidth="xs"
+        style={{ padding: '1rem' }}
+      >
+        <DialogTitle
+          className={classes.dialogTitle}
+          id="customized-dialog-title"
+          onClose={handleCloseModal}
+        >
+          Token Safety Alert!
+        </DialogTitle>
+
+        <DialogContent>
+          <Divider />{' '}
+          <Box>
+            <p>
+              Anyone can create an ERC20 token on Ethereum with any name,
+              including creating face versions of existing tokens and tokens
+              that claim to represent projects but do not exist.
+            </p>
+            <br />
+            <p>
+              This interface can load arbitrary tokens by token address. Please
+              proceed with utmost caution while you’re interacting with
+              arbitrary ERC20 tokens.
+            </p>
+            <br />
+            <p>
+              If you purchase an arbitrary token, you may be unable to sell it
+              back.
+            </p>
+          </Box>
+          <Divider />
+          <Box
+            textAlign="right"
+            // marginTop="20px"
+          >
+            <Checkbox
+              checked={checkWarning}
+              onChange={handleCheckWarningChange}
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+            I understand
+          </Box>
+          {showWarningMessage === true && (
+            <Box>
+              <Typography textAlign="center" color={'red'}>
+                You should check to proceed.
+              </Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions style={{ height: '60px' }}>
+          <Button
+            className={classes.button}
+            variant="outlined"
+            color="inherit"
+            onClick={handleCloseModal}
+          >
+            Cancel
+          </Button>
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={handleOnClickSwap}
+            color="primary"
+            autoFocus
+          >
+            Swap
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }

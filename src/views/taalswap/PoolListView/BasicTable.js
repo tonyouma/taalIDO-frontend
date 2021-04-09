@@ -18,7 +18,9 @@ import {
   DialogActions,
   TextField,
   Box,
-  Hidden
+  Hidden,
+  Checkbox,
+  Divider
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -189,6 +191,8 @@ export default function BasicTable({ filterName }) {
   const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [checkWarning, setCheckWarning] = useState(false);
+  const [showWarningMessage, setShowWarningMessage] = useState(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -215,15 +219,27 @@ export default function BasicTable({ filterName }) {
   };
 
   const handleCloseModal = () => {
+    setCheckWarning(false);
     dispatch(closeModal());
   };
 
   const handleOnClickSwap = () => {
-    dispatch(closeModal());
-    history.push({
-      pathname: '/app/taalswap/pools/swap',
-      state: { selectedPool: selectedPool }
-    });
+    if (checkWarning) {
+      dispatch(closeModal());
+      history.push({
+        pathname: '/app/taalswap/pools/swap',
+        state: { selectedPool: selectedPool }
+      });
+    } else {
+      setShowWarningMessage(true);
+    }
+  };
+
+  const handleCheckWarningChange = () => {
+    setCheckWarning(!checkWarning);
+    checkWarning === true
+      ? setShowWarningMessage(true)
+      : setShowWarningMessage(false);
   };
 
   const filteredPools = applyFilter(
@@ -297,61 +313,58 @@ export default function BasicTable({ filterName }) {
             onClose={handleCloseModal}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
+            maxWidth="xs"
+            style={{ padding: '1rem' }}
           >
             <DialogTitle
               className={classes.dialogTitle}
               id="customized-dialog-title"
               onClose={handleCloseModal}
             >
-              Pool Details
+              Token Safety Alert!
             </DialogTitle>
-            <DialogContent dividers>
-              <TextField
-                className={classes.contentTextField}
-                label="Pool"
-                variant="standard"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                value={selectedPool.poolName}
-                fullWidth
-              />
-              <TextField
-                className={classes.contentTextField}
-                label="Token"
-                variant="standard"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                value={selectedPool.tokenContractAddr}
-                fullWidth
-              />
-              <TextField
-                className={classes.contentTextField}
-                label="Max"
-                variant="standard"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                value={`${getMax(
-                  selectedPool.maxIndividuals,
-                  selectedPool.tradeValue
-                )} ETH`}
-                fullWidth
-              />
-              <TextField
-                className={classes.contentTextField}
-                color="primary"
-                label="Access"
-                variant="standard"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                value={selectedPool.access}
-                fullWidth
-              />
+
+            <DialogContent>
+              <Divider />{' '}
+              <Box>
+                <p>
+                  Anyone can create an ERC20 token on Ethereum with any name,
+                  including creating face versions of existing tokens and tokens
+                  that claim to represent projects but do not exist.
+                </p>
+                <br />
+                <p>
+                  This interface can load arbitrary tokens by token address.
+                  Please proceed with utmost caution while you’re interacting
+                  with arbitrary ERC20 tokens.
+                </p>
+                <br />
+                <p>
+                  If you purchase an arbitrary token, you may be unable to sell
+                  it back.
+                </p>
+              </Box>
+              <Divider />
+              <Box
+                textAlign="right"
+                // marginTop="20px"
+              >
+                <Checkbox
+                  checked={checkWarning}
+                  onChange={handleCheckWarningChange}
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                />
+                I understand
+              </Box>
+              {showWarningMessage === true && (
+                <Box>
+                  <Typography textAlign="center" color={'red'}>
+                    You should check to proceed.
+                  </Typography>
+                </Box>
+              )}
             </DialogContent>
-            <DialogActions>
+            <DialogActions style={{ height: '60px' }}>
               <Button
                 className={classes.button}
                 variant="outlined"
@@ -371,6 +384,85 @@ export default function BasicTable({ filterName }) {
               </Button>
             </DialogActions>
           </Dialog>
+          // <Dialog
+          //   open={isOpenModal}
+          //   onClose={handleCloseModal}
+          //   aria-labelledby="alert-dialog-title"
+          //   aria-describedby="alert-dialog-description"
+          // >
+          //   <DialogTitle
+          //     className={classes.dialogTitle}
+          //     id="customized-dialog-title"
+          //     onClose={handleCloseModal}
+          //   >
+          //     Pool Details
+          //   </DialogTitle>
+          //   <DialogContent dividers>
+          //     <TextField
+          //       className={classes.contentTextField}
+          //       label="Pool"
+          //       variant="standard"
+          //       InputLabelProps={{
+          //         shrink: true
+          //       }}
+          //       value={selectedPool.poolName}
+          //       fullWidth
+          //     />
+          //     <TextField
+          //       className={classes.contentTextField}
+          //       label="Token"
+          //       variant="standard"
+          //       InputLabelProps={{
+          //         shrink: true
+          //       }}
+          //       value={selectedPool.tokenContractAddr}
+          //       fullWidth
+          //     />
+          //     <TextField
+          //       className={classes.contentTextField}
+          //       label="Max"
+          //       variant="standard"
+          //       InputLabelProps={{
+          //         shrink: true
+          //       }}
+          //       value={`${getMax(
+          //         selectedPool.maxIndividuals,
+          //         selectedPool.tradeValue
+          //       )} ETH`}
+          //       fullWidth
+          //     />
+          //     <TextField
+          //       className={classes.contentTextField}
+          //       color="primary"
+          //       label="Access"
+          //       variant="standard"
+          //       InputLabelProps={{
+          //         shrink: true
+          //       }}
+          //       value={selectedPool.access}
+          //       fullWidth
+          //     />
+          //   </DialogContent>
+          //   <DialogActions>
+          //     <Button
+          //       className={classes.button}
+          //       variant="outlined"
+          //       color="inherit"
+          //       onClick={handleCloseModal}
+          //     >
+          //       Cancel
+          //     </Button>
+          //     <Button
+          //       className={classes.button}
+          //       variant="contained"
+          //       onClick={handleOnClickSwap}
+          //       color="primary"
+          //       autoFocus
+          //     >
+          //       Swap
+          //     </Button>
+          //   </DialogActions>
+          // </Dialog>
         )}
       </Scrollbars>
     </div>
