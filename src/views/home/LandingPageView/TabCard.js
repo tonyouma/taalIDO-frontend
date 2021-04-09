@@ -59,8 +59,8 @@ function Tabcard() {
       <Container maxWidth="lg">
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <Tabs value={value} onChange={handleChange} centered>
-            <Tab label="Live&Upcoming Pools" className={classes.label} />
-            <Tab label="Accomplished Pools" className={classes.label} />
+            <Tab label="Live & Upcoming" className={classes.label} />
+            <Tab label="Accomplished" className={classes.label} />
           </Tabs>
         </Box>
 
