@@ -2,9 +2,14 @@ import NavItem from './NavItem';
 import MenuLinks from './config';
 import PropTypes from 'prop-types';
 import Logo from 'src/components/Logo';
+import { motion } from 'framer-motion';
+import {
+  varFadeInUp,
+  MotionInView,
+  varFadeInRight
+} from 'src/components/Animate';
 //import useAuth from 'src/hooks/useAuth';
 import React, { useEffect } from 'react';
-import MyAvatar from 'src/components/MyAvatar';
 import Scrollbars from 'src/components/Scrollbars';
 import { PATH_APP, PATH_DOCS } from 'src/routes/paths';
 import { Link as RouterLink, useLocation, matchPath } from 'react-router-dom';
@@ -13,7 +18,6 @@ import {
   Box,
   Link,
   List,
-  Button,
   Drawer,
   Hidden,
   Typography,
@@ -39,7 +43,7 @@ const useStyles = makeStyles((theme) => {
       background: theme.palette.background.default
     },
     subHeader: {
-      ...theme.typography.overline,
+      ...theme.typography.subtitle2,
       marginTop: theme.spacing(3),
       marginBottom: theme.spacing(2),
       paddingLeft: theme.spacing(5),
@@ -53,12 +57,21 @@ const useStyles = makeStyles((theme) => {
       borderRadius: theme.shape.borderRadiusSm,
       background: theme.palette.grey[isLight ? 200 : 800]
     },
+    listIcon: {
+      display: 'flex',
+      marginBottom: theme.spacing(3),
+      marginTop: theme.spacing(0),
+      justifyContent: 'center',
+      [theme.breakpoints.up('md')]: {
+        justifyContent: 'flex-start'
+      },
+      '& > :not(:last-of-type)': {
+        marginRight: theme.spacing(4.5)
+      }
+    },
     doc: {
       padding: theme.spacing(2.5),
-      borderRadius: theme.shape.borderRadiusMd,
-      backgroundColor: isLight
-        ? alpha(theme.palette.primary.main, 0.08)
-        : theme.palette.primary.lighter
+      borderRadius: theme.shape.borderRadiusMd
     }
   };
 });
@@ -183,36 +196,36 @@ function NavBar({ isOpenNav, onCloseNav }) {
         </List>
       ))}
 
-      {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+      <Box sx={{ px: 4.5, pb: 3, mt: 10 }}>
         <div className={classes.doc}>
-          <Box
-            component="img"
-            alt="doc"
-            src="/static/icons/ic_doc.svg"
-            sx={{ width: 36, height: 36, mb: 2 }}
-          />
           <Typography
             gutterBottom
-            variant="subtitle1"
-            sx={{ color: 'grey.800' }}
+            align="center"
+            variant="subtitle2"
+            sx={{ mb: 1, color: 'text.disabled', display: 'block' }}
           >
-            Hi,
+            © All rights reserved.
           </Typography>
-          <Typography variant="body2" sx={{ mb: 2, color: 'grey.600' }}>
-            Need help?
-            <br /> Please check our docs
-          </Typography>
-
-          <Button
-            fullWidth
-            to={PATH_DOCS.root}
-            variant="contained"
-            component={RouterLink}
-          >
-            Documentation
-          </Button>
         </div>
-      </Box> */}
+        <div className={classes.listIcon}>
+          <motion.img
+            variants={varFadeInRight}
+            src="/static/icons/ic_s_facebook.svg"
+          />
+          <motion.img
+            variants={varFadeInRight}
+            src="/static/icons/ic_s_linkin.svg"
+          />
+          <motion.img
+            variants={varFadeInRight}
+            src="/static/icons/ic_s_instagram.svg"
+          />
+          <motion.img
+            variants={varFadeInRight}
+            src="/static/icons/ic_s_tweet.svg"
+          />
+        </div>
+      </Box>
     </Scrollbars>
   );
 

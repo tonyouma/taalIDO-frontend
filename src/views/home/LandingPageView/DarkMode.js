@@ -3,16 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 //import Block from 'src/components/Block';
 import { motion } from 'framer-motion';
-import { BASE_IMG } from 'src/utils/getImages';
 import Logo from 'src/components/Logo';
-import { PATH_APP, PATH_HOME } from 'src/routes/paths';
-import { Link as ScrollLink } from 'react-scroll';
-import useSettings from 'src/hooks/useSettings';
 import {
   varFadeInUp,
-  varFadeInDown,
   MotionInView,
-  varZoomInOut,
   varFadeInRight
 } from 'src/components/Animate';
 import { makeStyles } from '@material-ui/core/styles';

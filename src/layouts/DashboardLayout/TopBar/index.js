@@ -8,6 +8,7 @@ import menu2Fill from '@iconify-icons/eva/menu-2-fill';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import {
   Box,
+  Divider,
   AppBar,
   Hidden,
   Toolbar,
@@ -30,7 +31,7 @@ import { useSnackbar } from 'notistack';
 import { targetNetwork, targetNetworkMsg } from 'src/config';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
-
+import { BorderColor } from '@material-ui/icons';
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;
@@ -195,7 +196,7 @@ function TopBar({ onOpenNav, className }) {
           />
         </Box>
       </Toolbar>
-      <Box border={1} borderColor={'#e5e8eb'}></Box>
+      <Divider />
     </AppBar>
   );
 }
