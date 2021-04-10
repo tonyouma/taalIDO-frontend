@@ -191,7 +191,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                       )}
                       helperText={
                         (touched.minIndividuals && errors.minIndividuals) ||
-                        '(Min. # of tokens allowed per person)'
+                        '(Min. # of tokens allowed per wallet)'
                       }
                     />
                   </Grid>
@@ -208,7 +208,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                       )}
                       helperText={
                         (touched.maxIndividuals && errors.maxIndividuals) ||
-                        '(Max. # of tokens allowed per person)'
+                        '(Max. # of tokens allowed per wallet)'
                       }
                     />
                   </Grid>
