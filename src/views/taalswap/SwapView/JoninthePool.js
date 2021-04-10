@@ -118,7 +118,7 @@ function JoninthePool({ className, pool, onBackdrop }) {
         } else {
           if (
             parseFloat(minAmount) < parseFloat(amount) &&
-            parseFloat(amount) < parseFloat(maxAmount)
+            parseFloat(amount) <= parseFloat(maxAmount)
           ) {
             if (parseFloat(amount) < parseFloat(tokensLeft)) {
               if (
@@ -156,7 +156,7 @@ function JoninthePool({ className, pool, onBackdrop }) {
                 onBackdrop(false);
               } else {
                 setWarningMessage(
-                  `Should be less than individual maximum! (${swappedAmount} / ${amount})`
+                  `Should be less than individual maximum! (${swappedAmount} / ${pool.maxIndividuals})`
                 );
               }
             } else {
@@ -267,7 +267,7 @@ function JoninthePool({ className, pool, onBackdrop }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Yout Bid Amount
+          Your Bid Amount
         </Typography>
         <Typography
           component="p"
@@ -375,13 +375,14 @@ function JoninthePool({ className, pool, onBackdrop }) {
               mb: 1,
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              color: 'red'
             }}
           >
             <Box
               component={Icon}
               icon={shieldFill}
-              sx={{ width: 20, height: 20, mr: 1, color: 'primary.main' }}
+              sx={{ width: 20, height: 20, mr: 1 }}
             />
             Warning : {warningMessage}
           </Typography>
