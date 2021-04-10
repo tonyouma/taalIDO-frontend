@@ -132,7 +132,7 @@ function PaymentView(className, ...other) {
             <CircularProgress color="inherit" />
           </Box>
           <Box>
-            <Typography>in progress.. Please wait</Typography>
+            <Typography>In progress… Please wait.</Typography>
           </Box>
         </Backdrop>
         <HeaderDashboard

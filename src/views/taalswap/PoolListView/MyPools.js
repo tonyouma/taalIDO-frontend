@@ -100,6 +100,7 @@ function TablePoolRow({ row, handleOpenModal }) {
   const dispatch = useDispatch();
   const [progressValue, setProgressValue] = useState(0);
   const [poolStatus, setStatus] = useState('');
+  const [max, setMax] = useState(0);
 
   const { library, account } = context;
 
@@ -124,6 +125,7 @@ function TablePoolRow({ row, handleOpenModal }) {
         row.minFundRaise
       );
       setStatus(status);
+      setMax();
     }
 
     return;
@@ -167,6 +169,7 @@ export default function MyPools({ filterName, onBackdrop }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [poolStatus, setPoolStatus] = useState('');
+  const [max, setMax] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const context = useWeb3React();
   const dispatch = useDispatch();
@@ -202,6 +205,7 @@ export default function MyPools({ filterName, onBackdrop }) {
 
   const handleOpenModal = (row, poolStatus) => {
     setPoolStatus(poolStatus);
+    setMax(getMax(row.maxIndividuals, row.tradeValue));
     dispatch(openModal(row));
   };
 
@@ -404,7 +408,7 @@ export default function MyPools({ filterName, onBackdrop }) {
               />
               <TextField
                 className={classes.contentTextField}
-                label="Token"
+                label="Token Address"
                 variant="standard"
                 InputLabelProps={{
                   shrink: true
@@ -419,10 +423,7 @@ export default function MyPools({ filterName, onBackdrop }) {
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={`${getMax(
-                  selectedPool.maxIndividuals,
-                  selectedPool.tradeValue
-                )} Token`}
+                value={`${Numbers.toFloat(max)} Token`}
                 fullWidth
               />
               <TextField

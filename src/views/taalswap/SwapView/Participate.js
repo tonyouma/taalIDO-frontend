@@ -131,7 +131,7 @@ function Participate({ pool }) {
           <Grid item xs={12}>
             <Card>
               {/* <CardHeader title="Basic Table" /> */}
-              <BasicTable purchaseList={purchaseList} />
+              <BasicTable purchaseList={purchaseList} symbol={pool.symbol} />
             </Card>
           </Grid>
         </Grid>

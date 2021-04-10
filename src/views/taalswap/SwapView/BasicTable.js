@@ -3,7 +3,7 @@ import Scrollbars from 'src/components/Scrollbars';
 import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
-
+import Numbers from 'src/utils/Numbers';
 import {
   Box,
   Hidden,
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 // ----------------------------------------------------------------------
 
-export default function BasicTable({ purchaseList }) {
+export default function BasicTable({ purchaseList, symbol }) {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -64,7 +64,7 @@ export default function BasicTable({ purchaseList }) {
                 <Hidden smDown>
                   <TableCell>Purchaser</TableCell>
                 </Hidden>
-                <TableCell align="right">Amount</TableCell>
+                <TableCell align="right">{symbol} Amount</TableCell>
                 <TableCell align="right">Eth Amount</TableCell>
 
                 <TableCell align="center">Timestamp</TableCell>
@@ -88,8 +88,12 @@ export default function BasicTable({ purchaseList }) {
                           {row.purchaser}
                         </TableCell>
                       </Hidden>
-                      <TableCell align="right">{row.amount}</TableCell>
-                      <TableCell align="right">{row.ethAmount}</TableCell>
+                      <TableCell align="right">
+                        {Numbers.toFloat(row.amount)}
+                      </TableCell>
+                      <TableCell align="right">
+                        {Numbers.toFloat(row.ethAmount)}
+                      </TableCell>
 
                       <TableCell align="right">{row.timestamp}</TableCell>
                       <Hidden smDown>

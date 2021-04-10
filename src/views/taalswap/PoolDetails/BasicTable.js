@@ -14,6 +14,7 @@ import { useWeb3React } from '@web3-react/core';
 import getMax from '../../../utils/getMax';
 import moment from 'moment';
 import Taalswap from 'src/utils/taalswap';
+import Numbers from 'src/utils/Numbers';
 
 // ----------------------------------------------------------------------
 
@@ -123,7 +124,7 @@ function General({ className, pool }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      {max} ETH
+                      {Numbers.toFloat(max)} ETH
                     </Typography>
                   </div>
 
@@ -249,7 +250,7 @@ function General({ className, pool }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      {parseFloat(totalSupply).toFixed(4)}
+                      {Numbers.toFloat(totalSupply)}
                     </Typography>
                   </div>
 

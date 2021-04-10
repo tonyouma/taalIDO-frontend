@@ -55,7 +55,7 @@ function Tabcard() {
     setValue(newValue);
   };
   return (
-    <Page title="TaalSwap Finace" className={classes.root}>
+    <Page title="TaalSwap Finance" className={classes.root}>
       <Container maxWidth="lg">
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <Tabs value={value} onChange={handleChange} centered>

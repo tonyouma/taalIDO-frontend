@@ -337,7 +337,7 @@ export default function BasicTable({ filterName }) {
               <Box>
                 <p>
                   Anyone can create an ERC20 token on Ethereum with any name,
-                  including creating face versions of existing tokens and tokens
+                  including creating fake versions of existing tokens and tokens
                   that claim to represent projects but do not exist.
                 </p>
                 <br />
