@@ -370,6 +370,16 @@ class Taalswap {
    * @param {Address} address
    * @returns {Array | Integer} _ids
    */
+  async getPurchaseIds() {
+    return await this.params.fixedContract.getPurchaseIds();
+  }
+
+  /**
+   * @function getMyPurchases
+   * @description Get All Purchase Ids filter by Address/Purchaser
+   * @param {Address} address
+   * @returns {Array | Integer} _ids
+   */
   async getAddressPurchaseIds({ address }) {
     let res = await this.params.fixedContract.getMyPurchases(address);
     return res.map((id) => Numbers.fromHex(id));
