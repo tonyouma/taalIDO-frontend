@@ -156,7 +156,7 @@ function JoninthePool({ className, pool, onBackdrop }) {
                 onBackdrop(false);
               } else {
                 setWarningMessage(
-                  `Should be less than individual maximum! (${swappedAmount} / ${amount})`
+                  `Should be less than individual maximum! (${swappedAmount} / ${pool.maxIndividuals})`
                 );
               }
             } else {
@@ -267,7 +267,7 @@ function JoninthePool({ className, pool, onBackdrop }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Yout Bid Amount
+          Your Bid Amount
         </Typography>
         <Typography
           component="p"
