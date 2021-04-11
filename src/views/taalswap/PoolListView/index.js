@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 import roundAccountBox from '@iconify-icons/ic/round-account-box';
 import { HeaderDashboard } from 'src/layouts/Common';
 import Page from '../../../components/Page';
-import { Tab, Tabs, Card, Container, Grid } from '@material-ui/core';
+import { Box, Tab, Tabs, Card, Container, Grid } from '@material-ui/core';
 import BasicTable from './BasicTable';
 
 // ----------------------------------------------------------------------
@@ -39,7 +39,12 @@ function PoolListView() {
   return (
     <Page title="Table-Components | Minimal-UI" className={classes.root}>
       <Container maxWidth="lg">
-        <HeaderDashboard heading="IDO Pools" links={[{ name: 'textejfiej' }]} />
+        <HeaderDashboard heading="IDO Pools" links={[{ name: 'SubText' }]} />
+        <Box
+          component="img"
+          src={`/static/icons/json-logo.svg`}
+          sx={{ width: 20, height: 20 }}
+        />
         <Tabs
           value={currentTab}
           scrollButtons="auto"

@@ -2,8 +2,6 @@ import clsx from 'clsx';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
-import CirculProgress from './CirculProgress';
 import { Icon } from '@iconify/react';
 import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
@@ -11,6 +9,7 @@ import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Button, Typography, Box } from '@material-ui/core';
 import { MLabel } from 'src/theme';
+import Progress from './Progress';
 
 // ----------------------------------------------------------------------
 
@@ -78,18 +77,23 @@ function PlanCard({ card, index, className }) {
           Closed
         </MLabel>
       )}
-
+      <Box
+        component="img"
+        src={`/static/icons/json-logo.svg`}
+        sx={{
+          top: 27,
+          left: 32,
+          width: 46,
+          height: 46,
+          position: 'absolute'
+        }}
+      />
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
         <Typography variant="h3" sx={{ mx: 1 }}>
           Protocol
         </Typography>
       </Box>
-
-      <StyledEngineProvider injectFirst>
-        <CirculProgress />
-      </StyledEngineProvider>
-
-      <Box component="ul" sx={{ my: 5, width: '100%' }}>
+      <Box component="ul" sx={{ my: 3, width: '100%' }}>
         {card.lists.map((item) => (
           <Box
             key={item.text}
@@ -103,21 +107,21 @@ function PlanCard({ card, index, className }) {
           >
             <Box
               component={Icon}
-              icon={checkmarkFill}
+              //icon={checkmarkFill}
               sx={{ width: 20, height: 20, mr: 1.5 }}
             />
             {item.text}
             <Box sx={{ flex: 1 }} />
             {/* page 1-1 오른쪽 정렬 및 텍스트 */}
-            <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.1 }}>
               {item.describe.map((item2) => {
-                return <Box sx={{ mr: 1.5 }}>{item2}</Box>;
+                return <Box sx={{ mr: 1.0 }}>{item2}</Box>;
               })}
             </Box>
           </Box>
         ))}
       </Box>
-
+      <Progress />
       <Button
         to={PATH_APP.taalswap.pooldetails}
         fullWidth
