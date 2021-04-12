@@ -196,7 +196,7 @@ function NavBar({ isOpenNav, onCloseNav }) {
         </List>
       ))}
 
-      <Box sx={{ px: 4.5, pb: 3, mt: 10 }}>
+      <Box sx={{ px: 4.5, pb: 3, mt: 60 }}>
         <div className={classes.doc}>
           <Typography
             gutterBottom
