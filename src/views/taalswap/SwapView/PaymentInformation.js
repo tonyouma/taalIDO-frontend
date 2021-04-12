@@ -118,7 +118,8 @@ function PaymentInformation({ className, pool, index }) {
         justifyContent="space-between"
       >
         <TextField
-          label="Max. Individuals"
+          // label="Max. Individuals"
+          label={`Max Allocation in ${pool.symbol}`}
           variant="standard"
           InputLabelProps={{
             shrink: true
@@ -130,7 +131,7 @@ function PaymentInformation({ className, pool, index }) {
         />
 
         <TextField
-          label="Maximum"
+          label="Max Allocation in ETH"
           variant="standard"
           InputLabelProps={{
             shrink: true

@@ -387,9 +387,9 @@ function JoninthePool({ className, pool, onBackdrop }) {
             Warning : {warningMessage}
           </Typography>
         )}
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+        {/* <Typography variant="caption" sx={{ color: 'text.secondary' }}>
           Have problems Joining? Click here to read instructions.
-        </Typography>
+        </Typography> */}
       </Box>
     </div>
   );
