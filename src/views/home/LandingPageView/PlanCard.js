@@ -7,6 +7,9 @@ import { Icon } from '@iconify/react';
 import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
 import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
+
+import dotFilled from '@iconify-icons/radix-icons/dot-filled';
+
 import { makeStyles } from '@material-ui/core/styles';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
 import {
@@ -187,7 +190,7 @@ function PlanCard({ pool, index, className }) {
         >
           <Box
             component={Icon}
-            icon={checkmarkFill}
+            icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
           />
           Ratio
@@ -213,7 +216,7 @@ function PlanCard({ pool, index, className }) {
         >
           <Box
             component={Icon}
-            icon={checkmarkFill}
+            icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
           />
           Maximum
@@ -237,7 +240,7 @@ function PlanCard({ pool, index, className }) {
         >
           <Box
             component={Icon}
-            icon={checkmarkFill}
+            icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
           />
           Access
@@ -261,7 +264,7 @@ function PlanCard({ pool, index, className }) {
         >
           <Box
             component={Icon}
-            icon={checkmarkFill}
+            icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
           />
           Participants
@@ -285,7 +288,7 @@ function PlanCard({ pool, index, className }) {
         >
           <Box
             component={Icon}
-            icon={checkmarkFill}
+            icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
           />
           Total Raise
