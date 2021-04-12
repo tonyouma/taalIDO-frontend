@@ -2,7 +2,6 @@ import NProgress from 'nprogress';
 import AppRoutes from './AppRoutes';
 import { PATH_PAGE } from './paths';
 import HomeRoutes from './HomeRoutes';
-import DocsRoutes from './DocsRoutes';
 import LoadingScreen from 'src/components/LoadingScreen';
 import GuestProtect from 'src/components/Auth/GuestProtect';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -94,38 +93,6 @@ const routes = [
   // Others Routes
   {
     exact: true,
-    guard: GuestProtect,
-    path: PATH_PAGE.auth.login,
-    component: lazy(() => import('src/views/auth/LoginView'))
-  },
-  {
-    exact: true,
-    path: PATH_PAGE.auth.loginUnprotected,
-    component: lazy(() => import('src/views/auth/LoginView'))
-  },
-  {
-    exact: true,
-    guard: GuestProtect,
-    path: PATH_PAGE.auth.register,
-    component: lazy(() => import('src/views/auth/RegisterView'))
-  },
-  {
-    exact: true,
-    path: PATH_PAGE.auth.registerUnprotected,
-    component: lazy(() => import('src/views/auth/RegisterView'))
-  },
-  {
-    exact: true,
-    path: PATH_PAGE.auth.resetPassword,
-    component: lazy(() => import('src/views/auth/ResetPasswordView'))
-  },
-  {
-    exact: true,
-    path: PATH_PAGE.auth.verify,
-    component: lazy(() => import('src/views/auth/VerifyCodeView'))
-  },
-  {
-    exact: true,
     path: '/404',
     component: lazy(() => import('src/views/errors/Page404View'))
   },
@@ -134,37 +101,9 @@ const routes = [
     path: '/500',
     component: lazy(() => import('src/views/errors/Page500View'))
   },
-  {
-    exact: true,
-    path: PATH_PAGE.comingSoon,
-    component: lazy(() => import('src/views/pages/ComingSoonView'))
-  },
-  {
-    exact: true,
-    path: PATH_PAGE.maintenance,
-    component: lazy(() => import('src/views/pages/MaintenanceView'))
-  },
-  {
-    exact: true,
-    path: PATH_PAGE.pricing,
-    component: lazy(() => import('src/views/pages/PricingView'))
-  },
-  {
-    exact: true,
-    path: PATH_PAGE.payment,
-    component: lazy(() => import('src/views/pages/PaymentView'))
-  },
-  {
-    exact: true,
-    path: PATH_PAGE.auth.root,
-    component: () => <Redirect to={PATH_PAGE.auth.login} />
-  },
 
   // App Routes
   AppRoutes,
-
-  // Docs Routes
-  DocsRoutes,
 
   // Home Routes
   HomeRoutes

@@ -1,5 +1,4 @@
 import 'lazysizes';
-import 'src/_api_';
 import 'src/utils/i18n';
 import 'src/utils/highlight';
 import 'simplebar/src/simplebar.css';

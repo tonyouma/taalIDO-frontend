@@ -27,10 +27,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getPoolList } from '../../../redux/slices/pool';
-import ToolbarTable from '../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
 import { closeModal, openModal } from '../../../redux/slices/pool';
-import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
 import { useWeb3React } from '@web3-react/core';
 import StatusLabel from '../Components/StatusLabel';

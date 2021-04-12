@@ -14,11 +14,6 @@ const HomeRoutes = {
       component: lazy(() => import('src/views/home/LandingPageView'))
     },
     {
-      exact: true,
-      path: '/components',
-      component: lazy(() => import('src/views/home/ComponentsView'))
-    },
-    {
       component: () => <Redirect to="/404" />
     }
   ]

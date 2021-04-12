@@ -24,7 +24,6 @@ import MyPools from './MyPools';
 import { useWeb3React } from '@web3-react/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSwapList, getPoolList } from '../../../redux/slices/pool';
-import ToolbarTable from '../../user/UserListView/ToolbarTable';
 import searchFill from '@iconify-icons/eva/search-fill';
 import { useLocation } from 'react-router-dom';
 

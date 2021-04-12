@@ -7,14 +7,13 @@ import { store, persistor } from './redux/store';
 import routes, { renderRoutes } from 'src/routes';
 import ScrollToTop from 'src/components/ScrollToTop';
 import LoadingScreen from 'src/components/LoadingScreen';
-import GoogleAnalytics from 'src/components/GoogleAnalytics';
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import NotistackProvider from 'src/components/NotistackProvider';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 
 // Using for Auth (Check doc https://minimals.cc/docs/authentication)
-import JwtProvider from 'src/components/Auth/JwtProvider';
+// import JwtProvider from 'src/components/Auth/JwtProvider';
 // import FirebaseProvider from 'src/components/Auth/FirebaseProvider';
 
 import { Web3ReactProvider } from '@web3-react/core';
@@ -39,11 +38,8 @@ function App() {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <NotistackProvider>
                 <Router history={history}>
-                  <JwtProvider>
-                    <ScrollToTop />
-                    <GoogleAnalytics />
-                    {renderRoutes(routes)}
-                  </JwtProvider>
+                  <ScrollToTop />
+                  {renderRoutes(routes)}
                 </Router>
               </NotistackProvider>
             </LocalizationProvider>
