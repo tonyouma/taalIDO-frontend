@@ -436,12 +436,12 @@ const AdminView = () => {
 
               <Grid item xs={12} md={12}>
                 <Card>
-                  <CardHeader title="WhiteList" />
+                  <CardHeader title="White List" />
                   <Box className={classes.box}>
                     <TextField
                       className={classes.textField}
                       name="whiteList"
-                      label="WhiteList"
+                      label="White List"
                       size="small"
                       value={whiteList}
                       onChange={onChange}
@@ -471,7 +471,7 @@ const AdminView = () => {
                       onClick={onClickWithDrawFunds}
                       style={{ minWidth: '100px' }}
                     >
-                      WithDrawFunds
+                      Withraw Funds
                     </Button>
                     <Typography m={2} varient="">
                       Funding success or no min. raise...
@@ -490,7 +490,7 @@ const AdminView = () => {
                       onClick={onClickWithdrawUnsoldTokens}
                       style={{ minWidth: '100px' }}
                     >
-                      WithdrawUnsoldTokens
+                      Withdraw Unsold Tokens
                     </Button>
                     <Typography m={2} varient="">
                       Tokens left or Funding failed...
