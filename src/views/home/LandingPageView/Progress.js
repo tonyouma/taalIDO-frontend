@@ -31,14 +31,17 @@ function Progress({ progress, index }) {
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'center'
+          alignItems: 'center',
+          width: '100%'
         }}
       >
         <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
           {progress.label}
         </Typography>
 
-        <Typography variant="body2">{fCurrency(progress.amount)}</Typography>
+        <Typography variant="body2" sx={{ my: 2 }}>
+          {fCurrency(progress.amount)}
+        </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           &nbsp;({fPercent(progress.value)})
         </Typography>
@@ -60,11 +63,7 @@ function SalesOverview({ className, ...other }) {
   const classes = useStyles();
 
   return (
-    <Box
-      className={clsx(classes.root, className)}
-      {...other}
-      sx={{ mx: 1, my: 3 }}
-    >
+    <Box sx={{ width: '100%' }}>
       {SALES.map((progress, index) => {
         return (
           <Progress key={progress.label} progress={progress} index={index} />

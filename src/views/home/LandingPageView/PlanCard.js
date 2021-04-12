@@ -7,7 +7,7 @@ import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
 import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Button, Typography, Box } from '@material-ui/core';
+import { Card, Button, Typography, Box, Grid } from '@material-ui/core';
 import { MLabel } from 'src/theme';
 import Progress from './Progress';
 
@@ -83,8 +83,8 @@ function PlanCard({ card, index, className }) {
         sx={{
           top: 27,
           left: 32,
-          width: 46,
-          height: 46,
+          width: 50,
+          height: 50,
           position: 'absolute'
         }}
       />
@@ -122,6 +122,7 @@ function PlanCard({ card, index, className }) {
         ))}
       </Box>
       <Progress />
+      <Box sx={{ my: 2 }}></Box>
       <Button
         to={PATH_APP.taalswap.pooldetails}
         fullWidth

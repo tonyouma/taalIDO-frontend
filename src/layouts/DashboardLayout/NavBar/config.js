@@ -64,15 +64,15 @@ const navConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: 'general',
+    subheader: 'New Page',
     items: [
       {
-        title: 'dashboard',
+        title: 'Admin',
         icon: ICONS.dashboard,
         href: PATH_APP.general.root,
         items: [
           {
-            title: 'app',
+            title: 'Admin',
             href: PATH_APP.general.root
           },
           {
