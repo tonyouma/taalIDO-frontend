@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     textAlign: 'center',
-    fontSize: 30,
-    color: '#000000',
+    fontSize: 20,
+    // color: '#000000',
     paddingTop: 10
   },
   // page 4-1 디자인 변경 : border 테두리,
