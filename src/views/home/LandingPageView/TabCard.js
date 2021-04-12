@@ -65,18 +65,6 @@ function TabPanel(props) {
   );
 }
 // ----------------------------------------------------------------------
-const LiveUpcoming = ({ pools }) => {
-  return (
-    <Grid container spacing={3}>
-      {pools.map((pool, index) => (
-        <Grid item xs={12} md={4} key={index}>
-          <PlanCard pool={pool} index={index} />
-        </Grid>
-      ))}
-    </Grid>
-  );
-};
-
 function Tabcard() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
@@ -85,7 +73,6 @@ function Tabcard() {
   const [pools, setPools] = useState([]);
 
   useEffect(() => {
-    console.log(value);
     setPools(
       poolList.filter(
         (pool) => !!pool.contractAddress && pool.contractAddress !== ''

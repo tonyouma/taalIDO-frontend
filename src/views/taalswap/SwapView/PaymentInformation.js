@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, TextField } from '@material-ui/core';
@@ -57,13 +58,14 @@ PaymentInformation.propTypes = {
   className: PropTypes.string
 };
 
-function PaymentInformation({ className, pool, index }) {
+function PaymentInformation({ className, pool, ethPrice, index }) {
   const classes = useStyles();
   const context = useWeb3React();
 
   const [progressValue, setProgressValue] = useState(0);
   const [participants, setParticipants] = useState(0);
   const [poolStatus, setStatus] = useState('');
+  const [price, setPrice] = useState(0);
 
   const { library, account } = context;
 
@@ -85,6 +87,8 @@ function PaymentInformation({ className, pool, index }) {
           setProgressValue(getProgressValue(result, pool.tradeAmount));
         })
         .catch((error) => console.log(error));
+
+      // ethPrice !== undefined && setPrice(parseFloat(ethPrice) / pool.ratio);
 
       setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
     }
@@ -108,7 +112,19 @@ function PaymentInformation({ className, pool, index }) {
             shrink: true
           }}
           fullWidth
-          value={`${Numbers.toFloat(pool.ratio)} ${pool.symbol} = 11 ETH`}
+          value={`${Numbers.toFloat(pool.ratio)} ${pool.symbol} = 1 ETH`}
+          inputProps={{ disabled: 'true' }}
+        />
+      </Box>
+      <Box className={classes.box2rem}>
+        <TextField
+          label={`Price, $ / ${pool.symbol}`}
+          variant="standard"
+          InputLabelProps={{
+            shrink: true
+          }}
+          fullWidth
+          value={`${Numbers.toFloat(parseFloat(ethPrice) / pool.ratio)}`}
           inputProps={{ disabled: 'true' }}
         />
       </Box>

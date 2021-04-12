@@ -59,7 +59,7 @@ JoninthePool.propTypes = {
   className: PropTypes.string
 };
 
-function JoninthePool({ className, pool, onBackdrop }) {
+function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const classes = useStyles();
   const context = useWeb3React();
   const dispatch = useDispatch();
@@ -92,8 +92,17 @@ function JoninthePool({ className, pool, onBackdrop }) {
   }
 
   const onChangeAmount = (e) => {
-    setAmount(e.target.value);
     setPrice(e.target.value * pool.tradeValue);
+    setAmount(e.target.value);
+    // console.log(`${price} : ${balance}`);
+
+    // if (price > parseFloat(formatEther(balance))) {
+    //   setWarningMessage(
+    //     'Your bid amount exceeds the maximum allocation per wallet.'
+    //   );
+    // } else {
+    //   setWarningMessage('');
+    // }
   };
 
   const addSwap = () => {
@@ -275,7 +284,7 @@ function JoninthePool({ className, pool, onBackdrop }) {
           sx={{ color: 'text.secondary' }}
         >
           Balance :{' '}
-          {balance !== null ? parseFloat(formatEther(balance)).toFixed(4) : '0'}
+          {balance !== null ? parseFloat(formatEther(balance)).toFixed(2) : '0'}{' '}
           ETH
         </Typography>
       </div>
@@ -290,7 +299,10 @@ function JoninthePool({ className, pool, onBackdrop }) {
             color: 'text.secondary'
           }}
         >
-          Price : {price} ETH
+          {`Price : ${price} ETH ($ ${Numbers.toFloat(
+            price * ethPrice
+          ).toFixed()})`}
+          {/* Price : {price} ETH  */}
         </Typography>
       </Box>
 
@@ -326,6 +338,7 @@ function JoninthePool({ className, pool, onBackdrop }) {
             }} // font size of input text
             InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
             onChange={onChangeAmount}
+            onFocus={() => setAmount('')}
           />
         </Typography>
         <Typography
@@ -384,7 +397,7 @@ function JoninthePool({ className, pool, onBackdrop }) {
               icon={shieldFill}
               sx={{ width: 20, height: 20, mr: 1 }}
             />
-            Warning : {warningMessage}
+            {warningMessage}
           </Typography>
         )}
         {/* <Typography variant="caption" sx={{ color: 'text.secondary' }}>

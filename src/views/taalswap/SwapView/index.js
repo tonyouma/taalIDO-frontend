@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
+import axios from 'axios';
 import Page from 'src/components/Page';
 import { HeaderDashboard } from 'src/layouts/Common';
 import JoninthePool from './JoninthePool';
@@ -89,7 +90,7 @@ function TabPanel(props) {
   );
 }
 
-function PaymentView(className, ...other) {
+function PaymentView({ className, ...other }) {
   const classes = useStyles();
   const location = useLocation();
   const upMd = useBreakpoints('up', 'md');
@@ -103,6 +104,7 @@ function PaymentView(className, ...other) {
   const [value, setValue] = useState(0);
   const [pool, setPool] = useState(location.state.selectedPool);
   const [open, setOpen] = useState(false);
+  const [ethPrice, setEthPrice] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -115,6 +117,20 @@ function PaymentView(className, ...other) {
       console.log('---', pool);
     }
   };
+
+  useEffect(async () => {
+    await axios
+      .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
+      .then((result) => {
+        setEthPrice(result.data.data.amount);
+        // const ethPrice = result.data.data.amount;
+        // const symbolPrice = parseFloat(ethPrice) / pool.ratio;
+        // console.log(`eth Price : ${ethPrice}`);
+        // console.log(`symbol Price : ${symbolPrice}`);
+        // setPrice(symbolPrice);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   return (
     <Page title="Swap | TaalSwap" className={classes.root}>
@@ -165,7 +181,11 @@ function PaymentView(className, ...other) {
             <Card>
               <Grid container spacing={upMd ? 5 : 2}>
                 <Grid item xs={12} md={6}>
-                  <PaymentInformation formik={formik} pool={pool} />
+                  <PaymentInformation
+                    formik={formik}
+                    pool={pool}
+                    ethPrice={ethPrice}
+                  />
                 </Grid>
 
                 <Grid item xs={12} md={6}>
@@ -173,6 +193,7 @@ function PaymentView(className, ...other) {
                     formik={formik}
                     pool={pool}
                     onBackdrop={handleBackdrop}
+                    ethPrice={ethPrice}
                   />
                 </Grid>
               </Grid>
