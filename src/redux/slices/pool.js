@@ -96,7 +96,9 @@ export function getPoolList() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('http://133.186.222.82:3002/pools');
+      const response = await axios.get(
+        'http://133.186.222.82:3002/pools?_sort=id&_order=desc'
+      );
       // response.data.map((resp) => {
       //   resp.ratio = 0.03 + resp.id;
       //   resp.access = 'Private';
@@ -114,7 +116,9 @@ export function getApplicationList() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('http://133.186.222.82:3002/pools');
+      const response = await axios.get(
+        'http://133.186.222.82:3002/pools?_sort=id&_order=desc'
+      );
       dispatch(slice.actions.getApplicationListSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -127,7 +131,8 @@ export function searchApplicationListByCreator(creator) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3002/pools?creator=' + creator
+        'http://133.186.222.82:3002/pools?_sort=id&_order=desc&creator=' +
+          creator
       );
       dispatch(slice.actions.getApplicationListSuccess(response.data));
     } catch (error) {
@@ -198,18 +203,5 @@ export function createSwap(newSwap) {
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
-  };
-}
-
-export async function getMaxId() {
-  return async (dispatch) => {
-    dispatch(slice.actions.startLoading());
-    const response = await axios
-      .get('http://133.186.222.82:3002/pools')
-      .catch((error) => {
-        console.log(error);
-      });
-    const maxId = response.data[0].id ? response.data[0].id + 1 : 1;
-    dispatch(slice.actions.getMaxIdSuccess(maxId));
   };
 }

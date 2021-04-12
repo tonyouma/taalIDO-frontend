@@ -33,6 +33,7 @@ import {
 import {
   updateApplication,
   getApplicationList,
+  searchApplicationListByCreator,
   openModal,
   closeModal
 } from 'src/redux/slices/pool';
@@ -686,9 +687,15 @@ export default function ApplicationListView() {
         return;
       }
     }
-    dispatch(getApplicationList());
-
-    dispatch(getApplicationList());
+    if (account && checkAdmin(account)) {
+      console.log('admin!');
+      dispatch(getApplicationList());
+    } else if (account) {
+      console.log('user!');
+      dispatch(searchApplicationListByCreator(account));
+    } else {
+      console.log('not login!');
+    }
   }, [update, open, library]);
 
   const handleRequestSort = (event, property) => {
