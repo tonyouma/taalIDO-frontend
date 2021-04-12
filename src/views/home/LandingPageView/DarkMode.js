@@ -95,7 +95,7 @@ function DarkMode({ className }) {
   return (
     <div className={clsx(classes.root, className)}>
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
-        <Grid container fixed spacing={5} direction="row-reverse">
+        <Grid container fixed={'true'} spacing={5} direction="row-reverse">
           <Grid item xs={12} md={12}>
             <div className={classes.content}>
               <MotionInView
@@ -105,7 +105,7 @@ function DarkMode({ className }) {
                 {/* <Typography variant="h4" paragraph>
                   TaalSwap
                 </Typography> */}
-                <Logo footer />
+                <Logo footer={'true'} />
               </MotionInView>
               <MotionInView
                 variants={varFadeInUp}
