@@ -34,7 +34,48 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const POOLS_TABS = [
+  {
+    value: 0,
+    title: 'Live & Upcoming'
+    // icon: ,
+    // component:
+  },
+  {
+    value: 1,
+    title: 'Accomplished'
+    // icon:
+    // component:
+  }
+];
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <div>{children}</div>}
+    </div>
+  );
+}
 // ----------------------------------------------------------------------
+const LiveUpcoming = ({ pools }) => {
+  return (
+    <Grid container spacing={3}>
+      {pools.map((pool, index) => (
+        <Grid item xs={12} md={4} key={index}>
+          <PlanCard pool={pool} index={index} />
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
 
 function Tabcard() {
   const classes = useStyles();
@@ -44,6 +85,7 @@ function Tabcard() {
   const [pools, setPools] = useState([]);
 
   useEffect(() => {
+    console.log(value);
     setPools(
       poolList.filter(
         (pool) => !!pool.contractAddress && pool.contractAddress !== ''
@@ -54,41 +96,81 @@ function Tabcard() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   return (
     <Page title="TaalSwap Finance" className={classes.root}>
       <Container maxWidth="lg">
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-          <Tabs value={value} onChange={handleChange} centered>
-            <Tab label="Live & Upcoming" className={classes.label} />
-            <Tab label="Accomplished" className={classes.label} />
+          <Tabs
+            value={value}
+            // variant="scrollable"
+            // allowScrollButtonsMobile
+            onChange={handleChange}
+            centered
+          >
+            {/* <Tab
+              label="Live & Upcoming"
+              value={value}
+              key={value}
+              className={classes.label}
+            />
+            <Tab label="Accomplished" value={value} className={classes.label} /> */}
+            {POOLS_TABS.map((tab) => (
+              <Tab
+                disableRipple
+                key={tab.value}
+                label={tab.title}
+                value={tab.value}
+                className={classes.label}
+              />
+            ))}
           </Tabs>
+          <TabPanel value={value} index={0}>
+            <Box sx={{ my: 5 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end'
+                }}
+              ></Box>
+            </Box>
+            <Grid container spacing={3}>
+              {pools.map((pool, index) => (
+                <Grid item xs={12} md={4} key={index}>
+                  <PlanCard pool={pool} index={index} />
+                </Grid>
+              ))}
+            </Grid>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Box sx={{ my: 5 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end'
+                }}
+              ></Box>
+            </Box>
+            <Grid container spacing={3}>
+              {pools.map((pool, index) => (
+                <Grid item xs={12} md={4} key={index}>
+                  <PlanCard pool={pool} index={index} />
+                </Grid>
+              ))}
+            </Grid>
+          </TabPanel>
         </Box>
 
-        <Box sx={{ my: 5 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end'
-            }}
-          ></Box>
-        </Box>
-
-        <Grid container spacing={3}>
+        {/* <Grid container spacing={3}>
           {pools.map((pool, index) => (
             <Grid item xs={12} md={4} key={index}>
               <PlanCard pool={pool} index={index} />
             </Grid>
           ))}
-        </Grid>
-
-        {/* <Grid container spacing={3} sx={{ my: 5 }}>
-          {pools.map((card, index) => (
-            <Grid item xs={12} md={4} key={card.subscription}>
-              <PlanCard pool={card} index={index} />
-            </Grid>
-          ))}
         </Grid> */}
+        {/* <LiveUpcoming pools={pools} /> */}
       </Container>
       <Container maxWidth="lg">
         <Box sx={{ my: 7 }}>
