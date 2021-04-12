@@ -71,9 +71,7 @@ function Participate({ pool }) {
 
         let tempList = [];
         const purchaseids = await taalswap
-          .getAddressPurchaseIds({
-            address: account
-          })
+          .getPurchaseIds()
           .catch((error) => console.log(error));
 
         if (purchaseids.length > 0) {
