@@ -141,10 +141,25 @@ function PoolListView() {
 
   return (
     <Page title={t('taalswap.projects')} className={classes.root}>
-      <Backdrop className={classes.backdrop} open={open}>
+      {/* <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
+      </Backdrop> */}
+      <Backdrop
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column'
+        }}
+        className={classes.backdrop}
+        open={open}
+      >
+        <Box>
+          <CircularProgress color="inherit" />
+        </Box>
+        <Box>
+          <Typography>In progress… Please wait.</Typography>
+        </Box>
       </Backdrop>
-
       <Container maxWidth="lg">
         {/* <HeaderDashboard
           heading={t('taalswap.projects')}

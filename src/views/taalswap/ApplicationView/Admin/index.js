@@ -320,8 +320,24 @@ const AdminView = () => {
 
   return (
     <>
-      <Backdrop className={classes.backdrop} open={open}>
+      {/* <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
+      </Backdrop> */}
+      <Backdrop
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column'
+        }}
+        className={classes.backdrop}
+        open={open}
+      >
+        <Box>
+          <CircularProgress color="inherit" />
+        </Box>
+        <Box>
+          <Typography>In progress… Please wait.</Typography>
+        </Box>
       </Backdrop>
       <Page title="IDO Application | TaalSwap" className={classes.root}>
         <Container>
