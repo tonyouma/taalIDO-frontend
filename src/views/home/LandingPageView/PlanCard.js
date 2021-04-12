@@ -44,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     [theme.breakpoints.up(414)]: {
       padding: theme.spacing(5)
+    },
+    '&:hover': {
+      border: '1.5px solid',
+      borderColor: theme.palette.primary.main,
+      margin: '-1.5px'
     }
   }
 }));
