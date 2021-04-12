@@ -43,6 +43,7 @@
     "@fullcalendar/react": "^4.4.2",
     "@fullcalendar/timegrid": "^4.4.2",
     "@fullcalendar/timeline": "^4.4.2",
+    "@iconify-icons/radix-icons": "^1.1.2",
     "@material-ui/core": "^5.0.0-alpha.26",
     "@material-ui/icons": "^5.0.0-alpha.26",
     "@material-ui/lab": "^5.0.0-alpha.26",
