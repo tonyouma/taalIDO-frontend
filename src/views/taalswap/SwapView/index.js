@@ -10,8 +10,7 @@ import Participate from '../SwapView/Participate';
 import AboutTheProject from '../SwapView/AboutTheProject';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Box,
+import { Grid, Card, Container, Box, Typography, Box,
   Grid,
   Card,
   Container,
@@ -19,15 +18,16 @@ import {
   Tabs,
   Backdrop,
   CircularProgress,
-  Typography
-} from '@material-ui/core';
+  Typography } from '@material-ui/core';
+import TotalAllocatedTokens from './TotalAllocatedTokens';
+import TotalPurchasers from './TotalPurchasers';
+import CurrentProgress from './CurrentProgress';
 import PoolButton from './PoolButton';
 import { useLocation } from 'react-router-dom';
 import PoolDetails from '../PoolDetails';
 import { capitalCase } from 'change-case';
 import { Icon } from '@iconify/react';
 import roundAccountBox from '@iconify-icons/ic/round-account-box';
-
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -89,6 +89,7 @@ function TabPanel(props) {
     </div>
   );
 }
+
 
 function PaymentView({ className, ...other }) {
   const classes = useStyles();
@@ -178,6 +179,18 @@ function PaymentView({ className, ...other }) {
         </Tabs>
         <TabPanel value={value} index={0}>
           <Container>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6} md={4}>
+                <TotalAllocatedTokens />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <TotalPurchasers />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <CurrentProgress />
+              </Grid>
+            </Grid>
+            <Box sx={{ my: 3 }}></Box>
             <Card>
               <Grid container spacing={upMd ? 5 : 2}>
                 <Grid item xs={12} md={6}>
