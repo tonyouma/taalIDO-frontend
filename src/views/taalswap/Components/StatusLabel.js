@@ -84,7 +84,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
             right: 16,
             position: absolute && 'absolute'
           }}
-          color="failed"
+          color="error"
         >
           Accomplished
         </MLabel>
@@ -96,7 +96,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
             right: 16,
             position: absolute && 'absolute'
           }}
-          color="failed"
+          color="error"
         >
           Closed
         </MLabel>
