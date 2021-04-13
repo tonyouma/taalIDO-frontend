@@ -2,6 +2,7 @@ import { Contract, ContractFactory } from '@ethersproject/contracts';
 import { fixedData, tokenData } from '../contracts';
 import { InfuraProvider } from '@ethersproject/providers';
 import Numbers from './Numbers';
+import { infuraChainId, infuraApiKey } from 'src/config';
 
 class Taalswap {
   constructor({
@@ -25,10 +26,7 @@ class Taalswap {
 
       let fixedContract = null;
       let tokenContract = null;
-      const provider = new InfuraProvider(
-        'rinkeby',
-        'fbb83d21738f48d7bccfc214aa014f75'
-      );
+      const provider = new InfuraProvider(infuraChainId, infuraApiKey);
       if (notConnected) {
         tokenContract =
           tokenContractAddress === ''
