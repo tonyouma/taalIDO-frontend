@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     bottom: 0,
     zIndex: 8,
-    width: '100%',
+    width: '90%',
     margin: 'auto',
     position: 'absolute',
     [theme.breakpoints.up('lg')]: {
@@ -92,8 +92,7 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
-const getImg = (width) =>
-  `${BASE_IMG}w_${width}/v1611472901/upload_minimal/home/hero.png`;
+const getImg = (width) => `/static/images/hero.png`;
 
 Hero.propTypes = {
   className: PropTypes.string
