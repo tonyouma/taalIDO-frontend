@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -7,8 +7,19 @@ import PlanCard from './PlanCard';
 import Page from 'src/components/Page';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Button, Grid, Container } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Grid,
+  Container,
+  CircularProgress,
+  Typography
+} from '@material-ui/core';
 import { PATH_APP } from 'src/routes/paths';
+import { useWeb3React } from '@web3-react/core';
+import { getPoolStatus } from '../../../utils/getPoolStatus';
+import Taalswap from 'src/utils/taalswap';
+import { PoolStatus } from 'src/utils/poolStatus';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(5, 5, 0)
     }
   },
-  // page 2-1 글자 스타일
+
   label: {
     fontSize: 32
   }
@@ -39,14 +50,10 @@ const POOLS_TABS = [
   {
     value: 0,
     title: 'Live & Upcoming'
-    // icon: ,
-    // component:
   },
   {
     value: 1,
     title: 'Accomplished'
-    // icon:
-    // component:
   }
 ];
 
@@ -68,25 +75,83 @@ function TabPanel(props) {
 // ----------------------------------------------------------------------
 function Tabcard() {
   const classes = useStyles();
+  const context = useWeb3React();
   const [value, setValue] = useState(0);
   const { poolList } = useSelector((state) => state.pool);
   const [ethPrice, setEthPrice] = useState(0);
   const [pools, setPools] = useState([]);
+  const [accomplishedPools, setAccomplishedPools] = useState([]);
+  const [loadingFlag, setLoadingFlag] = useState(false);
+
+  const { library, account } = context;
 
   useEffect(async () => {
-    await axios
-      .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
-      .then((result) => {
-        setEthPrice(result.data.data.amount);
-      })
-      .catch((error) => console.log(error));
+    try {
+      let tempPools = [];
+      let tempAccomplishedPools = [];
 
-    setPools(
-      poolList.filter(
-        (pool) => !!pool.contractAddress && pool.contractAddress !== ''
-      )
-    );
-  }, [poolList]);
+      await poolList
+        .filter((pool) => !!pool.contractAddress && pool.contractAddress !== '')
+        .map(async (pool) => {
+          let taalswap = null;
+          if (!!library) {
+            taalswap = new Taalswap({
+              application: pool,
+              account,
+              library
+            });
+          } else {
+            taalswap = new Taalswap({
+              application: pool,
+              notConnected: true
+            });
+          }
+
+          await getPoolStatus(taalswap, pool.status, pool.minFundRaise).then(
+            (result) => {
+              if (result !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED) {
+                tempPools = tempPools.concat({ ...pool, poolStatus: result });
+                setPools(tempPools);
+              } else {
+                tempAccomplishedPools = tempAccomplishedPools.concat({
+                  ...pool,
+                  poolStatus: result
+                });
+                setAccomplishedPools(tempAccomplishedPools);
+              }
+            }
+          );
+        });
+
+      await axios
+        .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
+        .then((result) => {
+          setEthPrice(result.data.data.amount);
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [poolList, library]);
+
+  useEffect(() => {
+    try {
+      if (
+        poolList.filter(
+          (pool) => !!pool.contractAddress && pool.contractAddress !== ''
+        ).length ===
+        pools.length + accomplishedPools.length
+      ) {
+        setLoadingFlag(false);
+      } else {
+        setLoadingFlag(true);
+      }
+      return;
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  }, [poolList, pools, accomplishedPools]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -96,20 +161,7 @@ function Tabcard() {
     <Page title="TaalSwap Finance" className={classes.root}>
       <Container maxWidth="lg">
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-          <Tabs
-            value={value}
-            // variant="scrollable"
-            // allowScrollButtonsMobile
-            onChange={handleChange}
-            centered
-          >
-            {/* <Tab
-              label="Live & Upcoming"
-              value={value}
-              key={value}
-              className={classes.label}
-            />
-            <Tab label="Accomplished" value={value} className={classes.label} /> */}
+          <Tabs value={value} onChange={handleChange} centered>
             {POOLS_TABS.map((tab) => (
               <Tab
                 disableRipple
@@ -126,9 +178,23 @@ function Tabcard() {
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'flex-end'
+                  justifyContent: 'center'
                 }}
-              ></Box>
+              >
+                {loadingFlag && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column'
+                    }}
+                  >
+                    <CircularProgress />
+                    <Typography color="primary">loading..</Typography>
+                  </Box>
+                )}
+              </Box>
             </Box>
             <Grid container spacing={3}>
               {pools.map((pool, index) => (
@@ -149,7 +215,7 @@ function Tabcard() {
               ></Box>
             </Box>
             <Grid container spacing={3}>
-              {pools.map((pool, index) => (
+              {accomplishedPools.map((pool, index) => (
                 <Grid item xs={12} md={4} key={index}>
                   <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
                 </Grid>
@@ -157,15 +223,6 @@ function Tabcard() {
             </Grid>
           </TabPanel>
         </Box>
-
-        {/* <Grid container spacing={3}>
-          {pools.map((pool, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <PlanCard pool={pool} index={index} />
-            </Grid>
-          ))}
-        </Grid> */}
-        {/* <LiveUpcoming pools={pools} /> */}
       </Container>
       <Container maxWidth="lg">
         <Box sx={{ my: 7 }}>
