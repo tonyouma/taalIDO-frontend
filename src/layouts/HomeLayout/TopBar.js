@@ -49,6 +49,7 @@ import { targetNetwork, targetNetworkMsg } from '../../config';
 import { useSnackbar } from 'notistack';
 import Languages from '../DashboardLayout/TopBar/Languages';
 import Settings from 'src/layouts/Common/Settings';
+import { fromTalken } from 'src/redux/slices/talken';
 
 // ----------------------------------------------------------------------
 
@@ -139,8 +140,21 @@ function TopBar() {
     active,
     error
   } = context;
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+  const query = useQuery();
 
   useEffect(() => {
+    console.log('os', query.get('os'));
+    console.log('wallet', query.get('wallet'));
+    console.log('from', query.get('from'));
+    const os = query.get('os');
+    const wallet = query.get('wallet');
+    const from = query.get('from');
+
+    dispatch(fromTalken({ os, wallet, from }));
+
     if (!!library) {
       if (
         (library.provider.isMetaMask &&
