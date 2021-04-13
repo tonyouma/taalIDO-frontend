@@ -25,22 +25,27 @@ class Taalswap {
 
       let fixedContract = null;
       let tokenContract = null;
-
+      const provider = new InfuraProvider(
+        'rinkeby',
+        'fbb83d21738f48d7bccfc214aa014f75'
+      );
       if (notConnected) {
-        const provider = new InfuraProvider(
-          'rinkeby',
-          'fbb83d21738f48d7bccfc214aa014f75'
-        );
-        tokenContract = new Contract(
-          tokenContractAddress,
-          ContractFactory.getInterface(tokenData.abi),
-          provider
-        );
-        fixedContract = new Contract(
-          fixedContractAddress,
-          ContractFactory.getInterface(fixedData.abi),
-          provider
-        );
+        tokenContract =
+          tokenContractAddress === ''
+            ? {}
+            : new Contract(
+                tokenContractAddress,
+                ContractFactory.getInterface(tokenData.abi),
+                provider
+              );
+        fixedContract =
+          fixedContractAddress === ''
+            ? {}
+            : new Contract(
+                fixedContractAddress,
+                ContractFactory.getInterface(fixedData.abi),
+                provider
+              );
       } else {
         fixedContract =
           fixedContractAddress === ''
@@ -64,7 +69,8 @@ class Taalswap {
         fixedContract: fixedContract,
         tokenContract: tokenContract,
         tokenContractAddress: tokenContractAddress,
-        fixedContractAddress: fixedContractAddress
+        fixedContractAddress: fixedContractAddress,
+        infuraProvider: provider
       };
     } catch (e) {
       console.log('taalswap create error', e);
@@ -78,6 +84,10 @@ class Taalswap {
 
   getTokenContract() {
     return this.params.tokenContract;
+  }
+
+  async getBalance(address) {
+    return await this.params.infuraProvider.getBalance(address);
   }
 
   async approveFundERC20({ tokenAmount }) {
