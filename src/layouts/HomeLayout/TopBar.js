@@ -10,6 +10,7 @@ import menu2Fill from '@iconify-icons/eva/menu-2-fill';
 import { PATH_APP, PATH_HOME } from 'src/routes/paths';
 import bookOpenFill from '@iconify-icons/eva/book-open-fill';
 import roundStreetview from '@iconify-icons/ic/round-streetview';
+import walletIcon from '@iconify-icons/akar-icons/wallet';
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 import { makeStyles, alpha } from '@material-ui/core/styles';
 import {
@@ -40,17 +41,21 @@ import { useWeb3React } from '@web3-react/core';
 import { formatEther } from '@ethersproject/units';
 import { fixedData } from '../../contracts';
 import { tokenData } from '../../contracts';
-import Application from 'taalswap-js/src/models';
-import Numbers from 'taalswap-js/src/utils/Numbers';
+import Numbers from '../../utils/Numbers';
 import { Contract, ContractFactory } from '@ethersproject/contracts';
 import moment from 'moment';
 import { ethers } from 'ethers';
+import { targetNetwork, targetNetworkMsg } from '../../config';
+import { useSnackbar } from 'notistack';
+import Languages from '../DashboardLayout/TopBar/Languages';
+import Settings from 'src/layouts/Common/Settings';
 
 // ----------------------------------------------------------------------
 
 const MENU_LINKS = [
   { title: 'Home', icon: homeFill, href: '/' },
-  { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap.pools },
+  { title: 'IDO', icon: roundStreetview, href: PATH_APP.taalswap.pools },
+  { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap },
   {
     title: 'Yield Farming',
     icon: roundStreetview,
@@ -60,8 +65,8 @@ const MENU_LINKS = [
     title: 'Docs',
     icon: roundSpeed,
     href: 'https://taalswap.gitbook.io/taalswap-documents/'
-  },
-  { title: 'Account', icon: bookOpenFill, href: PATH_APP.taalswap }
+  }
+  // { title: 'Account', icon: bookOpenFill, href: PATH_APP.taalswap }
 ];
 
 const APP_BAR_MOBILE = 64;
@@ -118,6 +123,7 @@ function TopBar() {
   const offset = useOffSetTop(100);
   const [openMenu, setOpenMenu] = useState(false);
   const isHome = pathname === '/';
+  const { enqueueSnackbar } = useSnackbar();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
@@ -135,14 +141,24 @@ function TopBar() {
   } = context;
 
   useEffect(() => {
-    // console.log('1----------> ', activatingConnector);
-    // console.log('1----------> ', connector);
-    if (activatingConnector && activatingConnector === connector) {
-      dispatch(setActivatingConnector(undefined));
+    if (!!library) {
+      if (
+        (library.provider.isMetaMask &&
+          library.provider.chainId !== targetNetwork) ||
+        (!library.provider.isMetaMask &&
+          library.provider.chainId !== parseInt(targetNetwork))
+      ) {
+        enqueueSnackbar(targetNetworkMsg, {
+          variant: 'warning',
+          autoHideDuration: 3000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center'
+          }
+        });
+      }
     }
-    dispatch(getWalletBalance(account, library));
-    // dispatch(getContractDecimals(account, library));
-  }, [activatingConnector, connector]);
+  }, [activatingConnector, connector, library]);
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
   const triedEager = useEagerConnect();
@@ -153,129 +169,15 @@ function TopBar() {
     setIsOpenModal(false);
   };
 
-  dispatch(getContractDecimals(account, library));
-
-  // 스마트컨트랙 연동 테스트 코그 >>
-  if (!!library) {
-    console.log('library', library);
-    const ERC20TokenAddress = '0x581F2FCA16F9989CA9c46ebbD107410c9D8fA0B8';
-    const contractAddress = '0xd9606583D4e2c9b7d9EB89C0C3De1d359d9DDb5F';
-
-    const fixedContract = new Contract(
-      contractAddress,
-      ContractFactory.getInterface(fixedData.abi),
-      library.getSigner(account).connectUnchecked()
-    );
-
-    const tokenContract = new Contract(
-      contractAddress,
-      ContractFactory.getInterface(tokenData.abi),
-      library.getSigner(account).connectUnchecked()
-    );
-
-    const taalswapApp = new Application({
-      test: true,
-      mainnet: false,
-      account: account
-    });
-    // const swapContract = taalswapApp.getFixedSwapContract({tokenAddress : ERC20TokenAddress, decimals : 18});
-    const swapContract = taalswapApp.getFixedSwapContract({
-      tokenAddress: ERC20TokenAddress,
-      decimals: 18,
-      contractAddress: contractAddress,
-      fixedContract: fixedContract,
-      tokenContract: tokenContract
-    });
-
-    // const params = [
-    //   ERC20TokenAddress,
-    //   Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
-    //   Numbers.toSmartContractDecimals(tokenFundAmount, 18),
-    //   Numbers.timeToSmartContractTime(moment().add(6, 'minutes')),
-    //   Numbers.timeToSmartContractTime(moment().add(8, 'minutes')),
-    //   Numbers.toSmartContractDecimals(0, 18),
-    //   Numbers.toSmartContractDecimals(tokenFundAmount, 18),
-    //   false,
-    //   Numbers.toSmartContractDecimals(0, 18),
-    //   parseInt('2'),
-    //   true
-    // ];
-    //
-    // console.log(params);
-    // 스마트컨트랙 배포 샘플 코드
-    const factory = new ContractFactory(
-      fixedData.abi,
-      fixedData.bytecode,
-      library.getSigner(account)
-    );
-
-    taalDeploy(factory).then((r) => console.log('..... Deploy DONE'));
-
-    // ethers.Contract;
-    // const deployTx = ethers.Contract.getDeployTransaction(
-    //   fixedData.bytecode,
-    //   fixedData.abi,
-    //   params
-    // );
-    // library.contract.deployTransaction();
-    // ContractFactory.getInterface();
-    //
-    // library
-    //   .getSigner(account)
-    //   .connectUnchecked()
-    //   .sendTransaction(deployTx)
-    //   .then((tx) => {
-    //     console.log(tx);
-    //   });
-
-    // library.wallet.sendTransaction(deployTx).then((tx) => {
-    //   console.log(tx);
-    // });
-
-    // swapContract
-    //   .deploy({
-    //     tradeValue: tradeValue,
-    //     tokensForSale: tokenFundAmount,
-    //     isTokenSwapAtomic: true,
-    //     individualMaximumAmount: tokenFundAmount,
-    //     startDate: moment().add(6, 'minutes'),
-    //     endDate: moment().add(8, 'minutes'),
-    //     hasWhitelisting: true
-    //   })
-    //   .then((resp) => {
-    //     console.log(swapContract.getAddress());
-    //   });
-
-    // swapContract.__init__();
-    // swapContract.assertERC20Info().then((resp) => {
-    //   console.log(resp);
-    // });
-    // console.log(swapContract);
-
-    swapContract.tokensForSale().then((tokens) => {
-      console.log('tokensForSale', tokens);
-      const xxx = Numbers.toSmartContractDecimals(tokens, 18);
-      console.log(xxx);
-    });
-
-    // const tokenPurchaseAmount = 0.000000000002145546; 잘못된 값
-    const tokenPurchaseAmount = 10000;
-    swapContract
-      .swap({ tokenAmount: tokenPurchaseAmount, account: account })
-      .then((resp) => {
-        console.log(resp);
-      });
-  }
-  // << 스마트컨트랙 연동 테스트 소스
-
-  // console.log('2----------> ', activatingConnector);
-  // console.log('2----------> ', connector);
-  // if (balance !== null) {
-  //   console.log('wallet account = ', account);
-  //   console.log('wallet balance = ', formatEther(balance));
-  // }
   const renderMenuDesktop = (
-    <div>
+    <Box
+      style={{
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+        // border: '1px solid red'
+      }}
+    >
       {MENU_LINKS.map((link) =>
         link.title !== 'Docs' ? (
           <Link
@@ -311,7 +213,42 @@ function TopBar() {
           </Link>
         )
       )}
-    </div>
+      <Box
+        sx={{
+          // border: '1px solid yellow',
+          display: 'flex',
+          alignItems: 'center',
+          '& > *:not(:first-of-type)': {
+            ml: {
+              xs: 0.5,
+              sm: 2,
+              lg: 3
+            }
+          }
+        }}
+      >
+        <Languages />
+        <Settings
+          activeClassName={classes.isDesktopActive}
+          className={clsx({
+            [classes.isHome]: isHome
+          })}
+          sx={{ mr: 5, color: 'text.primary' }}
+          // iconColor="white"
+        />
+        {/* {!connector && (
+          <Button
+            underline="none"
+            variant="contained"
+            // component={Link}
+            target="_blank"
+            onClick={() => setIsOpenModal(true)}
+          >
+            Connect Wallet
+          </Button>
+        )} */}
+      </Box>
+    </Box>
   );
 
   const renderMenuMobile = (
@@ -338,25 +275,28 @@ function TopBar() {
             <ListItemText>{link.title}</ListItemText>
           </MenuItem>
         ))}
+        {!connector && (
+          <Box>
+            <MenuItem
+              component={Button}
+              onClick={() => setIsOpenModal(true)}
+              activeClassName={classes.isMobileActive}
+              sx={{
+                color: 'text.secondary',
+                width: '100%'
+                // textAlign: 'center'
+              }}
+            >
+              <ListItemIcon>
+                <Icon icon={walletIcon} width={20} height={20} />
+              </ListItemIcon>
+              <ListItemText>Connect Wallet</ListItemText>
+            </MenuItem>
+          </Box>
+        )}
       </List>
     </PopoverMenu>
   );
-
-  const renderConnectWallet = () => {
-    if (!connector) {
-      return (
-        <Button
-          underline="none"
-          variant="contained"
-          // component={Link}
-          target="_blank"
-          onClick={() => setIsOpenModal(true)}
-        >
-          Connect Wallet
-        </Button>
-      );
-    }
-  };
 
   return (
     <AppBar
@@ -373,6 +313,7 @@ function TopBar() {
             alignItems: 'center',
             justifyContent: 'space-between'
           }}
+          // style={{ border: '1px solid blue' }}
         >
           <RouterLink to="/">
             <Logo
@@ -383,7 +324,7 @@ function TopBar() {
 
           <Hidden mdDown>{renderMenuDesktop}</Hidden>
 
-          {renderConnectWallet()}
+          {/* {renderConnectWallet()} */}
 
           <WalletDialog
             isOpenModal={isOpenModal}
@@ -423,45 +364,6 @@ function TopBar() {
       )}
     </AppBar>
   );
-}
-
-async function taalDeploy(factory) {
-  const ERC20TokenAddress = '0x581F2FCA16F9989CA9c46ebbD107410c9D8fA0B8';
-  const tokenFundAmount = 0.00000000000345546;
-  const tradeValue = 0.0000000000012342;
-
-  const contract = await factory.deploy(
-    ERC20TokenAddress,
-    Numbers.toSmartContractDecimals(tradeValue, 18) /* to wei */,
-    Numbers.toSmartContractDecimals(tokenFundAmount, 18),
-    Numbers.timeToSmartContractTime(moment().add(6, 'minutes')),
-    Numbers.timeToSmartContractTime(moment().add(8, 'minutes')),
-    Numbers.toSmartContractDecimals(0, 18),
-    Numbers.toSmartContractDecimals(tokenFundAmount, 18),
-    false,
-    Numbers.toSmartContractDecimals(0, 18),
-    parseInt('10'),
-    true,
-    {
-      gasLimit: 7000000
-    }
-  );
-
-  console.log(contract);
-  console.log('$$$$$$$$$$$$$$$$$$$$$$$');
-  const receipt = await contract.deployTransaction.wait();
-
-  // Async로 동작을 함...
-  console.log('######################');
-  console.log(receipt);
-
-  const { confirmations } = receipt;
-  if (confirmations === 1) {
-    console.log('fixedSwap contract deploy... confirmed!!');
-  }
-
-  const { address } = contract;
-  console.log(address);
 }
 
 export default TopBar;

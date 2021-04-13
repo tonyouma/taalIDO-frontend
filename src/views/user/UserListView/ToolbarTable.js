@@ -22,22 +22,10 @@ const useStyles = makeStyles((theme) => {
   const isLight = theme.palette.mode === 'light';
   return {
     root: {
-      height: 96,
+      height: 40,
       display: 'flex',
       justifyContent: 'space-between',
-      padding: theme.spacing(0, 1, 0, 3)
-    },
-    search: {
-      width: 240,
-      transition: theme.transitions.create(['box-shadow', 'width'], {
-        easing: theme.transitions.easing.easeInOut,
-        duration: theme.transitions.duration.shorter
-      }),
-      '&.Mui-focused': { width: 320, boxShadow: theme.shadows[25].z8 },
-      '& fieldset': {
-        borderWidth: `1px !important`,
-        borderColor: `${theme.palette.grey[500_32]} !important`
-      }
+      padding: theme.spacing(0, 0, 0, 0)
     },
     highlight: isLight
       ? {
@@ -78,8 +66,9 @@ function ToolbarTable({ numSelected, filterName, onFilterName, className }) {
       ) : (
         <OutlinedInput
           value={filterName}
+          size={'small'}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder="Search by Project Name..."
           startAdornment={
             <InputAdornment position="start">
               <Box
@@ -92,7 +81,7 @@ function ToolbarTable({ numSelected, filterName, onFilterName, className }) {
           className={classes.search}
         />
       )}
-      {/* 
+      {/*
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>

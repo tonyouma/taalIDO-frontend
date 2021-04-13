@@ -47,7 +47,7 @@ TotalDownloads.propTypes = {
 };
 
 const PERCENT = -0.06;
-const TOTAL_DOWNLOAD = 678;
+const TOTAL_DOWNLOAD = 20;
 
 function TotalDownloads({ className, ...other }) {
   const classes = useStyles();
@@ -76,8 +76,7 @@ function TotalDownloads({ className, ...other }) {
   return (
     <Card className={clsx(classes.root, className)} {...other}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle2">Total Downloads</Typography>
-
+        <Typography variant="subtitle2">Current Progress</Typography>
         <div className={classes.trending}>
           <div
             className={clsx(classes.trendingIcon, {
@@ -99,8 +98,10 @@ function TotalDownloads({ className, ...other }) {
             {fPercent(PERCENT)}
           </Typography>
         </div>
-
-        <Typography variant="h3">{fNumber(TOTAL_DOWNLOAD)}</Typography>
+        <Typography variant="h3">
+          {fNumber(TOTAL_DOWNLOAD)}
+          {' %'}
+        </Typography>
       </Box>
 
       <ReactApexChart

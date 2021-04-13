@@ -35,12 +35,14 @@ export const network = new NetworkConnector({
   defaultChainId: 4
 });
 
-export const walletconnect = new WalletConnectConnector({
-  rpc: { 4: RPC_URLS[4] },
-  bridge: 'https://bridge.walletconnect.org',
-  qrcode: true,
-  pollingInterval: POLLING_INTERVAL
-});
+export const walletconnect = (useQR) => {
+  return new WalletConnectConnector({
+    rpc: { 4: RPC_URLS[4] },
+    bridge: 'https://bridge.walletconnect.org',
+    qrcode: useQR,
+    pollingInterval: POLLING_INTERVAL
+  });
+};
 
 export const walletlink = new WalletLinkConnector({
   url: RPC_URLS[1],

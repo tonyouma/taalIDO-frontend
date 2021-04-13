@@ -1,15 +1,36 @@
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import React from 'react';
-import Search from './Search';
-import Account from './Account';
 import PropTypes from 'prop-types';
 import Languages from './Languages';
 import { Icon } from '@iconify/react';
-import Notifications from './Notifications';
 import Settings from 'src/layouts/Common/Settings';
 import menu2Fill from '@iconify-icons/eva/menu-2-fill';
 import { alpha, makeStyles } from '@material-ui/core/styles';
-import { Box, AppBar, Hidden, Toolbar, IconButton } from '@material-ui/core';
+import {
+  Box,
+  Divider,
+  AppBar,
+  Hidden,
+  Toolbar,
+  IconButton,
+  Button,
+  Container
+} from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { useWeb3React } from '@web3-react/core';
+import {
+  getWalletBalance,
+  setActivatingConnector,
+  setTalBalance
+} from '../../../redux/slices/wallet';
+import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
+import WalletDialog from '../../../views/taalswap/Components/WalletDialog';
+import WalletInfo from './WalletInfo';
+import Taalswap from 'src/utils/taalswap';
+import { useSnackbar } from 'notistack';
+import { targetNetwork, targetNetworkMsg } from 'src/config';
+
+const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
 
 // ----------------------------------------------------------------------
 
@@ -46,7 +67,92 @@ TopBar.propTypes = {
 
 function TopBar({ onOpenNav, className }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const { activatingConnector, balance, talBalance } = useSelector(
+    (state) => state.wallet
+  );
 
+  const context = useWeb3React();
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error
+  } = context;
+
+  useEffect(async () => {
+    // console.log('1----------> ', activatingConnector);
+    // console.log('1----------> ', connector);
+    // console.log('1----------> ', active);
+    // console.log('1----------> ', activate);
+    if (activatingConnector && activatingConnector === connector) {
+      dispatch(setActivatingConnector(undefined));
+    }
+
+    if (!!library && !!account) {
+      if (
+        (library.provider.isMetaMask &&
+          library.provider.chainId !== targetNetwork) ||
+        (!library.provider.isMetaMask &&
+          library.provider.chainId !== parseInt(targetNetwork))
+      ) {
+        enqueueSnackbar(targetNetworkMsg, {
+          variant: 'warning',
+          autoHideDuration: 3000,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center'
+          }
+        });
+      } else {
+        dispatch(getWalletBalance(account, library));
+
+        // dispatch(getContractDecimals(account, library));
+
+        const taalswap = new Taalswap({
+          account,
+          library,
+          tokenAddress: TAL_TOKEN_ADDRESS
+        });
+
+        const talBalance = await taalswap
+          .balanceOf(account)
+          .catch((error) => console.log(error));
+        dispatch(setTalBalance(talBalance));
+      }
+    }
+  }, [activatingConnector, connector, account, library]);
+
+  // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
+  const triedEager = useEagerConnect();
+  // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
+  useInactiveListener(!triedEager || !!activatingConnector);
+  const handleCloseModal = async (name) => {
+    setIsOpenModal(false);
+  };
+  const renderConnectWallet = () => {
+    if (!library) {
+      return (
+        <Box p={0.8}>
+          <Button
+            underline="none"
+            variant="contained"
+            // component={Link}
+            target="_blank"
+            onClick={() => setIsOpenModal(true)}
+          >
+            Connect Wallet
+          </Button>
+        </Box>
+      );
+    }
+  };
   return (
     <AppBar className={clsx(classes.root, className)}>
       <Toolbar className={classes.toolbar}>
@@ -78,12 +184,26 @@ function TopBar({ onOpenNav, className }) {
             }
           }}
         >
+          {!!library && (
+            <WalletInfo
+              walletAddress={account}
+              balance={balance}
+              talBalance={talBalance}
+            />
+          )}
           <Languages />
           {/* <Notifications /> */}
           <Settings />
           {/* <Account /> */}
+          {renderConnectWallet()}
+          <WalletDialog
+            isOpenModal={isOpenModal}
+            handleCloseModal={handleCloseModal}
+            activate={activate}
+          />
         </Box>
       </Toolbar>
+      <Divider />
     </AppBar>
   );
 }

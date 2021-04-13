@@ -1,63 +1,16 @@
-import * as React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PlanCard from './PlanCard';
 import Page from 'src/components/Page';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Box,
-  Button,
-  Grid,
-  Switch,
-  Container,
-  Typography
-} from '@material-ui/core';
+import { Box, Button, Grid, Container } from '@material-ui/core';
 import { PATH_APP } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
-
-const PLANS = [
-  {
-    lists: [
-      { text: 'Ratio', describe: ['0.1 Token per USDT'], isAvailable: true },
-      { text: 'MAX', describe: ['10,000 Token'], isAvailable: true },
-      { text: 'Access', describe: ['Whitelisted'], isAvailable: true },
-      { text: 'MAX. Contribution', describe: ['Address'], isAvailable: true },
-      {
-        text: 'Total Raise',
-        describe: ['1,000 USDT'],
-        isAvailable: true
-      }
-    ]
-  },
-  {
-    lists: [
-      { text: 'Ratio', describe: ['0.1 Token per USDT'], isAvailable: true },
-      { text: 'MAX', describe: ['10,000 Token'], isAvailable: true },
-      { text: 'Access', describe: ['Whitelisted'], isAvailable: true },
-      { text: 'MAX. Contribution', describe: ['Address'], isAvailable: true },
-      {
-        text: 'Total Raise',
-        describe: ['1,000 USDT'],
-        isAvailable: true
-      }
-    ]
-  },
-  {
-    lists: [
-      { text: 'Ratio', describe: ['0.1 Token per USDT'], isAvailable: true },
-      { text: 'MAX', describe: ['10,000 Token'], isAvailable: true },
-      { text: 'Access', describe: ['Whitelisted'], isAvailable: true },
-      { text: 'MAX. Contribution', describe: ['Address'], isAvailable: true },
-      {
-        text: 'Total Raise',
-        describe: ['1,000 USDT'],
-        isAvailable: true
-      }
-    ]
-  }
-];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,54 +31,141 @@ const useStyles = makeStyles((theme) => ({
   },
   // page 2-1 글자 스타일
   label: {
-    fontSize: 20
+    fontSize: 32
   }
 }));
 
-// ----------------------------------------------------------------------
+const POOLS_TABS = [
+  {
+    value: 0,
+    title: 'Live & Upcoming'
+    // icon: ,
+    // component:
+  },
+  {
+    value: 1,
+    title: 'Accomplished'
+    // icon:
+    // component:
+  }
+];
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <div>{children}</div>}
+    </div>
+  );
+}
+// ----------------------------------------------------------------------
 function Tabcard() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const { poolList } = useSelector((state) => state.pool);
+  const [ethPrice, setEthPrice] = useState(0);
+  const [pools, setPools] = useState([]);
+
+  useEffect(async () => {
+    await axios
+      .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
+      .then((result) => {
+        setEthPrice(result.data.data.amount);
+      })
+      .catch((error) => console.log(error));
+
+    setPools(
+      poolList.filter(
+        (pool) => !!pool.contractAddress && pool.contractAddress !== ''
+      )
+    );
+  }, [poolList]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   return (
-    <Page title="TaalSwap Finace" className={classes.root}>
+    <Page title="TaalSwap Finance" className={classes.root}>
       <Container maxWidth="lg">
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-          <Tabs value={value} onChange={handleChange} centered>
-            <Tab label="Live&Upcoming Pools" className={classes.label} />
-            <Tab label="Accomplished Pools" className={classes.label} />
+          <Tabs
+            value={value}
+            // variant="scrollable"
+            // allowScrollButtonsMobile
+            onChange={handleChange}
+            centered
+          >
+            {/* <Tab
+              label="Live & Upcoming"
+              value={value}
+              key={value}
+              className={classes.label}
+            />
+            <Tab label="Accomplished" value={value} className={classes.label} /> */}
+            {POOLS_TABS.map((tab) => (
+              <Tab
+                disableRipple
+                key={tab.value}
+                label={tab.title}
+                value={tab.value}
+                className={classes.label}
+              />
+            ))}
           </Tabs>
+          <TabPanel value={value} index={0}>
+            <Box sx={{ my: 5 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end'
+                }}
+              ></Box>
+            </Box>
+            <Grid container spacing={3}>
+              {pools.map((pool, index) => (
+                <Grid item xs={12} md={4} key={index}>
+                  <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
+                </Grid>
+              ))}
+            </Grid>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Box sx={{ my: 5 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end'
+                }}
+              ></Box>
+            </Box>
+            <Grid container spacing={3}>
+              {pools.map((pool, index) => (
+                <Grid item xs={12} md={4} key={index}>
+                  <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
+                </Grid>
+              ))}
+            </Grid>
+          </TabPanel>
         </Box>
 
-        <Box sx={{ my: 5 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end'
-            }}
-          ></Box>
-        </Box>
-
-        <Grid container spacing={3}>
-          {PLANS.map((card, index) => (
-            <Grid item xs={12} md={4} key={card.subscription}>
-              <PlanCard card={card} index={index} />
+        {/* <Grid container spacing={3}>
+          {pools.map((pool, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <PlanCard pool={pool} index={index} />
             </Grid>
           ))}
-        </Grid>
-
-        <Grid container spacing={3} sx={{ my: 5 }}>
-          {PLANS.map((card, index) => (
-            <Grid item xs={12} md={4} key={card.subscription}>
-              <PlanCard card={card} index={index} />
-            </Grid>
-          ))}
-        </Grid>
+        </Grid> */}
+        {/* <LiveUpcoming pools={pools} /> */}
       </Container>
       <Container maxWidth="lg">
         <Box sx={{ my: 7 }}>
@@ -136,7 +176,7 @@ function Tabcard() {
             }}
           >
             <Button
-              // to={PATH_APP.root}
+              to={PATH_APP.taalswap.pools}
               fullWidth
               size="large"
               variant="outlined"

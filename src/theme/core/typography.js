@@ -19,7 +19,12 @@ function responsiveFontSizes({ sm, md, lg }) {
   };
 }
 
+// TODO : 어떤 폰트가 제일 잘 어울릴까?
+// const FONT_PRIMARY = 'Jalnan'; // 폰트가 설치되어 있지 않으면 기본 폰트로 보임.
+// const FONT_PRIMARY = 'Avenir Next, Menlo';
+// const FONT_PRIMARY = 'Roboto';
 const FONT_PRIMARY = 'Be Vietnam, sans-serif'; // Google Font
+// const FONT_PRIMARY = 'Source Code Pro'; // Google Font
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
 const typography = {
@@ -82,11 +87,11 @@ const typography = {
     lineHeight: 22 / 14
   },
   caption: {
-    fontSize: pxToRem(12),
+    fontSize: pxToRem(13),
     lineHeight: 1.5
   },
   overline: {
-    fontSize: pxToRem(12),
+    fontSize: pxToRem(14), // 사이드 메뉴 폰트 트기
     lineHeight: 1.5,
     fontWeight: 700,
     letterSpacing: 1.2,

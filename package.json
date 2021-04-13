@@ -1,6 +1,6 @@
 {
-  "name": "@minimal/material-kit-react",
-  "author": "Minimal",
+  "name": "@taalswap/frontend",
+  "author": "TaalSwap",
   "licence": "UNLICENSED",
   "version": "1.2.0",
   "private": true,
@@ -43,6 +43,7 @@
     "@fullcalendar/react": "^4.4.2",
     "@fullcalendar/timegrid": "^4.4.2",
     "@fullcalendar/timeline": "^4.4.2",
+    "@iconify-icons/radix-icons": "^1.1.2",
     "@material-ui/core": "^5.0.0-alpha.26",
     "@material-ui/icons": "^5.0.0-alpha.26",
     "@material-ui/lab": "^5.0.0-alpha.26",
@@ -62,6 +63,7 @@
     "@web3-react/portis-connector": "^6.1.9",
     "@web3-react/torus-connector": "^6.1.9",
     "@web3-react/trezor-connector": "^6.1.9",
+    "accounting": "^0.4.1",
     "apexcharts": "^3.22.0",
     "autosuggest-highlight": "^3.1.1",
     "axios": "^0.21.1",
@@ -71,6 +73,7 @@
     "d3-array": "^2.8.0",
     "d3-scale": "^3.2.3",
     "date-fns": "^2.16.1",
+    "dayjs": "^1.10.4",
     "deck.gl": "^8.3.12",
     "draft-js": "^0.11.7",
     "emoji-mart": "^3.0.0",
@@ -122,6 +125,7 @@
     "react-slick": "^0.28.0",
     "react-spring": "^8.0.27",
     "react-svg": "^11.0.41",
+    "react-text-overflow-middle-ellipsis": "^1.3.10-test4",
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-firestore": "^0.15.0",
@@ -129,11 +133,11 @@
     "simplebar-react": "^2.3.0",
     "slick-carousel": "^1.8.1",
     "stylis-plugin-rtl": "^2.0.1",
-    "taalswap-js": "^1.2.14",
     "web3-react": "^5.0.5",
     "yup": "^0.28.5"
   },
   "devDependencies": {
+    "@iconify-icons/akar-icons": "^1.1.5",
     "@iconify-icons/ant-design": "^1.1.0",
     "@iconify-icons/eva": "^1.1.0",
     "@iconify-icons/ic": "^1.1.3",
@@ -150,6 +154,7 @@
     "@web3-react/walletlink-connector": "^6.1.9",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "web3": "^1.3.5"
   }
 }

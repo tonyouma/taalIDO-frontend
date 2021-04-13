@@ -131,8 +131,42 @@ function NavItem({
       </>
     );
   }
+  return href.indexOf('http') >= 0 ? (
+    <ListItem
+      button
+      to={{ pathname: href }}
+      target="_blank"
+      exact={open}
+      disableGutters
+      component={RouterLink}
+      activeClassName={
+        isSubItem ? classes.isActiveListItemSub : classes.isActiveListItem
+      }
+      className={clsx(classes.listItem, className)}
+      isActive={(match, location) => {
+        if (!match) {
+          return false;
+        }
+        const { url } = match;
+        const { pathname } = location;
+        const isMatch = url === pathname;
 
-  return (
+        if (!isSubItem) {
+          return url.length && pathname.includes(url);
+        }
+
+        return isMatch;
+      }}
+      {...other}
+    >
+      <ListItemIcon className={classes.listItemIcon}>
+        {isSubItem ? <span className={classes.subIcon} /> : icon}
+      </ListItemIcon>
+      <ListItemText disableTypography primary={title} />
+
+      {info && info}
+    </ListItem>
+  ) : (
     <ListItem
       button
       to={href}

@@ -8,21 +8,22 @@ import { MIconButton } from 'src/theme';
 
 // ----------------------------------------------------------------------
 
+// TODO : ic_flags_cn.svg 재작업 필요
 const LANGS = [
+  {
+    value: 'kr',
+    label: '대한민국',
+    icon: '/static/icons/ic_flag_kr.svg'
+  },
+  {
+    value: 'cn',
+    label: '中国',
+    icon: '/static/icons/ic_flag_ch.svg'
+  },
   {
     value: 'en',
     label: 'English',
     icon: '/static/icons/ic_flag_en.svg'
-  },
-  {
-    value: 'de',
-    label: 'German',
-    icon: '/static/icons/ic_flag_de.svg'
-  },
-  {
-    value: 'fr',
-    label: 'French',
-    icon: '/static/icons/ic_flag_fr.svg'
   }
 ];
 

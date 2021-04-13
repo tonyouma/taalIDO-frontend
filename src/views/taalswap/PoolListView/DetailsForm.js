@@ -74,16 +74,16 @@ function DetailsForm({ pool, onCancel, onClickSwap }) {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <DialogContent>
           <Typography variant="subtitle1" className={classes.margin}>
-            Pool : {pool.name}
+            Pool : {pool.poolName}
           </Typography>
           <Typography variant="subtitle1" className={classes.margin}>
-            Token : {pool.address}
+            Token : {pool.tokenContractAddr}
           </Typography>
           <Typography variant="subtitle1" className={classes.margin}>
-            Max : {pool.max} Tokens
+            Max : {pool.maxIndividuals} Tokens
           </Typography>
           <Typography variant="subtitle1" className={classes.margin}>
-            Whitelisted : {pool.whitelist}
+            Whitelisted : {pool.access}
           </Typography>
         </DialogContent>
 

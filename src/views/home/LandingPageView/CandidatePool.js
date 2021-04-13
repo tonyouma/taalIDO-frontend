@@ -1,53 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CandidateCard from './CandidateCard';
-import Logo from 'src/components/Logo';
 import Page from 'src/components/Page';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Box,
-  Button,
-  Grid,
-  Switch,
-  Container,
-  Typography
-} from '@material-ui/core';
+import { Box, Button, Grid, Container, Typography } from '@material-ui/core';
 import { PATH_APP } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
-
-const PLANS = [
-  {
-    lists: [
-      { text: 'Token Contract Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'WhitePager/LitePaper', isAvailable: true },
-      { text: 'Project Introduction', isAvailable: true },
-      { text: 'Max.Allocation per Wallet', isAvailable: true },
-      { text: 'Total Supply', isAvailable: true }
-    ]
-  },
-  {
-    lists: [
-      { text: 'Token Contract Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'WhitePager/LitePaper', isAvailable: true },
-      { text: 'Project Introduction', isAvailable: true },
-      { text: 'Max.Allocation per Wallet', isAvailable: true },
-      { text: 'Total Supply', isAvailable: true }
-    ]
-  },
-  {
-    lists: [
-      { text: 'Token Contract Address', isAvailable: true },
-      { text: 'Website URL', isAvailable: true },
-      { text: 'WhitePager/LitePaper', isAvailable: true },
-      { text: 'Project Introduction', isAvailable: true },
-      { text: 'Max.Allocation per Wallet', isAvailable: true },
-      { text: 'Total Supply', isAvailable: true }
-    ]
-  }
-];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,9 +32,16 @@ const useStyles = makeStyles((theme) => ({
 
 function CandidatePool() {
   const classes = useStyles();
+  const { poolList } = useSelector((state) => state.pool);
+  const [candidates, setCandidates] = useState([]);
+
+  useEffect(() => {
+    // dispatch(getPoolList());
+    setCandidates(poolList.filter((pool) => pool.contractAddress === ''));
+  }, [poolList]);
 
   return (
-    <Page title="TaalSwap Finace" className={classes.root}>
+    <Page title="TaalSwap Finance" className={classes.root}>
       <Container maxWidth="lg">
         <Typography variant="h2" align="center" gutterBottom>
           Candidate Pools
@@ -91,9 +58,9 @@ function CandidatePool() {
         </Box>
 
         <Grid container spacing={3}>
-          {PLANS.map((card, index) => (
-            <Grid item xs={12} md={4} key={card.subscription}>
-              <CandidateCard card={card} index={index} />
+          {candidates.map((candidate, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <CandidateCard key={index} pool={candidate} index={index} />
             </Grid>
           ))}
         </Grid>
@@ -107,7 +74,7 @@ function CandidatePool() {
             }}
           >
             <Button
-              // to={PATH_APP.root}
+              to={PATH_APP.taalswap.pools}
               fullWidth
               size="large"
               variant="outlined"

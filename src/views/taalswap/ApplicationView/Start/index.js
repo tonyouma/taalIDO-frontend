@@ -1,15 +1,23 @@
 import * as Yup from 'yup';
 import Page from 'src/components/Page';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NewApplicationForm from './NewApplicationForm';
 import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
 import { HeaderDashboard } from 'src/layouts/Common';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Card, CardContent } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import { useFormik } from 'formik';
 import { createApplication } from 'src/redux/slices/pool';
 import moment from 'moment';
+import { useWeb3React } from '@web3-react/core';
+import { useHistory } from 'react-router-dom';
+import Taalswap from 'src/utils/taalswap';
+import { useLocation } from 'react-router';
+import { PoolStatus } from 'src/utils/poolStatus';
+import { register, getMaxId } from 'src/utils/auth';
+
+const crypto = require('crypto');
 
 // ----------------------------------------------------------------------
 
@@ -20,13 +28,23 @@ const useStyles = makeStyles((theme) => ({
 function ApplicationStart() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const context = useWeb3React();
+  const { account, library } = context;
+
+  useEffect(() => {
+    // console.log('test : ' + account);
+    setEdit(location.state ? true : false);
+  }, [account]);
 
   const NewApplicationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().required('Project Name is required'),
     category: Yup.string().required('Category is required'),
-    projectDesc: Yup.string().required('Project Description is required'),
     websiteUrl: Yup.string().required('Website URL is required'),
     email: Yup.string().email().required('eMail is required'),
     telegramHandle: Yup.string().required('Telegram handle is required'),
@@ -35,46 +53,59 @@ function ApplicationStart() {
       'Token Contract Address is required'
     ),
     tradeValue: Yup.number().positive().required('Trade Value is required'),
-    tradeAmount: Yup.number().positive().required('Trade Amount is required'),
-    minFundRaise: Yup.number()
-      .positive()
-      .required('Min. Fund Raise is required'),
+    tradeAmount: Yup.number().positive().required('Total Raise is required'),
+    minFundRaise: Yup.number().positive().required('Minimum Raise is required'),
     access: Yup.string().required('Access is required'),
-    minIndividuals: Yup.number()
-      .min(0)
-      .required('Min. Individuals is required'),
+    minIndividuals: Yup.number().min(0).required('Min. Allocation is required'),
     maxIndividuals: Yup.number()
       .positive()
-      .required('Max. Individuals is required'),
+      .required('Max. Allocation is required'),
     feeAmount: Yup.number()
       .positive('Fee Amount is positive integer')
       .integer('Fee Amount is positive integer')
-      .min(1)
+      .min(2)
       .max(100)
-      .required('Fee Amount is required')
+      .required('Fee Amount is required'),
+    secret: Yup.string().required('Password is required')
   });
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      category: 'defi',
-      projectDesc: '',
-      websiteUrl: '',
-      email: '',
-      telegramHandle: '',
-      poolName: '',
-      tokenContractAddr: '',
-      tradeValue: '',
-      tradeAmount: '',
-      minFundRaise: '',
-      access: 'private',
-      minIndividuals: '',
-      maxIndividuals: '',
-      isAtomic: false,
-      preferredStartDate: moment().add(1, 'd').toDate(),
-      feeAmount: 1
+      name: location.state ? location.state.selectedItem.projectName : '',
+      category: location.state ? location.state.selectedItem.category : 'DeFi',
+      projectDesc: location.state
+        ? location.state.selectedItem.projectDesc
+        : '',
+      websiteUrl: location.state ? location.state.selectedItem.websiteUrl : '',
+      email: location.state ? location.state.selectedItem.email : '',
+      telegramHandle: location.state
+        ? location.state.selectedItem.telegramHandle
+        : '',
+      poolName: location.state ? location.state.selectedItem.poolName : '',
+      tokenContractAddr: location.state
+        ? location.state.selectedItem.tokenContractAddr
+        : '',
+      tradeValue: location.state ? location.state.selectedItem.tradeValue : '',
+      tradeAmount: location.state
+        ? location.state.selectedItem.tradeAmount
+        : '',
+      minFundRaise: location.state
+        ? location.state.selectedItem.minFundRaise
+        : '',
+      access: location.state ? location.state.selectedItem.access : 'Private',
+      minIndividuals: location.state
+        ? location.state.selectedItem.minIndividuals
+        : '',
+      maxIndividuals: location.state
+        ? location.state.selectedItem.maxIndividuals
+        : '',
+      isAtomic: location.state ? location.state.selectedItem.atomic : false,
+      preferredStartDate: location.state
+        ? moment(location.state.selectedItem.preferredStartDate).toDate()
+        : moment().add(1, 'd').toDate(),
+      feeAmount: location.state ? location.state.selectedItem.feeAmount : 2
     },
-    validationSchema: NewApplicationSchema,
+    validationSchema: location.state ? undefined : NewApplicationSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         const newApplication = {
@@ -95,44 +126,65 @@ function ApplicationStart() {
           maxIndividuals: values.maxIndividuals,
           atomic: values.isAtomic,
           preferredStartDate: values.preferredStartDate,
-          startDate: moment(values.preferredStartDate.toDateString()).unix(), // preferredStartDate 에포크타임으로 저장
-          endDate: moment(values.preferredStartDate.toDateString())
-            .add(30, 'd')
-            .unix(), // startdate + 30일
-          ratio: 1 / (values.tradeValue * Math.pow(10, -18)),
+          // startDate: moment(values.preferredStartDate.toDateString()).unix(), // preferredStartDate 에포크타임으로 저장
+          // endDate: moment(values.preferredStartDate.toDateString())
+          //   .add(30, 'd')
+          //   .unix(), // startdate + 30일
+          startDate: moment().add(2, 'hours').unix(), // preferredStartDate 에포크타임으로 저장
+          endDate: moment().add(2, 'd').unix(), // startdate + 30일
+          ratio: 1 / values.tradeValue,
           progress: '',
           feeAmount: values.feeAmount,
-          status: 'candidate'
+          status: PoolStatus.CANDIDATE,
+          creator: account
         };
-        console.log('======>' + newApplication.toString());
-        dispatch(createApplication(newApplication));
-        resetForm();
-        setSubmitting(false);
+        // console.log('======>');
+        const taalswap = new Taalswap({
+          account,
+          library,
+          tokenAddress: values.tokenContractAddr
+        });
+        newApplication.symbol = await taalswap
+          .symbolAsync()
+          .catch((error) => console.log(error));
+        newApplication.decimals = await taalswap
+          .decimalsAsync()
+          .catch((error) => console.log(error));
+        const key = await getMaxId();
+        const ret = await register({
+          creator: account,
+          password: values.secret,
+          key
+        });
+        const { accessToken, userId } = ret;
+        newApplication.userId = userId;
+        // console.log('======>', newApplication);
+        dispatch(createApplication(newApplication, accessToken));
         enqueueSnackbar('Create Application success', { variant: 'success' });
+        history.push({
+          pathname: '/app/taalswap/application/list'
+        });
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         setSubmitting(false);
+        enqueueSnackbar('Create Application fail', { variant: 'fail' });
         setErrors({ afterSubmit: error.code });
       }
     }
   });
 
   return (
-    <Page
-      title="New Application-Management | Minimal-UI"
-      className={classes.root}
-    >
+    <Page title="IDO Admin | TaalSwap" className={classes.root}>
       <Container>
         <HeaderDashboard
           heading="Create a new application"
           links={[{ name: 'New Application' }]}
         />
-
-        <Card>
-          <CardContent>
-            <NewApplicationForm formik={formik} />
-          </CardContent>
-        </Card>
+        <NewApplicationForm
+          formik={formik}
+          account={account}
+          edit={edit.toString()}
+        />
       </Container>
     </Page>
   );

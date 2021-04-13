@@ -75,7 +75,7 @@ function TotalInstalled({ className, ...other }) {
   return (
     <Card className={clsx(classes.root, className)} {...other}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle2">Total Installed</Typography>
+        <Typography variant="subtitle2">Total Purchasers</Typography>
 
         <div className={classes.trending}>
           <div

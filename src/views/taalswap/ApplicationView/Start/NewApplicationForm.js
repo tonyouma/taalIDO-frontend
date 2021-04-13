@@ -1,31 +1,35 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormikProvider } from 'formik';
 import { LoadingButton } from '@material-ui/lab';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import Block from 'src/components/Block';
 import {
   Box,
   TextField,
   InputAdornment,
   FormControlLabel,
-  Switch
+  Switch,
+  Grid,
+  Card,
+  CardContent
 } from '@material-ui/core';
 import { MobileDatePicker } from '@material-ui/lab';
 import moment from 'moment';
+import React from 'react';
+import { useHistory } from 'react-router';
 
 // ----------------------------------------------------------------------
 
 const CATEGORIES = [
-  { value: 'defi', label: 'DeFi' },
-  { value: 'nft', label: 'NFT' },
-  { value: 'others', label: 'Others' }
+  { value: 'DeFi', label: 'DeFi' },
+  { value: 'NFT', label: 'NFT' },
+  { value: 'Others', label: 'Others' }
 ];
 
 const ACCESS = [
-  { value: 'private', label: 'Private' },
-  { value: 'public', label: 'Public' }
+  { value: 'Private', label: 'Private' },
+  { value: 'Public', label: 'Public' }
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   },
   helperText: {
     padding: theme.spacing(0, 2)
+  },
+  visible: {
+    visibility: 'hidden'
   }
 }));
 
@@ -56,7 +63,11 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
     setFieldValue,
     getFieldProps
   } = formik;
+  const account = other.account;
+  const isEdit = other.edit === 'true' ? true : false;
+  const history = useHistory();
 
+  // console.log('account : ' + JSON.stringify(account));
   return (
     <FormikProvider value={formik}>
       <Form
@@ -66,222 +77,346 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
         className={clsx(classes.root, className)}
         {...other}
       >
-        <Block title="Project Information" className={classes.margin}>
-          <TextField
-            fullWidth
-            label="Name"
-            size="small"
-            {...getFieldProps('name')}
-            error={Boolean(touched.name && errors.name)}
-            helperText={touched.name && errors.name}
-            className={classes.margin}
-          />
-          <TextField
-            select
-            fullWidth
-            label="Category"
-            size="small"
-            {...getFieldProps('category')}
-            SelectProps={{ native: true }}
-            error={Boolean(touched.category && errors.category)}
-            helperText={touched.category && errors.category}
-            className={classes.margin}
-          >
-            {CATEGORIES.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </TextField>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Card>
+              <CardContent>
+                <Grid container spacing={4}>
+                  <Grid item xs={12} sm={12}>
+                    {/* 타이틀 삽입 */}
+                    <Box sx={{ fontSize: 18 }}> IDO Information</Box>
+                  </Grid>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Project Name"
+                      disabled={isEdit}
+                      {...getFieldProps('poolName')}
+                      error={Boolean(touched.poolName && errors.poolName)}
+                      helperText={touched.poolName && errors.poolName}
+                    />
+                  </Grid>
 
-          <TextField
-            fullWidth
-            label="Description"
-            size="small"
-            {...getFieldProps('projectDesc')}
-            error={Boolean(touched.projectDesc && errors.projectDesc)}
-            helperText={touched.projectDesc && errors.projectDesc}
-            className={classes.margin}
-          />
-          <TextField
-            fullWidth
-            label="Website URL"
-            size="small"
-            {...getFieldProps('websiteUrl')}
-            error={Boolean(touched.websiteUrl && errors.websiteUrl)}
-            helperText={touched.websiteUrl && errors.websiteUrl}
-            className={classes.margin}
-          />
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Token Contract Address"
+                      disabled={isEdit}
+                      {...getFieldProps('tokenContractAddr')}
+                      error={Boolean(
+                        touched.tokenContractAddr && errors.tokenContractAddr
+                      )}
+                      helperText={
+                        touched.tokenContractAddr && errors.tokenContractAddr
+                      }
+                    />
+                  </Grid>
 
-          <TextField
-            fullWidth
-            label="eMail"
-            size="small"
-            {...getFieldProps('email')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
-            className={classes.margin}
-          />
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Trade Value"
+                      disabled={isEdit}
+                      {...getFieldProps('tradeValue')}
+                      error={Boolean(touched.tradeValue && errors.tradeValue)}
+                      helperText={
+                        (touched.tradeValue && errors.tradeValue) || '(In ETH)'
+                      }
+                    />
+                  </Grid>
 
-          <TextField
-            fullWidth
-            label="Telegram handle"
-            size="small"
-            {...getFieldProps('telegramHandle')}
-            error={Boolean(touched.telegramHandle && errors.telegramHandle)}
-            helperText={touched.telegramHandle && errors.telegramHandle}
-            className={classes.margin}
-          />
-        </Block>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Total Raise"
+                      disabled={isEdit}
+                      {...getFieldProps('tradeAmount')}
+                      error={Boolean(touched.tradeAmount && errors.tradeAmount)}
+                      helperText={
+                        (touched.tradeAmount && errors.tradeAmount) ||
+                        '(Total # of tokens for sale)'
+                      }
+                    />
+                  </Grid>
 
-        <Block title="IDO Information" className={classes.margin}>
-          <TextField
-            fullWidth
-            label="Pool Name"
-            size="small"
-            {...getFieldProps('poolName')}
-            error={Boolean(touched.poolName && errors.poolName)}
-            helperText={touched.poolName && errors.poolName}
-            className={classes.margin}
-          />
-          <TextField
-            fullWidth
-            label="Token Contract Address"
-            size="small"
-            {...getFieldProps('tokenContractAddr')}
-            error={Boolean(
-              touched.tokenContractAddr && errors.tokenContractAddr
-            )}
-            helperText={touched.tokenContractAddr && errors.tokenContractAddr}
-            className={classes.margin}
-          />
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Minimum Raise"
+                      disabled={isEdit}
+                      {...getFieldProps('minFundRaise')}
+                      error={Boolean(
+                        touched.minFundRaise && errors.minFundRaise
+                      )}
+                      helperText={
+                        (touched.minFundRaise && errors.minFundRaise) ||
+                        '(Min. # of tokens to be sold)'
+                      }
+                    />
+                  </Grid>
 
-          <TextField
-            fullWidth
-            label="Trade Value"
-            size="small"
-            {...getFieldProps('tradeValue')}
-            error={Boolean(touched.tradeValue && errors.tradeValue)}
-            helperText={(touched.tradeValue && errors.tradeValue) || '(In ETH)'}
-            className={classes.margin}
-          />
-          <TextField
-            fullWidth
-            label="Trade Amount"
-            size="small"
-            {...getFieldProps('tradeAmount')}
-            error={Boolean(touched.tradeAmount && errors.tradeAmount)}
-            helperText={
-              (touched.tradeAmount && errors.tradeAmount) ||
-              '(Total # of tokens for sale)'
-            }
-            className={classes.margin}
-          />
-          <TextField
-            fullWidth
-            label="Min. Fund Raise"
-            size="small"
-            {...getFieldProps('minFundRaise')}
-            error={Boolean(touched.minFundRaise && errors.minFundRaise)}
-            helperText={
-              (touched.minFundRaise && errors.minFundRaise) ||
-              '(Min. # of tokens sold at least)'
-            }
-            className={classes.margin}
-          />
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      select
+                      fullWidth
+                      size="small"
+                      label="Access"
+                      disabled={isEdit}
+                      {...getFieldProps('access')}
+                      SelectProps={{ native: true }}
+                      error={Boolean(touched.access && errors.access)}
+                      helperText={touched.access && errors.access}
+                    >
+                      {ACCESS.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Min. Allocation"
+                      disabled={isEdit}
+                      {...getFieldProps('minIndividuals')}
+                      error={Boolean(
+                        touched.minIndividuals && errors.minIndividuals
+                      )}
+                      helperText={
+                        (touched.minIndividuals && errors.minIndividuals) ||
+                        '(Min. # of tokens allowed per wallet)'
+                      }
+                    />
+                  </Grid>
 
-          <TextField
-            select
-            fullWidth
-            label="Access"
-            size="small"
-            {...getFieldProps('access')}
-            SelectProps={{ native: true }}
-            error={Boolean(touched.access && errors.access)}
-            helperText={touched.access && errors.access}
-            className={classes.margin}
-          >
-            {ACCESS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </TextField>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Max. Allocation"
+                      disabled={isEdit}
+                      {...getFieldProps('maxIndividuals')}
+                      error={Boolean(
+                        touched.maxIndividuals && errors.maxIndividuals
+                      )}
+                      helperText={
+                        (touched.maxIndividuals && errors.maxIndividuals) ||
+                        '(Max. # of tokens allowed per wallet)'
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12}>
+                    <MobileDatePicker
+                      label="Preferred Start Date"
+                      minDate={isEdit ? '' : moment().add(1, 'd').toDate()}
+                      disabled={isEdit}
+                      value={values.preferredStartDate}
+                      size="small"
+                      onChange={(date) =>
+                        setFieldValue('preferredStartDate', date)
+                      }
+                      renderInput={(params) => (
+                        <TextField {...params} fullWidth margin="normal" />
+                      )}
+                    />
+                  </Grid>
 
-          <TextField
-            fullWidth
-            label="Min. Individuals"
-            size="small"
-            {...getFieldProps('minIndividuals')}
-            error={Boolean(touched.minIndividuals && errors.minIndividuals)}
-            helperText={
-              (touched.minIndividuals && errors.minIndividuals) ||
-              '(Min. # of tokens allowed per person)'
-            }
-            className={classes.margin}
-          />
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Fee Amount"
+                      disabled={isEdit}
+                      {...getFieldProps('feeAmount')}
+                      error={Boolean(touched.feeAmount && errors.feeAmount)}
+                      helperText={
+                        (touched.feeAmount && errors.feeAmount) || '(> 2%)'
+                      }
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="start">%</InputAdornment>
+                        )
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <TextField
-            fullWidth
-            label="Max. Individuals"
-            size="small"
-            {...getFieldProps('maxIndividuals')}
-            error={Boolean(touched.maxIndividuals && errors.maxIndividuals)}
-            helperText={
-              (touched.maxIndividuals && errors.maxIndividuals) ||
-              '(Max. # of tokens allowed per person)'
-            }
-            className={classes.margin}
-          />
+          <Grid item xs={12} md={6}>
+            <Card>
+              <CardContent>
+                <Grid container spacing={4}>
+                  <Grid item xs={12} sm={12}>
+                    {/* 타이틀 삽입 */}
+                    <Box sx={{ fontSize: 18 }}> Project Information</Box>
+                  </Grid>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      label="Project Name"
+                      disabled={isEdit}
+                      {...getFieldProps('name')}
+                      error={Boolean(touched.name && errors.name)}
+                      helperText={touched.name && errors.name}
+                    />
+                  </Grid>
 
-          <MobileDatePicker
-            label="Preferred Start Date"
-            size="small"
-            minDate={moment().add(1, 'd').toDate()}
-            value={values.preferredStartDate}
-            onChange={(date) => setFieldValue('preferredStartDate', date)}
-            renderInput={(params) => (
-              <TextField {...params} fullWidth margin="normal" />
-            )}
-          />
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      select
+                      fullWidth
+                      label="Category"
+                      disabled={isEdit}
+                      {...getFieldProps('category')}
+                      SelectProps={{ native: true }}
+                      error={Boolean(touched.category && errors.category)}
+                      helperText={touched.category && errors.category}
+                    >
+                      {CATEGORIES.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </Grid>
 
-          <TextField
-            fullWidth
-            label="Fee Amount"
-            size="small"
-            {...getFieldProps('feeAmount')}
-            error={Boolean(touched.feeAmount && errors.feeAmount)}
-            helperText={(touched.feeAmount && errors.feeAmount) || '(> 1%)'}
-            className={classes.margin}
-            InputProps={{
-              endAdornment: <InputAdornment position="start">%</InputAdornment>
-            }}
-          />
-          <div
-            style={{
-              width: '100%',
-              textAlign: 'left'
-            }}
-          >
-            <FormControlLabel
-              control={
-                <Switch {...getFieldProps('isAtomic')} color="primary" />
-              }
-              labelPlacement="start"
-              label="Atomic"
-            />
-          </div>
-        </Block>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      label="Website URL"
+                      disabled={isEdit}
+                      {...getFieldProps('websiteUrl')}
+                      error={Boolean(touched.websiteUrl && errors.websiteUrl)}
+                      helperText={touched.websiteUrl && errors.websiteUrl}
+                    />
+                  </Grid>
 
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            pending={isSubmitting}
-          >
-            Create
-          </LoadingButton>
-        </Box>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      label="Email Address"
+                      disabled={isEdit}
+                      {...getFieldProps('email')}
+                      error={Boolean(touched.email && errors.email)}
+                      helperText={touched.email && errors.email}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      label="Telegram Handle"
+                      disabled={isEdit}
+                      {...getFieldProps('telegramHandle')}
+                      error={Boolean(
+                        touched.telegramHandle && errors.telegramHandle
+                      )}
+                      helperText={
+                        touched.telegramHandle && errors.telegramHandle
+                      }
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      {...getFieldProps('projectDesc')}
+                      disabled={isEdit}
+                      error={Boolean(touched.projectDesc && errors.projectDesc)}
+                      helperText={touched.projectDesc && errors.projectDesc}
+                      fullWidth
+                      multiline
+                      minRows={6}
+                      maxRows={6}
+                      label="Description"
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Box
+                      sx={{
+                        my: 3,
+                        display: 'flex',
+                        alignItems: 'Right',
+                        flexDirection: 'column'
+                      }}
+                    >
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            disabled={isEdit}
+                            {...getFieldProps('isAtomic')}
+                            color="primary"
+                          />
+                        }
+                        labelPlacement="start"
+                        label="Atomic"
+                      />
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    {isEdit ? (
+                      <TextField
+                        className={clsx(classes.visible, className)}
+                        disabled={isEdit}
+                        {...getFieldProps('secret')}
+                        error={Boolean(touched.secret && errors.secret)}
+                        helperText={touched.secret && errors.secret}
+                        fullWidth
+                        label="Password"
+                        type="password"
+                      />
+                    ) : (
+                      <TextField
+                        disabled={isEdit}
+                        {...getFieldProps('secret')}
+                        error={Boolean(touched.secret && errors.secret)}
+                        helperText={touched.secret && errors.secret}
+                        fullWidth
+                        label="Password"
+                        type="password"
+                      />
+                    )}
+                  </Grid>
+                </Grid>
+
+                <Box
+                  sx={{ mt: 5, display: 'flex', justifyContent: 'flex-end' }}
+                >
+                  {!isEdit ? (
+                    <LoadingButton
+                      type="submit"
+                      fullWidth
+                      disabled={isEdit && account}
+                      variant="contained"
+                      pending={isSubmitting}
+                    >
+                      {!account ? 'Connect Wallet' : 'Create'}
+                    </LoadingButton>
+                  ) : (
+                    <Button
+                      type="button"
+                      fullWidth
+                      variant="contained"
+                      onClick={history.goBack}
+                    >
+                      Back
+                    </Button>
+                  )}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Form>
     </FormikProvider>
   );

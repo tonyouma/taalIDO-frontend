@@ -148,8 +148,8 @@ function Hero({ className }) {
 
             <motion.div variants={varFadeInRight}>
               <Box component="p" sx={{ color: 'common.white', py: 5 }}>
-                TaalSwap is a permissions cross-chain platform for IDO, yield
-                farming and NFT auction.
+                TaalSwap is a decentralized and interoperable multi-chain
+                platform for IDO, yield farming and NFT auction.
               </Box>
             </motion.div>
 
@@ -158,7 +158,7 @@ function Hero({ className }) {
                 size="large"
                 variant="contained"
                 component={RouterLink}
-                // to={PATH_APP.general.dashboard}
+                to={PATH_APP.taalswap.pools}
                 startIcon={<Icon icon={flashFill} width={20} height={20} />}
               >
                 Go Now

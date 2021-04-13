@@ -1,6 +1,6 @@
 import React from 'react';
 import { MLabel, MIcon } from 'src/theme';
-import { PATH_APP, PATH_PAGE } from 'src/routes/paths';
+import { PATH_APP, PATH_HOME, PATH_PAGE } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -25,50 +25,111 @@ const ICONS = {
   upload: <MIcon src={path('ic_upload')} />,
   copy: <MIcon src={path('ic_copy')} />,
   carousel: <MIcon src={path('ic_carousel')} />,
-  language: <MIcon src={path('ic_language')} />
+  language: <MIcon src={path('ic_language')} />,
+  github: <MIcon src={path('ic_github')} />
 };
 
 const navConfig = [
   // TAALSWAP IDO
   // ----------------------------------------------------------------------
   {
-    subheader: 'taalswap ido',
+    subheader: 'IDO',
     items: [
       {
-        title: 'pools',
+        title: 'Projects',
         href: PATH_APP.taalswap.pools,
         icon: ICONS.elements
       },
+      /*{
+        title: 'Apply for IDO',
+        href: PATH_APP.taalswap.application.root,
+        icon: ICONS.page
+      },*/
       {
         title: 'Apply for IDO',
         href: PATH_APP.taalswap.application.root,
         icon: ICONS.page
-      },
-      {
-        title: 'Apply for IDO List',
-        href: PATH_APP.taalswap.application.list,
-        icon: ICONS.page
-      },
-      {
-        title: 'Admin',
-        href: PATH_APP.taalswap.admin,
-        icon: ICONS.page
-      },
-      {
-        title: 'participate',
-        href: PATH_APP.taalswap.participate,
-        icon: ICONS.page
-      },
-      {
-        title: 'application',
-        href: PATH_APP.taalswap.applicationpage,
-        icon: ICONS.page
+        // },
+        // {
+        //   title: 'Admin',
+        //   href: PATH_APP.taalswap.admin,
+        //   icon: ICONS.page
+        // },
+        // {
+        //   title: 'participate',
+        //   href: PATH_APP.taalswap.participate,
+        //   icon: ICONS.page
+        // },
+        // {
+        //   title: 'application',
+        //   href: PATH_APP.taalswap.applicationpage,
+        //   icon: ICONS.page
       }
       // {
       //   title: 'swap',
       //   href: PATH_APP.taalswap.swap,
       //   icon: ICONS.page
       // }
+    ]
+  },
+  // GENERAL
+  // ----------------------------------------------------------------------
+  // {
+  //   subheader: 'general',
+  //   items: [
+  //     {
+  //       title: 'dashboard',
+  //       icon: ICONS.dashboard,
+  //       href: PATH_APP.general.root,
+  //       items: [
+  //         {
+  //           title: 'app',
+  //           href: PATH_APP.general.root
+  //         },
+  //         {
+  //           title: 'e-commerce',
+  //           href: PATH_APP.general.ecommerce
+  //         },
+  //         {
+  //           title: 'analytics',
+  //           href: PATH_APP.general.analytics
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
+  // MANAGEMENT
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Governance',
+    items: []
+  },
+  // TAALSWAP TRADE
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Trade',
+    items: []
+  },
+  // TAALSWAP POOLS
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Pools',
+    items: []
+  },
+  // TAALSWAP FARMS
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Farms',
+    items: []
+  },
+  {
+    subheader: 'Docs',
+    items: [
+      {
+        title: 'Whitepaper',
+        href: 'https://taalswap.gitbook.io/taalswap-documents/',
+        icon: ICONS.github
+      }
     ]
   }
   // GENERAL

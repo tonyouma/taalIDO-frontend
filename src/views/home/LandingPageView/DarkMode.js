@@ -3,16 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 //import Block from 'src/components/Block';
 import { motion } from 'framer-motion';
-import { BASE_IMG } from 'src/utils/getImages';
 import Logo from 'src/components/Logo';
-import { PATH_APP, PATH_HOME } from 'src/routes/paths';
-import { Link as ScrollLink } from 'react-scroll';
-import useSettings from 'src/hooks/useSettings';
 import {
   varFadeInUp,
-  varFadeInDown,
   MotionInView,
-  varZoomInOut,
   varFadeInRight
 } from 'src/components/Animate';
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,6 +25,8 @@ import {
   Typography,
   ListItemText
 } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 // ----------------------------------------------------------------------
 
@@ -52,6 +48,15 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'flex-start'
+    },
+    [theme.breakpoints.down('md')]: {
+      height: '100%',
+      width: '100%',
+      marginBottom: '100',
+      textAlign: 'left',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
     }
   },
   listIcon: {
@@ -83,25 +88,32 @@ DarkMode.propTypes = {
 
 function DarkMode({ className }) {
   const classes = useStyles();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
+  const fiiter = true;
 
   return (
     <div className={clsx(classes.root, className)}>
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
-        <Grid container spacing={5} direction="row-reverse">
-          <Grid item xs={12}>
+        <Grid container fixed={'true'} spacing={5} direction="row-reverse">
+          <Grid item xs={12} md={12}>
             <div className={classes.content}>
               <MotionInView
                 variants={varFadeInUp}
-                sx={{ color: 'common.white' }}
+                sx={{ color: 'common.white', marginLeft: matches ? 0 : 20 }}
               >
                 {/* <Typography variant="h4" paragraph>
                   TaalSwap
                 </Typography> */}
-                <Logo />
+                <Logo footer={'true'} />
               </MotionInView>
               <MotionInView
                 variants={varFadeInUp}
-                sx={{ color: 'common.white', mb: 3 }}
+                sx={{
+                  color: 'common.white',
+                  mb: 3,
+                  marginLeft: matches ? 0 : 11
+                }}
               >
                 <Typography
                   gutterBottom
@@ -112,85 +124,97 @@ function DarkMode({ className }) {
                 </Typography>
               </MotionInView>
               <div className={classes.listIcon}>
-                <motion.img
-                  variants={varFadeInRight}
-                  src="/static/icons/ic_m_facebook.svg"
-                />
-                <motion.img
-                  variants={varFadeInRight}
-                  src="/static/icons/ic_m_linkin.svg"
-                />
-                <motion.img
-                  variants={varFadeInRight}
-                  src="/static/icons/ic_m_instagram.svg"
-                />
-                <motion.img
-                  variants={varFadeInRight}
-                  src="/static/icons/ic_m_tweet.svg"
-                />
+                <a href="">
+                  <motion.img
+                    variants={varFadeInRight}
+                    src="/static/icons/ic_m_facebook.svg"
+                  />
+                </a>
+                <a href="">
+                  <motion.img
+                    variants={varFadeInRight}
+                    src="/static/icons/ic_m_linkin.svg"
+                  />
+                </a>
+                <a href="">
+                  <motion.img
+                    variants={varFadeInRight}
+                    src="/static/icons/ic_m_instagram.svg"
+                  />
+                </a>
+                <a href="https://twitter.com/taalswap" target="_blank">
+                  <motion.img
+                    variants={varFadeInRight}
+                    src="/static/icons/ic_m_tweet.svg"
+                  />
+                </a>
               </div>
             </div>
           </Grid>
         </Grid>
 
-        <Grid container spacing={5} direction="row-reverse">
-          <Grid item xs={5} md={2}>
-            <div className={classes.content}>
-              <Typography
-                gutterBottom
-                variant="overline"
-                sx={{ color: 'text.disabled', display: 'block' }}
-              >
-                Developers <br />
-                Developer Hub <br />
-                Developer Hub <br />
-              </Typography>
-            </div>
-          </Grid>
-          <Grid item xs={5} md={2}>
-            <div className={classes.content}>
-              <Typography
-                gutterBottom
-                variant="overline"
-                sx={{ color: 'text.disabled', display: 'block' }}
-              >
-                Features <br />
-                USDT Pools <br />
-                TAAL Pools <br />
-                Yield Farming
-              </Typography>
-            </div>
-          </Grid>
+        {matches ? (
+          <Grid container spacing={5} direction="row-reverse">
+            <Grid item xs={5} md={2}>
+              <div className={classes.content}>
+                <Typography
+                  gutterBottom
+                  variant="overline"
+                  sx={{ color: 'text.disabled', display: 'block' }}
+                >
+                  Developers <br />
+                  Developer Hub <br />
+                  Developer Hub <br />
+                </Typography>
+              </div>
+            </Grid>
+            <Grid item xs={5} md={2}>
+              <div className={classes.content}>
+                <Typography
+                  gutterBottom
+                  variant="overline"
+                  sx={{ color: 'text.disabled', display: 'block' }}
+                >
+                  Features <br />
+                  USDT Pools <br />
+                  TAAL Pools <br />
+                  Yield Farming
+                </Typography>
+              </div>
+            </Grid>
 
-          <Grid item xs={5} md={2}>
-            <div className={classes.content}>
-              <Typography
-                gutterBottom
-                variant="overline"
-                sx={{ color: 'text.disabled', display: 'block' }}
-              >
-                About <br />
-                About US <br />
-                Privacy <br />
-                Terms
-              </Typography>
-            </div>
-          </Grid>
+            <Grid item xs={5} md={2}>
+              <div className={classes.content}>
+                <Typography
+                  gutterBottom
+                  variant="overline"
+                  sx={{ color: 'text.disabled', display: 'block' }}
+                >
+                  About <br />
+                  About US <br />
+                  {/* Privacy <br />
+                  Terms */}
+                </Typography>
+              </div>
+            </Grid>
 
-          <Grid item xs={5} md={2}>
-            <div className={classes.content}>
-              <Typography
-                gutterBottom
-                variant="overline"
-                sx={{ color: 'text.disabled', display: 'block' }}
-              >
-                Support <br />
-                Support Center <br />
-                Support Center <br />
-              </Typography>
-            </div>
+            {/* <Grid item xs={5} md={2}>
+              <div className={classes.content}>
+                <Typography
+                  gutterBottom
+                  variant="overline"
+                  sx={{ color: 'text.disabled', display: 'block' }}
+                >
+                  Support <br />
+                  Support Center <br />
+                  Support Center <br />
+                </Typography>
+              </div>
+            </Grid> */}
           </Grid>
-        </Grid>
+        ) : (
+          <div></div>
+        )}
       </Container>
     </div>
   );
