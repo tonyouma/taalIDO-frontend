@@ -170,6 +170,9 @@ function TablePoolRow({ row, handleOpenModal }) {
         <TableCell align="right" width="10%">
           {row.access}
         </TableCell>
+        <TableCell align="right" width="10%">
+          {row.category}
+        </TableCell>
       </Hidden>
       {/* <TableCell align="center" width="5%"></TableCell> */}
       <TableCell align="right" width="35%">
@@ -182,7 +185,7 @@ function TablePoolRow({ row, handleOpenModal }) {
   );
 }
 
-export default function BasicTable({ filterName }) {
+export default function BasicTable({ filterName, category }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -242,7 +245,11 @@ export default function BasicTable({ filterName }) {
   };
 
   const filteredPools = applyFilter(
-    poolList.filter((pool) => pool.contractAddress !== ''),
+    category === 'All'
+      ? poolList.filter((pool) => pool.contractAddress !== '')
+      : poolList.filter(
+          (pool) => pool.contractAddress !== '' && pool.category === category
+        ),
     filterName
   );
 
@@ -268,6 +275,11 @@ export default function BasicTable({ filterName }) {
                   <TableCell align="right">
                     <Typography variant="h6" gutterBottom>
                       Access
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography variant="h6" gutterBottom>
+                      Category
                     </Typography>
                   </TableCell>
                 </Hidden>

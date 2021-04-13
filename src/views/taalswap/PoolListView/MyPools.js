@@ -146,6 +146,9 @@ function TablePoolRow({ row, handleOpenModal }) {
         <TableCell align="right" width="10%">
           {row.access}
         </TableCell>
+        <TableCell align="right" width="10%">
+          {row.category}
+        </TableCell>
       </Hidden>
       <TableCell align="right" width="35%">
         <LinearProgressWithLabel value={progressValue} />
@@ -157,7 +160,7 @@ function TablePoolRow({ row, handleOpenModal }) {
   );
 }
 
-export default function MyPools({ filterName, onBackdrop }) {
+export default function MyPools({ filterName, category, onBackdrop }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -317,7 +320,15 @@ export default function MyPools({ filterName, onBackdrop }) {
     }
   };
 
-  const filteredPools = applyFilter(filterPoolList, filterName);
+  const filteredPools = applyFilter(
+    category === 'All'
+      ? filterPoolList.filter((pool) => pool.contractAddress !== '')
+      : filterPoolList.filter(
+          (pool) => pool.contractAddress !== '' && pool.category === category
+        ),
+    filterName
+  );
+  // const filteredPools = applyFilter(filterPoolList, filterName);
   // const filteredPools = applyFilter(poolList, filterName);
 
   return (
@@ -342,6 +353,11 @@ export default function MyPools({ filterName, onBackdrop }) {
                   <TableCell align="right">
                     <Typography variant="h6" gutterBottom>
                       Access
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography variant="h6" gutterBottom>
+                      Category
                     </Typography>
                   </TableCell>
                 </Hidden>
