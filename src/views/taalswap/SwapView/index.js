@@ -10,15 +10,17 @@ import Participate from '../SwapView/Participate';
 import AboutTheProject from '../SwapView/AboutTheProject';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Card, Container, Box, Typography, Box,
+import {
   Grid,
   Card,
   Container,
+  Box,
   Tab,
   Tabs,
   Backdrop,
   CircularProgress,
-  Typography } from '@material-ui/core';
+  Typography
+} from '@material-ui/core';
 import TotalAllocatedTokens from './TotalAllocatedTokens';
 import TotalPurchasers from './TotalPurchasers';
 import CurrentProgress from './CurrentProgress';
@@ -89,7 +91,6 @@ function TabPanel(props) {
     </div>
   );
 }
-
 
 function PaymentView({ className, ...other }) {
   const classes = useStyles();

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography, TextField } from '@material-ui/core';
+import { Box, Typography, TextField, Divider } from '@material-ui/core';
 import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
 import { useWeb3React } from '@web3-react/core';

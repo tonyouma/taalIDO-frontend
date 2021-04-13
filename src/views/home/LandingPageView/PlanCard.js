@@ -22,8 +22,8 @@ import {
   DialogActions,
   Box,
   Divider,
-  Checkbox,Grid
-
+  Checkbox,
+  Grid
 } from '@material-ui/core';
 import { MLabel } from 'src/theme';
 import Progress from './Progress';
@@ -189,11 +189,11 @@ function PlanCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box
+          {/* <Box
             component={Icon}
             icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
-          />
+          /> */}
           Ratio
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
@@ -215,11 +215,11 @@ function PlanCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box
+          {/* <Box
             component={Icon}
             icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
-          />
+          /> */}
           Maximum
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
@@ -239,11 +239,11 @@ function PlanCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box
+          {/* <Box
             component={Icon}
             icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
-          />
+          /> */}
           Access
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
@@ -263,11 +263,11 @@ function PlanCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box
+          {/* <Box
             component={Icon}
             icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
-          />
+          /> */}
           Participants
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
@@ -287,11 +287,11 @@ function PlanCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box
+          {/* <Box
             component={Icon}
             icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
-          />
+          /> */}
           Total Raise
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
@@ -311,7 +311,6 @@ function PlanCard({ pool, index, className }) {
       >
         Details
       </Button>
-
 
       <Dialog
         open={isOpenModal}
