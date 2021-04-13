@@ -2,24 +2,24 @@ import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Logo from 'src/components/Logo';
-import { Link as ScrollLink } from 'react-scroll';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link, Container, Typography } from '@material-ui/core';
 import { motion } from 'framer-motion';
-import { BASE_IMG } from 'src/utils/getImages';
-import useSettings from 'src/hooks/useSettings';
-import {
-  varFadeInUp,
-  varFadeInDown,
-  MotionInView
-} from 'src/components/Animate';
-
+import { Link, Container, Typography } from '@material-ui/core';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    width: '100%',
+    height: '100%',
     textAlign: 'center',
-    padding: theme.spacing(5, 0)
+    padding: theme.spacing(5, 0),
+    backgroundColor: theme.palette.grey[900]
+  },
+  listIcon: {
+    display: 'flex',
+    marginTop: theme.spacing(3),
+    justifyContent: 'center',
+    marginRight: theme.spacing(4.5)
   }
 }));
 
@@ -34,22 +34,16 @@ function Footer({ className }) {
 
   return (
     <Container maxWidth="lg" className={clsx(classes.root, className)}>
-      <div className={classes.heading}>
-        <MotionInView variants={varFadeInUp}>
-          <Typography
-            gutterBottom
-            variant="overline"
-            align="center"
-            sx={{ color: 'text.secondary', display: 'block' }}
-          >
-            TaalSwap
-          </Typography>
-        </MotionInView>
-        <MotionInView variants={varFadeInDown}>
-          <Typography variant="h2" align="center">
-            Candidate Pools
-          </Typography>
-        </MotionInView>
+      <Logo sx={{ mb: 1, mx: 'auto' }} />
+
+      <Typography color="common.white" variant="caption">
+        © All rights reserved. Made by TaalSwap.
+      </Typography>
+      <div className={classes.listIcon}>
+        <motion.img src="/static/icons/ic_s_facebook.svg" />
+        <motion.img src="/static/icons/ic_s_linkin.svg" />
+        <motion.img src="/static/icons/ic_s_instagram.svg" />
+        <motion.img src="/static/icons/ic_s_tweet.svg" />
       </div>
     </Container>
   );
