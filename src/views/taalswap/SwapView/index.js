@@ -174,40 +174,40 @@ function PaymentView({ className, ...other }) {
           ))}
         </Tabs>
         <TabPanel value={value} index={0}>
-          <Container>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6} md={4}>
-                <TotalAllocatedTokens />
+          {/* <Container> */}
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6} md={4}>
+              <TotalAllocatedTokens />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <TotalPurchasers />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <CurrentProgress />
+            </Grid>
+          </Grid>
+          <Box sx={{ my: 3 }}></Box>
+          <Card>
+            <Grid container spacing={upMd ? 5 : 2}>
+              <Grid item xs={12} md={6}>
+                <PaymentInformation
+                  formik={formik}
+                  pool={pool}
+                  ethPrice={ethPrice}
+                />
               </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <TotalPurchasers />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <CurrentProgress />
+
+              <Grid item xs={12} md={6}>
+                <JoninthePool
+                  formik={formik}
+                  pool={pool}
+                  onBackdrop={handleBackdrop}
+                  ethPrice={ethPrice}
+                />
               </Grid>
             </Grid>
-            <Box sx={{ my: 3 }}></Box>
-            <Card>
-              <Grid container spacing={upMd ? 5 : 2}>
-                <Grid item xs={12} md={6}>
-                  <PaymentInformation
-                    formik={formik}
-                    pool={pool}
-                    ethPrice={ethPrice}
-                  />
-                </Grid>
-
-                <Grid item xs={12} md={6}>
-                  <JoninthePool
-                    formik={formik}
-                    pool={pool}
-                    onBackdrop={handleBackdrop}
-                    ethPrice={ethPrice}
-                  />
-                </Grid>
-              </Grid>
-            </Card>
-          </Container>
+          </Card>
+          {/* </Container> */}
         </TabPanel>
         <TabPanel value={value} index={1}>
           <PoolDetails pool={pool} />

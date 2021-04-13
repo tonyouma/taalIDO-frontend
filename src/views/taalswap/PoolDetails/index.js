@@ -28,9 +28,9 @@ function PoolDetails({ pool }) {
   };
   return (
     <Page title="My Pools | TaalSwap" className={classes.root}>
-      <Container maxWidth="lg">
-        <BasicTable pool={pool} />
-      </Container>
+      {/* <Container maxWidth="lg"> */}
+      <BasicTable pool={pool} />
+      {/* </Container> */}
     </Page>
   );
 }
