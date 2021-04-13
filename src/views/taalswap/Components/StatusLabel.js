@@ -77,7 +77,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           Live
         </MLabel>
       ) : null}
-      {poolStatus === PoolStatus.FILLED.SUCCESS.ACHIEVED ? (
+      {poolStatus === PoolStatus.FILLED.SUCCESS.ACCOMPLISHED ? (
         <MLabel
           sx={{
             top: 16,
@@ -86,7 +86,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           }}
           color="failed"
         >
-          Achieved
+          Accomplished
         </MLabel>
       ) : null}
       {poolStatus === PoolStatus.FILLED.SUCCESS.CLOSED ? (

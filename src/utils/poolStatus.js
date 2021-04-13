@@ -7,7 +7,8 @@ export const PoolStatus = {
   FILLED: {
     // endDate 이후
     SUCCESS: {
-      ACHIEVED: 'achieved', //
+      ACCOMPLISHED: 'Accomplished', //
+      // ACHIEVED: 'achieved', /
       CLOSED: 'closed'
     },
     FAILED: 'failed'
