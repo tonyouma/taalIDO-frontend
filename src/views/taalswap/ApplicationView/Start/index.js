@@ -3,7 +3,7 @@ import Page from 'src/components/Page';
 import React, { useEffect, useState } from 'react';
 import NewApplicationForm from './NewApplicationForm';
 import { useSnackbar } from 'notistack';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { HeaderDashboard } from 'src/layouts/Common';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
@@ -33,6 +33,7 @@ function ApplicationStart() {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const history = useHistory();
+  const { from } = useSelector((state) => state.talken);
 
   const context = useWeb3React();
   const { account, library } = context;
@@ -107,6 +108,10 @@ function ApplicationStart() {
     },
     validationSchema: location.state ? undefined : NewApplicationSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
+      if (from !== null) {
+        alert('토큰앱에서는 사용하실 수 없습니다.');
+        return;
+      }
       try {
         const newApplication = {
           projectName: values.name,

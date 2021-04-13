@@ -21,7 +21,8 @@ import { useWeb3React } from '@web3-react/core';
 import {
   getWalletBalance,
   setActivatingConnector,
-  setTalBalance
+  setTalBalance,
+  setBalance
 } from '../../../redux/slices/wallet';
 import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
 import WalletDialog from '../../../views/taalswap/Components/WalletDialog';
@@ -73,6 +74,7 @@ function TopBar({ onOpenNav, className }) {
   const { activatingConnector, balance, talBalance } = useSelector(
     (state) => state.wallet
   );
+  const { os, wallet, from } = useSelector((state) => state.talken);
 
   const context = useWeb3React();
   const {
@@ -91,6 +93,9 @@ function TopBar({ onOpenNav, className }) {
     // console.log('1----------> ', connector);
     // console.log('1----------> ', active);
     // console.log('1----------> ', activate);
+    console.log('os', os);
+    console.log('wallet', wallet);
+    console.log('from', from);
     if (activatingConnector && activatingConnector === connector) {
       dispatch(setActivatingConnector(undefined));
     }
@@ -115,17 +120,25 @@ function TopBar({ onOpenNav, className }) {
 
         // dispatch(getContractDecimals(account, library));
 
-        const taalswap = new Taalswap({
-          account,
-          library,
-          tokenAddress: TAL_TOKEN_ADDRESS
-        });
-
-        const talBalance = await taalswap
-          .balanceOf(account)
-          .catch((error) => console.log(error));
-        dispatch(setTalBalance(talBalance));
+        // tal 표시 이상해서 제거
+        // const taalswap = new Taalswap({
+        //   account,
+        //   library,
+        //   tokenAddress: TAL_TOKEN_ADDRESS
+        // });
+        //
+        // const talBalance = await taalswap
+        //   .balanceOf(account)
+        //   .catch((error) => console.log(error));
+        // dispatch(setTalBalance(talBalance));
       }
+    } else if (from !== null) {
+      const taalswap = new Taalswap({ notConnected: true });
+      const walletBalance = await taalswap
+        .getBalance(wallet)
+        .catch((error) => console.log(error));
+      console.log('balance', walletBalance);
+      dispatch(setBalance(walletBalance));
     }
   }, [activatingConnector, connector, account, library]);
 
@@ -137,7 +150,8 @@ function TopBar({ onOpenNav, className }) {
     setIsOpenModal(false);
   };
   const renderConnectWallet = () => {
-    if (!library) {
+    console.log('test');
+    if (!library && from === null) {
       return (
         <Box p={0.8}>
           <Button
@@ -184,13 +198,14 @@ function TopBar({ onOpenNav, className }) {
             }
           }}
         >
-          {!!library && (
-            <WalletInfo
-              walletAddress={account}
-              balance={balance}
-              talBalance={talBalance}
-            />
-          )}
+          {!!library ||
+            (from && (
+              <WalletInfo
+                walletAddress={from ? wallet : account}
+                balance={balance}
+                talBalance={talBalance}
+              />
+            ))}
           <Languages />
           {/* <Notifications /> */}
           <Settings />
