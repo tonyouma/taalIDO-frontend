@@ -1,15 +1,7 @@
 import clsx from 'clsx';
-import React, { useEffect, useState, useCallback } from 'react';
-
-import ReactDOM from 'react-dom';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
-import { Icon } from '@iconify/react';
-import { PATH_APP } from 'src/routes/paths';
-import { Link as RouterLink } from 'react-router-dom';
-import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
-import dotFilled from '@iconify-icons/radix-icons/dot-filled';
 
 import { makeStyles } from '@material-ui/core/styles';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
@@ -23,10 +15,8 @@ import {
   DialogActions,
   Box,
   Divider,
-  Checkbox,
-  Grid
+  Checkbox
 } from '@material-ui/core';
-import { MLabel } from 'src/theme';
 import Progress from './Progress';
 import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
@@ -34,9 +24,9 @@ import { useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../../taalswap/Components/StatusLabel';
-import CirculProgress from './CirculProgress';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
+// import { PoolStatus } from 'src/utils/poolStatus';
 
 // ----------------------------------------------------------------------
 
@@ -53,9 +43,7 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(5)
     },
     '&:hover': {
-      border: '1.5px solid',
-      borderColor: theme.palette.primary.main,
-      margin: '-1.5px'
+      boxShadow: `0 0 0 1.5px ${theme.palette.primary.main}`
     }
   }
 }));
@@ -78,20 +66,21 @@ function PlanCard({ pool, ethPrice, index, className }) {
   const [progressDollorValue, setProgressDollorValue] = useState(0);
   const [totalRaise, setTotalRaise] = useState(0);
   const [participants, setParticipants] = useState(0);
-  const [poolStatus, setStatus] = useState('');
+  // const [poolStatus, setStatus] = useState('');
   const [isOpenModal, setOpenModal] = useState(false);
   const [checkWarning, setCheckWarning] = useState(false);
   const [showWarningMessage, setShowWarningMessage] = useState(false);
 
   const { library, account } = context;
 
-  const handleOpenModal = (row) => {
-    setOpenModal(row);
-  };
+  // const handleOpenModal = (row) => {
+  //   // setOpenModal(row);
+  //   setOpenModal(true);
+  // };
 
   const handleCloseModal = () => {
     setCheckWarning(false);
-    setOpenModal();
+    setOpenModal(false);
   };
 
   const handleOnClickSwap = () => {
@@ -145,11 +134,13 @@ function PlanCard({ pool, ethPrice, index, className }) {
         })
         .catch((error) => console.log(error));
 
-      setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
-
+      // setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
       setMax(getMax(pool.maxIndividuals, pool.tradeValue));
+
+      return;
     } catch (error) {
       console.log(error);
+      return;
     }
   }, [pool, library]);
 
@@ -163,7 +154,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
 
   return (
     <Card className={clsx(classes.root, className)}>
-      <StatusLabel poolStatus={poolStatus} absolute />
+      <StatusLabel poolStatus={pool.poolStatus} absolute />
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
         <Typography variant="h3" sx={{ mx: 1 }}>
@@ -291,7 +282,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
 
         {/* End Date */}
         <Box
-          key="startDate"
+          key="endDate"
           component="li"
           sx={{
             display: 'flex',

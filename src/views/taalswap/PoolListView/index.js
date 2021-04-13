@@ -17,13 +17,15 @@ import {
   InputAdornment,
   Backdrop,
   CircularProgress,
-  Tooltip
+  Tooltip,
+  TextField,
+  Select
 } from '@material-ui/core';
 import BasicTable from './BasicTable';
 import { useTranslation } from 'react-i18next';
 import MyPools from './MyPools';
 import { useWeb3React } from '@web3-react/core';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getSwapList, getPoolList } from '../../../redux/slices/pool';
 import searchFill from '@iconify-icons/eva/search-fill';
 import { useLocation } from 'react-router-dom';
@@ -44,6 +46,14 @@ const POOLS_TABS = [
     component: <MyPools />
   }
 ];
+
+const CATEGORIES = [
+  { value: 'All', label: 'All' },
+  { value: 'DeFi', label: 'DeFi' },
+  { value: 'NFT', label: 'NFT' },
+  { value: 'Others', label: 'Others' }
+];
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   tabBar: {
@@ -52,24 +62,20 @@ const useStyles = makeStyles((theme) => ({
   tableTop: {
     display: 'flex',
     justifyContent: 'space-between',
-    // alignItems: 'center',
-    // height: '70px',
     [theme.breakpoints.down('sm')]: {
-      // border: '1px solid red',
       flexDirection: 'column'
     }
   },
   tableTab: {
     width: '100%',
-    // border: '1px solid blue',
     [theme.breakpoints.down('sm')]: {
       marginBottom: '0px'
     }
   },
   tableSearch: {
     width: '400px',
+    padding: '10px',
     textAlign: 'right',
-    // border: '1px solid black',
     [theme.breakpoints.down('sm')]: {
       textAlign: 'left',
       marginBottom: '1rem'
@@ -111,15 +117,18 @@ function PoolListView() {
   const [currentTab, setCurrentTab] = useState('All Pools');
   const [value, setValue] = useState(0);
   const [filterName, setFilterName] = useState('');
+  const [category, setCategory] = useState('All');
   const [open, setOpen] = useState(false);
   const { library, account } = context;
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleChangeTab = (event, newValue) => {
-    setCurrentTab(newValue);
-  };
+  // const handleChangeTab = (event, newValue) => {
+  //   setCurrentTab(newValue);
+  // };
+
   const { i18n, t } = useTranslation();
 
   const onFilterName = (e) => {
@@ -129,6 +138,10 @@ function PoolListView() {
   const handleBackdrop = (open) => {
     console.log(open);
     setOpen(open);
+  };
+
+  const handleSelectCategory = (e) => {
+    setCategory(e.target.value);
   };
 
   useEffect(async () => {
@@ -204,6 +217,21 @@ function PoolListView() {
             </Tabs>
           </Box>
           <Box className={classes.tableSearch}>
+            <TextField
+              select
+              size="small"
+              label="Category"
+              onChange={handleSelectCategory}
+              SelectProps={{ native: true }}
+            >
+              {CATEGORIES.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
+          </Box>
+          <Box className={classes.tableSearch}>
             <OutlinedInput
               value={filterName}
               onChange={onFilterName}
@@ -223,10 +251,14 @@ function PoolListView() {
           </Box>
         </Box>
         <TabPanel value={value} index={0}>
-          <BasicTable filterName={filterName} />
+          <BasicTable filterName={filterName} category={category} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <MyPools filterName={filterName} onBackdrop={handleBackdrop} />
+          <MyPools
+            filterName={filterName}
+            category={category}
+            onBackdrop={handleBackdrop}
+          />
         </TabPanel>
       </Container>
     </Page>
