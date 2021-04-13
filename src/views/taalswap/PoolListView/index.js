@@ -47,7 +47,7 @@ function PoolListView() {
   return (
     <Page title="Swap | TaalSwap" className={classes.root}>
       <Container maxWidth="lg">
-        <HeaderDashboard heading="IDO Pools" links={[{ name: 'SubText' }]} />
+        <HeaderDashboard heading="Project List" links={[{ name: 'SubText' }]} />
         <Tooltip title="Simple Info. Text Display">
           <Box
             component="img"
@@ -57,11 +57,10 @@ function PoolListView() {
               position: 'absolute',
               width: 25,
               height: 25,
-              ml: 15
+              ml: 17
             }}
           />
         </Tooltip>
-
         <Tabs
           value={currentTab}
           scrollButtons="auto"
