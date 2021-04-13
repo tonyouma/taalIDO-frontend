@@ -668,7 +668,7 @@ export default function ApplicationListView() {
     handleOpenModal(selectedItem, 'deploy');
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!!library) {
       if (
         (library.provider.isMetaMask &&
@@ -688,13 +688,9 @@ export default function ApplicationListView() {
       }
     }
     if (account && checkAdmin(account)) {
-      console.log('admin!');
       dispatch(getApplicationList());
     } else if (account) {
-      console.log('user!');
       dispatch(searchApplicationListByCreator(account));
-    } else {
-      console.log('not login!');
     }
   }, [update, open, library]);
 

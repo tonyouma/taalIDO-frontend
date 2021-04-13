@@ -20,6 +20,9 @@ export const cloudinaryConfig = {
   cloudinaryUrl: process.env.REACT_APP_CLOUDINARY_URL
 };
 
+export const infuraEndpoint =
+  'https://rinkeby.infura.io/v3/fbb83d21738f48d7bccfc214aa014f75';
+
 export const targetNetwork = '0x4';
 export const targetNetworkMsg =
   'Rinkeby 테스트 네트워크가 선택되지 않았습니다.';

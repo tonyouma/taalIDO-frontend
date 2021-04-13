@@ -1,5 +1,6 @@
 import { Contract, ContractFactory } from '@ethersproject/contracts';
 import { fixedData, tokenData } from '../contracts';
+import { InfuraProvider } from '@ethersproject/providers';
 import Numbers from './Numbers';
 
 class Taalswap {
@@ -8,7 +9,8 @@ class Taalswap {
     account,
     library,
     tokenAddress,
-    contractAddress
+    contractAddress,
+    notConnected
   }) {
     try {
       let fixedContractAddress = '';
@@ -21,24 +23,42 @@ class Taalswap {
         if (contractAddress) fixedContractAddress = contractAddress;
       }
 
-      const fixedContract =
-        fixedContractAddress === ''
-          ? {}
-          : new Contract(
-              fixedContractAddress,
-              ContractFactory.getInterface(fixedData.abi),
-              library.getSigner(account).connectUnchecked()
-            );
+      let fixedContract = null;
+      let tokenContract = null;
 
-      const tokenContract =
-        tokenContractAddress === ''
-          ? {}
-          : new Contract(
-              tokenContractAddress,
-              ContractFactory.getInterface(tokenData.abi),
-              library.getSigner(account).connectUnchecked()
-            );
-
+      if (notConnected) {
+        const provider = new InfuraProvider(
+          'rinkeby',
+          'fbb83d21738f48d7bccfc214aa014f75'
+        );
+        tokenContract = new Contract(
+          tokenContractAddress,
+          ContractFactory.getInterface(tokenData.abi),
+          provider
+        );
+        fixedContract = new Contract(
+          fixedContractAddress,
+          ContractFactory.getInterface(fixedData.abi),
+          provider
+        );
+      } else {
+        fixedContract =
+          fixedContractAddress === ''
+            ? {}
+            : new Contract(
+                fixedContractAddress,
+                ContractFactory.getInterface(fixedData.abi),
+                library.getSigner(account).connectUnchecked()
+              );
+        tokenContract =
+          tokenContractAddress === ''
+            ? {}
+            : new Contract(
+                tokenContractAddress,
+                ContractFactory.getInterface(tokenData.abi),
+                library.getSigner(account).connectUnchecked()
+              );
+      }
       this.params = {
         application: application,
         fixedContract: fixedContract,
