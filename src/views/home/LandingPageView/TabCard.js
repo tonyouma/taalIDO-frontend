@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PlanCard from './PlanCard';
@@ -69,10 +70,18 @@ function Tabcard() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const { poolList } = useSelector((state) => state.pool);
-
+  const [ethPrice, setEthPrice] = useState(0);
   const [pools, setPools] = useState([]);
 
-  useEffect(() => {
+  useEffect(async () => {
+    await axios
+      .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
+      .then((result) => {
+        console.log(result.data.data.amount);
+        setEthPrice(result.data.data.amount);
+      })
+      .catch((error) => console.log(error));
+
     setPools(
       poolList.filter(
         (pool) => !!pool.contractAddress && pool.contractAddress !== ''
@@ -125,7 +134,7 @@ function Tabcard() {
             <Grid container spacing={3}>
               {pools.map((pool, index) => (
                 <Grid item xs={12} md={4} key={index}>
-                  <PlanCard pool={pool} index={index} />
+                  <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
                 </Grid>
               ))}
             </Grid>
@@ -143,7 +152,7 @@ function Tabcard() {
             <Grid container spacing={3}>
               {pools.map((pool, index) => (
                 <Grid item xs={12} md={4} key={index}>
-                  <PlanCard pool={pool} index={index} />
+                  <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
                 </Grid>
               ))}
             </Grid>

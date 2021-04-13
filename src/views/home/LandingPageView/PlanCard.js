@@ -1,13 +1,14 @@
 import clsx from 'clsx';
 import React, { useEffect, useState, useCallback } from 'react';
+
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
 import { Icon } from '@iconify/react';
 import { PATH_APP } from 'src/routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
 import checkmarkFill from '@iconify-icons/eva/checkmark-fill';
-
 import dotFilled from '@iconify-icons/radix-icons/dot-filled';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -67,13 +68,14 @@ PlanCard.propTypes = {
   className: PropTypes.string
 };
 
-function PlanCard({ pool, index, className }) {
+function PlanCard({ pool, ethPrice, index, className }) {
   const classes = useStyles();
   const history = useHistory();
   const context = useWeb3React();
 
   const [max, setMax] = useState(0);
   const [progressValue, setProgressValue] = useState(0);
+  const [progressDollorValue, setProgressDollorValue] = useState(0);
   const [totalRaise, setTotalRaise] = useState(0);
   const [participants, setParticipants] = useState(0);
   const [poolStatus, setStatus] = useState('');
@@ -133,6 +135,9 @@ function PlanCard({ pool, index, className }) {
           .tokensAllocated()
           .then((result) => {
             setProgressValue(getProgressValue(result, pool.tradeAmount));
+            setProgressDollorValue(
+              (parseFloat(ethPrice) / pool.ratio) * result
+            );
             setTotalRaise(result * pool.tradeValue);
           })
           .catch((error) => console.log(error));
@@ -178,6 +183,25 @@ function PlanCard({ pool, index, className }) {
       />
 
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
+        {/* Start Date */}
+        <Box
+          key="startDate"
+          component="li"
+          sx={{
+            display: 'flex',
+            typography: 'body2',
+            '&:not(:last-of-type)': { mb: 2 }
+          }}
+        >
+          Start Date
+          <Box sx={{ flex: 1 }} />
+          <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5 }}>
+              {moment.unix(pool.startDate).format('YYYY-MM-DD')}
+            </Box>
+          </Box>
+        </Box>
+
         {/* Ratio */}
         <Box
           key="ratio"
@@ -185,18 +209,11 @@ function PlanCard({ pool, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          {/* <Box
-            component={Icon}
-            icon={dotFilled}
-            sx={{ width: 20, height: 20, mr: 1.5 }}
-          /> */}
           Ratio
           <Box sx={{ flex: 1 }} />
-          {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>
               {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
@@ -211,18 +228,11 @@ function PlanCard({ pool, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          {/* <Box
-            component={Icon}
-            icon={dotFilled}
-            sx={{ width: 20, height: 20, mr: 1.5 }}
-          /> */}
           Maximum
           <Box sx={{ flex: 1 }} />
-          {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(max)} ETH</Box>
           </Box>
@@ -235,18 +245,11 @@ function PlanCard({ pool, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          {/* <Box
-            component={Icon}
-            icon={dotFilled}
-            sx={{ width: 20, height: 20, mr: 1.5 }}
-          /> */}
           Access
           <Box sx={{ flex: 1 }} />
-          {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>{!!pool.access && pool.access}</Box>
           </Box>
@@ -259,18 +262,11 @@ function PlanCard({ pool, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          {/* <Box
-            component={Icon}
-            icon={dotFilled}
-            sx={{ width: 20, height: 20, mr: 1.5 }}
-          /> */}
           Participants
           <Box sx={{ flex: 1 }} />
-          {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>{participants}</Box>
           </Box>
@@ -283,25 +279,21 @@ function PlanCard({ pool, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          {/* <Box
-            component={Icon}
-            icon={dotFilled}
-            sx={{ width: 20, height: 20, mr: 1.5 }}
-          /> */}
           Total Raise
           <Box sx={{ flex: 1 }} />
-          {/* page 1-1 오른쪽 정렬 및 텍스트 */}
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(totalRaise)} ETH</Box>
           </Box>
         </Box>
       </Box>
 
-      <Progress />
+      <Progress
+        progressValue={progressValue}
+        progressDollorValue={progressDollorValue}
+      />
       <Box sx={{ my: 2 }}></Box>
       <Button
         fullWidth
