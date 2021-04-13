@@ -182,7 +182,7 @@ function PoolListView() {
           heading={t('taalswap.projects')}
           links={[{ name: 'textejfiej' }]}
         />
-        <Tooltip title="Simple Info. Text Display">
+        {/* <Tooltip title="Simple Info. Text Display">
           <Box
             component="img"
             src={`/static/icons/ic_write_25.png`}
@@ -194,7 +194,7 @@ function PoolListView() {
               ml: 15
             }}
           />
-        </Tooltip>
+        </Tooltip> */}
         <Box className={classes.tableTop}>
           <Box className={classes.tableTab}>
             <Tabs
