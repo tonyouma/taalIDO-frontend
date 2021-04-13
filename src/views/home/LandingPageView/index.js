@@ -38,7 +38,7 @@ function LandingPageView() {
         <CandidatePool />
         <Advertisement />
         <CleanInterfaces />
-        <DarkMode />
+        <Footer />
       </div>
     </Page>
   );
