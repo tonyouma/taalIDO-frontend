@@ -134,7 +134,7 @@ function PoolListView() {
   useEffect(async () => {
     await dispatch(getPoolList());
     await dispatch(getSwapList(account));
-    if (location.state !== null) {
+    if (location.state !== null && location.state !== undefined) {
       setValue(location.state.tabValue);
     }
   }, [dispatch]);
