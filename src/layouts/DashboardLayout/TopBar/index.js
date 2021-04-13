@@ -73,6 +73,7 @@ function TopBar({ onOpenNav, className }) {
   const { activatingConnector, balance, talBalance } = useSelector(
     (state) => state.wallet
   );
+  const { os, wallet, from } = useSelector((state) => state.talken);
 
   const context = useWeb3React();
   const {
@@ -91,6 +92,9 @@ function TopBar({ onOpenNav, className }) {
     // console.log('1----------> ', connector);
     // console.log('1----------> ', active);
     // console.log('1----------> ', activate);
+    console.log('os', os);
+    console.log('wallet', wallet);
+    console.log('from', from);
     if (activatingConnector && activatingConnector === connector) {
       dispatch(setActivatingConnector(undefined));
     }
@@ -137,7 +141,8 @@ function TopBar({ onOpenNav, className }) {
     setIsOpenModal(false);
   };
   const renderConnectWallet = () => {
-    if (!library) {
+    console.log('test');
+    if (!library && from === null) {
       return (
         <Box p={0.8}>
           <Button

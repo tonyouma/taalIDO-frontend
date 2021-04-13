@@ -128,6 +128,7 @@ function TopBar() {
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
+  const { os, wallet, from } = useSelector((state) => state.talken);
 
   const context = useWeb3React();
   const {
@@ -146,15 +147,18 @@ function TopBar() {
   const query = useQuery();
 
   useEffect(() => {
-    console.log('os', query.get('os'));
-    console.log('wallet', query.get('wallet'));
-    console.log('from', query.get('from'));
-    const os = query.get('os');
-    const wallet = query.get('wallet');
-    const from = query.get('from');
-
-    dispatch(fromTalken({ os, wallet, from }));
-
+    if (os === null && wallet === null && from === null) {
+      dispatch(
+        fromTalken({
+          os: query.get('os'),
+          wallet: query.get('wallet'),
+          from: query.get('from')
+        })
+      );
+    }
+    // console.log('os', os);
+    // console.log('wallet', wallet);
+    // console.log('from', from);
     if (!!library) {
       if (
         (library.provider.isMetaMask &&
