@@ -1,11 +1,10 @@
 import React from 'react';
-import Welcome from './Welcome';
 import Widgets1 from './Widgets1';
 import Widgets2 from './Widgets2';
 import NewInvoice from './NewInvoice';
+import { HeaderDashboard } from 'src/layouts/Common';
 import TopAuthors from './TopAuthors';
 import Page from 'src/components/Page';
-import useAuth from 'src/hooks/useAuth';
 import FeaturedApp from './FeaturedApp';
 import AreaInstalled from './AreaInstalled';
 import TotalDownloads from './TotalDownloads';
@@ -20,27 +19,24 @@ import { Container, Grid } from '@material-ui/core';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
-  root: {}
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: theme.spacing(5)
+  }
 }));
 
 // ----------------------------------------------------------------------
 
 function DashboardAppView() {
   const classes = useStyles();
-  const { user } = useAuth();
 
   return (
-    <Page title="Dashboard App | Minimal-UI" className={classes.root}>
-      <Container maxWidth="xl">
+    <Page title="Swap | TaalSwap" className={classes.root}>
+      <Container maxWidth="lg">
+        <HeaderDashboard heading="Admin" links={[{ name: 'SubText' }]} />
         <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            {/* <Welcome displayName={user.displayName} /> */}
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <FeaturedApp />
-          </Grid>
-
           <Grid item xs={12} md={4}>
             <TotalActiveUsers />
           </Grid>
@@ -51,22 +47,6 @@ function DashboardAppView() {
 
           <Grid item xs={12} md={4}>
             <TotalDownloads />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <CurrentDownload />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={8}>
-            <AreaInstalled />
-          </Grid>
-
-          <Grid item xs={12} lg={8}>
-            <NewInvoice />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <TopRelatedApplications />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>

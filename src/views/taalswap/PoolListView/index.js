@@ -45,7 +45,7 @@ function PoolListView() {
   };
 
   return (
-    <Page title="Table-Components | Minimal-UI" className={classes.root}>
+    <Page title="Swap | TaalSwap" className={classes.root}>
       <Container maxWidth="lg">
         <HeaderDashboard heading="IDO Pools" links={[{ name: 'SubText' }]} />
         <Tooltip title="Simple Info. Text Display">
