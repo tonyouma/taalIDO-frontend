@@ -11,9 +11,9 @@ import { MLinearProgress } from 'src/theme';
 
 const SALES = [
   {
-    label: 'Porgress',
-    amount: faker.finance.amount(),
-    value: faker.random.number({ min: 9, max: 99, precision: 0.1 })
+    label: 'Porgress'
+    // amount: faker.finance.amount(),
+    // value: faker.random.number({ min: 9, max: 99, precision: 0.1 })
   }
 ];
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
-function Progress({ progress, index }) {
+function Progress({ progress, progressValue, progressDollorValue, index }) {
   const classes = useStyles();
 
   return (
@@ -40,15 +40,15 @@ function Progress({ progress, index }) {
         </Typography>
 
         <Typography variant="body2" sx={{ my: 2 }}>
-          {fCurrency(progress.amount)}
+          {fCurrency(progressDollorValue)}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          &nbsp;({fPercent(progress.value)})
+          &nbsp;({fPercent(progressValue)})
         </Typography>
       </Box>
       <MLinearProgress
         variant="determinate"
-        value={progress.value}
+        value={progressValue}
         color="warning"
       />
     </div>
@@ -59,14 +59,25 @@ SalesOverview.propTypes = {
   className: PropTypes.string
 };
 
-function SalesOverview({ className, ...other }) {
+function SalesOverview({
+  className,
+  progressValue,
+  progressDollorValue,
+  ...other
+}) {
   const classes = useStyles();
 
   return (
     <Box sx={{ width: '100%' }}>
       {SALES.map((progress, index) => {
         return (
-          <Progress key={progress.label} progress={progress} index={index} />
+          <Progress
+            key={progress.label}
+            progress={progress}
+            progressValue={progressValue}
+            progressDollorValue={progressDollorValue}
+            index={index}
+          />
         );
       })}
     </Box>

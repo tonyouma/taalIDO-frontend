@@ -15,7 +15,7 @@ import Numbers from 'src/utils/Numbers';
 import { MLabel } from 'src/theme';
 import WeeklySales from './WeeklySales';
 import ItemOrders from './ItemOrders';
-import Progress from './Progress';
+import Progress from '../../home/LandingPageView/Progress';
 
 // ----------------------------------------------------------------------
 
@@ -49,22 +49,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // ----------------------------------------------------------------------
-
-function LinearProgressWithLabel(props) {
-  return (
-    <Box display="flex" alignItems="center">
-      <Box width="100%" mr={1}>
-        <LinearProgress variant="determinate" {...props} />
-      </Box>
-      <Box minWidth={35}>
-        <Typography variant="body2" color="textSecondary">{`${Math.round(
-          props.value
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
-
 PaymentInformation.propTypes = {
   className: PropTypes.string
 };
@@ -74,6 +58,7 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
   const context = useWeb3React();
 
   const [progressValue, setProgressValue] = useState(0);
+  const [progressDollorValue, setProgressDollorValue] = useState(0);
   const [participants, setParticipants] = useState(0);
   const [poolStatus, setStatus] = useState('');
   const [price, setPrice] = useState(0);
@@ -96,14 +81,13 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
         .tokensAllocated()
         .then((result) => {
           setProgressValue(getProgressValue(result, pool.tradeAmount));
+          setProgressDollorValue((parseFloat(ethPrice) / pool.ratio) * result);
         })
         .catch((error) => console.log(error));
 
-      // ethPrice !== undefined && setPrice(parseFloat(ethPrice) / pool.ratio);
-
       setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
     }
-  }, [pool, library]);
+  }, [pool, library, ethPrice]);
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -116,7 +100,10 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
       <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
       <Box sx={{ mt: 2, mb: 4 }}>
         <div className={classes.row}>
-          <Progress />
+          <Progress
+            progressValue={progressValue}
+            progressDollorValue={progressDollorValue}
+          />
         </div>
       </Box>
       <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
@@ -133,7 +120,7 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
           variant="body2"
           sx={{ color: 'text.secondary' }}
         >
-          `${Numbers.toFloat(pool.ratio)} ${pool.symbol} = 1 ETH
+          {`${Numbers.toFloat(pool.ratio)} ${pool.symbol} = 1 ETH`}
         </Typography>
       </div>
       <div className={classes.row}>
@@ -142,14 +129,16 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          {`Price, $ / ${pool.symbol}`}
+          Price, $
         </Typography>
         <Typography
           component="p"
           variant="body2"
           sx={{ color: 'text.secondary' }}
         >
-          {`${Numbers.toFloat(parseFloat(ethPrice) / pool.ratio)}`}
+          {`$ ${Numbers.toFloat(parseFloat(ethPrice) / pool.ratio)} / ${
+            pool.symbol
+          }`}
         </Typography>
       </div>
       <div className={classes.row}>

@@ -64,7 +64,7 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
               //      redeemTokens(uint256 purchase_id)
               // 판매자
               // withdrawFunds()
-              poolStatus = PoolStatus.FILLED.SUCCESS.ACHIEVED;
+              poolStatus = PoolStatus.FILLED.SUCCESS.ACCOMPLISHED;
             } else {
               // 구매자
               // getMyPurchases(지갑주소)

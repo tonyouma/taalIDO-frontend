@@ -45,51 +45,8 @@ function CandidateCard({ pool, index, className }) {
 
   return (
     <Card className={clsx(classes.root, className)}>
-      {/* <Box // page 2-2 이미지 삭제
-        component="img"
-        alt={card.subscription}
-        src={card.icon}
-        sx={{ width: 80, height: 80, mt: 3 }}
-      /> */}
-
-      <Box
-        sx={{ my: 0, width: '100%' }}
-        /*bgcolor={index % 2 == 0 ? '#cccccc' : '#ffffff'}*/
-      >
-        {/* page 2-3 레이아웃 재배치 */}
-        {/* {card.lists.map((item, index) => (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              color: item.isAvailable ? 'text.primary' : 'text.disabled',
-              '&:not(:last-of-type)': { mb: 2 }
-            }}
-          >
-            <Box>
-              <Box
-                sx={{
-                  mr: 1.5
-                }}
-                fontWeight={'bold'}
-                fontSize={18}
-              >
-                {item.text}
-              </Box>
-              <Box
-                sx={{
-                  mr: 1.0
-                }}
-                fontSize={16}
-                color="#666666"
-              >
-                {index == 1 ? 'http://token.co.kr' : 'texttexttext'}
-              </Box>
-            </Box>
-          </Box>
-        ))} */}
-
-        {/* Token Contract Address */}
+      <Box sx={{ my: 0, width: '100%' }}>
+        {/* Project Name */}
         <Box
           sx={{
             display: 'flex',
@@ -109,7 +66,7 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Token Contract Address
+              Project Name
             </Box>
             <Box
               sx={{
@@ -117,7 +74,7 @@ function CandidateCard({ pool, index, className }) {
               }}
             />
             <EllipsisText
-              text={pool.tokenContractAddr}
+              text={pool.projectName}
               className={'centerText'}
             ></EllipsisText>
           </Box>
