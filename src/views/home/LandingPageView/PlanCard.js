@@ -113,34 +113,36 @@ function PlanCard({ pool, index, className }) {
 
   useEffect(async () => {
     try {
+      let taalswap = null;
       if (!!library) {
-        const taalswap = new Taalswap({
+        taalswap = new Taalswap({
           application: pool,
           account,
-          library,
-          tokenContractAddress: pool.tokenContractAddr,
-          fixedContractAddress: pool.contractAddress
+          library
         });
-
-        await taalswap
-          .getBuyers()
-          .then((result) => {
-            setParticipants(result.length);
-          })
-          .catch((error) => console.log(error));
-
-        await taalswap
-          .tokensAllocated()
-          .then((result) => {
-            setProgressValue(getProgressValue(result, pool.tradeAmount));
-            setTotalRaise(result * pool.tradeValue);
-          })
-          .catch((error) => console.log(error));
-
-        setStatus(
-          await getPoolStatus(taalswap, pool.status, pool.minFundRaise)
-        );
+      } else {
+        taalswap = new Taalswap({
+          application: pool,
+          notConnected: true
+        });
       }
+
+      await taalswap
+        .getBuyers()
+        .then((result) => {
+          setParticipants(result.length);
+        })
+        .catch((error) => console.log(error));
+
+      await taalswap
+        .tokensAllocated()
+        .then((result) => {
+          setProgressValue(getProgressValue(result, pool.tradeAmount));
+          setTotalRaise(result * pool.tradeValue);
+        })
+        .catch((error) => console.log(error));
+
+      setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
 
       setMax(getMax(pool.maxIndividuals, pool.tradeValue));
     } catch (error) {

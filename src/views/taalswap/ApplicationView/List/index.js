@@ -57,7 +57,6 @@ import ToolbarTable from '../../../user/UserListView/ToolbarTable';
 import { filter } from 'lodash';
 import { PoolStatus } from 'src/utils/poolStatus';
 import { login } from 'src/utils/auth';
-import TaalswapInfura from 'src/utils/taalswapInfura';
 
 import StatusLabel from '../../Components/StatusLabel';
 
@@ -670,11 +669,6 @@ export default function ApplicationListView() {
   };
 
   useEffect(async () => {
-    const test = new TaalswapInfura(
-      '0x581F2FCA16F9989CA9c46ebbD107410c9D8fA0B8'
-    );
-    const tmp = await test.decimalsAsync();
-    console.log('test code : ', tmp);
     if (!!library) {
       if (
         (library.provider.isMetaMask &&
