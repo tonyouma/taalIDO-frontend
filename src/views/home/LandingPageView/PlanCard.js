@@ -140,9 +140,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
         .tokensAllocated()
         .then((result) => {
           setProgressValue(getProgressValue(result, pool.tradeAmount));
-          setProgressDollorValue(
-            (parseFloat(ethPrice) / pool.ratio) * result
-          );
+          setProgressDollorValue((parseFloat(ethPrice) / pool.ratio) * result);
           setTotalRaise(result * pool.tradeValue);
         })
         .catch((error) => console.log(error));
