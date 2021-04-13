@@ -85,11 +85,9 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
         })
         .catch((error) => console.log(error));
 
-      // ethPrice !== undefined && setPrice(parseFloat(ethPrice) / pool.ratio);
-
       setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
     }
-  }, [pool, library]);
+  }, [pool, library, ethPrice]);
 
   return (
     <div className={clsx(classes.root, className)}>

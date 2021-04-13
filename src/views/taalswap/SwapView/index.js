@@ -125,11 +125,6 @@ function PaymentView({ className, ...other }) {
       .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
       .then((result) => {
         setEthPrice(result.data.data.amount);
-        // const ethPrice = result.data.data.amount;
-        // const symbolPrice = parseFloat(ethPrice) / pool.ratio;
-        // console.log(`eth Price : ${ethPrice}`);
-        // console.log(`symbol Price : ${symbolPrice}`);
-        // setPrice(symbolPrice);
       })
       .catch((error) => console.log(error));
   }, []);

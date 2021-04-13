@@ -77,7 +77,6 @@ function Tabcard() {
     await axios
       .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
       .then((result) => {
-        console.log(result.data.data.amount);
         setEthPrice(result.data.data.amount);
       })
       .catch((error) => console.log(error));
