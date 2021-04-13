@@ -716,6 +716,10 @@ export default function ApplicationListView() {
     setSecret(value);
   };
 
+  const onClickApllyForIdo = () => {
+    history.push('/app/taalswap/application/information');
+  };
+
   const isSelected = (index) => (selected !== index ? false : true);
   const { i18n, t } = useTranslation();
 
@@ -749,6 +753,20 @@ export default function ApplicationListView() {
               heading={t('taalswap.applications')}
               links={[{ name: '' }]}
             />
+            <Tooltip title="apply for IDO">
+              <Box
+                component="img"
+                src={`/static/icons/ic_write_25.png`}
+                sx={{
+                  top: 140,
+                  position: 'absolute',
+                  width: 25,
+                  height: 25,
+                  ml: 25
+                }}
+                onClick={onClickApllyForIdo}
+              />
+            </Tooltip>
           </Box>
           <Box className={classes.tableSearch}>
             <ToolbarTable
@@ -863,7 +881,7 @@ export default function ApplicationListView() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </Card>
-            <div align="right">
+            {/* <div align="right">
               {' '}
               <Button
                 to="/app/taalswap/application/information"
@@ -873,7 +891,7 @@ export default function ApplicationListView() {
               >
                 apply for IDO
               </Button>
-            </div>
+            </div> */}
           </Grid>
         </Grid>
         {isSelected && (
