@@ -47,6 +47,8 @@ import moment from 'moment';
 import { ethers } from 'ethers';
 import { targetNetwork, targetNetworkMsg } from '../../config';
 import { useSnackbar } from 'notistack';
+import Languages from '../DashboardLayout/TopBar/Languages';
+import Settings from 'src/layouts/Common/Settings';
 
 // ----------------------------------------------------------------------
 
@@ -310,7 +312,14 @@ function TopBar() {
     //   console.log('wallet balance = ', formatEther(balance));
   }
   const renderMenuDesktop = (
-    <div>
+    <Box
+      style={{
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+        // border: '1px solid red'
+      }}
+    >
       {MENU_LINKS.map((link) =>
         link.title !== 'Docs' ? (
           <Link
@@ -346,18 +355,42 @@ function TopBar() {
           </Link>
         )
       )}
-      {!connector && (
-        <Button
-          underline="none"
-          variant="contained"
-          // component={Link}
-          target="_blank"
-          onClick={() => setIsOpenModal(true)}
-        >
-          Connect Wallet
-        </Button>
-      )}
-    </div>
+      <Box
+        sx={{
+          // border: '1px solid yellow',
+          display: 'flex',
+          alignItems: 'center',
+          '& > *:not(:first-of-type)': {
+            ml: {
+              xs: 0.5,
+              sm: 2,
+              lg: 3
+            }
+          }
+        }}
+      >
+        <Languages />
+        <Settings
+          activeClassName={classes.isDesktopActive}
+          className={clsx({
+            [classes.isHome]: isHome
+          })}
+          sx={{ mr: 5, color: 'text.primary' }}
+          // iconColor="white"
+        />
+        {/* {!connector && (
+          <Button
+            underline="none"
+            variant="contained"
+            // component={Link}
+            target="_blank"
+            onClick={() => setIsOpenModal(true)}
+          >
+            Connect Wallet
+          </Button>
+        )} */}
+      </Box>
+    </Box>
   );
 
   const renderMenuMobile = (
@@ -438,6 +471,7 @@ function TopBar() {
             alignItems: 'center',
             justifyContent: 'space-between'
           }}
+          // style={{ border: '1px solid blue' }}
         >
           <RouterLink to="/">
             <Logo
