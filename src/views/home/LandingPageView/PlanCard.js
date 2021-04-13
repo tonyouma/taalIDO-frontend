@@ -183,25 +183,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
       />
 
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
-        {/* Start Date */}
-        <Box
-          key="startDate"
-          component="li"
-          sx={{
-            display: 'flex',
-            typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
-          }}
-        >
-          Start Date
-          <Box sx={{ flex: 1 }} />
-          <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>
-              {moment.unix(pool.startDate).format('YYYY-MM-DD')}
-            </Box>
-          </Box>
-        </Box>
-
         {/* Ratio */}
         <Box
           key="ratio"
@@ -286,6 +267,44 @@ function PlanCard({ pool, ethPrice, index, className }) {
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(totalRaise)} ETH</Box>
+          </Box>
+        </Box>
+
+        {/* Start Date */}
+        <Box
+          key="startDate"
+          component="li"
+          sx={{
+            display: 'flex',
+            typography: 'body2',
+            '&:not(:last-of-type)': { mb: 2 }
+          }}
+        >
+          Start Date
+          <Box sx={{ flex: 1 }} />
+          <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5 }}>
+              {moment.unix(pool.startDate).format('YYYY-MM-DD')}
+            </Box>
+          </Box>
+        </Box>
+
+        {/* End Date */}
+        <Box
+          key="startDate"
+          component="li"
+          sx={{
+            display: 'flex',
+            typography: 'body2',
+            '&:not(:last-of-type)': { mb: 2 }
+          }}
+        >
+          End Date
+          <Box sx={{ flex: 1 }} />
+          <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5 }}>
+              {moment.unix(pool.endDate).format('YYYY-MM-DD')}
+            </Box>
           </Box>
         </Box>
       </Box>
