@@ -38,7 +38,7 @@ function DashboardAppView() {
           TaalSwap IDO Governance
         </Typography>
         <Typography align="justify" variant="body1" gutterBottom>
-          TaalSwap ultimately pursues a permissions and interoperable IDO
+          TaalSwap ultimately pursues a permissionless and interoperable IDO
           Platform. With this goal in mind, TaalSwap, in its initial stage of
           operation, aims at the perfect match of promising projects with
           strong-willed investors in terms of which innovative startups are
