@@ -72,7 +72,19 @@ const navConfig = [
       // }
     ]
   },
-  // TAALSWAP POOL
+  // TAALSWAP GOVERNANCE
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Governance',
+    items: []
+  },
+  // TAALSWAP TRADE
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'Trade',
+    items: []
+  },
+  // TAALSWAP POOLS
   // ----------------------------------------------------------------------
   {
     subheader: 'Pools',
