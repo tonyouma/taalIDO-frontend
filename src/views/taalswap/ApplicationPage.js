@@ -57,7 +57,33 @@ function AccountView() {
           heading="Create a new Application"
           links={[{ name: 'New Application' }]}
         />
+
+        {/* 탭 삭제 */}
+        {/* <Tabs
+          value={currentTab}
+          scrollButtons="auto"
+          variant="scrollable"
+          allowScrollButtonsMobile
+          onChange={handleChangeTab}
+          className={classes.tabBar}
+        >
+          {ACCOUNT_TABS.map((tab) => (
+            <Tab
+              disableRipple
+              key={tab.value}
+              label={capitalCase(tab.value)}
+              icon={tab.icon}
+              value={tab.value}
+            />
+          ))}
+        </Tabs> */}
+
         <General />
+
+        {/* {ACCOUNT_TABS.map((tab) => {
+          const isMatched = tab.value === currentTab;
+          return isMatched && <Box key={tab.value}>{tab.component}</Box>;
+        })} */}
       </Container>
     </Page>
   );
