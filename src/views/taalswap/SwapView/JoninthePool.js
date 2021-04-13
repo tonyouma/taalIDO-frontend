@@ -354,7 +354,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         </Typography>
       </Box>
 
-      <Box sx={{ mt: 2, mb: 3 }}>
+      <Box sx={{ mt: 2, mb: 2 }}>
         {pool.access === 'Public' && (
           <LoadingButton
             fullWidth

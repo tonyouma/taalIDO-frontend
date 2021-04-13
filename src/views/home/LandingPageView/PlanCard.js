@@ -22,9 +22,11 @@ import {
   DialogActions,
   Box,
   Divider,
-  Checkbox
+  Checkbox,
+  Grid
 } from '@material-ui/core';
 import { MLabel } from 'src/theme';
+import Progress from './Progress';
 import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
 import { useHistory } from 'react-router-dom';
@@ -34,6 +36,7 @@ import StatusLabel from '../../taalswap/Components/StatusLabel';
 import CirculProgress from './CirculProgress';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
+
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -156,25 +159,23 @@ function PlanCard({ pool, index, className }) {
   return (
     <Card className={clsx(classes.root, className)}>
       <StatusLabel poolStatus={poolStatus} absolute />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          // justifyContent: 'flex-end',
-          my: 2
-        }}
-      >
-        <Box style={{ textAlign: 'center' }}>
-          <Typography variant="h3" sx={{ mx: 1 }}>
-            {pool.poolName}
-          </Typography>
-        </Box>
-        <Box style={{ textAlign: 'center' }}>
-          <Typography variant="body2" sx={{ mx: 1 }}>
-            {pool.symbol} / ETH
-          </Typography>
-        </Box>
+
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
+        <Typography variant="h3" sx={{ mx: 1 }}>
+          {pool.poolName}
+        </Typography>
       </Box>
+      <Box
+        component="img"
+        src={`/static/icons/json-logo.svg`}
+        sx={{
+          top: 27,
+          left: 32,
+          width: 50,
+          height: 50,
+          position: 'absolute'
+        }}
+      />
 
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
         {/* Ratio */}
@@ -188,11 +189,11 @@ function PlanCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box
+          {/* <Box
             component={Icon}
             icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
-          />
+          /> */}
           Ratio
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
@@ -214,11 +215,11 @@ function PlanCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box
+          {/* <Box
             component={Icon}
             icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
-          />
+          /> */}
           Maximum
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
@@ -238,11 +239,11 @@ function PlanCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box
+          {/* <Box
             component={Icon}
             icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
-          />
+          /> */}
           Access
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
@@ -262,11 +263,11 @@ function PlanCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box
+          {/* <Box
             component={Icon}
             icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
-          />
+          /> */}
           Participants
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
@@ -286,11 +287,11 @@ function PlanCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box
+          {/* <Box
             component={Icon}
             icon={dotFilled}
             sx={{ width: 20, height: 20, mr: 1.5 }}
-          />
+          /> */}
           Total Raise
           <Box sx={{ flex: 1 }} />
           {/* page 1-1 오른쪽 정렬 및 텍스트 */}
@@ -300,6 +301,8 @@ function PlanCard({ pool, index, className }) {
         </Box>
       </Box>
 
+      <Progress />
+      <Box sx={{ my: 2 }}></Box>
       <Button
         fullWidth
         size="large"

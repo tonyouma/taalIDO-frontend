@@ -72,7 +72,33 @@ const navConfig = [
       // }
     ]
   },
-  // TAALSWAP GOVERNANCE
+  // GENERAL
+  // ----------------------------------------------------------------------
+  // {
+  //   subheader: 'general',
+  //   items: [
+  //     {
+  //       title: 'dashboard',
+  //       icon: ICONS.dashboard,
+  //       href: PATH_APP.general.root,
+  //       items: [
+  //         {
+  //           title: 'app',
+  //           href: PATH_APP.general.root
+  //         },
+  //         {
+  //           title: 'e-commerce',
+  //           href: PATH_APP.general.ecommerce
+  //         },
+  //         {
+  //           title: 'analytics',
+  //           href: PATH_APP.general.analytics
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
+  // MANAGEMENT
   // ----------------------------------------------------------------------
   {
     subheader: 'Governance',

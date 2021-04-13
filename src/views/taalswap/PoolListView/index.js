@@ -16,7 +16,8 @@ import {
   OutlinedInput,
   InputAdornment,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  Tooltip
 } from '@material-ui/core';
 import BasicTable from './BasicTable';
 import { useTranslation } from 'react-i18next';
@@ -168,6 +169,19 @@ function PoolListView() {
           heading={t('taalswap.projects')}
           links={[{ name: 'textejfiej' }]}
         />
+        <Tooltip title="Simple Info. Text Display">
+          <Box
+            component="img"
+            src={`/static/icons/ic_write_25.png`}
+            sx={{
+              top: 140,
+              position: 'absolute',
+              width: 25,
+              height: 25,
+              ml: 15
+            }}
+          />
+        </Tooltip>
         <Box className={classes.tableTop}>
           <Box className={classes.tableTab}>
             <Tabs

@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   // page 2-1 글자 스타일
   label: {
-    fontSize: 20
+    fontSize: 32
   }
 }));
 

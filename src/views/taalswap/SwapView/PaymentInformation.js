@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography, TextField } from '@material-ui/core';
+import { Box, Typography, TextField, Divider } from '@material-ui/core';
 import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
 import { useWeb3React } from '@web3-react/core';
@@ -12,6 +12,10 @@ import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../Components/StatusLabel';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
+import { MLabel } from 'src/theme';
+import WeeklySales from './WeeklySales';
+import ItemOrders from './ItemOrders';
+import Progress from './Progress';
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +38,13 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '2rem',
     paddingLeft: '1rem',
     paddingRight: '1rem'
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: theme.spacing(2.5),
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -96,116 +107,95 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
 
   return (
     <div className={clsx(classes.root, className)}>
-      <StatusLabel poolStatus={poolStatus} />
-      <Box className={classes.box2rem} display="flex">
+      <Typography variant="h3" sx={{ mb: 2 }}>
+        Access : {pool.access}
+      </Typography>
+      <div className={classes.row}>
+        <StatusLabel poolStatus={poolStatus} />
+      </div>
+      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+      <Box sx={{ mt: 2, mb: 4 }}>
         <div className={classes.row}>
-          <Typography variant="h6" component="p">
-            Access : {pool.access}
-          </Typography>
+          <Progress />
         </div>
       </Box>
-      <Box className={classes.box2rem}>
-        <TextField
-          label="Ratio"
-          variant="standard"
-          InputLabelProps={{
-            shrink: true
-          }}
-          fullWidth
-          value={`${Numbers.toFloat(pool.ratio)} ${pool.symbol} = 1 ETH`}
-          inputProps={{ disabled: 'true' }}
-        />
-      </Box>
-      <Box className={classes.box2rem}>
-        <TextField
-          label={`Price, $ / ${pool.symbol}`}
-          variant="standard"
-          InputLabelProps={{
-            shrink: true
-          }}
-          fullWidth
-          value={`${Numbers.toFloat(parseFloat(ethPrice) / pool.ratio)}`}
-          inputProps={{ disabled: 'true' }}
-        />
-      </Box>
-      <Box
-        className={classes.box2rem}
-        display="flex"
-        justifyContent="space-between"
-      >
-        <TextField
-          // label="Max. Individuals"
-          label={`Max Allocation in ${pool.symbol}`}
-          variant="standard"
-          InputLabelProps={{
-            shrink: true
-          }}
-          style={{ width: '49%' }}
-          // value={`${getMax(pool.maxIndividuals, pool.tradeValue)} ETH`}
-          value={`${Numbers.toFloat(pool.maxIndividuals)} ${pool.symbol}`}
-          inputProps={{ disabled: 'true' }}
-        />
-
-        <TextField
-          label="Max Allocation in ETH"
-          variant="standard"
-          InputLabelProps={{
-            shrink: true
-          }}
-          style={{ width: '49%' }}
-          value={`${Numbers.toFloat(
+      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+      <div className={classes.row}>
+        <Typography
+          component="p"
+          variant="subtitle2"
+          sx={{ color: 'text.secondary' }}
+        >
+          Ratio
+        </Typography>
+        <Typography
+          component="p"
+          variant="body2"
+          sx={{ color: 'text.secondary' }}
+        >
+          `${Numbers.toFloat(pool.ratio)} ${pool.symbol} = 1 ETH
+        </Typography>
+      </div>
+      <div className={classes.row}>
+        <Typography
+          component="p"
+          variant="subtitle2"
+          sx={{ color: 'text.secondary' }}
+        >
+          {`Price, $ / ${pool.symbol}`}
+        </Typography>
+        <Typography
+          component="p"
+          variant="body2"
+          sx={{ color: 'text.secondary' }}
+        >
+          {`${Numbers.toFloat(parseFloat(ethPrice) / pool.ratio)}`}
+        </Typography>
+      </div>
+      <div className={classes.row}>
+        <Typography
+          component="p"
+          variant="subtitle2"
+          sx={{ color: 'text.secondary' }}
+        >
+          {`Max Allocation in ${pool.symbol}`}
+        </Typography>
+        <Typography
+          component="p"
+          variant="bohdy2"
+          sx={{ color: 'text.secondary' }}
+        >
+          {`${Numbers.toFloat(pool.maxIndividuals)} ${pool.symbol}`}
+        </Typography>
+      </div>
+      <div className={classes.row}>
+        <Typography
+          component="p"
+          variant="subtitle2"
+          sx={{ color: 'text.secondary' }}
+        >
+          Max Allocation in ETH
+        </Typography>
+        <Typography
+          component="p"
+          variant="bohdy2"
+          sx={{ color: 'text.secondary' }}
+        >
+          {`${Numbers.toFloat(
             getMax(pool.maxIndividuals, pool.tradeValue)
           )} ETH`}
-          inputProps={{ disabled: 'true' }}
-        />
-      </Box>
-      <Box
-        className={classes.box2rem}
-        display="flex"
-        justifyContent="space-between"
-      >
-        <Box width="59%" marginTop={5} sx={{ alignItems: 'center' }}>
-          <Typography color="#888888" sx={{ mx: 1 }}>
-            Progress
-          </Typography>
-          <Box marginTop={3}>
-            {/* <LinearProgress variant="determinate" /> */}
-            <LinearProgressWithLabel value={progressValue} />
-          </Box>
-        </Box>
-
-        <Box
-          width="35%"
-          sx={{
-            mb: 2.5,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end'
-          }}
-        >
-          <Typography
-            component="span"
-            variant="subtitle2"
-            sx={{
-              mb: 8,
-              color: 'text.secondary'
-            }}
-          >
-            Participants
-          </Typography>
-          <Typography
-            component="span"
-            variant="h3"
-            sx={{
-              mb: 0,
-              alignSelf: 'flex-end',
-              color: 'text.secondary'
-            }}
-          >
-            {participants}
-          </Typography>
-        </Box>
-      </Box>
+        </Typography>
+      </div>
+      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+      <div className={classes.row}>
+        <Typography component="p" variant="h4" sx={{ color: 'text.secondary' }}>
+          Participants
+        </Typography>
+        <Typography component="p" variant="h4" sx={{ color: 'text.secondary' }}>
+          12
+        </Typography>
+      </div>
+      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
     </div>
   );
 }
