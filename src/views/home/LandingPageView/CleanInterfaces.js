@@ -30,8 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
-const getImg = (width) =>
-  `${BASE_IMG}w_${width}/v1611478038/upload_minimal/home/multipage.png`;
+const getImg = (width) => `/static/images/multipage.png`;
 
 CleanInterfaces.propTypes = {
   className: PropTypes.string
