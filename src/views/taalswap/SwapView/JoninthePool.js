@@ -135,11 +135,11 @@ function JoninthePool({ className }) {
             color: 'text.secondary'
           }}
         >
-          /mo
+          TAL
         </Typography>
       </Box>
 
-      <Box sx={{ mt: 2, mb: 3 }}>
+      <Box sx={{ mt: 2, mb: 2 }}>
         <LoadingButton fullWidth size="large" type="submit" variant="contained">
           Go
         </LoadingButton>
