@@ -50,7 +50,7 @@ import { useSnackbar } from 'notistack';
 import Languages from '../DashboardLayout/TopBar/Languages';
 import Settings from 'src/layouts/Common/Settings';
 import { fromTalken } from 'src/redux/slices/talken';
-import getEthAddress from 'src/utils/getEthAddress';
+// import getEthAddress from 'src/utils/getEthAddress';
 
 // ----------------------------------------------------------------------
 
@@ -149,13 +149,14 @@ function TopBar() {
 
   useEffect(() => {
     if (os === null && wallet === null && from === null) {
-      const ethAddr = getEthAddress(query.get('wallet'));
+      // const ethAddr = getEthAddress(query.get('wallet'));
       // TODO : talken-wlt 내 실제 주소와 비교
-      console.log('------------->', ethAddr);
+      // console.log('------------->', ethAddr);
       dispatch(
         fromTalken({
           os: query.get('os'),
-          wallet: ethAddr,
+          // wallet: ethAddr,
+          wallet: query.get('wallet'),
           from: query.get('from')
         })
       );
