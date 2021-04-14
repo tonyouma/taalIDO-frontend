@@ -18,6 +18,7 @@ import { PoolStatus } from 'src/utils/poolStatus';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router-dom';
+import { set } from 'immutable';
 
 // ----------------------------------------------------------------------
 
@@ -78,6 +79,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const [time, setTime] = useState({});
   const [diffTime, setDiffTime] = useState({});
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
+  const { os, from, wallet } = useSelector((state) => state.talken);
   const { swapList } = useSelector((state) => state.pool);
   const { connector, library, account } = context;
 
@@ -89,22 +91,22 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       account,
       library
     });
+  } else {
+    taalswap = new Taalswap({
+      application: pool,
+      notConnected: true
+    });
   }
 
   const onChangeAmount = (e) => {
     setPrice(e.target.value * pool.tradeValue);
     setAmount(e.target.value);
-    // console.log(`${price} : ${balance}`);
-
-    // if (price > parseFloat(formatEther(balance))) {
-    //   setWarningMessage(
-    //     'Your bid amount exceeds the maximum allocation per wallet.'
-    //   );
-    // } else {
-    //   setWarningMessage('');
-    // }
   };
 
+  const handleOnFocuse = () => {
+    setPrice(0);
+    setAmount('');
+  };
   const addSwap = () => {
     const swap = {
       walletAddress: account,
@@ -119,7 +121,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
   const onClickSwap = async () => {
     try {
-      if (!!library) {
+      if (!!library || from) {
         if (pool.access === 'Private' && !isWhiteList) {
           setWarningMessage(
             'Not white listed address! Please contact to the pool owner.'
@@ -135,31 +137,36 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 Numbers.toFloat(amount) + Numbers.toFloat(swappedAmount)
               ) {
                 onBackdrop(true);
-                const result = await taalswap
-                  .swap({
-                    tokenAmount: amount,
-                    account: account
-                  })
-                  .catch((error) => {
-                    console.log('error : ' + JSON.stringify(error));
-                    enqueueSnackbar('Swap fail', {
-                      variant: 'fail'
+                if (from) {
+                  console.log(`from ${from}, Do something..`);
+                } else {
+                  console.log(`taalswap web, swap..`);
+                  const result = await taalswap
+                    .swap({
+                      tokenAmount: amount,
+                      account: from ? wallet : account
+                    })
+                    .catch((error) => {
+                      console.log('error : ' + JSON.stringify(error));
+                      enqueueSnackbar('Swap fail', {
+                        variant: 'fail'
+                      });
+                      onBackdrop(false);
                     });
-                    onBackdrop(false);
-                  });
 
-                const receipt = await result.wait();
-                if (receipt.status === 1) {
-                  enqueueSnackbar('Swap success', {
-                    variant: 'success'
-                  });
-                  await setWarningMessage('');
-                  await addSwap();
+                  const receipt = await result.wait();
+                  if (receipt.status === 1) {
+                    enqueueSnackbar('Swap success', {
+                      variant: 'success'
+                    });
+                    await setWarningMessage('');
+                    await addSwap();
 
-                  history.push({
-                    pathname: '/app/taalswap/pools',
-                    state: { tabValue: 1 }
-                  });
+                    history.push({
+                      pathname: '/app/taalswap/pools',
+                      state: { tabValue: 1 }
+                    });
+                  }
                 }
 
                 onBackdrop(false);
@@ -177,6 +184,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             );
           }
         }
+      } else {
+        console.log('aaa');
       }
     } catch (error) {
       console.log(error);
@@ -197,29 +206,36 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
   useEffect(async () => {
     try {
+      console.log('in');
       setDate();
       setAmount(0);
 
       await dispatch(getSwapList(account));
-      if (!!library) {
-        await taalswap.tokensLeft().then((result) => {
-          setTokensLeft(result);
-        });
+      if (!!library || from) {
+        await taalswap
+          .tokensLeft()
+          .then((result) => {
+            setTokensLeft(result);
+            console.log(`tokensLeft : ${result}`);
+          })
+          .catch((error) => console.log(error));
 
         await taalswap.individualMinimumAmount().then((result) => {
           setMinAmount(result);
+          console.log(`individualMinimumAmount : ${result}`);
         });
 
         await taalswap.individualMaximumAmount().then((result) => {
           setMaxAmount(result);
+          console.log(`individualMaximumAmount : ${result}`);
         });
 
         if (pool.access === 'Private') {
           await taalswap
             .isWhitelisted(account)
             .then((result) => {
-              console.log(result);
               setIsWhiteList(result);
+              console.log(`isWhitelisted : ${result}`);
             })
             .catch((error) => console.log(error));
         }
@@ -233,6 +249,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
               }, 0)
           );
         }
+        console.log('aaa');
         setStatus(
           await getPoolStatus(taalswap, pool.status, pool.minFundRaise)
         );
@@ -326,6 +343,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
               flex: 2 / 5,
               flexWrap: 'wrap'
             }}
+            // error={amount < 0 ? true : false}
+            // helperText="양수 입력"
             variant="standard"
             InputLabelProps={{
               shrink: true
@@ -338,7 +357,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             }} // font size of input text
             InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
             onChange={onChangeAmount}
-            onFocus={() => setAmount('')}
+            onFocus={handleOnFocuse}
           />
         </Typography>
         <Typography
@@ -362,6 +381,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             variant="contained"
             onClick={onClickSwap}
             disabled={status !== PoolStatus.LIVE}
+            // disabled={status !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED}
           >
             Go
           </LoadingButton>
