@@ -3,20 +3,14 @@ import MenuLinks from './config';
 import PropTypes from 'prop-types';
 import Logo from 'src/components/Logo';
 import { motion } from 'framer-motion';
-import {
-  varFadeInUp,
-  MotionInView,
-  varFadeInRight
-} from 'src/components/Animate';
+import { varFadeInRight } from 'src/components/Animate';
 //import useAuth from 'src/hooks/useAuth';
 import React, { useEffect } from 'react';
 import Scrollbars from 'src/components/Scrollbars';
-import { PATH_APP, PATH_DOCS } from 'src/routes/paths';
 import { Link as RouterLink, useLocation, matchPath } from 'react-router-dom';
-import { alpha, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
-  Link,
   List,
   Drawer,
   Hidden,

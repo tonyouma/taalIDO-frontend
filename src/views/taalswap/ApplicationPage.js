@@ -1,11 +1,13 @@
-import General from './General';
 import Page from 'src/components/Page';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HeaderDashboard } from 'src/layouts/Common';
 import { getCards, getProfile, getAddressBook } from 'src/redux/slices/user';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
+import { Container, Divider } from '@material-ui/core';
+import IdoInformation from './IdoInformation';
+import ProjectInformation from './ProjectInformation';
+import { divide } from 'lodash-es';
 
 // ----------------------------------------------------------------------
 
@@ -57,33 +59,10 @@ function AccountView() {
           heading="Create a new Application"
           links={[{ name: 'New Application' }]}
         />
-
-        {/* 탭 삭제 */}
-        {/* <Tabs
-          value={currentTab}
-          scrollButtons="auto"
-          variant="scrollable"
-          allowScrollButtonsMobile
-          onChange={handleChangeTab}
-          className={classes.tabBar}
-        >
-          {ACCOUNT_TABS.map((tab) => (
-            <Tab
-              disableRipple
-              key={tab.value}
-              label={capitalCase(tab.value)}
-              icon={tab.icon}
-              value={tab.value}
-            />
-          ))}
-        </Tabs> */}
-
-        <General />
-
-        {/* {ACCOUNT_TABS.map((tab) => {
-          const isMatched = tab.value === currentTab;
-          return isMatched && <Box key={tab.value}>{tab.component}</Box>;
-        })} */}
+        <Divider />
+        <IdoInformation />
+        <Divider />
+        <ProjectInformation />
       </Container>
     </Page>
   );

@@ -6,6 +6,7 @@ import roundAccountBox from '@iconify-icons/ic/round-account-box';
 import { HeaderDashboard } from 'src/layouts/Common';
 import Page from '../../../components/Page';
 import {
+  Box,
   Tab,
   Tabs,
   Card,
@@ -191,7 +192,7 @@ function PoolListView() {
               position: 'absolute',
               width: 25,
               height: 25,
-              ml: 15
+              ml: 17
             }}
           />
         </Tooltip> */}
