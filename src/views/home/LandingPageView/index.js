@@ -1,7 +1,6 @@
 import React from 'react';
 import Hero from './Hero';
 import Footer from './Footer';
-import DarkMode from './DarkMode';
 import Page from 'src/components/Page';
 import Advertisement from './Advertisement';
 import CleanInterfaces from './CleanInterfaces';
