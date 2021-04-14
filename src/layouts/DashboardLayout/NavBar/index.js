@@ -227,7 +227,11 @@ function NavBar({ isOpenNav, onCloseNav }) {
               src="/static/icons/ic_s_instagram.svg"
             />
           </a>
-          <a href="https://twitter.com/taalswap" target="_blank">
+          <a
+            href="https://twitter.com/taalswap"
+            target="_blank"
+            rel="noreferrer"
+          >
             <motion.img
               variants={varFadeInRight}
               src="/static/icons/ic_s_tweet.svg"
