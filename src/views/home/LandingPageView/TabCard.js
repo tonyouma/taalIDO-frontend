@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   label: {
-    fontSize: 32
+    fontSize: 28
   }
 }));
 
