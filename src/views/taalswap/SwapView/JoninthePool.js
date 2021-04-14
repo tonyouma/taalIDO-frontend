@@ -158,7 +158,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                       callback: 'onCallbackTxHash',
                       msgContents: msgContents.data
                     };
-
+                    console.log('sendData', sendData);
                     if (os === 'IOS') {
                       alert('ios');
                       /*eslint-disable */
