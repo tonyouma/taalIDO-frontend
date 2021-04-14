@@ -25,6 +25,7 @@ import EllipsisText from 'react-text-overflow-middle-ellipsis';
 import { formatEther } from '@ethersproject/units';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { useSnackbar } from 'notistack';
+import { useWeb3React } from '@web3-react/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,10 +51,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const WalletInfo = ({ walletAddress, balance, talBalance }) => {
+const WalletInfo = ({ walletAddress, balance, talBalance, disconnect }) => {
   const classes = useStyles();
   const addressRef = useRef();
   const { enqueueSnackbar } = useSnackbar();
+  const context = useWeb3React();
+  const { deactivate } = context;
 
   const onClickCopy = () => {
     try {
@@ -96,6 +99,17 @@ const WalletInfo = ({ walletAddress, balance, talBalance }) => {
       <Box className={classes.icon}>
         <FileCopyIcon fontSize="small" onClick={onClickCopy} />
       </Box>
+      {disconnect ? (
+        <Box p={0.8}>
+          <Button
+            underline="none"
+            variant="contained"
+            onClick={async () => await deactivate()}
+          >
+            Logout
+          </Button>
+        </Box>
+      ) : null}
     </Box>
   );
 };
