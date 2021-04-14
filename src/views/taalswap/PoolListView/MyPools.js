@@ -484,7 +484,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                   Claim ETH
                 </Button>
               )}
-              {(poolStatus === PoolStatus.FILLED.SUCCESS.ACHIEVED ||
+              {(poolStatus === PoolStatus.FILLED.SUCCESS.ACCOMPLISHED ||
                 poolStatus === PoolStatus.FILLED.SUCCESS.CLOSED) && (
                 <Button
                   className={classes.button}
