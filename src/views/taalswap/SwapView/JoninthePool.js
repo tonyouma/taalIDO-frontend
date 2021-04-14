@@ -60,6 +60,12 @@ JoninthePool.propTypes = {
   className: PropTypes.string
 };
 
+function nativeCallbackTxHash(res) {
+  window.MobileSendPopupComponent.setRes(res);
+}
+
+window.onCallbackTxHash = nativeCallbackTxHash.bind(this);
+
 function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const classes = useStyles();
   const context = useWeb3React();
@@ -84,6 +90,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const { connector, library, account } = context;
 
   let taalswap;
+
+  window.MobileSendPopupComponent = this;
 
   if (!!library) {
     taalswap = new Taalswap({
@@ -118,6 +126,11 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
     dispatch(createSwap(swap));
   };
+  const setRes = (result) => {
+    // TODO: 콜백처리
+    console.log(result);
+    onBackdrop(false);
+  };
 
   const onClickSwap = async () => {
     try {
@@ -138,7 +151,32 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
               ) {
                 onBackdrop(true);
                 if (from) {
-                  console.log(`from ${from}, Do something..`);
+                  try {
+                    let sendData = {
+                      callback: 'onCallbackTxHash',
+                      msgContents: 'msgContents'
+                    };
+
+                    if (os === 'IOS') {
+                      alert('ios');
+                      /*eslint-disable */
+                      webkit.messageHandlers.sendEthTransaction.postMessage(
+                        JSON.stringify(sendData)
+                      );
+                      /*eslint-enable */
+                    } else {
+                      alert('else');
+                      /*eslint-disable */
+                      SubWebviewBridge.sendEthTransaction(
+                        JSON.stringify(sendData)
+                      );
+                      /*eslint-enable */
+                    }
+                  } catch (e) {
+                    console.log(e);
+                    onBackdrop(false);
+                    return;
+                  }
                 } else {
                   console.log(`taalswap web, swap..`);
                   const result = await taalswap
@@ -380,7 +418,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             size="large"
             variant="contained"
             onClick={onClickSwap}
-            disabled={status !== PoolStatus.LIVE}
+            // disabled={status !== PoolStatus.LIVE}
             // disabled={status !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED}
           >
             Go
@@ -393,7 +431,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             size="large"
             variant="contained"
             onClick={onClickSwap}
-            disabled={status !== PoolStatus.LIVE || isWhiteList === false}
+            // disabled={status !== PoolStatus.LIVE || isWhiteList === false}
           >
             Go
           </LoadingButton>
