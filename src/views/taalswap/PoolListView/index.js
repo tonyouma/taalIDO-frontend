@@ -73,8 +73,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   tableSearch: {
-    width: '400px',
-    padding: '10px',
+    width: '420px',
+    padding: '5px',
     textAlign: 'right',
     [theme.breakpoints.down('sm')]: {
       textAlign: 'left',
