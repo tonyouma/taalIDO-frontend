@@ -12,7 +12,6 @@ import {
   Card,
   Container,
   Grid,
-  Box,
   Typography,
   OutlinedInput,
   InputAdornment,

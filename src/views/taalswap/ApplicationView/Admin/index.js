@@ -21,9 +21,9 @@ import {
   searchApplicationListByCreator,
   updateApplication
 } from 'src/redux/slices/pool';
-import TotalActiveUsers from '../../../general/DashboardAppView/TotalActiveUsers';
-import TotalInstalled from '../../../general/DashboardAppView/TotalInstalled';
-import TotalDownloads from '../../../general/DashboardAppView/TotalDownloads';
+// import TotalPurchasers from '../../../general/DashboardAppView/TotalPurchasers';
+// import TotalAllocated from '../../../general/DashboardAppView/TotalAllocated';
+// import TopRelatedApplications from '../../../general/DashboardAppView/TopRelatedApplications';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router';
 import { useSnackbar } from 'notistack';
@@ -344,19 +344,19 @@ const AdminView = () => {
           <HeaderDashboard heading="Admin" links={[{ name: 'settings' }]} />
 
           <Container maxWidth="xl">
-            <Grid container spacing={3}>
+            {/* <Grid container spacing={3}>
               <Grid item xs={12} md={4}>
-                <TotalActiveUsers />
+                <TopRelatedApplications />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <TotalInstalled />
+                <TotalPurchasers />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <TotalDownloads />
+                <TotalAllocated />
               </Grid>
-            </Grid>
+            </Grid> */}
           </Container>
 
           <CardContent>
