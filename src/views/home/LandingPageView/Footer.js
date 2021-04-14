@@ -64,7 +64,7 @@ function DarkMode({ className }) {
   return (
     <div className={clsx(classes.root, className)}>
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
-        <Logo sx={{ mb: 1, mx: 'auto' }} />
+        <Logo sx={{ mb: 1, mx: 'auto' }} footer={true} />
 
         <Typography color="common.white" variant="caption">
           © All rights reserved. Made by TaalSwap.

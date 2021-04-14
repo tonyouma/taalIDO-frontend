@@ -17,7 +17,11 @@ function Logo({ className, ...other }) {
 
   if (themeMode === 'light') {
     if (length > 1 || className === undefined) {
-      logoFile = '/static/brand/logo_w/logo_single.svg';
+      if (other.footer === true) {
+        logoFile = '/static/brand/logo_w/logo_single.svg';
+      } else {
+        logoFile = '/static/brand/logo_b/logo_single.svg';
+      }
     } else {
       logoFile = '/static/brand/logo_w/logo_single.svg';
     }
