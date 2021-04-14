@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => {
 // ----------------------------------------------------------------------
 
 function reduceChild({ array, item, pathname, level }) {
-  const key = item.href + level;
+  const key = item.href + level + item.title;
 
   if (item.items) {
     const match = matchPath(pathname, {
@@ -175,10 +175,11 @@ function NavBar({ isOpenNav, onCloseNav }) {
         </div>
       </Link> */}
 
-      {MenuLinks.map((list) => (
+      {MenuLinks.map((list, index) => (
         <List
           disablePadding
-          key={list.subheader}
+          // key={list.subheader}
+          kue={index}
           subheader={
             <ListSubheader
               disableSticky
