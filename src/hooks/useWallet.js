@@ -9,6 +9,8 @@ export function useEagerConnect() {
   const [tried, setTried] = useState(false);
 
   useEffect(() => {
+    const connectorId = window.localStorage.getItem('chainId');
+    if (!connectorId) return;
     injected.isAuthorized().then((isAuthorized: boolean) => {
       if (isAuthorized) {
         activate(injected, undefined, true).catch(() => {

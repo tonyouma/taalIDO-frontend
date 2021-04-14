@@ -107,6 +107,7 @@ function TablePoolRow({ row, handleOpenModal }) {
   const [progressValue, setProgressValue] = useState(0);
   const [poolStatus, setStatus] = useState('');
   const { enqueueSnackbar } = useSnackbar();
+  const { os, wallet, from } = useSelector((state) => state.talken);
 
   const { library, account } = context;
 
@@ -135,6 +136,27 @@ function TablePoolRow({ row, handleOpenModal }) {
         application: row,
         account,
         library
+      });
+
+      await taalswap
+        .tokensAllocated()
+        .then((result) => {
+          setProgressValue(getProgressValue(result, row.tradeAmount));
+        })
+        .catch((error) => console.log(error));
+
+      const status = await getPoolStatus(
+        taalswap,
+        row.status,
+        row.minFundRaise
+      );
+      setStatus(status);
+    }
+
+    if (!library && from && row.contractAddress !== '') {
+      const taalswap = new Taalswap({
+        application: row,
+        notConnected: true
       });
 
       await taalswap

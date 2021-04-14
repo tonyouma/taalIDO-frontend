@@ -70,6 +70,7 @@ function TopBar({ onOpenNav, className }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  // const { login, logout } = useAuth();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { activatingConnector, balance, talBalance } = useSelector(
     (state) => state.wallet
@@ -157,7 +158,6 @@ function TopBar({ onOpenNav, className }) {
           <Button
             underline="none"
             variant="contained"
-            // component={Link}
             target="_blank"
             onClick={() => setIsOpenModal(true)}
           >
@@ -198,14 +198,22 @@ function TopBar({ onOpenNav, className }) {
             }
           }}
         >
-          {!!library ||
-            (from && (
-              <WalletInfo
-                walletAddress={from ? wallet : account}
-                balance={balance}
-                talBalance={talBalance}
-              />
-            ))}
+          {!!library && (
+            <WalletInfo
+              walletAddress={account}
+              balance={balance}
+              talBalance={talBalance}
+              disconnect={true}
+            />
+          )}
+          {!!from && (
+            <WalletInfo
+              walletAddress={wallet}
+              balance={balance}
+              talBalance={talBalance}
+              disconnect={false}
+            />
+          )}
           <Languages />
           {/* <Notifications /> */}
           <Settings />
