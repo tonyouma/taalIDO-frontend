@@ -126,7 +126,12 @@ const navConfig = [
     subheader: 'Docs',
     items: [
       {
-        title: 'Whitepaper',
+        title: 'About taalswap',
+        href: 'https://taalswap.gitbook.io/taalswap-documents/',
+        icon: ICONS.github
+      },
+      {
+        title: 'Guide to IDO',
         href: 'https://taalswap.gitbook.io/taalswap-documents/',
         icon: ICONS.github
       }
