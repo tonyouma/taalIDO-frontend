@@ -104,7 +104,10 @@ const WalletInfo = ({ walletAddress, balance, talBalance, disconnect }) => {
           <Button
             underline="none"
             variant="contained"
-            onClick={async () => await deactivate()}
+            onClick={async () => {
+              await deactivate();
+              window.localStorage.removeItem('chainId');
+            }}
           >
             Logout
           </Button>

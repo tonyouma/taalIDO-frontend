@@ -68,16 +68,17 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
   const onClickWallet = async (wallet) => {
     try {
       if (wallet.name === 'MetaMask') {
-        await activate(injected);
+        await activate(injected, null, true);
         dispatch(setActivatingConnector(injected));
+        window.localStorage.setItem('chainId', injected);
       } else if (wallet.name === 'WalletConnect') {
-        console.log('await');
         const wc = walletconnect(true);
         await activate(wc, undefined, true);
+        window.localStorage.setItem('chainId', wc);
       }
       console.log('end', wallet);
     } catch (e) {
-      console.log(e);
+      console.log('login error', e);
     }
 
     handleCloseModal(wallet.name);
