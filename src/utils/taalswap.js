@@ -96,13 +96,9 @@ class Taalswap {
       ETHCost,
       this.params.application.decimals
     );
-    const data = this.params.fixedContract.interface.functions.encode.swap(
-      amountWithDecimals,
-      {
-        from: account,
-        value: ETHToWei,
-        gasLimit: 3000000
-      }
+    const data = this.params.fixedContract.interface.encodeFunctionData(
+      'swap',
+      [amountWithDecimals]
     );
     console.log('getSwapABI', data);
     return data;

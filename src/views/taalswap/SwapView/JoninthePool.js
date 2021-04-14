@@ -153,10 +153,10 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 if (from) {
                   try {
                     const msgContents = { tokenAmount: amount, account: from };
-                    msgContents.data = taalswap.getSwapABI();
+                    msgContents.data = await taalswap.getSwapABI(msgContents);
                     let sendData = {
                       callback: 'onCallbackTxHash',
-                      msgContents: msgContents.data
+                      msgContents: msgContents
                     };
                     console.log('sendData', sendData);
                     if (os === 'IOS') {
