@@ -84,6 +84,30 @@ class Taalswap {
     return this.params.tokenContract;
   }
 
+  async getSwapABI({ tokenAmount, account }) {
+    let amountWithDecimals = Numbers.toSmartContractDecimals(
+      tokenAmount,
+      this.params.application.decimals
+    );
+    let ETHCost = await this.getETHCostFromTokens({
+      tokenAmount
+    });
+    let ETHToWei = Numbers.toSmartContractDecimals(
+      ETHCost,
+      this.params.application.decimals
+    );
+    const data = this.params.fixedContract.interface.functions.encode.swap(
+      amountWithDecimals,
+      {
+        from: account,
+        value: ETHToWei,
+        gasLimit: 3000000
+      }
+    );
+    console.log('getSwapABI', data);
+    return data;
+  }
+
   async getBalance(address) {
     return await this.params.infuraProvider.getBalance(address);
   }
