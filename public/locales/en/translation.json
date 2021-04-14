@@ -4,7 +4,24 @@
     "introduction": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
   },
   "taalswap": {
-    "projects": "Projects List",
-    "applications": "Application List"
+    "Projects": "Projects List",
+    "Applications": "Application List",
+    "LandingTitle": "TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction.",
+    "GoNow": "Go Now",
+    "LiveUpcoming": "Live & Upcoming",
+    "Accomplished": "Accomplished",
+    "Details": "Details",
+    "CandidateProjects": "Candidate Projects",
+    "ViewAll": "View All",
+    "ViewAllProjects": "View All",
+    "ApplyForIDO": "Apply for IDO",
+    "Ratio": "Ratio",
+    "Maximum":"Maximum",
+    "Access": "Access",
+    "Participants": "Participants",
+    "TotalRaise": "Total Raise",
+    "StartDate": "Start Date",
+    "EndDate": "End Date",
+    "Progress": "Progress"
   }
 }

@@ -26,6 +26,7 @@ import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../../taalswap/Components/StatusLabel';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
+import { useTranslation } from 'react-i18next';
 // import { PoolStatus } from 'src/utils/poolStatus';
 
 // ----------------------------------------------------------------------
@@ -72,6 +73,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
   const [showWarningMessage, setShowWarningMessage] = useState(false);
 
   const { library, account } = context;
+  const { i18n, t } = useTranslation();
 
   // const handleOpenModal = (row) => {
   //   // setOpenModal(row);
@@ -184,7 +186,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          Ratio
+          {t('taalswap.Ratio')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>
@@ -203,7 +205,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          Maximum
+          {t('taalswap.Maximum')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(max)} ETH</Box>
@@ -220,7 +222,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          Access
+          {t('taalswap.Access')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>{!!pool.access && pool.access}</Box>
@@ -237,7 +239,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          Participants
+          {t('taalswap.Participants')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>{participants}</Box>
@@ -254,7 +256,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          Total Raise
+          {t('taalswap.TotalRaise')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(totalRaise)} ETH</Box>
@@ -271,7 +273,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          Start Date
+          {t('taalswap.StartDate')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>
@@ -290,7 +292,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          End Date
+          {t('taalswap.EndDate')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
             <Box sx={{ mr: 1.5 }}>
@@ -311,7 +313,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
         variant="contained"
         onClick={onClickDetails}
       >
-        Details
+        {t('taalswap.Details')}
       </Button>
 
       <Dialog

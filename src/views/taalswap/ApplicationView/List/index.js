@@ -726,7 +726,7 @@ export default function ApplicationListView() {
   const filteredApplications = applyFilter(applicationList, filterName);
 
   return (
-    <Page title={t('taalswap.applications')} className={classes.root}>
+    <Page title={t('taalswap.Applications')} className={classes.root}>
       <Container maxWidth="lg">
         {/* <Backdrop className={classes.backdrop} open={open}>
           <CircularProgress color="inherit" />

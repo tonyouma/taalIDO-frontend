@@ -6,12 +6,13 @@ import { fPercent, fCurrency } from 'src/utils/formatNumber';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, CardContent } from '@material-ui/core';
 import { MLinearProgress } from 'src/theme';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
 const SALES = [
   {
-    label: 'Porgress'
+    label: 'Progress'
     // amount: faker.finance.amount(),
     // value: faker.random.number({ min: 9, max: 99, precision: 0.1 })
   }
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Progress({ progress, progressValue, progressDollorValue, index }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
 
   return (
     <div className={classes.progressItem}>
@@ -36,7 +38,8 @@ function Progress({ progress, progressValue, progressDollorValue, index }) {
         }}
       >
         <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-          {progress.label}
+          {/*{progress.label}*/}
+          {t('taalswap.Progress')}
         </Typography>
 
         <Typography variant="body2" sx={{ my: 2 }}>

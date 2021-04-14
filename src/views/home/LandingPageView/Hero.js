@@ -16,6 +16,7 @@ import {
 } from 'src/components/Animate';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Box, Link, Container, Typography } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -103,6 +104,7 @@ Hero.propTypes = {
 
 function Hero({ className }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
 
   return (
     <>
@@ -147,8 +149,7 @@ function Hero({ className }) {
 
             <motion.div variants={varFadeInRight}>
               <Box component="p" sx={{ color: 'common.white', py: 5 }}>
-                TaalSwap is a decentralized and interoperable multi-chain
-                platform for IDO, yield farming and NFT auction.
+                {t('taalswap.LandingTitle')}
               </Box>
             </motion.div>
 
@@ -160,7 +161,7 @@ function Hero({ className }) {
                 to={PATH_APP.taalswap.pools}
                 startIcon={<Icon icon={flashFill} width={20} height={20} />}
               >
-                Go Now
+                {t('taalswap.GoNow')}
               </Button>
             </motion.div>
 

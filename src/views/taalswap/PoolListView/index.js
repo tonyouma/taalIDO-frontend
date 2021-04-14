@@ -153,7 +153,7 @@ function PoolListView() {
   }, [dispatch]);
 
   return (
-    <Page title={t('taalswap.projects')} className={classes.root}>
+    <Page title={t('taalswap.Projects')} className={classes.root}>
       {/* <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop> */}
@@ -175,11 +175,11 @@ function PoolListView() {
       </Backdrop>
       <Container maxWidth="lg">
         {/* <HeaderDashboard
-          heading={t('taalswap.projects')}
+          heading={t('taalswap.Projects')}
           links={[{ name: 'Swap' }]}
         /> */}
         <HeaderDashboard
-          heading={t('taalswap.projects')}
+          heading={t('taalswap.Projects')}
           links={[{ name: 'textejfiej' }]}
         />
         {/* <Tooltip title="Simple Info. Text Display">

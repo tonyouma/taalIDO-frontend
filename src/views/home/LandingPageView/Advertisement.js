@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link, Box, Container, Typography } from '@material-ui/core';
 import { MButton } from 'src/theme';
 import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -46,6 +47,7 @@ Advertisement.propTypes = {
 
 function Advertisement({ className }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -91,7 +93,7 @@ function Advertisement({ className }) {
                 component={RouterLink}
                 to="/app/taalswap/application"
               >
-                Apply for IDO
+                {t('taalswap.ApplyForIDO')}
               </MButton>
             </MotionInView>
           </Box>

@@ -4,7 +4,24 @@
     "introduction": "왑탈스왑입니다."
   },
   "taalswap": {
-    "projects": "프로젝트 리스트",
-    "applications": "애플리케이션 리스트"
+    "Projects": "프로젝트 리스트",
+    "Applications": "애플리케이션 리스트",
+    "LandingTitle": "TaalSwap은 IDO, 이자농사(Yield Farming), NFT 옥션을 위한 탈중앙화 및 상호운영성 기반의 교차체인 플랫폼입니다.",
+    "GoNow": "바로 가기",
+    "LiveUpcoming": "라이브 및 대기 풀",
+    "Accomplished": "펀딩달성 풀",
+    "Details": "상세보기",
+    "CandidateProjects": "후보 프로젝트",
+    "ViewAll": "풀 모두보기",
+    "ViewAllProjects": "프로젝트 모두보기",
+    "ApplyForIDO": "IDO 신청",
+    "Ratio": "토큰스왑 비율",
+    "Maximum": "최대 구매가능액",
+    "Access": "공개방식",
+    "Participants": "참여자 수",
+    "TotalRaise": "촘 모금액",
+    "StartDate": "시작일",
+    "EndDate": "종료일",
+    "Progress": "진행상황"
   }
 }

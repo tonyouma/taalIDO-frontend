@@ -20,6 +20,7 @@ import { useWeb3React } from '@web3-react/core';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -59,6 +60,7 @@ const POOLS_TABS = [
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  const { i18n, t } = useTranslation();
 
   return (
     <div
@@ -84,6 +86,7 @@ function Tabcard() {
   const [loadingFlag, setLoadingFlag] = useState(false);
 
   const { library, account } = context;
+  const { i18n, t } = useTranslation();
 
   useEffect(async () => {
     try {
@@ -162,15 +165,26 @@ function Tabcard() {
       <Container maxWidth="lg">
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <Tabs value={value} onChange={handleChange} centered>
-            {POOLS_TABS.map((tab) => (
-              <Tab
-                disableRipple
-                key={tab.value}
-                label={tab.title}
-                value={tab.value}
-                className={classes.label}
-              />
-            ))}
+            {POOLS_TABS.map((tab) => {
+              let labelStr;
+              switch (tab.value) {
+                case 0:
+                  labelStr = t('taalswap.LiveUpcoming');
+                  break;
+                case 1:
+                  labelStr = t('taalswap.Accomplished');
+                  break;
+              }
+              return (
+                <Tab
+                  disableRipple
+                  key={tab.value}
+                  label={labelStr}
+                  value={tab.value}
+                  className={classes.label}
+                />
+              );
+            })}
           </Tabs>
           <TabPanel value={value} index={0}>
             <Box sx={{ my: 5 }}>
@@ -239,7 +253,7 @@ function Tabcard() {
               variant="outlined"
               component={RouterLink}
             >
-              View All
+              {t('taalswap.ViewAll')}
             </Button>
           </Box>
         </Box>

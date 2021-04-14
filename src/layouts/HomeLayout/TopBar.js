@@ -59,7 +59,7 @@ const MENU_LINKS = [
   { title: 'IDO', icon: roundStreetview, href: PATH_APP.taalswap.pools },
   { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap },
   {
-    title: 'Yield Farming',
+    title: 'Farms',
     icon: roundStreetview,
     href: PATH_APP.taalswap
   },
