@@ -286,37 +286,15 @@ export default function BasicTable({ filterName, category }) {
             <TableHead>
               <TableRow>
                 <TableCell component="th">
-                  <Typography variant="h6" gutterBottom>
-                    {t('taalswap.ProjectName')}
-                  </Typography>
+                  {t('taalswap.ProjectName')}
                 </TableCell>
                 <Hidden smDown>
-                  <TableCell align="right">
-                    <Typography variant="h6" gutterBottom>
-                      {t('taalswap.Ratio')}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography variant="h6" gutterBottom>
-                      {t('taalswap.Access')}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography variant="h6" gutterBottom>
-                      {t('taalswap.Category2')}
-                    </Typography>
-                  </TableCell>
+                  <TableCell align="right">{t('taalswap.Ratio')}</TableCell>
+                  <TableCell align="right">{t('taalswap.Access')}</TableCell>
+                  <TableCell align="right">{t('taalswap.Category2')}</TableCell>
                 </Hidden>
-                <TableCell align="right">
-                  <Typography variant="h6" gutterBottom>
-                    {t('taalswap.Progress')}
-                  </Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6" gutterBottom>
-                    {t('taalswap.Status')}
-                  </Typography>
-                </TableCell>
+                <TableCell align="right">{t('taalswap.Progress')}</TableCell>
+                <TableCell align="right">{t('taalswap.Status')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
