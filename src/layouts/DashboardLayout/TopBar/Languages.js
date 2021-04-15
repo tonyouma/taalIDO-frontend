@@ -9,7 +9,7 @@ import { MIconButton } from 'src/theme';
 // ----------------------------------------------------------------------
 
 // TODO : ic_flags_cn.svg 재작업 필요
-const LANGS = [
+export const LANGS = [
   {
     value: 'kr',
     label: '대한민국',
