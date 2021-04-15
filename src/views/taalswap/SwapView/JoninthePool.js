@@ -351,7 +351,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       <Box sx={{ mb: 1.5, display: 'flex', justifyContent: 'flex-end' }}>
         <Typography
           component="span"
-          variant="subtitle2"
+          variant="body2"
           sx={{
             mb: 1,
             alignSelf: 'flex-end',
