@@ -91,7 +91,7 @@ function Advertisement({ className }) {
                 underline="none"
                 variant="contained"
                 component={RouterLink}
-                to="/app/taalswap/application"
+                to="/app/taalswap/application/information"
               >
                 {t('taalswap.ApplyForIDO')}
               </MButton>
