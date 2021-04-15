@@ -84,18 +84,7 @@ class Taalswap {
     return this.params.tokenContract;
   }
 
-  async getSwapABI({ tokenAmount, account }) {
-    let amountWithDecimals = Numbers.toSmartContractDecimals(
-      tokenAmount,
-      this.params.application.decimals
-    );
-    let ETHCost = await this.getETHCostFromTokens({
-      tokenAmount
-    });
-    let ETHToWei = Numbers.toSmartContractDecimals(
-      ETHCost,
-      this.params.application.decimals
-    );
+  async getSwapABI({ amountWithDecimals }) {
     const data = this.params.fixedContract.interface.encodeFunctionData(
       'swap',
       [amountWithDecimals]

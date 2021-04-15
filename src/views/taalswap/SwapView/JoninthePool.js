@@ -9,6 +9,8 @@ import { Box, Divider, Typography, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
+import 'moment/locale/en-gb';
+import 'moment/locale/ko';
 import { getWalletBalance } from '../../../redux/slices/wallet';
 import { formatEther } from '@ethersproject/units';
 import { createSwap, getSwapList } from '../../../redux/slices/pool';
@@ -20,6 +22,8 @@ import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router-dom';
 import { set } from 'immutable';
 import { useTranslation } from 'react-i18next';
+import publish from '@iconify-icons/ic/publish';
+import { LANGS } from 'src/layouts/DashboardLayout/TopBar/Languages';
 
 // ----------------------------------------------------------------------
 
@@ -154,22 +158,40 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 onBackdrop(true);
                 if (from) {
                   try {
-                    const msgContents = { tokenAmount: amount, account: from };
-                    msgContents.data = await taalswap.getSwapABI(msgContents);
+                    let amountWithDecimals = Numbers.toSmartContractDecimals(
+                      amount,
+                      pool.decimals
+                    );
+                    let ETHCost = await taalswap.getETHCostFromTokens({
+                      tokenAmount: amount
+                    });
+                    let ETHToWei = Numbers.toSmartContractDecimals(
+                      ETHCost,
+                      pool.decimals
+                    );
+                    const data = await taalswap.getSwapABI({
+                      amountWithDecimals: amountWithDecimals
+                    });
+                    const msgContents = {
+                      from: wallet,
+                      to: pool.contractAddress,
+                      value: ETHToWei,
+                      amount: amount,
+                      data: data,
+                      gasLimit: 300000
+                    };
                     let sendData = {
                       callback: 'onCallbackTxHash',
                       msgContents: msgContents
                     };
                     console.log('sendData', sendData);
-                    if (os === 'IOS') {
-                      alert('ios');
+                    if (os.toLowerCase() === 'ios') {
                       /*eslint-disable */
                       webkit.messageHandlers.sendEthTransaction.postMessage(
                         JSON.stringify(sendData)
                       );
                       /*eslint-enable */
                     } else {
-                      alert('else');
                       /*eslint-disable */
                       SubWebviewBridge.sendEthTransaction(
                         JSON.stringify(sendData)
@@ -248,7 +270,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
   useEffect(async () => {
     try {
-      console.log('in');
+      console.log('in...........');
       setDate();
       setAmount(0);
 
@@ -291,7 +313,6 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
               }, 0)
           );
         }
-        console.log('aaa');
         setStatus(
           await getPoolStatus(taalswap, pool.status, pool.minFundRaise)
         );
@@ -311,6 +332,18 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
     }
   }, [activatingConnector, connector]);
 
+  useEffect(() => {
+    switch (i18n.language) {
+      case 'en':
+        moment.locale('en-gb');
+        break;
+      case 'kr':
+        moment.locale('ko');
+        break;
+    }
+    setDate();
+  }, [i18n.language]);
+
   return (
     <div className={clsx(classes.root, className)}>
       <Typography variant="h3" sx={{ mb: 2 }}>
@@ -323,7 +356,9 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           component="p"
           sx={{ color: 'text.secondary' }}
         >
-          {time.published && `Published about ${time.date}`}
+          {time.published && i18n.language === 'en'
+            ? `Published about ${time.date}`
+            : `${time.date} 시작됨`}
         </Typography>
       </div>
 
@@ -421,7 +456,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             size="large"
             variant="contained"
             onClick={onClickSwap}
-            // disabled={status !== PoolStatus.LIVE}
+            disabled={status !== PoolStatus.LIVE}
             // disabled={status !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED}
           >
             {t('taalswap.Go')}
@@ -434,7 +469,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             size="large"
             variant="contained"
             onClick={onClickSwap}
-            // disabled={status !== PoolStatus.LIVE || isWhiteList === false}
+            disabled={status !== PoolStatus.LIVE || isWhiteList === false}
           >
             {t('taalswap.Go')}
           </LoadingButton>
