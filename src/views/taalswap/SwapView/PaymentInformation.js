@@ -153,7 +153,7 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
         </Typography>
         <Typography
           component="p"
-          variant="bohdy2"
+          variant="body2"
           sx={{ color: 'text.secondary' }}
         >
           {`${Numbers.toFloat(pool.maxIndividuals)} ${pool.symbol}`}
@@ -169,7 +169,7 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
         </Typography>
         <Typography
           component="p"
-          variant="bohdy2"
+          variant="body2"
           sx={{ color: 'text.secondary' }}
         >
           {`${Numbers.toFloat(
@@ -183,7 +183,7 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
           {t('taalswap.Participants')}
         </Typography>
         <Typography component="p" variant="h4" sx={{ color: 'text.secondary' }}>
-          12
+          {participants}
         </Typography>
       </div>
       <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
