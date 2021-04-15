@@ -59,6 +59,7 @@ import { PoolStatus } from 'src/utils/poolStatus';
 import { login } from 'src/utils/auth';
 
 import StatusLabel from '../../Components/StatusLabel';
+import './APP.css';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -758,12 +759,8 @@ export default function ApplicationListView() {
                 component="img"
                 src={`/static/icons/ic_write_25.png`}
                 sx={{
-                  top: -75,
-                  position: 'relative',
-                  cursor: 'pointer',
                   width: 25,
-                  height: 25,
-                  ml: 25
+                  height: 25
                 }}
                 onClick={onClickApllyForIdo}
               />
