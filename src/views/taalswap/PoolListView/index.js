@@ -29,7 +29,6 @@ import { useDispatch } from 'react-redux';
 import { getSwapList, getPoolList } from '../../../redux/slices/pool';
 import searchFill from '@iconify-icons/eva/search-fill';
 import { useLocation } from 'react-router-dom';
-
 // ----------------------------------------------------------------------
 
 const POOLS_TABS = [

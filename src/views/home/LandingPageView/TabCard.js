@@ -20,6 +20,7 @@ import { useWeb3React } from '@web3-react/core';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
+import './APP.css';
 
 // ----------------------------------------------------------------------
 
