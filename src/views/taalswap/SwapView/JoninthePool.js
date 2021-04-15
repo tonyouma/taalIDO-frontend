@@ -154,22 +154,39 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 onBackdrop(true);
                 if (from) {
                   try {
-                    const msgContents = { tokenAmount: amount, account: from };
-                    msgContents.data = await taalswap.getSwapABI(msgContents);
+                    let amountWithDecimals = Numbers.toSmartContractDecimals(
+                      amount,
+                      pool.decimals
+                    );
+                    let ETHCost = await taalswap.getETHCostFromTokens({
+                      tokenAmount: amount
+                    });
+                    let ETHToWei = Numbers.toSmartContractDecimals(
+                      ETHCost,
+                      pool.decimals
+                    );
+                    const data = await taalswap.getSwapABI({
+                      amountWithDecimals: amountWithDecimals
+                    });
+                    const msgContents = {
+                      from: wallet,
+                      to: pool.contractAddress,
+                      value: ETHToWei,
+                      amount: amount,
+                      data: data
+                    };
                     let sendData = {
                       callback: 'onCallbackTxHash',
                       msgContents: msgContents
                     };
                     console.log('sendData', sendData);
-                    if (os === 'IOS') {
-                      alert('ios');
+                    if (os.toLowerCase() === 'ios') {
                       /*eslint-disable */
                       webkit.messageHandlers.sendEthTransaction.postMessage(
                         JSON.stringify(sendData)
                       );
                       /*eslint-enable */
                     } else {
-                      alert('else');
                       /*eslint-disable */
                       SubWebviewBridge.sendEthTransaction(
                         JSON.stringify(sendData)
