@@ -139,10 +139,10 @@ function PlanCard({ pool, ethPrice, index, className }) {
       // setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
       setMax(getMax(pool.maxIndividuals, pool.tradeValue));
 
-      return;
+      return () => {};
     } catch (error) {
       console.log(error);
-      return;
+      return () => {};
     }
   }, [pool, library]);
 
@@ -335,41 +335,50 @@ function PlanCard({ pool, ethPrice, index, className }) {
             </Box>
             <Box marginLeft="0.5rem">
               <Typography color="red">
-                {t('taalswap.TokenSafeyAlert')}
+                {t('taalswap.TokenSafetyAlert')}
               </Typography>
             </Box>
           </Box>
         </DialogTitle>
 
         <DialogContent>
-          <Divider />{' '}
+          <Divider />
           <Box>
-            <p>{t('taalswap.Alert1')}</p>
-            <br />
-            <p>
-              <p>{t('taalswap.Alert2')}</p>
-            </p>
-            <br />
-            <p>
-              <p>{t('taalswap.Alert3')}</p>
-            </p>
+            <Typography padding="0.5rem" align="justify">
+              {t('taalswap.Alert1')}
+            </Typography>
+
+            <Typography padding="0.5rem" align="justify">
+              {t('taalswap.Alert2')}
+            </Typography>
+
+            <Typography padding="0.5rem" align="justify">
+              {t('taalswap.Alert3')}
+            </Typography>
           </Box>
           <Divider />
           <Box
             textAlign="right"
             // marginTop="20px"
           >
-            <Checkbox
-              checked={checkWarning}
-              onChange={handleCheckWarningChange}
-              inputProps={{ 'aria-label': 'primary checkbox' }}
-            />
-            {t('taalswap.Understand')}
+            <Box display="flex" justifyContent="flex-end" alignItems="center">
+              <Checkbox
+                checked={checkWarning}
+                onChange={handleCheckWarningChange}
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+              />
+              <Typography
+                sx={{ cursor: 'pointer' }}
+                onClick={handleCheckWarningChange}
+              >
+                {t('taalswap.Understand')}
+              </Typography>
+            </Box>
           </Box>
           {showWarningMessage === true && (
             <Box>
               <Typography textAlign="center" color="red">
-                You should check to proceed.
+                {t('taalswap.Agree')}
               </Typography>
             </Box>
           )}

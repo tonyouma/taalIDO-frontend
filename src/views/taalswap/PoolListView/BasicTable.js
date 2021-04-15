@@ -347,25 +347,42 @@ export default function BasicTable({ filterName, category }) {
             </DialogTitle>
 
             <DialogContent>
-              <Divider />{' '}
+              <Divider />
               <Box>
-                <p>{t('taalswap.Alert1')}</p>
-                <br />
-                <p>{t('taalswap.Alert2')}</p>
-                <br />
-                <p>{t('taalswap.Alert3')}</p>
+                <Typography padding="0.5rem" align="justify">
+                  {t('taalswap.Alert1')}
+                </Typography>
+
+                <Typography padding="0.5rem" align="justify">
+                  {t('taalswap.Alert2')}
+                </Typography>
+
+                <Typography padding="0.5rem" align="justify">
+                  {t('taalswap.Alert3')}
+                </Typography>
               </Box>
               <Divider />
               <Box
                 textAlign="right"
                 // marginTop="20px"
               >
-                <Checkbox
-                  checked={checkWarning}
-                  onChange={handleCheckWarningChange}
-                  inputProps={{ 'aria-label': 'primary checkbox' }}
-                />
-                {t('taalswap.Understand')}
+                <Box
+                  display="flex"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                >
+                  <Checkbox
+                    checked={checkWarning}
+                    onChange={handleCheckWarningChange}
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                  <Typography
+                    sx={{ cursor: 'pointer' }}
+                    onClick={handleCheckWarningChange}
+                  >
+                    {t('taalswap.Understand')}
+                  </Typography>
+                </Box>
               </Box>
               {showWarningMessage === true && (
                 <Box>
