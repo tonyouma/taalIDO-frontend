@@ -356,7 +356,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             color: 'text.secondary'
           }}
         >
-          {`Price : ${price} ETH ($ ${Numbers.toFloat(
+          {`Amount : ${price} ETH ($ ${Numbers.toFloat(
             price * ethPrice
           ).toFixed()})`}
           {/* Price : {price} ETH  */}
