@@ -89,6 +89,8 @@ class Taalswap {
       'swap',
       [amountWithDecimals]
     );
+    const test = this.params.fixedContract.estimateGas.swap(amountWithDecimals);
+    console.log('test', test);
     console.log('getSwapABI', data);
     return data;
   }
