@@ -497,11 +497,27 @@ const useStyles = makeStyles((theme) => ({
   tableTop: {
     display: 'flex',
     justifyContent: 'space-between',
-    // alignItems: 'center',
-    height: '70px'
+    alignItems: 'center',
+    // height: '70px',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column'
+    }
   },
-  tableTab: { width: '100%' },
-  tableSearch: { width: '320px', textAlign: 'right' },
+  tableTab: {
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: '0px'
+    }
+  },
+  tableSearch: {
+    width: '470px',
+    textAlign: 'right',
+    padding: '2px',
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'left',
+      marginBottom: '1rem'
+    }
+  },
   tableDateCell: {
     minWidth: '160px'
   }
@@ -750,23 +766,14 @@ export default function ApplicationListView() {
         <Box className={classes.tableTop}>
           <Box className={classes.tableTab}>
             <HeaderDashboard
-              heading={t('taalswap.applications')}
+              heading={t('taalswap.Applications')}
               links={[{ name: '' }]}
             />
-            <Tooltip title="apply for IDO">
-              <Box
-                component="img"
-                src={`/static/icons/ic_write_25.png`}
-                sx={{
-                  top: 140,
-                  position: 'absolute',
-                  width: 25,
-                  height: 25,
-                  ml: 25
-                }}
-                onClick={onClickApllyForIdo}
-              />
-            </Tooltip>
+          </Box>
+          <Box className={classes.tableSearch}>
+            <Button variant="contained" onClick={onClickApllyForIdo}>
+              {t('taalswap.ApplyForIDO')}
+            </Button>
           </Box>
           <Box className={classes.tableSearch}>
             <ToolbarTable
