@@ -23,6 +23,7 @@ import {
   Typography,
   ListSubheader
 } from '@material-ui/core';
+import './APP.css';
 
 // ----------------------------------------------------------------------
 
@@ -197,7 +198,7 @@ function NavBar({ isOpenNav, onCloseNav }) {
         </List>
       ))}
 
-      <Box sx={{ px: 4.5, pb: 3, position: 'relative' }}>
+      <Box sx={{ px: 4.5, pb: 3, position: 'relative', bottom: 0 }}>
         <div className={classes.doc}>
           <Typography
             gutterBottom

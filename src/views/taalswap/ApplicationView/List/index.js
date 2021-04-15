@@ -758,8 +758,9 @@ export default function ApplicationListView() {
                 component="img"
                 src={`/static/icons/ic_write_25.png`}
                 sx={{
-                  top: -80,
+                  top: -75,
                   position: 'relative',
+                  cursor: 'pointer',
                   width: 25,
                   height: 25,
                   ml: 25
