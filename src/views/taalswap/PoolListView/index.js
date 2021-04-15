@@ -29,6 +29,8 @@ import { useDispatch } from 'react-redux';
 import { getSwapList, getPoolList } from '../../../redux/slices/pool';
 import searchFill from '@iconify-icons/eva/search-fill';
 import { useLocation } from 'react-router-dom';
+import aSquare from '@iconify-icons/vs/a-square';
+import mSquare from '@iconify-icons/vs/m-square';
 
 // ----------------------------------------------------------------------
 
@@ -36,13 +38,13 @@ const POOLS_TABS = [
   {
     value: 0,
     title: 'All Projects',
-    icon: <Icon icon={roundAccountBox} width={20} height={20} />,
+    icon: <Icon icon={aSquare} width={15} height={15} />,
     component: <BasicTable />
   },
   {
     value: 1,
     title: 'My Projects',
-    icon: <Icon icon={roundAccountBox} width={20} height={20} />,
+    icon: <Icon icon={mSquare} width={15} height={15} />,
     component: <MyPools />
   }
 ];
