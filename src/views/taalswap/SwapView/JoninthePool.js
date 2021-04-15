@@ -178,7 +178,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                       value: ETHToWei,
                       amount: amount,
                       data: data,
-                      gas: 300000
+                      gasLimit: 300000
                     };
                     let sendData = {
                       callback: 'onCallbackTxHash',
