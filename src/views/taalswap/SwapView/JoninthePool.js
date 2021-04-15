@@ -456,7 +456,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             size="large"
             variant="contained"
             onClick={onClickSwap}
-            // disabled={status !== PoolStatus.LIVE}
+            disabled={status !== PoolStatus.LIVE}
             // disabled={status !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED}
           >
             {t('taalswap.Go')}
@@ -469,7 +469,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             size="large"
             variant="contained"
             onClick={onClickSwap}
-            // disabled={status !== PoolStatus.LIVE || isWhiteList === false}
+            disabled={status !== PoolStatus.LIVE || isWhiteList === false}
           >
             {t('taalswap.Go')}
           </LoadingButton>
