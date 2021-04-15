@@ -173,7 +173,7 @@ function NavBar({ isOpenNav, onCloseNav }) {
         <List
           disablePadding
           // key={list.subheader}
-          kue={index}
+          key={index}
           subheader={
             <ListSubheader
               disableSticky
