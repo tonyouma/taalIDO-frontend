@@ -358,7 +358,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             color: 'text.secondary'
           }}
         >
-          {t('taalswap.Price')}
+          {t('taalswap.Amount')}
           {` : ${price} ETH ($ ${Numbers.toFloat(price * ethPrice).toFixed()})`}
           {/* Price : {price} ETH  */}
         </Typography>
