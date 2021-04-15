@@ -346,7 +346,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         </Typography>
       </div>
 
-      <Box sx={{ mb: 1.5, display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
         <Typography
           component="span"
           variant="subtitle2"
@@ -375,7 +375,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         </Typography>
       </div>
 
-      <Box sx={{ mb: 2.5, display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
         <Typography variant="h2" sx={{ mx: 1 }}>
           <TextField
             type="number"
@@ -413,7 +413,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         </Typography>
       </Box>
 
-      <Box sx={{ mt: 2, mb: 2 }}>
+      <Box sx={{ mt: 8, mb: 2 }}>
         {pool.access === 'Public' && (
           <LoadingButton
             fullWidth
