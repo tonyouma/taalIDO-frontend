@@ -57,6 +57,8 @@ import { fromTalken } from 'src/redux/slices/talken';
 const MENU_LINKS = [
   { title: 'Home', icon: homeFill, href: '/' },
   { title: 'IDO', icon: roundStreetview, href: PATH_APP.taalswap.pools },
+  { title: 'Vote', icon: roundStreetview, href: PATH_APP.taalswap },
+  { title: 'Trade', icon: roundStreetview, href: PATH_APP.taalswap },
   { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap },
   {
     title: 'Farms',
