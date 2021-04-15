@@ -22,6 +22,26 @@
     "TotalRaise": "Total Raise",
     "StartDate": "Start Date",
     "EndDate": "End Date",
-    "Progress": "Progress"
+    "Progress": "Progress",
+    "ProjectName": "Project Name",
+    "WebsiteURL": "Website URL",
+    "Category": "Category",
+    "Category2": "Category",
+    "MaxAllocationPerWallet": "Max. Allocation per Wallet",
+    "TotalSupply": "Total Supply",
+    "AllProjects": "All Projects",
+    "MyProjects": "My Projects",
+    "Status": "Status",
+    "SearchProject": "Search by Project NAme",
+    "JoinThePool": "Join The Pool",
+    "YourBidAmount": "Your Bid Amount",
+    "Amount": "Amount",
+    "Go": "Go",
+    "Price": "Price",
+    "MaxAllocationIn": "Max. Allocation in",
+    "MaxAllocationInETH": "Max Allocation in ETH",
+    "AboutTheProject": "About The Project",
+    "PoolDetail": "Pool Detail",
+    "Balance": "Balance"
   }
 }

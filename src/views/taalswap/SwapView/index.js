@@ -30,6 +30,7 @@ import PoolDetails from '../PoolDetails';
 import { capitalCase } from 'change-case';
 import { Icon } from '@iconify/react';
 import roundAccountBox from '@iconify-icons/ic/round-account-box';
+import { useTranslation } from 'react-i18next';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -107,6 +108,7 @@ function PaymentView({ className, ...other }) {
   const [pool, setPool] = useState(location.state.selectedPool);
   const [open, setOpen] = useState(false);
   const [ethPrice, setEthPrice] = useState(0);
+  const { i18n, t } = useTranslation();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -163,15 +165,32 @@ function PaymentView({ className, ...other }) {
           onChange={handleChange}
           className={classes.tabBar}
         >
-          {TABS.map((tab) => (
-            <Tab
-              disableRipple
-              key={tab.value}
-              label={capitalCase(tab.title)}
-              icon={tab.icon}
-              value={tab.value}
-            />
-          ))}
+          {TABS.map((tab) => {
+            let tabTitle;
+            switch (tab.value) {
+              case 0:
+                tabTitle = t('taalswap.JoinThePool');
+                break;
+              case 1:
+                tabTitle = t('taalswap.PoolDetail');
+                break;
+              case 2:
+                tabTitle = t('taalswap.Participants');
+                break;
+              case 3:
+                tabTitle = t('taalswap.AboutTheProject');
+                break;
+            }
+            return (
+              <Tab
+                disableRipple
+                key={tab.value}
+                label={tabTitle}
+                icon={tab.icon}
+                value={tab.value}
+              />
+            );
+          })}
         </Tabs>
         <TabPanel value={value} index={0}>
           {/* <Container> */}

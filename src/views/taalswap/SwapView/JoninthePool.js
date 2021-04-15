@@ -19,6 +19,7 @@ import { getPoolStatus } from '../../../utils/getPoolStatus';
 import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router-dom';
 import { set } from 'immutable';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -88,6 +89,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const { os, from, wallet } = useSelector((state) => state.talken);
   const { swapList } = useSelector((state) => state.pool);
   const { connector, library, account } = context;
+  const { i18n, t } = useTranslation();
 
   let taalswap;
 
@@ -312,7 +314,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   return (
     <div className={clsx(classes.root, className)}>
       <Typography variant="h3" sx={{ mb: 2 }}>
-        Join the Pool
+        {t('taalswap.JoinThePool')}
       </Typography>
 
       <div className={classes.row}>
@@ -333,20 +335,20 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Your Bid Amount
+          {t('taalswap.YourBidAmount')}
         </Typography>
         <Typography
           component="p"
           variant="body2"
           sx={{ color: 'text.secondary' }}
         >
-          Balance :{' '}
+          {t('taalswap.Balance')} :{' '}
           {balance !== null ? parseFloat(formatEther(balance)).toFixed(2) : '0'}{' '}
           ETH
         </Typography>
       </div>
 
-      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ mb: 1.5, display: 'flex', justifyContent: 'flex-end' }}>
         <Typography
           component="span"
           variant="subtitle2"
@@ -356,9 +358,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             color: 'text.secondary'
           }}
         >
-          {`Amount : ${price} ETH ($ ${Numbers.toFloat(
-            price * ethPrice
-          ).toFixed()})`}
+          {t('taalswap.Price')}
+          {` : ${price} ETH ($ ${Numbers.toFloat(price * ethPrice).toFixed()})`}
           {/* Price : {price} ETH  */}
         </Typography>
       </Box>
@@ -371,11 +372,11 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Amount
+          {t('taalswap.Amount')}
         </Typography>
       </div>
 
-      <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ mb: 2.5, display: 'flex', justifyContent: 'flex-end' }}>
         <Typography variant="h2" sx={{ mx: 1 }}>
           <TextField
             type="number"
@@ -413,7 +414,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         </Typography>
       </Box>
 
-      <Box sx={{ mt: 8, mb: 2 }}>
+      <Box sx={{ mt: 2, mb: 2 }}>
         {pool.access === 'Public' && (
           <LoadingButton
             fullWidth
@@ -423,7 +424,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             // disabled={status !== PoolStatus.LIVE}
             // disabled={status !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED}
           >
-            Go
+            {t('taalswap.Go')}
           </LoadingButton>
         )}
 
@@ -435,7 +436,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             onClick={onClickSwap}
             // disabled={status !== PoolStatus.LIVE || isWhiteList === false}
           >
-            Go
+            {t('taalswap.Go')}
           </LoadingButton>
         )}
       </Box>

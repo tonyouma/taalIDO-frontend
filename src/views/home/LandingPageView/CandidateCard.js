@@ -8,6 +8,7 @@ import { Card, Box } from '@material-ui/core';
 import getMax from '../../../utils/getMax';
 import EllipsisText from 'react-text-overflow-middle-ellipsis';
 import Numbers from 'src/utils/Numbers';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -42,6 +43,7 @@ CandidateCard.propTypes = {
 
 function CandidateCard({ pool, index, className }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
 
   return (
     <Card className={clsx(classes.root, className)}>
@@ -66,7 +68,7 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Project Name
+              {t('taalswap.ProjectName')}
             </Box>
             <Box
               sx={{
@@ -97,7 +99,7 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Website URL
+              {t('taalswap.WebsiteURL')}
             </Box>
             <Box
               sx={{
@@ -153,7 +155,7 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Category
+              {t('taalswap.Category')}
             </Box>
             <Box
               sx={{
@@ -181,7 +183,7 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Max.Allocation per Wallet
+              {t('taalswap.MaxAllocationPerWallet')}
             </Box>
             <Box
               sx={{
@@ -209,7 +211,7 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Total Supply
+              {t('taalswap.TotalSupply')}
             </Box>
             <Box
               sx={{

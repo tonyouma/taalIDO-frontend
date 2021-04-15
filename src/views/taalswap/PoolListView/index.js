@@ -205,15 +205,26 @@ function PoolListView() {
               onChange={handleChange}
               className={classes.tabBar}
             >
-              {POOLS_TABS.map((tab) => (
-                <Tab
-                  disableRipple
-                  key={tab.value}
-                  label={capitalCase(tab.title)}
-                  icon={tab.icon}
-                  value={tab.value}
-                />
-              ))}
+              {POOLS_TABS.map((tab) => {
+                let tabTitle;
+                switch (tab.value) {
+                  case 0:
+                    tabTitle = t('taalswap.AllProjects');
+                    break;
+                  case 1:
+                    tabTitle = t('taalswap.MyProjects');
+                    break;
+                }
+                return (
+                  <Tab
+                    disableRipple
+                    key={tab.value}
+                    label={tabTitle}
+                    icon={tab.icon}
+                    value={tab.value}
+                  />
+                );
+              })}
             </Tabs>
           </Box>
           <Box className={classes.tableSearch}>
@@ -235,7 +246,7 @@ function PoolListView() {
             <OutlinedInput
               value={filterName}
               onChange={onFilterName}
-              placeholder="Search by Project Name..."
+              placeholder={t('taalswap.SearchProject')}
               size="small"
               startAdornment={
                 <InputAdornment position="start">
