@@ -36,6 +36,7 @@ import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
 import Numbers from 'src/utils/Numbers';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -163,6 +164,7 @@ function TablePoolRow({ row, handleOpenModal }) {
 export default function MyPools({ filterName, category, onBackdrop }) {
   const classes = useStyles();
   const history = useHistory();
+  const { i18n, t } = useTranslation();
 
   // const [filterName, setFilterName] = useState('');
   const [filterPoolList, setFilterPoolList] = useState([]);
@@ -341,34 +343,34 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               <TableRow>
                 <TableCell component="th">
                   <Typography variant="h6" gutterBottom>
-                    Project Name
+                    {t('taalswap.ProjectName')}
                   </Typography>
                 </TableCell>
                 <Hidden smDown>
                   <TableCell align="right">
                     <Typography variant="h6" gutterBottom>
-                      Ratio
+                      {t('taalswap.Ratio')}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
                     <Typography variant="h6" gutterBottom>
-                      Access
+                      {t('taalswap.Access')}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
                     <Typography variant="h6" gutterBottom>
-                      Category
+                      {t('taalswap.Category2')}
                     </Typography>
                   </TableCell>
                 </Hidden>
                 <TableCell align="right">
                   <Typography variant="h6" gutterBottom>
-                    Progress
+                    {t('taalswap.Progress')}
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
                   <Typography variant="h6" gutterBottom>
-                    Status
+                    {t('taalswap.Status')}
                   </Typography>
                 </TableCell>
               </TableRow>

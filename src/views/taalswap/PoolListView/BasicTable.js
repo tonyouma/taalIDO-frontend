@@ -361,7 +361,9 @@ export default function BasicTable({ filterName, category }) {
                   <ErrorOutlineOutlinedIcon style={{ color: 'red' }} />
                 </Box>
                 <Box marginLeft="0.5rem">
-                  <Typography color="red">Token Safety Alert!</Typography>
+                  <Typography color="red">
+                    {t('taalswap.TokenSafetyAlert')}
+                  </Typography>
                 </Box>
               </Box>
             </DialogTitle>
@@ -369,22 +371,11 @@ export default function BasicTable({ filterName, category }) {
             <DialogContent>
               <Divider />{' '}
               <Box>
-                <p>
-                  Anyone can create an ERC20 token on Ethereum with any name,
-                  including creating fake versions of existing tokens and tokens
-                  that claim to represent projects but do not exist.
-                </p>
+                <p>{t('taalswap.Alert1')}</p>
                 <br />
-                <p>
-                  This interface can load arbitrary tokens by token address.
-                  Please proceed with utmost caution while you’re interacting
-                  with arbitrary ERC20 tokens.
-                </p>
+                <p>{t('taalswap.Alert2')}</p>
                 <br />
-                <p>
-                  If you purchase an arbitrary token, you may be unable to sell
-                  it back.
-                </p>
+                <p>{t('taalswap.Alert3')}</p>
               </Box>
               <Divider />
               <Box
@@ -396,12 +387,12 @@ export default function BasicTable({ filterName, category }) {
                   onChange={handleCheckWarningChange}
                   inputProps={{ 'aria-label': 'primary checkbox' }}
                 />
-                I understand
+                {t('taalswap.Understand')}
               </Box>
               {showWarningMessage === true && (
                 <Box>
                   <Typography textAlign="center" color={'red'}>
-                    You should check to proceed.
+                    {t('taalswap.Agree')}
                   </Typography>
                 </Box>
               )}
@@ -413,7 +404,7 @@ export default function BasicTable({ filterName, category }) {
                 color="inherit"
                 onClick={handleCloseModal}
               >
-                Cancel
+                {t('taalswap.Cancel')}
               </Button>
               <Button
                 className={classes.button}
@@ -422,7 +413,7 @@ export default function BasicTable({ filterName, category }) {
                 color="primary"
                 autoFocus
               >
-                Proceed
+                {t('taalswap.Proceed')}
               </Button>
             </DialogActions>
           </Dialog>

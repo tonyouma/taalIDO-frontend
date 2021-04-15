@@ -42,6 +42,14 @@
     "MaxAllocationInETH": "Max Allocation in ETH",
     "AboutTheProject": "About The Project",
     "PoolDetail": "Pool Detail",
-    "Balance": "Balance"
+    "Balance": "Balance",
+    "Alert1": "Anyone can create an ERC20 token on Ethereum with any name,\nincluding creating fake versions of existing tokens and tokens\nthat claim to represent projects but do not exist.",
+    "Alert2": "This interface can load arbitrary tokens by token address. Please\nproceed with utmost caution while you’re interacting with\narbitrary ERC20 tokens.",
+    "Alert3": "If you purchase an arbitrary token, you may be unable to sell it\nback.",
+    "TokenSafetyAlert": "Token Safety Alert!",
+    "Understand": "I understand",
+    "Agree": "You should check to proceed.",
+    "Cancel": "Cancel",
+    "Proceed": "Proceed"
   }
 }
