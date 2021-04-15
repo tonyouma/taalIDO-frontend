@@ -18,7 +18,7 @@
     "Ratio": "토큰스왑 비율",
     "Maximum": "최대 구매가능액",
     "Access": "공개방식",
-    "Participants": "참여자 수",
+    "Participants": "참여자",
     "TotalRaise": "총 모금액",
     "StartDate": "시작일",
     "EndDate": "종료일",
@@ -57,6 +57,9 @@
     "EndDate": "종료일",
     "Governance": "TaalSwap IDO 거버넌스",
     "GovContent": "TaalSwap은 궁극적으로 비허가형, 상호운영성을 지닌 IDO 플랫폼을 지향합니다. 이러한 최종목표를 염두에 두고 초기 단계의 TaalSwap은 유망한 프로젝트와 적극적인 투자자를 완벽하게 연결하는 것을 목표로 하고 있습니다. 이러한 연결을 통해 혁신적인 스타업들은 자신들의 아이디어와 기술를 실현할 수 있는 힘을 얻게 될 것입니다. 이 목표를 달성함에 있어 TaalSwap 심사위원회는 IDO 신청서를 검토하고 투표로 론칭을 결정하는 책임을 가지게 되며, 신청서는 엄격한 심사를 통해 평가될 것입니다. 모든 위원회 멤버가 참여하는 투표에서 60% 이상의 찬성표를 얻을 경우, 프로젝트는 TaalSwap 론칭 승인을 받게 됩니다. 승인 즉시 론칭 준비 및 실행사항을 대한 안내를 받게 됩니다.",
-    "FillApplication": "IDO 신청서 작성하기"
+    "FillApplication": "IDO 신청서 작성하기",
+    "Purchaser": "구매자",
+    "Timestamp": "구입 일시",
+    "Finalized": "완료 여부"
   }
 }
