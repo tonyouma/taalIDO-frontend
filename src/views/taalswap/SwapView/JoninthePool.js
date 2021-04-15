@@ -184,11 +184,6 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                       callback: 'onCallbackTxHash',
                       msgContents: msgContents
                     };
-                    /*eslint-disable */
-                    webkit.messageHandlers.nativeConsoleLog.postMessage(
-                      'asdasdasdasd : ' + os.toLowerCase()
-                    );
-                    /*eslint-enable */
                     console.log('sendData', sendData);
                     if (os.toLowerCase() === 'ios') {
                       /*eslint-disable */
