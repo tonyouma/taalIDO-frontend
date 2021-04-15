@@ -31,6 +31,11 @@ import { capitalCase } from 'change-case';
 import { Icon } from '@iconify/react';
 import roundAccountBox from '@iconify-icons/ic/round-account-box';
 import { useTranslation } from 'react-i18next';
+import buyIcon from '@iconify-icons/icons8/buy';
+import bxDetail from '@iconify-icons/bx/bx-detail';
+import peopleAudience24Regular from '@iconify-icons/fluent/people-audience-24-regular';
+import locationCompany from '@iconify-icons/carbon/location-company';
+
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -53,25 +58,25 @@ const TABS = [
   {
     value: 0,
     title: 'Join the Pool',
-    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    icon: <Icon icon={buyIcon} width={20} height={20} />
     // component: <PaymentInformation />
   },
   {
     value: 1,
     title: 'Pool Detail',
-    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    icon: <Icon icon={bxDetail} width={20} height={20} />
     // component: <JoninthePool />
   },
   {
     value: 2,
     title: 'Participants',
-    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    icon: <Icon icon={peopleAudience24Regular} width={20} height={20} />
     // component: <Participate />
   },
   {
     value: 3,
     title: 'About The Porject',
-    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    icon: <Icon icon={locationCompany} width={20} height={20} />
     // component: <AboutTheProject />
   }
 ];
