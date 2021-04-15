@@ -334,7 +334,9 @@ function PlanCard({ pool, ethPrice, index, className }) {
               <ErrorOutlineOutlinedIcon style={{ color: 'red' }} />
             </Box>
             <Box marginLeft="0.5rem">
-              <Typography color="red">Token Safety Alert!</Typography>
+              <Typography color="red">
+                {t('taalswap.TokenSafeyAlert')}
+              </Typography>
             </Box>
           </Box>
         </DialogTitle>
@@ -342,21 +344,14 @@ function PlanCard({ pool, ethPrice, index, className }) {
         <DialogContent>
           <Divider />{' '}
           <Box>
+            <p>{t('taalswap.Alert1')}</p>
+            <br />
             <p>
-              Anyone can create an ERC20 token on Ethereum with any name,
-              including creating fake versions of existing tokens and tokens
-              that claim to represent projects but do not exist.
+              <p>{t('taalswap.Alert2')}</p>
             </p>
             <br />
             <p>
-              This interface can load arbitrary tokens by token address. Please
-              proceed with utmost caution while you’re interacting with
-              arbitrary ERC20 tokens.
-            </p>
-            <br />
-            <p>
-              If you purchase an arbitrary token, you may be unable to sell it
-              back.
+              <p>{t('taalswap.Alert3')}</p>
             </p>
           </Box>
           <Divider />
@@ -369,7 +364,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
               onChange={handleCheckWarningChange}
               inputProps={{ 'aria-label': 'primary checkbox' }}
             />
-            I understand
+            {t('taalswap.Understand')}
           </Box>
           {showWarningMessage === true && (
             <Box>
