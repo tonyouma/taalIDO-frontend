@@ -1,0 +1,17 @@
+.css-1d7p1cj-MuiTypography-root {
+  font-size: 34px;
+}
+..css-1266kxk-MuiButtonBase-root-MuiTab-root .MuiTab-wrapper {
+  margin-right: 0;
+}
+.css-17yibpu-MuiTab-wrapper {
+  font-size: 32px;
+}
+@media screen and (max-width: 768px) {
+  .css-17yibpu-MuiTab-wrapper {
+    font-size: 20px;
+  }
+  .css-1d7p1cj-MuiTypography-root {
+    font-size: 24px;
+  }
+}
