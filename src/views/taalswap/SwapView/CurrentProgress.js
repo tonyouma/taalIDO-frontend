@@ -2,8 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
-import bugFilled from '@iconify-icons/ant-design/bug-filled';
-import ReactApexChart from 'react-apexcharts';
+import baselineHistory from '@iconify-icons/ic/baseline-history';
 import { fNumber, fPercent } from 'src/utils/formatNumber';
 import trendingUpFill from '@iconify-icons/eva/trending-up-fill';
 import trendingDownFill from '@iconify-icons/eva/trending-down-fill';
@@ -103,7 +102,7 @@ function CurrentProgress({ className, ...other }) {
 
         <Typography variant="h3">{fNumber(TOTAL_DOWNLOAD)}</Typography>
       </Box>
-      <Icon icon={bugFilled} width={50} height={50} />
+      <Icon icon={baselineHistory} width={60} height={60} />
     </Card>
   );
 }

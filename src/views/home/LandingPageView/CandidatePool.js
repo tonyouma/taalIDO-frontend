@@ -43,7 +43,7 @@ function CandidatePool() {
   return (
     <Page title="TaalSwap Finance" className={classes.root}>
       <Container maxWidth="lg">
-        <Typography variant="h2" align="center" gutterBottom>
+        <Typography variant="h3" align="center" gutterBottom>
           Candidate Pools
         </Typography>
 

@@ -2,8 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
-import ReactApexChart from 'react-apexcharts';
-import bugFilled from '@iconify-icons/ant-design/bug-filled';
+import sharpMonetizationOn from '@iconify-icons/ic/sharp-monetization-on';
 import { fNumber, fPercent } from 'src/utils/formatNumber';
 import trendingUpFill from '@iconify-icons/eva/trending-up-fill';
 import trendingDownFill from '@iconify-icons/eva/trending-down-fill';
@@ -104,7 +103,7 @@ function TotalAllocatedTokens({ className, ...other }) {
 
         <Typography variant="h3">{fNumber(TOTAL_USER)}</Typography>
       </Box>
-      <Icon icon={bugFilled} width={50} height={50} />
+      <Icon icon={sharpMonetizationOn} width={60} height={60} />
     </Card>
   );
 }
