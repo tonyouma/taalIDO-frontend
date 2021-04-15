@@ -346,8 +346,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   }, [i18n.language]);
 
   return (
-    <div className={clsx(classes.root, className)}>
-      <Typography variant="h3" sx={{ mb: 2 }}>
+    <Box className={clsx(classes.root, className)}>
+      <Typography variant="h3" sx={{ mb: 1 }}>
         {t('taalswap.JoinThePool')}
       </Typography>
 
@@ -363,7 +363,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         </Typography>
       </div>
 
-      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+      <Divider sx={{ borderStyle: 'dashed', mt: 3, mb: 3 }} />
 
       <div className={classes.row}>
         <Typography
@@ -389,7 +389,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           component="span"
           variant="body2"
           sx={{
-            mb: 1,
+            mb: 1.5,
             alignSelf: 'flex-end',
             color: 'text.secondary'
           }}
@@ -400,9 +400,9 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         </Typography>
       </Box>
 
-      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+      <Divider sx={{ borderStyle: 'dashed', mt: 3, mb: 3 }} />
 
-      <div className={classes.row}>
+      <Box className={classes.row} sx={{ mb: 3 }}>
         <Typography
           component="p"
           variant="subtitle2"
@@ -410,33 +410,33 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         >
           {t('taalswap.Amount')}
         </Typography>
-      </div>
+      </Box>
 
       <Box sx={{ mb: 2.5, display: 'flex', justifyContent: 'flex-end' }}>
-        <Typography variant="h2" sx={{ mx: 1 }}>
-          <TextField
-            type="number"
-            sx={{
-              flex: 2 / 5,
-              flexWrap: 'wrap'
-            }}
-            // error={amount < 0 ? true : false}
-            // helperText="양수 입력"
-            variant="standard"
-            InputLabelProps={{
-              shrink: true
-            }}
-            size="small"
-            value={amount}
-            margin="normal"
-            inputProps={{
-              style: { fontSize: 30, textAlign: 'center' }
-            }} // font size of input text
-            InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
-            onChange={onChangeAmount}
-            onFocus={handleOnFocuse}
-          />
-        </Typography>
+        {/* <Typography variant="h2" sx={{ mx: 1 }}> */}
+
+        <TextField
+          type="number"
+          fullWidth
+          // sx={{
+          //   flex: 2 / 5,
+          //   flexWrap: 'wrap'
+          // }}
+          variant="standard"
+          InputLabelProps={{
+            shrink: true
+          }}
+          size="small"
+          value={amount}
+          margin="normal"
+          inputProps={{
+            style: { fontSize: 30, textAlign: 'center' }
+          }} // font size of input text
+          InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
+          onChange={onChangeAmount}
+          onFocus={handleOnFocuse}
+        />
+        {/* </Typography> */}
         <Typography
           component="span"
           variant="body2"
@@ -450,7 +450,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         </Typography>
       </Box>
 
-      <Box sx={{ mt: 2, mb: 2 }}>
+      <Box sx={{ mt: 5, mb: 2 }}>
         {pool.access === 'Public' && (
           <LoadingButton
             fullWidth
@@ -501,7 +501,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           Have problems Joining? Click here to read instructions.
         </Typography> */}
       </Box>
-    </div>
+    </Box>
   );
 }
 
