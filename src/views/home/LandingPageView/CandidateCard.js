@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { PATH_APP } from 'src/routes/paths';
-import { Link as RouterLink } from 'react-router-dom';
+// import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Box } from '@material-ui/core';
+import { Card, Box, Link } from '@material-ui/core';
 import getMax from '../../../utils/getMax';
 import EllipsisText from 'react-text-overflow-middle-ellipsis';
 import Numbers from 'src/utils/Numbers';
@@ -29,7 +29,16 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis'
   },
-
+  websiteUrl: {
+    // '& a': {
+    textDecoration: 'none',
+    color: 'black',
+    '&:hover': {
+      // textDecoration: 'underline'
+      // textShadow: '0 0 24px'
+    }
+    // }
+  },
   tokenAddress: {}
 }));
 
@@ -106,7 +115,13 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.0
               }}
             />
-            {!!pool.websiteUrl && pool.websiteUrl}
+            <Link
+              className={classes.websiteUrl}
+              href={pool.websiteUrl}
+              target="_blank"
+            >
+              {pool.websiteUrl}
+            </Link>
           </Box>
         </Box>
 
