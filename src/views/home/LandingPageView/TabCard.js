@@ -132,8 +132,11 @@ function Tabcard() {
           setEthPrice(result.data.data.amount);
         })
         .catch((error) => console.log(error));
+
+      return;
     } catch (error) {
       console.log(error);
+      return;
     }
   }, [poolList, library]);
 
