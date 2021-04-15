@@ -101,7 +101,7 @@ const navConfig = [
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
-    subheader: 'Governance',
+    subheader: 'Vote',
     items: []
   },
   // TAALSWAP TRADE
