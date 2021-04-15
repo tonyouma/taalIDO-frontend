@@ -170,7 +170,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                       pool.decimals
                     );
                     const data = await taalswap.getSwapABI({
-                      amountWithDecimals: amountWithDecimals
+                      amountWithDecimals: amountWithDecimals,
+                      value: ETHToWei
                     });
                     const msgContents = {
                       from: wallet,

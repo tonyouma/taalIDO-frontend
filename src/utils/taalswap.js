@@ -84,13 +84,24 @@ class Taalswap {
     return this.params.tokenContract;
   }
 
-  async getSwapABI({ amountWithDecimals }) {
-    const data = this.params.fixedContract.interface.encodeFunctionData(
+  async getSwapABI({ amountWithDecimals, value }) {
+    const data = await this.params.fixedContract.interface.encodeFunctionData(
       'swap',
       [amountWithDecimals]
     );
-    const test = this.params.fixedContract.estimateGas.swap(amountWithDecimals);
-    console.log('test', test);
+    try {
+      const test = await this.params.fixedContract.estimateGas.swap(
+        amountWithDecimals,
+        {
+          value: value,
+          gasLimit: 300000
+        }
+      );
+      console.log('test', test);
+    } catch (e) {
+      console.log(e);
+    }
+
     console.log('getSwapABI', data);
     return data;
   }
