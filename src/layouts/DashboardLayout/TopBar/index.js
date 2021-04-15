@@ -153,7 +153,6 @@ function TopBar({ onOpenNav, className }) {
     setIsOpenModal(false);
   };
   const renderConnectWallet = () => {
-    console.log('test');
     if (!library && from === null) {
       return (
         <Box p={0.8}>

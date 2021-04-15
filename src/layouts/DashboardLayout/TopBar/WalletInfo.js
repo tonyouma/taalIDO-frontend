@@ -24,6 +24,10 @@ import { useTheme, makeStyles } from '@material-ui/core/styles';
 import EllipsisText from 'react-text-overflow-middle-ellipsis';
 import { formatEther } from '@ethersproject/units';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import copyFill from '@iconify-icons/eva/copy-fill';
+import { MIconButton } from 'src/theme';
+
 import { useSnackbar } from 'notistack';
 import { useWeb3React } from '@web3-react/core';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
     // border: '1px solid red'
   },
   icon: {
-    width: '10%',
     marginLeft: '5px',
     '&:hover': {
       cursor: 'pointer',
@@ -96,16 +99,19 @@ const WalletInfo = ({ walletAddress, balance, talBalance, disconnect }) => {
   return (
     <Box className={classes.root}>
       <Chip className={classes.chip} label={`${ethStr} ETH`} />
+
       {/* <Chip className={classes.chip} label={`${talStr} TAL`} /> */}
       <Chip className={classes.chip} label={walletStr} />
+
       <Box className={classes.icon}>
         <FileCopyIcon fontSize="small" onClick={onClickCopy} />
       </Box>
       {disconnect ? (
-        <Box p={0.8}>
+        <Box p={1}>
           <Button
             underline="none"
             variant="contained"
+            size="small"
             onClick={async () => {
               await deactivate();
               window.localStorage.removeItem('chainId');
