@@ -26,6 +26,7 @@ import { formatEther } from '@ethersproject/units';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { useSnackbar } from 'notistack';
 import { useWeb3React } from '@web3-react/core';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +58,7 @@ const WalletInfo = ({ walletAddress, balance, talBalance, disconnect }) => {
   const { enqueueSnackbar } = useSnackbar();
   const context = useWeb3React();
   const { deactivate } = context;
+  const { i18n, t } = useTranslation();
 
   const onClickCopy = () => {
     try {
@@ -109,7 +111,7 @@ const WalletInfo = ({ walletAddress, balance, talBalance, disconnect }) => {
               window.localStorage.removeItem('chainId');
             }}
           >
-            Logout
+            {t('taalswap.Disconnect')}
           </Button>
         </Box>
       ) : null}

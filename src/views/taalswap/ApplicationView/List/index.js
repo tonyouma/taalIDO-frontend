@@ -199,6 +199,7 @@ async function taalDeploy(factory, application) {
 // ];
 
 function EnhancedTableHead(props) {
+  const { i18n, t } = useTranslation();
   const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -220,7 +221,7 @@ function EnhancedTableHead(props) {
             onClick={createSortHandler('projectName')}
           >
             <Typography variant="h6" gutterBottom>
-              Project
+              {t('taalswap.ProjectName')}
             </Typography>
             {orderBy === 'Project' ? (
               <span className={classes.visuallyHidden}>
@@ -243,7 +244,7 @@ function EnhancedTableHead(props) {
               onClick={createSortHandler('category')}
             >
               <Typography variant="h6" gutterBottom>
-                Category
+                {t('taalswap.Category')}
               </Typography>
               {orderBy === 'Category' ? (
                 <span className={classes.visuallyHidden}>
@@ -266,7 +267,7 @@ function EnhancedTableHead(props) {
             onClick={createSortHandler('startDate')}
           >
             <Typography variant="h6" gutterBottom>
-              Start Date
+              {t('taalswap.StartDate')}
             </Typography>
             {orderBy === 'startDate' ? (
               <span className={classes.visuallyHidden}>
@@ -289,7 +290,7 @@ function EnhancedTableHead(props) {
               onClick={createSortHandler('endDate')}
             >
               <Typography variant="h6" gutterBottom>
-                End Date
+                {t('taalswap.EndDate')}
               </Typography>
               {orderBy === 'endDate' ? (
                 <span className={classes.visuallyHidden}>
@@ -311,7 +312,7 @@ function EnhancedTableHead(props) {
             onClick={createSortHandler('status')}
           >
             <Typography variant="h6" gutterBottom>
-              Status
+              {t('taalswap.Status')}
             </Typography>
             {orderBy === 'status' ? (
               <span className={classes.visuallyHidden}>

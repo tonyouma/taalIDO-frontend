@@ -122,13 +122,16 @@ function PaymentView({ className, ...other }) {
     }
   };
 
-  useEffect(async () => {
-    await axios
-      .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
-      .then((result) => {
-        setEthPrice(result.data.data.amount);
-      })
-      .catch((error) => console.log(error));
+  useEffect(() => {
+    async function getEthPrice() {
+      await axios
+        .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
+        .then((result) => {
+          setEthPrice(result.data.data.amount);
+        })
+        .catch((error) => console.log(error));
+    }
+    getEthPrice().catch((error) => console.log(error));
   }, []);
 
   return (

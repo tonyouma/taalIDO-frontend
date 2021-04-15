@@ -32,7 +32,7 @@
     "AllProjects": "All Projects",
     "MyProjects": "My Projects",
     "Status": "Status",
-    "SearchProject": "Search by Project NAme",
+    "SearchProject": "Search by Project Name",
     "JoinThePool": "Join The Pool",
     "YourBidAmount": "Your Bid Amount",
     "Amount": "Amount",
@@ -50,6 +50,13 @@
     "Understand": "I understand",
     "Agree": "You should check to proceed.",
     "Cancel": "Cancel",
-    "Proceed": "Proceed"
+    "Proceed": "Proceed",
+    "ConnectWallet": "Connect Wallet",
+    "Disconnect": "Disconnect",
+    "StartDate": "Start Date",
+    "EndDate": "End Date",
+    "Governance": "TaalSwap IDO Governance",
+    "GovContent": "TaalSwap ultimately pursues a permissionless and interoperable IDO Platform. With this goal in mind, TaalSwap, in its initial stage of operation, aims at the perfect match of promising projects with strong-willed investors in terms of which innovative startups are empowered to realize their ideas and technologies. In achieving this, the TaalSwap council is responsible for reviewing and voting on your application for launch on TaalSwap. Your application will be rigorously reviewed and evaluated by the council. Every council member will cast his/her vote, and your project will be approved for launch if the number of votes in favor of your project is greater than 60%. On approval, the instructions to prepare for and execute the launch on TaalSwap will be provided.",
+    "FillApplication": "Fill in Your Application"
   }
 }

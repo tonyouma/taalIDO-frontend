@@ -30,6 +30,7 @@ import WalletInfo from './WalletInfo';
 import Taalswap from 'src/utils/taalswap';
 import { useSnackbar } from 'notistack';
 import { targetNetwork, targetNetworkMsg } from 'src/config';
+import { useTranslation } from 'react-i18next';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
 
@@ -68,6 +69,7 @@ TopBar.propTypes = {
 
 function TopBar({ onOpenNav, className }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   // const { login, logout } = useAuth();
@@ -161,7 +163,7 @@ function TopBar({ onOpenNav, className }) {
             target="_blank"
             onClick={() => setIsOpenModal(true)}
           >
-            Connect Wallet
+            {t('taalswap.ConnectWallet')}
           </Button>
         </Box>
       );

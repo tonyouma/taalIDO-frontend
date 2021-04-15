@@ -50,6 +50,7 @@ import { useSnackbar } from 'notistack';
 import Languages from '../DashboardLayout/TopBar/Languages';
 import Settings from 'src/layouts/Common/Settings';
 import { fromTalken } from 'src/redux/slices/talken';
+import { useTranslation } from 'react-i18next';
 // import getEthAddress from 'src/utils/getEthAddress';
 
 // ----------------------------------------------------------------------
@@ -121,6 +122,7 @@ const useStyles = makeStyles((theme) => ({
 
 function TopBar() {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
   const dispatch = useDispatch();
   const anchorRef = useRef(null);
   const { pathname } = useLocation();
@@ -315,7 +317,7 @@ function TopBar() {
               <ListItemIcon>
                 <Icon icon={walletIcon} width={20} height={20} />
               </ListItemIcon>
-              <ListItemText>Connect Wallet</ListItemText>
+              <ListItemText>{t('taalswap.ConnectWallet')}</ListItemText>
             </MenuItem>
           </Box>
         )}
