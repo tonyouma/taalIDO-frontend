@@ -2,12 +2,13 @@ import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { PATH_APP } from 'src/routes/paths';
-import { Link as RouterLink } from 'react-router-dom';
+// import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Box } from '@material-ui/core';
+import { Card, Box, Link } from '@material-ui/core';
 import getMax from '../../../utils/getMax';
 import EllipsisText from 'react-text-overflow-middle-ellipsis';
 import Numbers from 'src/utils/Numbers';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +29,16 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis'
   },
-
+  websiteUrl: {
+    // '& a': {
+    textDecoration: 'none',
+    color: 'black',
+    '&:hover': {
+      // textDecoration: 'underline'
+      // textShadow: '0 0 24px'
+    }
+    // }
+  },
   tokenAddress: {}
 }));
 
@@ -42,6 +52,7 @@ CandidateCard.propTypes = {
 
 function CandidateCard({ pool, index, className }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
 
   return (
     <Card className={clsx(classes.root, className)}>
@@ -66,7 +77,7 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Project Name
+              {t('taalswap.ProjectName')}
             </Box>
             <Box
               sx={{
@@ -97,14 +108,20 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Website URL
+              {t('taalswap.WebsiteURL')}
             </Box>
             <Box
               sx={{
                 mr: 1.0
               }}
             />
-            {!!pool.websiteUrl && pool.websiteUrl}
+            <Link
+              className={classes.websiteUrl}
+              href={pool.websiteUrl}
+              target="_blank"
+            >
+              {pool.websiteUrl}
+            </Link>
           </Box>
         </Box>
 
@@ -153,7 +170,7 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Category
+              {t('taalswap.Category')}
             </Box>
             <Box
               sx={{
@@ -181,7 +198,7 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Max.Allocation per Wallet
+              {t('taalswap.MaxAllocationPerWallet')}
             </Box>
             <Box
               sx={{
@@ -209,7 +226,7 @@ function CandidateCard({ pool, index, className }) {
               fontWeight={'bold'}
               fontSize={20}
             >
-              Total Supply
+              {t('taalswap.TotalSupply')}
             </Box>
             <Box
               sx={{

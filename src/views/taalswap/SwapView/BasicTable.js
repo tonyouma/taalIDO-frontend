@@ -15,6 +15,7 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +32,7 @@ const useStyles = makeStyles({
 
 export default function BasicTable({ purchaseList, symbol }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleChangePage = (event, newPage) => {
@@ -62,14 +64,18 @@ export default function BasicTable({ purchaseList, symbol }) {
             <TableHead>
               <TableRow>
                 <Hidden smDown>
-                  <TableCell>Purchaser</TableCell>
+                  <TableCell>{t('taalswap.Purchaser')}</TableCell>
                 </Hidden>
-                <TableCell align="right">{symbol} Amount</TableCell>
-                <TableCell align="right">Eth Amount</TableCell>
+                <TableCell align="right">
+                  {symbol} {t('taalswap.Amount')}
+                </TableCell>
+                <TableCell align="right">Eth {t('taalswap.Amount')}</TableCell>
 
-                <TableCell align="center">Timestamp</TableCell>
+                <TableCell align="center">{t('taalswap.Timestamp')}</TableCell>
                 <Hidden smDown>
-                  <TableCell align="center">wasFinalized</TableCell>
+                  <TableCell align="center">
+                    {t('taalswap.Finalized')}
+                  </TableCell>
                 </Hidden>
               </TableRow>
             </TableHead>

@@ -15,6 +15,7 @@ import {
   OutlinedInput,
   InputAdornment
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -50,6 +51,7 @@ ToolbarTable.propTypes = {
 
 function ToolbarTable({ numSelected, filterName, onFilterName, className }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
 
   return (
     <Toolbar
@@ -68,7 +70,7 @@ function ToolbarTable({ numSelected, filterName, onFilterName, className }) {
           value={filterName}
           size={'small'}
           onChange={onFilterName}
-          placeholder="Search by Project Name..."
+          placeholder={t('taalswap.SearchProject')}
           startAdornment={
             <InputAdornment position="start">
               <Box

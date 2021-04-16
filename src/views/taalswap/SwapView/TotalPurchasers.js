@@ -1,21 +1,29 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import ReactApexChart from 'react-apexcharts';
+import { useWeb3React } from '@web3-react/core';
+import baselineGroup from '@iconify-icons/ic/baseline-group';
 import { fNumber, fPercent } from 'src/utils/formatNumber';
 import trendingUpFill from '@iconify-icons/eva/trending-up-fill';
 import trendingDownFill from '@iconify-icons/eva/trending-down-fill';
+import Taalswap from 'src/utils/taalswap';
 import { alpha, useTheme, makeStyles } from '@material-ui/core/styles';
 import { Box, Card, Typography } from '@material-ui/core';
-
+import AnimatedNumber from 'react-animated-number';
+import { useTranslation } from 'react-i18next';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
+    color: theme.palette.primary.darker
+    // backgroundColor: theme.palette.primary.lighter
+
+    // height: '160px'
   },
   trending: {
     display: 'flex',
@@ -45,70 +53,55 @@ TotalPurchasers.propTypes = {
   className: PropTypes.string
 };
 
-const PERCENT = 0.15;
-const TOTAL_INSTALLED = 4876;
-
-function TotalPurchasers({ className, ...other }) {
+function TotalPurchasers({ className, pool, ...other }) {
   const classes = useStyles();
-  const theme = useTheme();
+  const { i18n, t } = useTranslation();
+  const context = useWeb3React();
+  const { library, account } = context;
 
-  const chartData = [{ data: [25, 66, 41, 89, 63, 25, 44, 12, 36, 9, 54] }];
-  const chartOptions = {
-    colors: [theme.palette.error.main],
-    chart: { sparkline: { enabled: true } },
-    plotOptions: { bar: { columnWidth: '68%', endingShape: 'rounded' } },
-    labels: [1, 2, 3, 4, 5, 6, 7, 8],
-    tooltip: {
-      x: { show: false },
-      y: {
-        formatter: (seriesName) => fNumber(seriesName),
-        title: {
-          formatter: function (seriesName) {
-            return '';
-          }
-        }
-      },
-      marker: { show: false }
+  const [participants, setParticipants] = useState(0);
+
+  useEffect(async () => {
+    if (!!library) {
+      const taalswap = new Taalswap({
+        application: pool,
+        account,
+        library
+      });
+
+      await taalswap
+        .getBuyers()
+        .then((result) => setParticipants(result.length))
+        .catch((error) => console.log(error));
     }
-  };
+  }, [library]);
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle2">Total Purchasers</Typography>
+        <Typography marginBottom="20px" variant="subtitle2">
+          {t('taalswap.TotalParticipants')}
+        </Typography>
 
-        <div className={classes.trending}>
-          <div
-            className={clsx(classes.trendingIcon, {
-              [classes.isTrendingDown]: PERCENT < 0
-            })}
-          >
-            <Icon
-              width={16}
-              height={16}
-              icon={PERCENT >= 0 ? trendingUpFill : trendingDownFill}
-            />
-          </div>
-          <Typography
-            component="span"
-            variant="subtitle2"
-            color={PERCENT >= 0 ? 'primary' : 'error'}
-          >
-            {PERCENT > 0 && '+'}
-            {fPercent(PERCENT)}
-          </Typography>
-        </div>
-
-        <Typography variant="h3">{fNumber(TOTAL_INSTALLED)}</Typography>
+        <Typography variant="h3">
+          <AnimatedNumber
+            // component="number"
+            value={participants}
+            style={{
+              transition: '0.8s ease-out'
+              // fontSize: 48,
+              // transitionProperty: 'background-color, color, opacity'
+            }}
+            // frameStyle={(perc) =>
+            //   perc === 100 ? {} : { backgroundColor: '#ffeb3b' }
+            // }
+            duration={1000}
+            formatValue={(n) => fNumber(n)}
+          />
+        </Typography>
       </Box>
 
-      <ReactApexChart
-        type="bar"
-        series={chartData}
-        options={chartOptions}
-        width={60}
-        height={36}
-      />
+      <Icon icon={baselineGroup} width={60} height={60} />
     </Card>
   );
 }

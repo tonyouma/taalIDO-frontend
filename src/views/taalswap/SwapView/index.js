@@ -30,6 +30,13 @@ import PoolDetails from '../PoolDetails';
 import { capitalCase } from 'change-case';
 import { Icon } from '@iconify/react';
 import roundAccountBox from '@iconify-icons/ic/round-account-box';
+import { useTranslation } from 'react-i18next';
+import buyIcon from '@iconify-icons/icons8/buy';
+import bxDetail from '@iconify-icons/bx/bx-detail';
+import peopleAudience24Regular from '@iconify-icons/fluent/people-audience-24-regular';
+import locationCompany from '@iconify-icons/carbon/location-company';
+import Countdown from './Countdown';
+
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -52,25 +59,25 @@ const TABS = [
   {
     value: 0,
     title: 'Join the Pool',
-    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    icon: <Icon icon={buyIcon} width={20} height={20} />
     // component: <PaymentInformation />
   },
   {
     value: 1,
     title: 'Pool Detail',
-    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    icon: <Icon icon={bxDetail} width={20} height={20} />
     // component: <JoninthePool />
   },
   {
     value: 2,
     title: 'Participants',
-    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    icon: <Icon icon={peopleAudience24Regular} width={20} height={20} />
     // component: <Participate />
   },
   {
     value: 3,
     title: 'About The Porject',
-    icon: <Icon icon={roundAccountBox} width={20} height={20} />
+    icon: <Icon icon={locationCompany} width={20} height={20} />
     // component: <AboutTheProject />
   }
 ];
@@ -107,6 +114,7 @@ function PaymentView({ className, ...other }) {
   const [pool, setPool] = useState(location.state.selectedPool);
   const [open, setOpen] = useState(false);
   const [ethPrice, setEthPrice] = useState(0);
+  const { i18n, t } = useTranslation();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -120,13 +128,16 @@ function PaymentView({ className, ...other }) {
     }
   };
 
-  useEffect(async () => {
-    await axios
-      .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
-      .then((result) => {
-        setEthPrice(result.data.data.amount);
-      })
-      .catch((error) => console.log(error));
+  useEffect(() => {
+    async function getEthPrice() {
+      await axios
+        .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
+        .then((result) => {
+          setEthPrice(result.data.data.amount);
+        })
+        .catch((error) => console.log(error));
+    }
+    getEthPrice().catch((error) => console.log(error));
   }, []);
 
   return (
@@ -163,51 +174,71 @@ function PaymentView({ className, ...other }) {
           onChange={handleChange}
           className={classes.tabBar}
         >
-          {TABS.map((tab) => (
-            <Tab
-              disableRipple
-              key={tab.value}
-              label={capitalCase(tab.title)}
-              icon={tab.icon}
-              value={tab.value}
-            />
-          ))}
+          {TABS.map((tab) => {
+            let tabTitle;
+            switch (tab.value) {
+              case 0:
+                tabTitle = t('taalswap.JoinThePool');
+                break;
+              case 1:
+                tabTitle = t('taalswap.PoolDetail');
+                break;
+              case 2:
+                tabTitle = t('taalswap.Participants');
+                break;
+              case 3:
+                tabTitle = t('taalswap.AboutTheProject');
+                break;
+            }
+            return (
+              <Tab
+                disableRipple
+                key={tab.value}
+                label={tabTitle}
+                icon={tab.icon}
+                value={tab.value}
+              />
+            );
+          })}
         </Tabs>
         <TabPanel value={value} index={0}>
-          <Container>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6} md={4}>
-                <TotalAllocatedTokens />
+          {/* <Container> */}
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6} md={4}>
+              <TotalAllocatedTokens pool={pool} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <TotalPurchasers pool={pool} />
+            </Grid>
+            {/* <Grid item xs={12} sm={6} md={4}>
+              <CurrentProgress pool={pool} />
+            </Grid> */}
+            <Grid item xs={12} sm={6} md={4}>
+              <Countdown pool={pool} />
+            </Grid>
+          </Grid>
+          <Box sx={{ my: 3 }}></Box>
+          <Card>
+            <Grid container spacing={upMd ? 5 : 2}>
+              <Grid item xs={12} md={6}>
+                <PaymentInformation
+                  formik={formik}
+                  pool={pool}
+                  ethPrice={ethPrice}
+                />
               </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <TotalPurchasers />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <CurrentProgress />
+
+              <Grid item xs={12} md={6}>
+                <JoninthePool
+                  formik={formik}
+                  pool={pool}
+                  onBackdrop={handleBackdrop}
+                  ethPrice={ethPrice}
+                />
               </Grid>
             </Grid>
-            <Box sx={{ my: 3 }}></Box>
-            <Card>
-              <Grid container spacing={upMd ? 5 : 2}>
-                <Grid item xs={12} md={6}>
-                  <PaymentInformation
-                    formik={formik}
-                    pool={pool}
-                    ethPrice={ethPrice}
-                  />
-                </Grid>
-
-                <Grid item xs={12} md={6}>
-                  <JoninthePool
-                    formik={formik}
-                    pool={pool}
-                    onBackdrop={handleBackdrop}
-                    ethPrice={ethPrice}
-                  />
-                </Grid>
-              </Grid>
-            </Card>
-          </Container>
+          </Card>
+          {/* </Container> */}
         </TabPanel>
         <TabPanel value={value} index={1}>
           <PoolDetails pool={pool} />

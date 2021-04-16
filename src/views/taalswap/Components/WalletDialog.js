@@ -12,6 +12,7 @@ import { injected, walletconnect } from 'src/connectors';
 import { setActivatingConnector } from 'src/redux/slices/wallet';
 import { useDispatch } from 'react-redux';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -64,20 +65,22 @@ const walletList = [
 const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { i18n, t } = useTranslation();
 
   const onClickWallet = async (wallet) => {
     try {
       if (wallet.name === 'MetaMask') {
-        await activate(injected);
+        await activate(injected, null, true);
         dispatch(setActivatingConnector(injected));
+        window.localStorage.setItem('chainId', injected);
       } else if (wallet.name === 'WalletConnect') {
-        console.log('await');
         const wc = walletconnect(true);
         await activate(wc, undefined, true);
+        window.localStorage.setItem('chainId', wc);
       }
       console.log('end', wallet);
     } catch (e) {
-      console.log(e);
+      console.log('login error', e);
     }
 
     handleCloseModal(wallet.name);
@@ -93,7 +96,9 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
         aria-labelledby="max-width-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Box className={classes.dialogTitle}>CONNECT TO A WALLET</Box>
+        <Box className={classes.dialogTitle}>
+          {t('taalswap.ConnectToWallet')}
+        </Box>
         <DialogTitle
           className={classes.dialogTitle}
           id="customized-dialog-title"

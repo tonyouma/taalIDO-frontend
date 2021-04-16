@@ -19,6 +19,7 @@ import {
   Tabs,
   Tab
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -104,36 +105,36 @@ function Participate({ pool }) {
 
   return (
     <Page title="Participants | TaalSwap" className={classes.root}>
-      <Container maxWidth="lg">
-        <Box display="flex" alignItems="center">
-          <Box
-            sx={{
-              my: 2,
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'column',
-              marginRight: 1
-            }}
-            component="img"
-            alt="logo"
-            src={'/static/icons/wallet_icon01.png'}
-            height={30}
-          />
-          {name} ({pool.symbol}) - {parseFloat(allocated).toLocaleString()}
-          {/* <Box color="#ff0000" fontSize={10} marginLeft={1}>
+      {/* <Container maxWidth="lg"> */}
+      {/* <Box display="flex" alignItems="center">
+        <Box
+          sx={{
+            my: 2,
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            marginRight: 1
+          }}
+          component="img"
+          alt="logo"
+          src={'/static/icons/wallet_icon01.png'}
+          height={30}
+        />
+        {name} ({pool.symbol}) - {parseFloat(allocated).toLocaleString()} */}
+      {/* <Box color="#ff0000" fontSize={10} marginLeft={1}>
             5.65% ↓
           </Box> */}
-        </Box>
+      {/* </Box> */}
 
-        <Grid container spacing={5}>
-          <Grid item xs={12}>
-            <Card>
-              {/* <CardHeader title="Basic Table" /> */}
-              <BasicTable purchaseList={purchaseList} symbol={pool.symbol} />
-            </Card>
-          </Grid>
+      <Grid container spacing={5}>
+        <Grid item xs={12}>
+          <Card>
+            {/* <CardHeader title="Basic Table" /> */}
+            <BasicTable purchaseList={purchaseList} symbol={pool.symbol} />
+          </Card>
         </Grid>
-      </Container>
+      </Grid>
+      {/* </Container> */}
     </Page>
   );
 }

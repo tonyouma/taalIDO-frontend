@@ -21,7 +21,8 @@ import { useWeb3React } from '@web3-react/core';
 import {
   getWalletBalance,
   setActivatingConnector,
-  setTalBalance
+  setTalBalance,
+  setBalance
 } from '../../../redux/slices/wallet';
 import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
 import WalletDialog from '../../../views/taalswap/Components/WalletDialog';
@@ -29,6 +30,7 @@ import WalletInfo from './WalletInfo';
 import Taalswap from 'src/utils/taalswap';
 import { useSnackbar } from 'notistack';
 import { targetNetwork, targetNetworkMsg } from 'src/config';
+import { useTranslation } from 'react-i18next';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
 
@@ -67,12 +69,15 @@ TopBar.propTypes = {
 
 function TopBar({ onOpenNav, className }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  // const { login, logout } = useAuth();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { activatingConnector, balance, talBalance } = useSelector(
     (state) => state.wallet
   );
+  const { os, wallet, from } = useSelector((state) => state.talken);
 
   const context = useWeb3React();
   const {
@@ -91,6 +96,9 @@ function TopBar({ onOpenNav, className }) {
     // console.log('1----------> ', connector);
     // console.log('1----------> ', active);
     // console.log('1----------> ', activate);
+    console.log('os', os);
+    console.log('wallet', wallet);
+    console.log('from', from);
     if (activatingConnector && activatingConnector === connector) {
       dispatch(setActivatingConnector(undefined));
     }
@@ -115,16 +123,26 @@ function TopBar({ onOpenNav, className }) {
 
         // dispatch(getContractDecimals(account, library));
 
-        const taalswap = new Taalswap({
-          account,
-          library,
-          tokenAddress: TAL_TOKEN_ADDRESS
-        });
-
-        const talBalance = await taalswap
-          .balanceOf(account)
-          .catch((error) => console.log(error));
-        dispatch(setTalBalance(talBalance));
+        // tal 표시 이상해서 제거
+        // const taalswap = new Taalswap({
+        //   account,
+        //   library,
+        //   tokenAddress: TAL_TOKEN_ADDRESS
+        // });
+        //
+        // const talBalance = await taalswap
+        //   .balanceOf(account)
+        //   .catch((error) => console.log(error));
+        // dispatch(setTalBalance(talBalance));
+      }
+    } else if (from !== null) {
+      const taalswap = new Taalswap({ notConnected: true });
+      try {
+        const walletBalance = await taalswap.getBalance(wallet);
+        console.log('balance', walletBalance);
+        dispatch(setBalance(walletBalance));
+      } catch (e) {
+        console.log(e);
       }
     }
   }, [activatingConnector, connector, account, library]);
@@ -137,17 +155,16 @@ function TopBar({ onOpenNav, className }) {
     setIsOpenModal(false);
   };
   const renderConnectWallet = () => {
-    if (!library) {
+    if (!library && from === null) {
       return (
         <Box p={0.8}>
           <Button
             underline="none"
             variant="contained"
-            // component={Link}
             target="_blank"
             onClick={() => setIsOpenModal(true)}
           >
-            Connect Wallet
+            {t('taalswap.ConnectWallet')}
           </Button>
         </Box>
       );
@@ -189,6 +206,15 @@ function TopBar({ onOpenNav, className }) {
               walletAddress={account}
               balance={balance}
               talBalance={talBalance}
+              disconnect={true}
+            />
+          )}
+          {!!from && (
+            <WalletInfo
+              walletAddress={wallet}
+              balance={balance}
+              talBalance={talBalance}
+              disconnect={false}
             />
           )}
           <Languages />

@@ -3,26 +3,21 @@ import MenuLinks from './config';
 import PropTypes from 'prop-types';
 import Logo from 'src/components/Logo';
 import { motion } from 'framer-motion';
-import {
-  varFadeInUp,
-  MotionInView,
-  varFadeInRight
-} from 'src/components/Animate';
+import { varFadeInRight } from 'src/components/Animate';
 //import useAuth from 'src/hooks/useAuth';
 import React, { useEffect } from 'react';
 import Scrollbars from 'src/components/Scrollbars';
-import { PATH_APP, PATH_DOCS } from 'src/routes/paths';
 import { Link as RouterLink, useLocation, matchPath } from 'react-router-dom';
-import { alpha, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
-  Link,
   List,
   Drawer,
   Hidden,
   Typography,
   ListSubheader
 } from '@material-ui/core';
+import './APP.css';
 
 // ----------------------------------------------------------------------
 
@@ -79,7 +74,7 @@ const useStyles = makeStyles((theme) => {
 // ----------------------------------------------------------------------
 
 function reduceChild({ array, item, pathname, level }) {
-  const key = item.href + level;
+  const key = item.href + level + item.title;
 
   if (item.items) {
     const match = matchPath(pathname, {
@@ -175,10 +170,11 @@ function NavBar({ isOpenNav, onCloseNav }) {
         </div>
       </Link> */}
 
-      {MenuLinks.map((list) => (
+      {MenuLinks.map((list, index) => (
         <List
           disablePadding
-          key={list.subheader}
+          // key={list.subheader}
+          key={index}
           subheader={
             <ListSubheader
               disableSticky
@@ -196,7 +192,7 @@ function NavBar({ isOpenNav, onCloseNav }) {
         </List>
       ))}
 
-      <Box sx={{ px: 4.5, pb: 3, mt: 60 }}>
+      <Box sx={{ px: 4.5, pb: 3, position: 'relative', bottom: 0 }}>
         <div className={classes.doc}>
           <Typography
             gutterBottom
@@ -226,7 +222,11 @@ function NavBar({ isOpenNav, onCloseNav }) {
               src="/static/icons/ic_s_instagram.svg"
             />
           </a>
-          <a href="https://twitter.com/taalswap" target="_blank">
+          <a
+            href="https://twitter.com/taalswap"
+            target="_blank"
+            rel="noreferrer"
+          >
             <motion.img
               variants={varFadeInRight}
               src="/static/icons/ic_s_tweet.svg"

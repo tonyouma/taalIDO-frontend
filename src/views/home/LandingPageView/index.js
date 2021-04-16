@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import Hero from './Hero';
 import Footer from './Footer';
-import DarkMode from './DarkMode';
 import Page from 'src/components/Page';
 import Advertisement from './Advertisement';
 import CleanInterfaces from './CleanInterfaces';
@@ -11,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CandidatePool from './CandidatePool';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPoolList } from '../../../redux/slices/pool';
+import './APP.css';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +43,7 @@ function LandingPageView() {
         <CandidatePool />
         <Advertisement />
         <CleanInterfaces />
-        <DarkMode />
+        <Footer />
       </div>
     </Page>
   );

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import ThemeMode from './ThemeMode';
 import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
-import ThemeDirection from './ThemeDirection';
 import closeFill from '@iconify-icons/eva/close-fill';
 import settings2Fill from '@iconify-icons/eva/settings-2-fill';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Drawer, Divider, Typography } from '@material-ui/core';
 import { MIconButton } from 'src/theme';
+import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +21,13 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: DRAWER_WIDTH
+  },
+  isHome: {
+    color: theme.palette.text.primary
+  },
+  isDesktopActive: {
+    color: theme.palette.primary.black,
+    border: '1px solid black'
   }
 }));
 
@@ -30,9 +37,11 @@ Settings.propTypes = {
   className: PropTypes.string
 };
 
-function Settings({ className }) {
+function Settings({ className, landingPage }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const isHome = pathname === '/';
 
   const handleOpenSettings = () => {
     setOpen(true);
@@ -45,7 +54,18 @@ function Settings({ className }) {
   return (
     <div className={clsx(classes.root, className)}>
       <MIconButton onClick={handleOpenSettings}>
-        <Icon icon={settings2Fill} width={23} height={23} />
+        {landingPage === true ? (
+          <Icon
+            className={clsx({
+              [classes.isHome]: isHome
+            })}
+            icon={settings2Fill}
+            width={23}
+            height={23}
+          />
+        ) : (
+          <Icon icon={settings2Fill} width={23} height={23} />
+        )}
       </MIconButton>
 
       <Drawer

@@ -2,6 +2,7 @@ import { Contract, ContractFactory } from '@ethersproject/contracts';
 import { fixedData, tokenData } from '../contracts';
 import { InfuraProvider } from '@ethersproject/providers';
 import Numbers from './Numbers';
+import { infuraChainId, infuraApiKey } from 'src/config';
 
 class Taalswap {
   constructor({
@@ -25,22 +26,24 @@ class Taalswap {
 
       let fixedContract = null;
       let tokenContract = null;
-
+      const provider = new InfuraProvider(infuraChainId, infuraApiKey);
       if (notConnected) {
-        const provider = new InfuraProvider(
-          'rinkeby',
-          'fbb83d21738f48d7bccfc214aa014f75'
-        );
-        tokenContract = new Contract(
-          tokenContractAddress,
-          ContractFactory.getInterface(tokenData.abi),
-          provider
-        );
-        fixedContract = new Contract(
-          fixedContractAddress,
-          ContractFactory.getInterface(fixedData.abi),
-          provider
-        );
+        tokenContract =
+          tokenContractAddress === ''
+            ? {}
+            : new Contract(
+                tokenContractAddress,
+                ContractFactory.getInterface(tokenData.abi),
+                provider
+              );
+        fixedContract =
+          fixedContractAddress === ''
+            ? {}
+            : new Contract(
+                fixedContractAddress,
+                ContractFactory.getInterface(fixedData.abi),
+                provider
+              );
       } else {
         fixedContract =
           fixedContractAddress === ''
@@ -64,7 +67,8 @@ class Taalswap {
         fixedContract: fixedContract,
         tokenContract: tokenContract,
         tokenContractAddress: tokenContractAddress,
-        fixedContractAddress: fixedContractAddress
+        fixedContractAddress: fixedContractAddress,
+        infuraProvider: provider
       };
     } catch (e) {
       console.log('taalswap create error', e);
@@ -78,6 +82,41 @@ class Taalswap {
 
   getTokenContract() {
     return this.params.tokenContract;
+  }
+
+  async waitTxHash(txHash) {
+    if (!this.params.infuraProvider) return;
+    return await this.params.infuraProvider.waitForTransaction(
+      txHash,
+      1,
+      2 * 60 * 1000
+    );
+  }
+
+  async getSwapABI({ amountWithDecimals, value }) {
+    const data = await this.params.fixedContract.interface.encodeFunctionData(
+      'swap',
+      [amountWithDecimals]
+    );
+    try {
+      const test = await this.params.fixedContract.estimateGas.swap(
+        amountWithDecimals,
+        {
+          value: value,
+          gasLimit: 300000
+        }
+      );
+      console.log('test', test);
+    } catch (e) {
+      console.log(e);
+    }
+
+    console.log('getSwapABI', data);
+    return data;
+  }
+
+  async getBalance(address) {
+    return await this.params.infuraProvider.getBalance(address);
   }
 
   async approveFundERC20({ tokenAmount }) {

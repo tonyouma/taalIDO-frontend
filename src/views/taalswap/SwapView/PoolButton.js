@@ -3,8 +3,11 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { Link as RouterLink } from 'react-router-dom';
 import { PATH_APP } from 'src/routes/paths';
+import { useTranslation } from 'react-i18next';
 
 export default function ContainedButtons() {
+  const { i18n, t } = useTranslation();
+
   return (
     <Box
       sx={{
@@ -17,7 +20,7 @@ export default function ContainedButtons() {
         color="error"
         variant="contained"
       >
-        Participants
+        {t('taalswap.Participants')}
       </Button>
       {/* <Button color="info" variant="contained">
         Project Info

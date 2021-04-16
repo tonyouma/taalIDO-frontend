@@ -21,7 +21,8 @@ import {
   Box,
   Hidden,
   Checkbox,
-  Divider
+  Divider,
+  CircularProgress
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,6 +38,7 @@ import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
 import { targetNetwork, targetNetworkMsg } from '../../../config';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -107,6 +109,7 @@ function TablePoolRow({ row, handleOpenModal }) {
   const [progressValue, setProgressValue] = useState(0);
   const [poolStatus, setStatus] = useState('');
   const { enqueueSnackbar } = useSnackbar();
+  const { os, wallet, from } = useSelector((state) => state.talken);
 
   const { library, account } = context;
 
@@ -151,6 +154,27 @@ function TablePoolRow({ row, handleOpenModal }) {
       );
       setStatus(status);
     }
+
+    if (!library && from && row.contractAddress !== '') {
+      const taalswap = new Taalswap({
+        application: row,
+        notConnected: true
+      });
+
+      await taalswap
+        .tokensAllocated()
+        .then((result) => {
+          setProgressValue(getProgressValue(result, row.tradeAmount));
+        })
+        .catch((error) => console.log(error));
+
+      const status = await getPoolStatus(
+        taalswap,
+        row.status,
+        row.minFundRaise
+      );
+      setStatus(status);
+    }
   }, [row, library]);
 
   return (
@@ -170,21 +194,29 @@ function TablePoolRow({ row, handleOpenModal }) {
         <TableCell align="right" width="10%">
           {row.access}
         </TableCell>
+        <TableCell align="right" width="10%">
+          {row.category}
+        </TableCell>
       </Hidden>
       {/* <TableCell align="center" width="5%"></TableCell> */}
-      <TableCell align="right" width="35%">
+      <TableCell align="right" width="30%">
         <LinearProgressWithLabel value={progressValue} />
       </TableCell>
-      <TableCell align="right" width="15%">
-        <StatusLabel poolStatus={poolStatus} />
+      <TableCell align="right" width="20%">
+        {poolStatus === '' ? (
+          <CircularProgress color="primary" size="1rem" />
+        ) : (
+          <StatusLabel poolStatus={poolStatus} />
+        )}
       </TableCell>
     </TableRow>
   );
 }
 
-export default function BasicTable({ filterName }) {
+export default function BasicTable({ filterName, category }) {
   const classes = useStyles();
   const history = useHistory();
+  const { i18n, t } = useTranslation();
 
   // const [filterName, setFilterName] = useState('');
   const theme = useTheme();
@@ -242,7 +274,11 @@ export default function BasicTable({ filterName }) {
   };
 
   const filteredPools = applyFilter(
-    poolList.filter((pool) => pool.contractAddress !== ''),
+    category === 'All'
+      ? poolList.filter((pool) => pool.contractAddress !== '')
+      : poolList.filter(
+          (pool) => pool.contractAddress !== '' && pool.category === category
+        ),
     filterName
   );
 
@@ -255,32 +291,15 @@ export default function BasicTable({ filterName }) {
             <TableHead>
               <TableRow>
                 <TableCell component="th">
-                  <Typography variant="h6" gutterBottom>
-                    Project Name
-                  </Typography>
+                  {t('taalswap.ProjectName')}
                 </TableCell>
                 <Hidden smDown>
-                  <TableCell align="right">
-                    <Typography variant="h6" gutterBottom>
-                      Ratio
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography variant="h6" gutterBottom>
-                      Access
-                    </Typography>
-                  </TableCell>
+                  <TableCell align="right">{t('taalswap.Ratio')}</TableCell>
+                  <TableCell align="right">{t('taalswap.Access')}</TableCell>
+                  <TableCell align="right">{t('taalswap.Category2')}</TableCell>
                 </Hidden>
-                <TableCell align="right">
-                  <Typography variant="h6" gutterBottom>
-                    Progress
-                  </Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6" gutterBottom>
-                    Status
-                  </Typography>
-                </TableCell>
+                <TableCell align="right">{t('taalswap.Progress')}</TableCell>
+                <TableCell align="right">{t('taalswap.Status')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -325,47 +344,55 @@ export default function BasicTable({ filterName }) {
                   <ErrorOutlineOutlinedIcon style={{ color: 'red' }} />
                 </Box>
                 <Box marginLeft="0.5rem">
-                  <Typography color="red">Token Safety Alert!</Typography>
+                  <Typography color="red">
+                    {t('taalswap.TokenSafetyAlert')}
+                  </Typography>
                 </Box>
               </Box>
             </DialogTitle>
 
             <DialogContent>
-              <Divider />{' '}
+              <Divider />
               <Box>
-                <p>
-                  Anyone can create an ERC20 token on Ethereum with any name,
-                  including creating fake versions of existing tokens and tokens
-                  that claim to represent projects but do not exist.
-                </p>
-                <br />
-                <p>
-                  This interface can load arbitrary tokens by token address.
-                  Please proceed with utmost caution while you’re interacting
-                  with arbitrary ERC20 tokens.
-                </p>
-                <br />
-                <p>
-                  If you purchase an arbitrary token, you may be unable to sell
-                  it back.
-                </p>
+                <Typography padding="0.5rem" align="justify">
+                  {t('taalswap.Alert1')}
+                </Typography>
+
+                <Typography padding="0.5rem" align="justify">
+                  {t('taalswap.Alert2')}
+                </Typography>
+
+                <Typography padding="0.5rem" align="justify">
+                  {t('taalswap.Alert3')}
+                </Typography>
               </Box>
               <Divider />
               <Box
                 textAlign="right"
                 // marginTop="20px"
               >
-                <Checkbox
-                  checked={checkWarning}
-                  onChange={handleCheckWarningChange}
-                  inputProps={{ 'aria-label': 'primary checkbox' }}
-                />
-                I understand
+                <Box
+                  display="flex"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                >
+                  <Checkbox
+                    checked={checkWarning}
+                    onChange={handleCheckWarningChange}
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                  <Typography
+                    sx={{ cursor: 'pointer' }}
+                    onClick={handleCheckWarningChange}
+                  >
+                    {t('taalswap.Understand')}
+                  </Typography>
+                </Box>
               </Box>
               {showWarningMessage === true && (
                 <Box>
                   <Typography textAlign="center" color={'red'}>
-                    You should check to proceed.
+                    {t('taalswap.Agree')}
                   </Typography>
                 </Box>
               )}
@@ -377,7 +404,7 @@ export default function BasicTable({ filterName }) {
                 color="inherit"
                 onClick={handleCloseModal}
               >
-                Cancel
+                {t('taalswap.Cancel')}
               </Button>
               <Button
                 className={classes.button}
@@ -386,7 +413,7 @@ export default function BasicTable({ filterName }) {
                 color="primary"
                 autoFocus
               >
-                Proceed
+                {t('taalswap.Proceed')}
               </Button>
             </DialogActions>
           </Dialog>

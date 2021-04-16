@@ -14,6 +14,7 @@ import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import { Button, Box, Divider, MenuItem, Typography } from '@material-ui/core';
 import { MIconButton } from 'src/theme';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -64,6 +65,7 @@ function Account() {
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar } = useSnackbar();
   const [isOpen, setOpen] = useState(false);
+  const { i18n, t } = useTranslation();
 
   const handleOpen = () => {
     setOpen(true);
@@ -141,7 +143,7 @@ function Account() {
             variant="outlined"
             onClick={handleLogout}
           >
-            Logout
+            {t('taalswap.Disconnect')}
           </Button>
         </Box>
       </PopoverMenu>

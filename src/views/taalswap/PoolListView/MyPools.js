@@ -36,6 +36,7 @@ import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
 import Numbers from 'src/utils/Numbers';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -126,7 +127,7 @@ function TablePoolRow({ row, handleOpenModal }) {
       setMax();
     }
 
-    return;
+    return () => {};
   }, [row, library]);
 
   return (
@@ -146,20 +147,28 @@ function TablePoolRow({ row, handleOpenModal }) {
         <TableCell align="right" width="10%">
           {row.access}
         </TableCell>
+        <TableCell align="right" width="10%">
+          {row.category}
+        </TableCell>
       </Hidden>
-      <TableCell align="right" width="35%">
+      <TableCell align="right" width="30%">
         <LinearProgressWithLabel value={progressValue} />
       </TableCell>
-      <TableCell align="right" width="15%">
-        <StatusLabel poolStatus={poolStatus} />
+      <TableCell align="right" width="20%">
+        {poolStatus === '' ? (
+          <CircularProgress color="primary" size="1rem" />
+        ) : (
+          <StatusLabel poolStatus={poolStatus} />
+        )}
       </TableCell>
     </TableRow>
   );
 }
 
-export default function MyPools({ filterName, onBackdrop }) {
+export default function MyPools({ filterName, category, onBackdrop }) {
   const classes = useStyles();
   const history = useHistory();
+  const { i18n, t } = useTranslation();
 
   // const [filterName, setFilterName] = useState('');
   const [filterPoolList, setFilterPoolList] = useState([]);
@@ -317,7 +326,15 @@ export default function MyPools({ filterName, onBackdrop }) {
     }
   };
 
-  const filteredPools = applyFilter(filterPoolList, filterName);
+  const filteredPools = applyFilter(
+    category === 'All'
+      ? filterPoolList.filter((pool) => pool.contractAddress !== '')
+      : filterPoolList.filter(
+          (pool) => pool.contractAddress !== '' && pool.category === category
+        ),
+    filterName
+  );
+  // const filteredPools = applyFilter(filterPoolList, filterName);
   // const filteredPools = applyFilter(poolList, filterName);
 
   return (
@@ -329,32 +346,15 @@ export default function MyPools({ filterName, onBackdrop }) {
             <TableHead>
               <TableRow>
                 <TableCell component="th">
-                  <Typography variant="h6" gutterBottom>
-                    Project Name
-                  </Typography>
+                  {t('taalswap.ProjectName')}
                 </TableCell>
                 <Hidden smDown>
-                  <TableCell align="right">
-                    <Typography variant="h6" gutterBottom>
-                      Ratio
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography variant="h6" gutterBottom>
-                      Access
-                    </Typography>
-                  </TableCell>
+                  <TableCell align="right">{t('taalswap.Ratio')}</TableCell>
+                  <TableCell align="right">{t('taalswap.Access')}</TableCell>
+                  <TableCell align="right">{t('taalswap.Category2')}</TableCell>
                 </Hidden>
-                <TableCell align="right">
-                  <Typography variant="h6" gutterBottom>
-                    Progress
-                  </Typography>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6" gutterBottom>
-                    Status
-                  </Typography>
-                </TableCell>
+                <TableCell align="right">{t('taalswap.Progress')}</TableCell>
+                <TableCell align="right">{t('taalswap.Status')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -468,7 +468,7 @@ export default function MyPools({ filterName, onBackdrop }) {
                   Claim ETH
                 </Button>
               )}
-              {(poolStatus === PoolStatus.FILLED.SUCCESS.ACHIEVED ||
+              {(poolStatus === PoolStatus.FILLED.SUCCESS.ACCOMPLISHED ||
                 poolStatus === PoolStatus.FILLED.SUCCESS.CLOSED) && (
                 <Button
                   className={classes.button}

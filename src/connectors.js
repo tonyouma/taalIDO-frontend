@@ -11,15 +11,19 @@ import { FortmaticConnector } from '@web3-react/fortmatic-connector';
 import { MagicConnector } from '@web3-react/magic-connector';
 import { PortisConnector } from '@web3-react/portis-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
+import { targetNetwork } from 'src/config';
 
 const RPC_URL_1 =
   'https://mainnet.infura.io/v3/52a93bb82b3d407c9053bc7df92a4b4f';
+const RPC_URL_3 =
+  'https://ropsten.infura.io/v3/52a93bb82b3d407c9053bc7df92a4b4f';
 const RPC_URL_4 =
   'https://rinkeby.infura.io/v3/52a93bb82b3d407c9053bc7df92a4b4f';
 
 const POLLING_INTERVAL = 12000;
 const RPC_URLS = {
   1: RPC_URL_1,
+  3: RPC_URL_3,
   4: RPC_URL_4
 };
 
@@ -30,14 +34,16 @@ export const injected = new InjectedConnector({
 export const network = new NetworkConnector({
   urls: {
     1: RPC_URLS[1],
+    3: RPC_URLS[3],
     4: RPC_URLS[4]
   },
-  defaultChainId: 4
+  defaultChainId: parseInt(targetNetwork)
 });
 
 export const walletconnect = (useQR) => {
+  const chainId = parseInt(targetNetwork);
   return new WalletConnectConnector({
-    rpc: { 4: RPC_URLS[4] },
+    rpc: { chainId: RPC_URLS[chainId] },
     bridge: 'https://bridge.walletconnect.org',
     qrcode: useQR,
     pollingInterval: POLLING_INTERVAL

@@ -9,6 +9,8 @@ import { Box, Divider, Typography, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
+import 'moment/locale/en-gb';
+import 'moment/locale/ko';
 import { getWalletBalance } from '../../../redux/slices/wallet';
 import { formatEther } from '@ethersproject/units';
 import { createSwap, getSwapList } from '../../../redux/slices/pool';
@@ -18,6 +20,10 @@ import { PoolStatus } from 'src/utils/poolStatus';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router-dom';
+import { set } from 'immutable';
+import { useTranslation } from 'react-i18next';
+import publish from '@iconify-icons/ic/publish';
+import { LANGS } from 'src/layouts/DashboardLayout/TopBar/Languages';
 
 // ----------------------------------------------------------------------
 
@@ -59,6 +65,12 @@ JoninthePool.propTypes = {
   className: PropTypes.string
 };
 
+function nativeCallbackTxHash(res) {
+  window.setRes(res);
+}
+
+window.onCallbackTxHash = nativeCallbackTxHash.bind(this);
+
 function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const classes = useStyles();
   const context = useWeb3React();
@@ -78,8 +90,10 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const [time, setTime] = useState({});
   const [diffTime, setDiffTime] = useState({});
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
+  const { os, from, wallet } = useSelector((state) => state.talken);
   const { swapList } = useSelector((state) => state.pool);
   const { connector, library, account } = context;
+  const { i18n, t } = useTranslation();
 
   let taalswap;
 
@@ -89,22 +103,22 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       account,
       library
     });
+  } else {
+    taalswap = new Taalswap({
+      application: pool,
+      notConnected: true
+    });
   }
 
   const onChangeAmount = (e) => {
     setPrice(e.target.value * pool.tradeValue);
     setAmount(e.target.value);
-    // console.log(`${price} : ${balance}`);
-
-    // if (price > parseFloat(formatEther(balance))) {
-    //   setWarningMessage(
-    //     'Your bid amount exceeds the maximum allocation per wallet.'
-    //   );
-    // } else {
-    //   setWarningMessage('');
-    // }
   };
 
+  const handleOnFocuse = () => {
+    setPrice(0);
+    setAmount('');
+  };
   const addSwap = () => {
     const swap = {
       walletAddress: account,
@@ -117,9 +131,42 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
     dispatch(createSwap(swap));
   };
 
+  const setRes = async (result) => {
+    try {
+      const rslt = JSON.parse(result);
+      if (rslt.result) {
+        const receipt = await taalswap.waitTxHash(rslt.txHash);
+        enqueueSnackbar('Swap success', {
+          variant: 'success'
+        });
+        if (receipt.status === 1) {
+          enqueueSnackbar('Swap success', {
+            variant: 'success'
+          });
+          await setWarningMessage('');
+          await addSwap();
+
+          history.push({
+            pathname: '/app/taalswap/pools',
+            state: { tabValue: 1 }
+          });
+        }
+      } else {
+        enqueueSnackbar('Swap fail', {
+          variant: 'fail'
+        });
+      }
+    } catch (e) {
+      enqueueSnackbar('Swap error', {
+        variant: 'error'
+      });
+    }
+    onBackdrop(false);
+  };
+
   const onClickSwap = async () => {
     try {
-      if (!!library) {
+      if (!!library || from) {
         if (pool.access === 'Private' && !isWhiteList) {
           setWarningMessage(
             'Not white listed address! Please contact to the pool owner.'
@@ -135,31 +182,83 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 Numbers.toFloat(amount) + Numbers.toFloat(swappedAmount)
               ) {
                 onBackdrop(true);
-                const result = await taalswap
-                  .swap({
-                    tokenAmount: amount,
-                    account: account
-                  })
-                  .catch((error) => {
-                    console.log('error : ' + JSON.stringify(error));
-                    enqueueSnackbar('Swap fail', {
-                      variant: 'fail'
+                if (from) {
+                  try {
+                    let amountWithDecimals = Numbers.toSmartContractDecimals(
+                      amount,
+                      pool.decimals
+                    );
+                    let ETHCost = await taalswap.getETHCostFromTokens({
+                      tokenAmount: amount
                     });
+                    let ETHToWei = Numbers.toSmartContractDecimals(
+                      ETHCost,
+                      pool.decimals
+                    );
+                    const data = await taalswap.getSwapABI({
+                      amountWithDecimals: amountWithDecimals,
+                      value: ETHToWei
+                    });
+                    const msgContents = {
+                      // method: 'swap',
+                      from: wallet,
+                      to: pool.contractAddress,
+                      value: ETHToWei,
+                      amount: amount,
+                      data: data,
+                      gasLimit: 300000
+                    };
+                    let sendData = {
+                      callback: 'onCallbackTxHash',
+                      msgContents: msgContents
+                    };
+                    console.log('sendData', sendData);
+                    if (os.toLowerCase() === 'ios') {
+                      /*eslint-disable */
+                      webkit.messageHandlers.sendEthTransaction.postMessage(
+                        JSON.stringify(sendData)
+                      );
+                      /*eslint-enable */
+                    } else {
+                      /*eslint-disable */
+                      SubWebviewBridge.sendEthTransaction(
+                        JSON.stringify(sendData)
+                      );
+                      /*eslint-enable */
+                    }
+                  } catch (e) {
+                    console.log(e);
                     onBackdrop(false);
-                  });
+                  }
+                  return;
+                } else {
+                  console.log(`taalswap web, swap..`);
+                  const result = await taalswap
+                    .swap({
+                      tokenAmount: amount,
+                      account: from ? wallet : account
+                    })
+                    .catch((error) => {
+                      console.log('error : ' + JSON.stringify(error));
+                      enqueueSnackbar('Swap fail', {
+                        variant: 'fail'
+                      });
+                      onBackdrop(false);
+                    });
 
-                const receipt = await result.wait();
-                if (receipt.status === 1) {
-                  enqueueSnackbar('Swap success', {
-                    variant: 'success'
-                  });
-                  await setWarningMessage('');
-                  await addSwap();
+                  const receipt = await result.wait();
+                  if (receipt.status === 1) {
+                    enqueueSnackbar('Swap success', {
+                      variant: 'success'
+                    });
+                    await setWarningMessage('');
+                    await addSwap();
 
-                  history.push({
-                    pathname: '/app/taalswap/pools',
-                    state: { tabValue: 1 }
-                  });
+                    history.push({
+                      pathname: '/app/taalswap/pools',
+                      state: { tabValue: 1 }
+                    });
+                  }
                 }
 
                 onBackdrop(false);
@@ -177,6 +276,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             );
           }
         }
+      } else {
+        console.log('aaa');
       }
     } catch (error) {
       console.log(error);
@@ -197,29 +298,37 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
   useEffect(async () => {
     try {
+      console.log('in...........');
+      window.setRes = setRes;
       setDate();
       setAmount(0);
 
       await dispatch(getSwapList(account));
-      if (!!library) {
-        await taalswap.tokensLeft().then((result) => {
-          setTokensLeft(result);
-        });
+      if (!!library || from) {
+        await taalswap
+          .tokensLeft()
+          .then((result) => {
+            setTokensLeft(result);
+            console.log(`tokensLeft : ${result}`);
+          })
+          .catch((error) => console.log(error));
 
         await taalswap.individualMinimumAmount().then((result) => {
           setMinAmount(result);
+          console.log(`individualMinimumAmount : ${result}`);
         });
 
         await taalswap.individualMaximumAmount().then((result) => {
           setMaxAmount(result);
+          console.log(`individualMaximumAmount : ${result}`);
         });
 
         if (pool.access === 'Private') {
           await taalswap
             .isWhitelisted(account)
             .then((result) => {
-              console.log(result);
               setIsWhiteList(result);
+              console.log(`isWhitelisted : ${result}`);
             })
             .catch((error) => console.log(error));
         }
@@ -252,10 +361,22 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
     }
   }, [activatingConnector, connector]);
 
+  useEffect(() => {
+    switch (i18n.language) {
+      case 'en':
+        moment.locale('en-gb');
+        break;
+      case 'kr':
+        moment.locale('ko');
+        break;
+    }
+    setDate();
+  }, [i18n.language]);
+
   return (
-    <div className={clsx(classes.root, className)}>
-      <Typography variant="h3" sx={{ mb: 2 }}>
-        Join the Pool
+    <Box className={clsx(classes.root, className)}>
+      <Typography variant="h3" sx={{ mb: 1 }}>
+        {t('taalswap.JoinThePool')}
       </Typography>
 
       <div className={classes.row}>
@@ -264,11 +385,13 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           component="p"
           sx={{ color: 'text.secondary' }}
         >
-          {time.published && `Published about ${time.date}`}
+          {time.published && i18n.language === 'en'
+            ? `Published about ${time.date}`
+            : `${time.date} 시작됨`}
         </Typography>
       </div>
 
-      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+      <Divider sx={{ borderStyle: 'dashed', mt: 3, mb: 3 }} />
 
       <div className={classes.row}>
         <Typography
@@ -276,14 +399,14 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Your Bid Amount
+          {t('taalswap.YourBidAmount')}
         </Typography>
         <Typography
           component="p"
           variant="body2"
           sx={{ color: 'text.secondary' }}
         >
-          Balance :{' '}
+          {t('taalswap.Balance')} :{' '}
           {balance !== null ? parseFloat(formatEther(balance)).toFixed(2) : '0'}{' '}
           ETH
         </Typography>
@@ -292,55 +415,56 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       <Box sx={{ mb: 1.5, display: 'flex', justifyContent: 'flex-end' }}>
         <Typography
           component="span"
-          variant="subtitle2"
+          variant="body2"
           sx={{
-            mb: 1,
+            mb: 1.5,
             alignSelf: 'flex-end',
             color: 'text.secondary'
           }}
         >
-          {`Price : ${price} ETH ($ ${Numbers.toFloat(
-            price * ethPrice
-          ).toFixed()})`}
+          {t('taalswap.Amount')}
+          {` : ${price} ETH ($ ${Numbers.toFloat(price * ethPrice).toFixed()})`}
           {/* Price : {price} ETH  */}
         </Typography>
       </Box>
 
-      <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
+      <Divider sx={{ borderStyle: 'dashed', mt: 3, mb: 3 }} />
 
-      <div className={classes.row}>
+      <Box className={classes.row} sx={{ mb: 3 }}>
         <Typography
           component="p"
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Amount
+          {t('taalswap.Amount')}
         </Typography>
-      </div>
+      </Box>
 
       <Box sx={{ mb: 2.5, display: 'flex', justifyContent: 'flex-end' }}>
-        <Typography variant="h2" sx={{ mx: 1 }}>
-          <TextField
-            type="number"
-            sx={{
-              flex: 2 / 5,
-              flexWrap: 'wrap'
-            }}
-            variant="standard"
-            InputLabelProps={{
-              shrink: true
-            }}
-            size="small"
-            value={amount}
-            margin="normal"
-            inputProps={{
-              style: { fontSize: 30, textAlign: 'center' }
-            }} // font size of input text
-            InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
-            onChange={onChangeAmount}
-            onFocus={() => setAmount('')}
-          />
-        </Typography>
+        {/* <Typography variant="h2" sx={{ mx: 1 }}> */}
+
+        <TextField
+          type="number"
+          fullWidth
+          // sx={{
+          //   flex: 2 / 5,
+          //   flexWrap: 'wrap'
+          // }}
+          variant="standard"
+          InputLabelProps={{
+            shrink: true
+          }}
+          size="small"
+          value={amount}
+          margin="normal"
+          inputProps={{
+            style: { fontSize: 30, textAlign: 'center' }
+          }} // font size of input text
+          InputLabelProps={{ style: { fontSize: 0 } }} // font size of input label
+          onChange={onChangeAmount}
+          onFocus={handleOnFocuse}
+        />
+        {/* </Typography> */}
         <Typography
           component="span"
           variant="body2"
@@ -354,7 +478,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         </Typography>
       </Box>
 
-      <Box sx={{ mt: 2, mb: 2 }}>
+      <Box sx={{ mt: 5, mb: 2 }}>
         {pool.access === 'Public' && (
           <LoadingButton
             fullWidth
@@ -362,8 +486,9 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             variant="contained"
             onClick={onClickSwap}
             disabled={status !== PoolStatus.LIVE}
+            // disabled={status !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED}
           >
-            Go
+            {t('taalswap.Go')}
           </LoadingButton>
         )}
 
@@ -375,7 +500,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             onClick={onClickSwap}
             disabled={status !== PoolStatus.LIVE || isWhiteList === false}
           >
-            Go
+            {t('taalswap.Go')}
           </LoadingButton>
         )}
       </Box>
@@ -404,7 +529,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           Have problems Joining? Click here to read instructions.
         </Typography> */}
       </Box>
-    </div>
+    </Box>
   );
 }
 

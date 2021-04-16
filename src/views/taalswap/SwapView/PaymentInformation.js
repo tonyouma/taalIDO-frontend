@@ -16,6 +16,7 @@ import { MLabel } from 'src/theme';
 import WeeklySales from './WeeklySales';
 import ItemOrders from './ItemOrders';
 import Progress from '../../home/LandingPageView/Progress';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -64,6 +65,7 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
   const [price, setPrice] = useState(0);
 
   const { library, account } = context;
+  const { i18n, t } = useTranslation();
 
   useEffect(async () => {
     if (!!library) {
@@ -92,7 +94,7 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
   return (
     <div className={clsx(classes.root, className)}>
       <Typography variant="h3" sx={{ mb: 2 }}>
-        Access : {pool.access}
+        {t('taalswap.Access')} : {pool.access}
       </Typography>
       <div className={classes.row}>
         <StatusLabel poolStatus={poolStatus} />
@@ -113,7 +115,7 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Ratio
+          {t('taalswap.Ratio')}
         </Typography>
         <Typography
           component="p"
@@ -129,7 +131,7 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Price, $
+          {t('taalswap.Price')} ($)
         </Typography>
         <Typography
           component="p"
@@ -147,11 +149,11 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          {`Max Allocation in ${pool.symbol}`}
+          {t('taalswap.MaxAllocationIn')} {pool.symbol}
         </Typography>
         <Typography
           component="p"
-          variant="bohdy2"
+          variant="body2"
           sx={{ color: 'text.secondary' }}
         >
           {`${Numbers.toFloat(pool.maxIndividuals)} ${pool.symbol}`}
@@ -163,11 +165,11 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          Max Allocation in ETH
+          {t('taalswap.MaxAllocationInETH')}
         </Typography>
         <Typography
           component="p"
-          variant="bohdy2"
+          variant="body2"
           sx={{ color: 'text.secondary' }}
         >
           {`${Numbers.toFloat(
@@ -178,10 +180,10 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
       <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
       <div className={classes.row}>
         <Typography component="p" variant="h4" sx={{ color: 'text.secondary' }}>
-          Participants
+          {t('taalswap.Participants')}
         </Typography>
         <Typography component="p" variant="h4" sx={{ color: 'text.secondary' }}>
-          12
+          {participants}
         </Typography>
       </div>
       <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />

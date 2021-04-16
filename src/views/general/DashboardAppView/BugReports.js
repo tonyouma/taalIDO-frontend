@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Icon } from '@iconify/react';
 import { fShortenNumber } from 'src/utils/formatNumber';
+import bugFilled from '@iconify-icons/ant-design/bug-filled';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import { Card, Typography } from '@material-ui/core';
 
@@ -44,9 +46,12 @@ function BugReports({ className, ...other }) {
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>
+      <div className={classes.icon}>
+        <Icon icon={bugFilled} width={24} height={24} />
+      </div>
       <Typography variant="h3">{fShortenNumber(total)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        Current Progress
+        Bug Reports
       </Typography>
     </Card>
   );

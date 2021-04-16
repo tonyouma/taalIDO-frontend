@@ -6,6 +6,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button, Grid, Container, Typography } from '@material-ui/core';
 import { PATH_APP } from 'src/routes/paths';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ function CandidatePool() {
   const classes = useStyles();
   const { poolList } = useSelector((state) => state.pool);
   const [candidates, setCandidates] = useState([]);
+  const { i18n, t } = useTranslation();
 
   useEffect(() => {
     // dispatch(getPoolList());
@@ -44,7 +46,7 @@ function CandidatePool() {
     <Page title="TaalSwap Finance" className={classes.root}>
       <Container maxWidth="lg">
         <Typography variant="h2" align="center" gutterBottom>
-          Candidate Pools
+          {t('taalswap.CandidateProjects')}
         </Typography>
 
         <Box sx={{ my: 5 }}>
@@ -80,7 +82,7 @@ function CandidatePool() {
               variant="outlined"
               component={RouterLink}
             >
-              View All
+              {t('taalswap.ViewAllProjects')}
             </Button>
           </Box>
         </Box>

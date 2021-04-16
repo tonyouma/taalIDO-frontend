@@ -16,6 +16,7 @@ import {
 } from 'src/components/Animate';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Box, Link, Container, Typography } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     bottom: 0,
     zIndex: 8,
-    width: '100%',
+    width: '90%',
     margin: 'auto',
     position: 'absolute',
     [theme.breakpoints.up('lg')]: {
@@ -95,8 +96,7 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
-const getImg = (width) =>
-  `${BASE_IMG}w_${width}/v1611472901/upload_minimal/home/hero.png`;
+const getImg = (width) => `/static/images/hero.png`;
 
 Hero.propTypes = {
   className: PropTypes.string
@@ -104,6 +104,7 @@ Hero.propTypes = {
 
 function Hero({ className }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
 
   return (
     <>
@@ -148,8 +149,7 @@ function Hero({ className }) {
 
             <motion.div variants={varFadeInRight}>
               <Box component="p" sx={{ color: 'common.white', py: 5 }}>
-                TaalSwap is a decentralized and interoperable multi-chain
-                platform for IDO, yield farming and NFT auction.
+                {t('taalswap.LandingTitle')}
               </Box>
             </motion.div>
 
@@ -161,7 +161,7 @@ function Hero({ className }) {
                 to={PATH_APP.taalswap.pools}
                 startIcon={<Icon icon={flashFill} width={20} height={20} />}
               >
-                Go Now
+                {t('taalswap.GoNow')}
               </Button>
             </motion.div>
 

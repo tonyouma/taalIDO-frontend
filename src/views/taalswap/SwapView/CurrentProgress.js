@@ -1,21 +1,31 @@
 import clsx from 'clsx';
-import React from 'react';
+
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { fNumber, fPercent } from 'src/utils/formatNumber';
 import trendingUpFill from '@iconify-icons/eva/trending-up-fill';
 import trendingDownFill from '@iconify-icons/eva/trending-down-fill';
 import { useTheme, alpha, makeStyles } from '@material-ui/core/styles';
 import { Box, Card, Typography } from '@material-ui/core';
-
+import baselineHistory from '@iconify-icons/ic/baseline-history';
+import AnimatedNumber from 'react-animated-number';
+import { useWeb3React } from '@web3-react/core';
+import Taalswap from 'src/utils/taalswap';
+import getProgressValue from 'src/utils/getProgressValue';
+import { useTranslation } from 'react-i18next';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
+    color: theme.palette.info.darker
+    // backgroundColor: theme.palette.info.lighter
+
+    // height: '160px'
   },
   trending: {
     display: 'flex',
@@ -46,70 +56,57 @@ CurrentProgress.propTypes = {
   className: PropTypes.string
 };
 
-const PERCENT = -0.06;
-const TOTAL_DOWNLOAD = 678;
-
-function CurrentProgress({ className, ...other }) {
+function CurrentProgress({ className, pool, ...other }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
   const theme = useTheme();
 
-  const chartData = [{ data: [25, 66, 41, 89, 63, 25, 44, 12, 36, 9, 54] }];
-  const chartOptions = {
-    colors: [theme.palette.info.main],
-    chart: { sparkline: { enabled: true } },
-    plotOptions: { bar: { columnWidth: '68%', endingShape: 'rounded' } },
-    labels: [1, 2, 3, 4, 5, 6, 7, 8],
-    tooltip: {
-      x: { show: false },
-      y: {
-        formatter: (seriesName) => fNumber(seriesName),
-        title: {
-          formatter: function (seriesName) {
-            return '';
-          }
-        }
-      },
-      marker: { show: false }
+  const context = useWeb3React();
+  const [progressValue, setProgressValue] = useState(0);
+
+  const { library, account } = context;
+
+  useEffect(async () => {
+    if (!!library) {
+      const taalswap = new Taalswap({
+        application: pool,
+        account,
+        library
+      });
+      await taalswap
+        .tokensAllocated()
+        .then((result) => {
+          setProgressValue(getProgressValue(result, pool.tradeAmount));
+        })
+        .catch((error) => console.log(error));
     }
-  };
+  }, [library]);
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle2">Current Progress</Typography>
+        <Typography marginBottom="20px" variant="subtitle2">
+          {t('taalswap.CurrentProgress')}
+        </Typography>
 
-        <div className={classes.trending}>
-          <div
-            className={clsx(classes.trendingIcon, {
-              [classes.isTrendingDown]: PERCENT < 0
-            })}
-          >
-            <Icon
-              width={16}
-              height={16}
-              icon={PERCENT >= 0 ? trendingUpFill : trendingDownFill}
-            />
-          </div>
-          <Typography
-            component="span"
-            variant="subtitle2"
-            color={PERCENT >= 0 ? 'primary' : 'error'}
-          >
-            {PERCENT > 0 && '+'}
-            {fPercent(PERCENT)}
-          </Typography>
-        </div>
-
-        <Typography variant="h3">{fNumber(TOTAL_DOWNLOAD)}</Typography>
+        <Typography variant="h3">
+          <AnimatedNumber
+            // component="number"
+            value={progressValue}
+            style={{
+              transition: '0.8s ease-out'
+              // fontSize: 48,
+              // transitionProperty: 'background-color, color, opacity'
+            }}
+            // frameStyle={(perc) =>
+            //   perc === 100 ? {} : { backgroundColor: '#ffeb3b' }
+            // }
+            duration={1000}
+            formatValue={(n) => `${fNumber(n)} %`}
+          />
+        </Typography>
       </Box>
-
-      <ReactApexChart
-        type="bar"
-        series={chartData}
-        options={chartOptions}
-        width={60}
-        height={36}
-      />
+      <Icon icon={baselineHistory} width={60} height={60} />
     </Card>
   );
 }

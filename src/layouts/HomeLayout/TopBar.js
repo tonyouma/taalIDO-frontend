@@ -49,15 +49,20 @@ import { targetNetwork, targetNetworkMsg } from '../../config';
 import { useSnackbar } from 'notistack';
 import Languages from '../DashboardLayout/TopBar/Languages';
 import Settings from 'src/layouts/Common/Settings';
+import { fromTalken } from 'src/redux/slices/talken';
+import { useTranslation } from 'react-i18next';
+// import getEthAddress from 'src/utils/getEthAddress';
 
 // ----------------------------------------------------------------------
 
 const MENU_LINKS = [
   { title: 'Home', icon: homeFill, href: '/' },
   { title: 'IDO', icon: roundStreetview, href: PATH_APP.taalswap.pools },
+  { title: 'Vote', icon: roundStreetview, href: PATH_APP.taalswap },
+  { title: 'Trade', icon: roundStreetview, href: PATH_APP.taalswap },
   { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap },
   {
-    title: 'Yield Farming',
+    title: 'Farms',
     icon: roundStreetview,
     href: PATH_APP.taalswap
   },
@@ -117,6 +122,7 @@ const useStyles = makeStyles((theme) => ({
 
 function TopBar() {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
   const dispatch = useDispatch();
   const anchorRef = useRef(null);
   const { pathname } = useLocation();
@@ -127,6 +133,7 @@ function TopBar() {
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
+  const { os, wallet, from } = useSelector((state) => state.talken);
 
   const context = useWeb3React();
   const {
@@ -139,8 +146,28 @@ function TopBar() {
     active,
     error
   } = context;
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+  const query = useQuery();
 
   useEffect(() => {
+    if (os === null && wallet === null && from === null) {
+      // const ethAddr = getEthAddress(query.get('wallet'));
+      // TODO : talken-wlt 내 실제 주소와 비교
+      // console.log('------------->', ethAddr);
+      dispatch(
+        fromTalken({
+          os: query.get('os'),
+          // wallet: ethAddr,
+          wallet: query.get('wallet'),
+          from: query.get('from')
+        })
+      );
+    }
+    // console.log('os', os);
+    // console.log('wallet', wallet);
+    // console.log('from', from);
     if (!!library) {
       if (
         (library.provider.isMetaMask &&
@@ -228,13 +255,15 @@ function TopBar() {
         }}
       >
         <Languages />
+
         <Settings
           activeClassName={classes.isDesktopActive}
+          // activeClassName={classes.isMobileActive}
           className={clsx({
             [classes.isHome]: isHome
           })}
           sx={{ mr: 5, color: 'text.primary' }}
-          // iconColor="white"
+          landingPage={true}
         />
         {/* {!connector && (
           <Button
@@ -290,7 +319,7 @@ function TopBar() {
               <ListItemIcon>
                 <Icon icon={walletIcon} width={20} height={20} />
               </ListItemIcon>
-              <ListItemText>Connect Wallet</ListItemText>
+              <ListItemText>{t('taalswap.ConnectWallet')}</ListItemText>
             </MenuItem>
           </Box>
         )}
