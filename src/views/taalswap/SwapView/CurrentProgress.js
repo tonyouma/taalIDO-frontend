@@ -14,6 +14,7 @@ import AnimatedNumber from 'react-animated-number';
 import { useWeb3React } from '@web3-react/core';
 import Taalswap from 'src/utils/taalswap';
 import getProgressValue from 'src/utils/getProgressValue';
+import { useTranslation } from 'react-i18next';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -57,6 +58,7 @@ CurrentProgress.propTypes = {
 
 function CurrentProgress({ className, pool, ...other }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
   const theme = useTheme();
 
   const context = useWeb3React();
@@ -84,7 +86,7 @@ function CurrentProgress({ className, pool, ...other }) {
     <Card className={clsx(classes.root, className)} {...other}>
       <Box sx={{ flexGrow: 1 }}>
         <Typography marginBottom="20px" variant="subtitle2">
-          Current Progress
+          {t('taalswap.CurrentProgress')}
         </Typography>
 
         <Typography variant="h3">

@@ -12,6 +12,7 @@ import { alpha, useTheme, makeStyles } from '@material-ui/core/styles';
 import { Box, Card, Typography } from '@material-ui/core';
 import AnimatedNumber from 'react-animated-number';
 import baselineGroup from '@iconify-icons/ic/baseline-group';
+import { useTranslation } from 'react-i18next';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -54,6 +55,7 @@ TotalPurchasers.propTypes = {
 
 function TotalPurchasers({ className, pool, ...other }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
   const context = useWeb3React();
   const { library, account } = context;
 
@@ -78,7 +80,7 @@ function TotalPurchasers({ className, pool, ...other }) {
     <Card className={clsx(classes.root, className)} {...other}>
       <Box sx={{ flexGrow: 1 }}>
         <Typography marginBottom="20px" variant="subtitle2">
-          Total Participants
+          {t('taalswap.TotalParticipants')}
         </Typography>
 
         <Typography variant="h3">

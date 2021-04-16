@@ -10,6 +10,7 @@ import { alpha, useTheme, makeStyles } from '@material-ui/core/styles';
 import { Box, Card, Typography } from '@material-ui/core';
 import AnimatedNumber from 'react-animated-number';
 import sharpMonetizationOn from '@iconify-icons/ic/sharp-monetization-on';
+import { useTranslation } from 'react-i18next';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -53,6 +54,7 @@ TotalAllocatedTokens.propTypes = {
 
 function TotalAllocatedTokens({ className, pool, ...other }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
   const context = useWeb3React();
   const [tokensAllocated, setTokensAllocated] = useState(0);
 
@@ -80,7 +82,7 @@ function TotalAllocatedTokens({ className, pool, ...other }) {
     <Card className={clsx(classes.root, className)} {...other}>
       <Box sx={{ flexGrow: 1 }}>
         <Typography marginBottom="20px" variant="subtitle2">
-          Total Allocated Tokens
+          {t('taalswap.TotalAllocatedTokens')}
         </Typography>
 
         <Typography variant="h3">

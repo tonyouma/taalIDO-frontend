@@ -60,6 +60,10 @@
     "FillApplication": "Fill in Your Application",
     "Purchaser": "Purchaser",
     "Timestamp": "Timestamp",
-    "Finalized": "Finalized"
+    "Finalized": "Finalized",
+    "ConnectToWallet": "CONNECT TO A WALLET",
+    "TotalAllocatedTokens": "Total Allocated Tokens",
+    "TotalParticipants": "Total Participants",
+    "CurrentProgress": "Current Progress"
   }
 }
