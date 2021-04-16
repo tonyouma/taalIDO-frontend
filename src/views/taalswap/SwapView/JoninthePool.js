@@ -66,8 +66,9 @@ JoninthePool.propTypes = {
 };
 
 function nativeCallbackTxHash(res) {
-  console.log('=====', window.MobileSendPopupComponent);
-  window.MobileSendPopupComponent.setRes(res);
+  console.log('=====', res);
+  console.log('=====', window.setRes);
+  window.setRes(res);
 }
 
 window.onCallbackTxHash = nativeCallbackTxHash.bind(this);
@@ -97,8 +98,6 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const { i18n, t } = useTranslation();
 
   let taalswap;
-
-  window.MobileSendPopupComponent = this;
 
   if (!!library) {
     taalswap = new Taalswap({
@@ -292,6 +291,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   useEffect(async () => {
     try {
       console.log('in...........');
+      window.setRes = setRes;
+      console.log('=====', window.setRes);
       setDate();
       setAmount(0);
 
