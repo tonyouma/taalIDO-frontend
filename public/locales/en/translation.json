@@ -67,6 +67,17 @@
     "CurrentProgress": "Current Progress",
     "CountDown": "Countdown",
     "CountDownLive": "Countdown to IDO End",
-    "CountDownUpcoming": "Countdown to IDO Start"
+    "CountDownUpcoming": "Countdown to IDO Start",
+    "PoolInformation": "Pool Information",
+    "TokenInformation": "Token Information",
+    "TokenName": "Name",
+    "TokenAddress": "Address",
+    "TokenHolders": "Holders",
+    "TokenTransfers": "Transfers",
+    "TokenTotalSupply": "Total Supply",
+    "MaxIndiv": "Max. Allocation",
+    "MinIndiv": "Min. Allocation",
+    "PoolStart": "Token Distribution",
+    "MinRaise": "Min. Swap Level"
   }
 }
