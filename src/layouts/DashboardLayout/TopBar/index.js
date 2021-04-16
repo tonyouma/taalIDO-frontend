@@ -137,11 +137,13 @@ function TopBar({ onOpenNav, className }) {
       }
     } else if (from !== null) {
       const taalswap = new Taalswap({ notConnected: true });
-      const walletBalance = await taalswap
-        .getBalance(wallet)
-        .catch((error) => console.log(error));
-      console.log('balance', walletBalance);
-      dispatch(setBalance(walletBalance));
+      try {
+        const walletBalance = await taalswap.getBalance(wallet);
+        console.log('balance', walletBalance);
+        dispatch(setBalance(walletBalance));
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [activatingConnector, connector, account, library]);
 
