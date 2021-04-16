@@ -84,6 +84,15 @@ class Taalswap {
     return this.params.tokenContract;
   }
 
+  async waitTxHash(txHash) {
+    if (!this.params.infuraProvider) return;
+    return await this.params.infuraProvider.waitForTransaction(
+      txHash,
+      1,
+      2 * 60 * 1000
+    );
+  }
+
   async getSwapABI({ amountWithDecimals, value }) {
     const data = await this.params.fixedContract.interface.encodeFunctionData(
       'swap',

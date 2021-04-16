@@ -66,6 +66,7 @@ JoninthePool.propTypes = {
 };
 
 function nativeCallbackTxHash(res) {
+  console.log('=====', window.MobileSendPopupComponent);
   window.MobileSendPopupComponent.setRes(res);
 }
 
@@ -132,9 +133,28 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
     dispatch(createSwap(swap));
   };
-  const setRes = (result) => {
-    // TODO: 콜백처리
-    console.log(result);
+
+  const setRes = async (result) => {
+    try {
+      console.log(result);
+      if (result) {
+        const receipt = await taalswap.waitTxHash(result.txHash);
+        console.log(receipt);
+        enqueueSnackbar('Swap success', {
+          variant: 'success'
+        });
+      } else {
+        console.log(result.message);
+        enqueueSnackbar('Swap fail', {
+          variant: 'fail'
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      enqueueSnackbar('Swap error', {
+        variant: 'error'
+      });
+    }
     onBackdrop(false);
   };
 
@@ -202,8 +222,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                   } catch (e) {
                     console.log(e);
                     onBackdrop(false);
-                    return;
                   }
+                  return;
                 } else {
                   console.log(`taalswap web, swap..`);
                   const result = await taalswap
