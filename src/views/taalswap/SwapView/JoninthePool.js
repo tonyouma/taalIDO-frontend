@@ -119,9 +119,10 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
     setPrice(0);
     setAmount('');
   };
+
   const addSwap = () => {
     const swap = {
-      walletAddress: account,
+      walletAddress: from ? wallet : account,
       tokenContractAddress: pool.tokenContractAddr,
       poolName: pool.poolName,
       amount: amount,
