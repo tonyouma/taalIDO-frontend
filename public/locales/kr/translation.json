@@ -67,6 +67,17 @@
     "CurrentProgress": "현재 진행상황",
     "CountDown": "남은 시간",
     "CountDownLive": "IDO 종료 까지 남은 시간",
-    "CountDownUpcoming": "IDO 시작 까지 남은 시간"
+    "CountDownUpcoming": "IDO 시작 까지 남은 시간",
+    "PoolInformation": "풀 상세정보",
+    "TokenInformation": "토큰 상세정보",
+    "TokenName": "토큰명",
+    "TokenAddress": "토큰 주소",
+    "TokenHolders": "보유자수",
+    "TokenTransfers": "거래량",
+    "TokenTotalSupply": "총 발행량",
+    "MaxIndiv": "최대 구입 수량",
+    "MinIndiv": "최소 구입 수량",
+    "PoolStart": "판매 시작일",
+    "MinRaise": "최소 판매 희망 수량"
   }
 }
