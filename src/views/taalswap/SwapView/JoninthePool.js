@@ -136,9 +136,24 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       const rslt = JSON.parse(result);
       if (rslt.result) {
         const receipt = await taalswap.waitTxHash(rslt.txHash);
-        enqueueSnackbar('Swap success', {
-          variant: 'success'
-        });
+        console.log('=====', receipt);
+        if (receipt.status === 1) {
+          enqueueSnackbar('Swap success', {
+            variant: 'success'
+          });
+          await setWarningMessage('');
+          await addSwap();
+
+          history.push({
+            pathname: '/app/taalswap/pools',
+            state: { tabValue: 1 }
+          });
+        } else {
+          console.log('=====', receipt.status);
+          enqueueSnackbar('Swap fail', {
+            variant: 'fail'
+          });
+        }
       } else {
         enqueueSnackbar('Swap fail', {
           variant: 'fail'
