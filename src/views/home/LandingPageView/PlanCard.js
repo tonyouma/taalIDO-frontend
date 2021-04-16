@@ -26,6 +26,8 @@ import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../../taalswap/Components/StatusLabel';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
+import { MLabel } from 'src/theme';
+
 // import { PoolStatus } from 'src/utils/poolStatus';
 
 // ----------------------------------------------------------------------
@@ -180,19 +182,28 @@ function PlanCard({ pool, ethPrice, index, className }) {
           {pool.poolName}
         </Typography>
       </Box>
-      <Box>Rank</Box>
+      <MLabel
+        variant="filled"
+        color="warning"
+        sx={{
+          top: 17,
+          left: 25,
+          position: 'absolute'
+        }}
+      >
+        Primary
+      </MLabel>{' '}
       <Box
         component="img"
         src={`/static/icons/json-logo.svg`}
         sx={{
-          top: 60,
+          top: 58,
           left: 32,
-          width: 45,
-          height: 45,
+          width: 49,
+          height: 49,
           position: 'absolute'
         }}
       />
-
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
         {/* Ratio */}
         <Box
@@ -319,7 +330,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
           </Box>
         </Box>
       </Box>
-
       <Progress
         progressValue={progressValue}
         progressDollorValue={progressDollorValue}
@@ -333,7 +343,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
       >
         Details
       </Button>
-
       <Dialog
         open={isOpenModal}
         onClose={handleCloseModal}
