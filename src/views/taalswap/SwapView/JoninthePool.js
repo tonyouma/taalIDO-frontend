@@ -292,7 +292,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
     try {
       console.log('in...........');
       window.setRes = setRes;
-      console.log(window.setRes);
+      console.log('=====', window.setRes);
       setDate();
       setAmount(0);
 
