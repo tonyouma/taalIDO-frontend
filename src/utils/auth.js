@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function login({ creator, password, key }) {
   const response = await axios
-    .post('http://taalswap.finance:3002/login', {
+    .post('http://taalswap.finance:3003/login', {
       creator,
       password,
       key
@@ -16,7 +16,7 @@ export async function login({ creator, password, key }) {
 
 export async function register({ creator, password, key }) {
   const response = await axios
-    .post('http://taalswap.finance:3002/register', {
+    .post('http://taalswap.finance:3003/register', {
       creator,
       password,
       key
@@ -30,7 +30,7 @@ export async function register({ creator, password, key }) {
 
 export async function getMaxId() {
   const response = await axios
-    .get('http://taalswap.finance:3002/pools?_sort=id&_order=desc&_limit=1')
+    .get('http://taalswap.finance:3003/pools?_sort=id&_order=desc&_limit=1')
     .catch((error) => {
       console.log(error);
       throw error;

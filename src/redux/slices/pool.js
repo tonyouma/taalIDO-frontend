@@ -97,7 +97,7 @@ export function getPoolList() {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3002/pools?_sort=id&_order=desc'
+        'http://133.186.222.82:3003/pools?_sort=id&_order=desc'
       );
       // response.data.map((resp) => {
       //   resp.ratio = 0.03 + resp.id;
@@ -117,7 +117,7 @@ export function getApplicationList() {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3002/pools?_sort=id&_order=desc'
+        'http://133.186.222.82:3003/pools?_sort=id&_order=desc'
       );
       dispatch(slice.actions.getApplicationListSuccess(response.data));
     } catch (error) {
@@ -131,7 +131,7 @@ export function searchApplicationListByCreator(creator) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3002/pools?_sort=id&_order=desc&creator=' +
+        'http://133.186.222.82:3003/pools?_sort=id&_order=desc&creator=' +
           creator
       );
       dispatch(slice.actions.getApplicationListSuccess(response.data));
@@ -146,7 +146,7 @@ export function createApplication(newApplication, accessToken) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.post(
-        'http://133.186.222.82:3002/pools',
+        'http://133.186.222.82:3003/pools',
         newApplication,
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
@@ -165,7 +165,7 @@ export function updateApplication(id, updateItem, accessToken) {
       console.log(id);
       console.log(accessToken);
       const response = await axios.patch(
-        'http://taalswap.finance:3002/pools/' + id,
+        'http://taalswap.finance:3003/pools/' + id,
         updateItem,
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
@@ -182,7 +182,7 @@ export function getSwapList(walletAddress) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3002/swaps?walletAddress=' + walletAddress
+        'http://133.186.222.82:3003/swaps?walletAddress=' + walletAddress
       );
       dispatch(slice.actions.getSwapListSuccess(response.data));
     } catch (error) {
@@ -196,7 +196,7 @@ export function createSwap(newSwap) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.post(
-        'http://133.186.222.82:3002/swaps',
+        'http://133.186.222.82:3003/swaps',
         newSwap
       );
       dispatch(slice.actions.createSwapSuccess(response.data));

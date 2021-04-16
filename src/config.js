@@ -21,11 +21,11 @@ export const cloudinaryConfig = {
 };
 
 export const infuraApiKey = 'fbb83d21738f48d7bccfc214aa014f75';
-export const infuraChainId = 'rinkeby';
+export const infuraChainId = 'ropsten';
 
-export const targetNetwork = '0x4';
+export const targetNetwork = '0x3';
 export const targetNetworkMsg =
-  'Rinkeby 테스트 네트워크가 선택되지 않았습니다.';
+  'Ropsten 테스트 네트워크가 선택되지 않았습니다.';
 
 export const admin = {
   addresses: [
