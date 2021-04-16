@@ -64,24 +64,16 @@ function DarkMode({ className }) {
   return (
     <div className={clsx(classes.root, className)}>
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
-        <Logo sx={{ mb: 1, mx: 'auto' }} footer={'true'} />
+        <Logo sx={{ mb: 1, mx: 'auto' }} />
 
         <Typography color="common.white" variant="caption">
           © All rights reserved. Made by TaalSwap.
         </Typography>
         <div className={classes.listIcon}>
-          <a href="">
-            <motion.img src="/static/icons/ic_s_facebook.svg" />
-          </a>
-          <a href="">
-            <motion.img src="/static/icons/ic_s_linkin.svg" />
-          </a>
-          <a href="">
-            <motion.img src="/static/icons/ic_s_instagram.svg" />
-          </a>
-          <a href="https://twitter.com/taalswap" target="_blank">
-            <motion.img src="/static/icons/ic_s_tweet.svg" />
-          </a>
+          <motion.img src="/static/icons/ic_s_facebook.svg" />
+          <motion.img src="/static/icons/ic_s_linkin.svg" />
+          <motion.img src="/static/icons/ic_s_instagram.svg" />
+          <motion.img src="/static/icons/ic_s_tweet.svg" />
         </div>
       </Container>
     </div>

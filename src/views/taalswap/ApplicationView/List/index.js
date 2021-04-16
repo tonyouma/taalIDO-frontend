@@ -59,6 +59,7 @@ import { PoolStatus } from 'src/utils/poolStatus';
 import { login } from 'src/utils/auth';
 
 import StatusLabel from '../../Components/StatusLabel';
+import './APP.css';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {

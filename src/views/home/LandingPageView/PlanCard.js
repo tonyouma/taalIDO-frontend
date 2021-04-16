@@ -26,6 +26,8 @@ import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../../taalswap/Components/StatusLabel';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
+import { MLabel } from 'src/theme';
+
 import { useTranslation } from 'react-i18next';
 // import { PoolStatus } from 'src/utils/poolStatus';
 
@@ -157,24 +159,33 @@ function PlanCard({ pool, ethPrice, index, className }) {
   return (
     <Card className={clsx(classes.root, className)}>
       <StatusLabel poolStatus={pool.poolStatus} absolute />
-
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
         <Typography variant="h3" sx={{ mx: 1 }}>
           {pool.poolName}
         </Typography>
       </Box>
+      <MLabel
+        variant="filled"
+        color="warning"
+        sx={{
+          top: 17,
+          left: 25,
+          position: 'absolute'
+        }}
+      >
+        Primary
+      </MLabel>{' '}
       <Box
         component="img"
         src={`/static/icons/json-logo.svg`}
         sx={{
-          top: 27,
+          top: 58,
           left: 32,
-          width: 50,
-          height: 50,
+          width: 49,
+          height: 49,
           position: 'absolute'
         }}
       />
-
       <Box component="ul" sx={{ my: 5, width: '100%' }}>
         {/* Ratio */}
         <Box

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import ReactApexChart from 'react-apexcharts';
 import { useWeb3React } from '@web3-react/core';
+import baselineGroup from '@iconify-icons/ic/baseline-group';
 import { fNumber, fPercent } from 'src/utils/formatNumber';
 import trendingUpFill from '@iconify-icons/eva/trending-up-fill';
 import trendingDownFill from '@iconify-icons/eva/trending-down-fill';
@@ -11,7 +12,6 @@ import Taalswap from 'src/utils/taalswap';
 import { alpha, useTheme, makeStyles } from '@material-ui/core/styles';
 import { Box, Card, Typography } from '@material-ui/core';
 import AnimatedNumber from 'react-animated-number';
-import baselineGroup from '@iconify-icons/ic/baseline-group';
 import { useTranslation } from 'react-i18next';
 // ----------------------------------------------------------------------
 

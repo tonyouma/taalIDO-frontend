@@ -2,14 +2,13 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
-import ReactApexChart from 'react-apexcharts';
+import sharpMonetizationOn from '@iconify-icons/ic/sharp-monetization-on';
 import { fNumber, fPercent } from 'src/utils/formatNumber';
 import Taalswap from 'src/utils/taalswap';
 import { useWeb3React } from '@web3-react/core';
 import { alpha, useTheme, makeStyles } from '@material-ui/core/styles';
 import { Box, Card, Typography } from '@material-ui/core';
 import AnimatedNumber from 'react-animated-number';
-import sharpMonetizationOn from '@iconify-icons/ic/sharp-monetization-on';
 import { useTranslation } from 'react-i18next';
 // ----------------------------------------------------------------------
 

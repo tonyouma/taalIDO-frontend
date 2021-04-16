@@ -1,56 +1,45 @@
-import Page from 'src/components/Page';
+import clsx from 'clsx';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { HeaderDashboard } from 'src/layouts/Common';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  Box,
-  Button,
-  Container,
-  Card,
-  CardContent,
-  TextField,
-  Grid,
-  CardHeader,
-  Backdrop,
-  CircularProgress,
-  Typography
-} from '@material-ui/core';
-import {
-  getApplicationList,
-  searchApplicationListByCreator,
-  updateApplication
-} from 'src/redux/slices/pool';
-import TotalAllocated from './TotalAllocated';
-import TotalPurchasers from './TotalPurchasers';
-import Progress from './Progress';
-import InputForm from './InputForm';
-import Widgets1 from './Widgets1';
-import Widgets2 from './Widgets2';
+import { merge } from 'lodash';
+import PropTypes from 'prop-types';
+import { Icon } from '@iconify/react';
+import { ApexChartsOption } from 'src/components/Charts/Apexcharts';
+import roundMoney from '@iconify-icons/ic/round-money';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Card, Typography, Box } from '@material-ui/core';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router';
 import { useSnackbar } from 'notistack';
 import { PoolStatus } from 'src/utils/poolStatus';
 import Taalswap from 'src/utils/taalswap';
+import {
+  getApplicationList,
+  searchApplicationListByCreator,
+  updateApplication
+} from 'src/redux/slices/pool';
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  box: {
-    display: 'flex',
-    justifyContent: 'start',
-    alignItems: 'center',
-    width: '100%',
-    margin: '10px'
-  },
-  textField: {
-    marginRight: '1rem',
-    width: '50%'
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff'
-  }
-}));
+// ----------------------------------------------------------------------
+
+const useStyles = makeStyles((theme) => {
+  return {
+    root: {
+      display: 'flex',
+      position: 'relative',
+      alignItems: 'center',
+      padding: theme.spacing(3),
+      backgroundColor: theme.palette.primary.darker
+    },
+    icon: {
+      width: 120,
+      height: 120,
+      opacity: 0.12,
+      position: 'absolute',
+      right: theme.spacing(-3),
+      color: theme.palette.common.white
+    }
+  };
+});
 
 async function callApprove(tokenAmount, application, swapContract) {
   const result = await swapContract
@@ -113,9 +102,16 @@ async function callWithDrawUnsoldTokens(application, swapContract) {
   // console.log('receipt ', receipt);
   return receipt;
 }
+// ----------------------------------------------------------------------
 
-const AdminView = () => {
+Widgets1.propTypes = {
+  className: PropTypes.string
+};
+
+function Widgets1({ className, ...other }) {
   const classes = useStyles();
+  const theme = useTheme();
+
   const dispatch = useDispatch();
   const context = useWeb3React();
   const { account, library } = context;
@@ -321,206 +317,36 @@ const AdminView = () => {
     // console.log('selected pool', selectedPool);
   }, [account, open]);
 
+  const chartOptions = merge(ApexChartsOption(), {
+    chart: { sparkline: { enabled: true } },
+    legend: { show: false },
+    plotOptions: {
+      radialBar: {
+        hollow: { size: '78%' },
+        track: { margin: 0 },
+        dataLabels: {
+          name: { show: false },
+          value: {
+            offsetY: 6,
+            color: theme.palette.common.white,
+            fontSize: theme.typography.subtitle2.fontSize
+          }
+        }
+      }
+    }
+  });
+
   return (
-    <>
-      {/* <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop> */}
-      <Backdrop
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column'
-        }}
-        className={classes.backdrop}
-        open={open}
-      >
-        <Box>
-          <CircularProgress color="inherit" />
-        </Box>
-        <Box>
-          <Typography>In progress… Please wait.</Typography>
-        </Box>
-      </Backdrop>
-      <Page title="IDO Application | TaalSwap" className={classes.root}>
-        <Container>
-          <HeaderDashboard heading="Admin" links={[{ name: 'settings' }]} />
-
-          <Container maxWidth="xl">
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={4}>
-                <TotalAllocated />
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-                <TotalPurchasers />
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-                <Progress />
-              </Grid>
-              <Grid item xs={12} md={6} lg={8}>
-                <InputForm />
-              </Grid>
-
-              <Grid item xs={12} md={6} lg={4}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Widgets1 />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Widgets2 />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Container>
-
-          <CardContent>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={12}>
-                <Card>
-                  <CardHeader title="Select Application" />
-                  <Box className={classes.box}>
-                    <TextField
-                      style={{ minWidth: '360px' }}
-                      name="selecteApplication"
-                      select
-                      label="Applications"
-                      size="small"
-                      disabled
-                      defaultValue={selectedPool}
-                      value={selectedPool}
-                      onChange={handleChange}
-                    >
-                      {applicationList.map((app, index) => (
-                        <option key={index} value={app.id}>
-                          {app.projectName}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Box>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardHeader title="Approve" />
-                  <Box className={classes.box}>
-                    <TextField
-                      className={classes.textField}
-                      name="approveAmount"
-                      label="Amount"
-                      size="small"
-                      value={approveAmount}
-                      onChange={onChange}
-                    ></TextField>
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      onClick={onClickApprove}
-                      style={{ minWidth: '100px' }}
-                    >
-                      Approve
-                    </Button>
-                  </Box>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardHeader title="Fund" />
-                  <Box className={classes.box}>
-                    <TextField
-                      className={classes.textField}
-                      name="fundAmount"
-                      label="Amount"
-                      size="small"
-                      value={fundAmount}
-                      onChange={onChange}
-                    ></TextField>
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      onClick={onClickFund}
-                      style={{ minWidth: '100px' }}
-                    >
-                      Fund
-                    </Button>
-                  </Box>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={12}>
-                <Card>
-                  <CardHeader title="White List" />
-                  <Box className={classes.box}>
-                    <TextField
-                      className={classes.textField}
-                      name="whiteList"
-                      label="White List"
-                      size="small"
-                      value={whiteList}
-                      onChange={onChange}
-                    ></TextField>
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      onClick={onClickWhiteList}
-                      style={{ minWidth: '100px' }}
-                    >
-                      Add
-                    </Button>
-                    <Typography m={2}>
-                      Ex. address,address,address,...
-                    </Typography>
-                  </Box>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardHeader title="Claim Funds" />
-                  <Box className={classes.box}>
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      onClick={onClickWithDrawFunds}
-                      style={{ minWidth: '100px' }}
-                    >
-                      Withraw Funds
-                    </Button>
-                    <Typography m={2} varient="">
-                      Funding success or no min. raise...
-                    </Typography>
-                  </Box>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardHeader title="Claim Tokens" />
-                  <Box className={classes.box}>
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      onClick={onClickWithdrawUnsoldTokens}
-                      style={{ minWidth: '100px' }}
-                    >
-                      Withdraw Unsold Tokens
-                    </Button>
-                    <Typography m={2} varient="">
-                      Tokens left or Funding failed...
-                    </Typography>
-                  </Box>
-                </Card>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Container>
-      </Page>
-    </>
+    <Card className={clsx(classes.root, className)} {...other}>
+      <Box sx={{ ml: 3, color: 'common.white' }} onClick={onClickWithDrawFunds}>
+        <Typography variant="body2" sx={{ opacity: 0.72 }}>
+          Claim
+        </Typography>
+        <Typography variant="h5"> Withdraw Funds </Typography>
+      </Box>
+      <Icon icon={roundMoney} className={classes.icon} />
+    </Card>
   );
-};
+}
 
-export default AdminView;
+export default Widgets1;
