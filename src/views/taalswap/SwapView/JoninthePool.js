@@ -66,8 +66,6 @@ JoninthePool.propTypes = {
 };
 
 function nativeCallbackTxHash(res) {
-  console.log('=====', res);
-  console.log('=====', window.setRes);
   window.setRes(res);
 }
 
@@ -135,23 +133,18 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
   const setRes = async (result) => {
     try {
-      console.log('=====', result);
       const rslt = JSON.parse(result);
-      console.log('=====', rslt);
       if (rslt.result) {
         const receipt = await taalswap.waitTxHash(rslt.txHash);
-        console.log('=====', receipt);
         enqueueSnackbar('Swap success', {
           variant: 'success'
         });
       } else {
-        console.log('=====', rslt.message);
         enqueueSnackbar('Swap fail', {
           variant: 'fail'
         });
       }
     } catch (e) {
-      console.log('=====', e);
       enqueueSnackbar('Swap error', {
         variant: 'error'
       });
@@ -294,7 +287,6 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
     try {
       console.log('in...........');
       window.setRes = setRes;
-      console.log('=====', window.setRes);
       setDate();
       setAmount(0);
 
