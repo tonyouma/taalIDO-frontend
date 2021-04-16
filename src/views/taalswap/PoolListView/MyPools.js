@@ -346,8 +346,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
     category === 'All'
       ? filterPoolList.filter((pool) => pool.contractAddress !== '')
       : filterPoolList.filter(
-      (pool) => pool.contractAddress !== '' && pool.category === category
-      ),
+          (pool) => pool.contractAddress !== '' && pool.category === category
+        ),
     filterName
   );
   // const filteredPools = applyFilter(filterPoolList, filterName);
