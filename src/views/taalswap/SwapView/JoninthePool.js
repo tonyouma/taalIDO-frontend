@@ -134,6 +134,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   };
   const setRes = async (result) => {
     try {
+      console.log(result);
       if (result) {
         const receipt = await taalswap.waitTxHash(result.txHash);
         console.log(receipt);
@@ -219,8 +220,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                   } catch (e) {
                     console.log(e);
                     onBackdrop(false);
-                    return;
                   }
+                  return;
                 } else {
                   console.log(`taalswap web, swap..`);
                   const result = await taalswap
