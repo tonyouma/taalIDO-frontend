@@ -136,7 +136,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       const rslt = JSON.parse(result);
       if (rslt.result) {
         const receipt = await taalswap.waitTxHash(rslt.txHash);
-        console.log('=====', receipt);
+        console.log('=====', JSON.stringify(receipt));
         if (receipt.status === 1) {
           enqueueSnackbar('Swap success', {
             variant: 'success'
