@@ -312,7 +312,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
           </Box>
         </Box>
       </Box>
-
       <Progress
         progressValue={progressValue}
         progressDollorValue={progressDollorValue}
@@ -326,7 +325,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
       >
         {t('taalswap.Details')}
       </Button>
-
       <Dialog
         open={isOpenModal}
         onClose={handleCloseModal}

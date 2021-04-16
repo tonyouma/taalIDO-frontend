@@ -105,12 +105,12 @@ async function callWithDrawFunds(application, swapContract) {
 
 async function callWithDrawUnsoldTokens(application, swapContract) {
   const result = await swapContract.withdrawUnsoldTokens().catch((error) => {
-    // console.log('callWithDrawUnsoldTokens', error);
+    console.log('callWithDrawUnsoldTokens', error);
     throw error;
   });
-  // console.log('callWithDrawUnsoldTokens', result);
+  console.log('callWithDrawUnsoldTokens', result);
   const receipt = await result.wait();
-  // console.log('receipt ', receipt);
+  console.log('receipt ', receipt);
   return receipt;
 }
 
@@ -321,6 +321,9 @@ const AdminView = () => {
     // console.log('selected pool', selectedPool);
   }, [account, open]);
 
+  const handleOpen = (open) => {
+    setOpen(open);
+  };
   return (
     <>
       {/* <Backdrop className={classes.backdrop} open={open}>
@@ -349,33 +352,36 @@ const AdminView = () => {
           <Container maxWidth="xl">
             <Grid container spacing={3}>
               <Grid item xs={12} md={4}>
-                <TotalAllocated />
+                <TotalAllocated selectedItem={location.state.selectedItem} />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <TotalPurchasers />
+                <TotalPurchasers selectedItem={location.state.selectedItem} />
               </Grid>
 
               <Grid item xs={12} md={4}>
                 <Progress />
               </Grid>
               <Grid item xs={12} md={6} lg={8}>
-                <InputForm />
+                <InputForm
+                  applicationList={applicationList}
+                  selectedItem={location.state.selectedItem}
+                />
               </Grid>
 
               <Grid item xs={12} md={6} lg={4}>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
-                    <Widgets1 />
+                    <Widgets1 handleOpen={handleOpen} />
                   </Grid>
                   <Grid item xs={12}>
-                    <Widgets2 />
+                    <Widgets2 handleOpen={handleOpen} />
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Container>
-
+          {/* 
           <CardContent>
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
@@ -516,7 +522,7 @@ const AdminView = () => {
                 </Card>
               </Grid>
             </Grid>
-          </CardContent>
+          </CardContent> */}
         </Container>
       </Page>
     </>

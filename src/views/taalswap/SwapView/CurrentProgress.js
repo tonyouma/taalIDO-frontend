@@ -2,7 +2,6 @@ import clsx from 'clsx';
 
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
-import baselineHistory from '@iconify-icons/ic/baseline-history';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { fNumber, fPercent } from 'src/utils/formatNumber';

@@ -111,13 +111,16 @@ TopAuthors.propTypes = {
   className: PropTypes.string
 };
 
-function TopAuthors({ className, ...other }) {
+function TopAuthors({ className, applicationList, selectedItem, ...other }) {
   const classes = useStyles();
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>
       <CardContent>
-        <IdoInformation />
+        <IdoInformation
+          applicationList={applicationList}
+          selectedItem={selectedItem}
+        />
       </CardContent>
     </Card>
   );

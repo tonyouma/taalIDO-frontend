@@ -7,7 +7,13 @@ import { Icon } from '@iconify/react';
 import { ApexChartsOption } from 'src/components/Charts/Apexcharts';
 import roundMoney from '@iconify-icons/ic/round-money';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Card, Typography, Box } from '@material-ui/core';
+import {
+  Card,
+  Typography,
+  Box,
+  Backdrop,
+  CircularProgress
+} from '@material-ui/core';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router';
 import { useSnackbar } from 'notistack';
@@ -28,7 +34,10 @@ const useStyles = makeStyles((theme) => {
       position: 'relative',
       alignItems: 'center',
       padding: theme.spacing(3),
-      backgroundColor: theme.palette.primary.darker
+      backgroundColor: theme.palette.primary.darker,
+      '&:hover': {
+        cursor: 'pointer'
+      }
     },
     icon: {
       width: 120,
@@ -108,7 +117,7 @@ Widgets1.propTypes = {
   className: PropTypes.string
 };
 
-function Widgets1({ className, ...other }) {
+function Widgets1({ className, handleOpen, ...other }) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -117,7 +126,7 @@ function Widgets1({ className, ...other }) {
   const { account, library } = context;
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const { applicationList } = useSelector((state) => state.pool);
 
   const [selectedPool, setSelectedPool] = useState('');
@@ -157,7 +166,7 @@ function Widgets1({ className, ...other }) {
       return;
     }
 
-    setOpen(true);
+    handleOpen(true);
     const selectedItem = getSelectedApp();
     const swapContract = new Taalswap({
       application: selectedItem,
@@ -181,7 +190,7 @@ function Widgets1({ className, ...other }) {
         enqueueSnackbar('Approve success', { variant: 'success' });
       else enqueueSnackbar('Approve fail', { variant: 'error' });
     }
-    setOpen(false);
+    handleOpen(false);
   };
 
   const onClickFund = async () => {
@@ -190,7 +199,7 @@ function Widgets1({ className, ...other }) {
       enqueueSnackbar('Fund Amount is integer', { variant: 'error' });
       return;
     }
-    setOpen(true);
+    handleOpen(true);
     const selectedItem = getSelectedApp();
     const swapContract = new Taalswap({
       application: selectedItem,
@@ -220,7 +229,7 @@ function Widgets1({ className, ...other }) {
         enqueueSnackbar('Fund success', { variant: 'success' });
       } else enqueueSnackbar('Fund fail', { variant: 'error' });
     }
-    setOpen(false);
+    handleOpen(false);
   };
 
   const onClickWhiteList = async () => {
@@ -228,7 +237,7 @@ function Widgets1({ className, ...other }) {
       enqueueSnackbar('write WhiteList', { variant: 'error' });
       return;
     }
-    setOpen(true);
+    handleOpen(true);
     const selectedItem = getSelectedApp();
     const swapContract = new Taalswap({
       application: selectedItem,
@@ -251,11 +260,11 @@ function Widgets1({ className, ...other }) {
         enqueueSnackbar('add whitelist success', { variant: 'success' });
       else enqueueSnackbar('add whitelist fail', { variant: 'error' });
     }
-    setOpen(false);
+    handleOpen(false);
   };
 
   const onClickWithDrawFunds = async () => {
-    setOpen(true);
+    handleOpen(true);
     const selectedItem = getSelectedApp();
     // console.log(
     //   `seleted pool : ${JSON.stringify(selectedItem)}, WithDrawFunds`
@@ -279,11 +288,11 @@ function Widgets1({ className, ...other }) {
         enqueueSnackbar('WithDrawFunds success', { variant: 'success' });
       else enqueueSnackbar('WithDrawFunds fail', { variant: 'error' });
     }
-    setOpen(false);
+    handleOpen(false);
   };
 
   const onClickWithdrawUnsoldTokens = async () => {
-    setOpen(true);
+    handleOpen(true);
     const selectedItem = getSelectedApp();
     // console.log(
     //   `seleted pool : ${JSON.stringify(selectedItem)}, WithdrawUnsoldTokens`
@@ -308,14 +317,14 @@ function Widgets1({ className, ...other }) {
         enqueueSnackbar('WithdrawUnsoldTokens success', { variant: 'success' });
       else enqueueSnackbar('WithdrawUnsoldTokens fail', { variant: 'error' });
     }
-    setOpen(false);
+    handleOpen(false);
   };
 
   useEffect(() => {
     dispatch(getApplicationList());
     setSelectedPool(location.state ? location.state.selectedItem.id : '');
     // console.log('selected pool', selectedPool);
-  }, [account, open]);
+  }, [account]);
 
   const chartOptions = merge(ApexChartsOption(), {
     chart: { sparkline: { enabled: true } },
@@ -337,15 +346,21 @@ function Widgets1({ className, ...other }) {
   });
 
   return (
-    <Card className={clsx(classes.root, className)} {...other}>
-      <Box sx={{ ml: 3, color: 'common.white' }} onClick={onClickWithDrawFunds}>
-        <Typography variant="body2" sx={{ opacity: 0.72 }}>
-          Claim
-        </Typography>
-        <Typography variant="h5"> Withdraw Funds </Typography>
-      </Box>
-      <Icon icon={roundMoney} className={classes.icon} />
-    </Card>
+    <>
+      <Card
+        className={clsx(classes.root, className)}
+        // {...other}
+        onClick={onClickWithDrawFunds}
+      >
+        <Box sx={{ ml: 3, color: 'common.white' }}>
+          <Typography variant="body2" sx={{ opacity: 0.72 }}>
+            Claim
+          </Typography>
+          <Typography variant="h5"> Withdraw Funds </Typography>
+        </Box>
+        <Icon icon={roundMoney} className={classes.icon} />
+      </Card>
+    </>
   );
 }
 
