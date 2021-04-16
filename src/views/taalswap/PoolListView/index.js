@@ -25,7 +25,7 @@ import BasicTable from './BasicTable';
 import { useTranslation } from 'react-i18next';
 import MyPools from './MyPools';
 import { useWeb3React } from '@web3-react/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getSwapList, getPoolList } from '../../../redux/slices/pool';
 import searchFill from '@iconify-icons/eva/search-fill';
 import { useLocation } from 'react-router-dom';
@@ -122,6 +122,7 @@ function PoolListView() {
   const [category, setCategory] = useState('All');
   const [open, setOpen] = useState(false);
   const { library, account } = context;
+  const { wallet } = useSelector((state) => state.talken);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -148,7 +149,7 @@ function PoolListView() {
 
   useEffect(async () => {
     await dispatch(getPoolList());
-    await dispatch(getSwapList(account));
+    await dispatch(getSwapList(wallet ? wallet : account));
     if (location.state !== null && location.state !== undefined) {
       setValue(location.state.tabValue);
     }

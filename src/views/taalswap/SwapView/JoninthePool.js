@@ -119,15 +119,16 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
     setPrice(0);
     setAmount('');
   };
+
   const addSwap = () => {
     const swap = {
-      walletAddress: account,
+      walletAddress: from ? wallet : account,
       tokenContractAddress: pool.tokenContractAddr,
       poolName: pool.poolName,
       amount: amount,
       joinDate: moment().unix()
     };
-
+    console.log('=====', JSON.stringify(swap));
     dispatch(createSwap(swap));
   };
 
@@ -136,9 +137,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       const rslt = JSON.parse(result);
       if (rslt.result) {
         const receipt = await taalswap.waitTxHash(rslt.txHash);
-        enqueueSnackbar('Swap success', {
-          variant: 'success'
-        });
+        console.log('=====', JSON.stringify(receipt));
         if (receipt.status === 1) {
           enqueueSnackbar('Swap success', {
             variant: 'success'
@@ -149,6 +148,11 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           history.push({
             pathname: '/app/taalswap/pools',
             state: { tabValue: 1 }
+          });
+        } else {
+          console.log('=====', receipt.status);
+          enqueueSnackbar('Swap fail', {
+            variant: 'fail'
           });
         }
       } else {
@@ -200,7 +204,6 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                       value: ETHToWei
                     });
                     const msgContents = {
-                      // method: 'swap',
                       from: wallet,
                       to: pool.contractAddress,
                       value: ETHToWei,
