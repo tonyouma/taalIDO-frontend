@@ -132,9 +132,23 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
     dispatch(createSwap(swap));
   };
-  const setRes = (result) => {
-    // TODO: 콜백처리
-    console.log(result);
+  const setRes = async (result) => {
+    try {
+      if (result) {
+        const receipt = await taalswap.waitTxHash(result.txHash);
+        console.log(receipt);
+        enqueueSnackbar('Swap success', {
+          variant: 'success'
+        });
+      } else {
+        console.log(result.message);
+        enqueueSnackbar('Swap fail', {
+          variant: 'fail'
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
     onBackdrop(false);
   };
 
