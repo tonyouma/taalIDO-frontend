@@ -89,7 +89,7 @@ class Taalswap {
     return await this.params.infuraProvider.waitForTransaction(
       txHash,
       1,
-      2 * 60 * 1000
+      10 * 60 * 1000
     );
   }
 
