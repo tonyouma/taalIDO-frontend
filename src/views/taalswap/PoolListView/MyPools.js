@@ -102,15 +102,23 @@ function TablePoolRow({ row, handleOpenModal }) {
   const [max, setMax] = useState(0);
 
   const { library, account } = context;
+  const { os, wallet, from } = useSelector((state) => state.talken);
 
   useEffect(async () => {
-    console.log(';laskdjf;laksjdf');
-    if (!!library) {
-      const taalswap = new Taalswap({
-        application: row,
-        account,
-        library
-      });
+    if (!!library || !!from) {
+      let taalswap;
+      if (!!library) {
+        taalswap = new Taalswap({
+          application: row,
+          account,
+          library
+        });
+      } else if (!!from) {
+        taalswap = new Taalswap({
+          application: row,
+          notConnected: true
+        });
+      }
 
       await taalswap
         .tokensAllocated()
@@ -193,6 +201,11 @@ export default function MyPools({ filterName, category, onBackdrop }) {
       application: selectedPool,
       account,
       library
+    });
+  } else if (!!from) {
+    taalswap = new Taalswap({
+      application: selectedPool,
+      notConnected: true
     });
   }
 
