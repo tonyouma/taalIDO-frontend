@@ -255,13 +255,15 @@ function TopBar() {
         }}
       >
         <Languages />
+
         <Settings
           activeClassName={classes.isDesktopActive}
+          // activeClassName={classes.isMobileActive}
           className={clsx({
             [classes.isHome]: isHome
           })}
           sx={{ mr: 5, color: 'text.primary' }}
-          // iconColor="white"
+          landingPage={true}
         />
         {/* {!connector && (
           <Button
