@@ -135,21 +135,23 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
   const setRes = async (result) => {
     try {
-      console.log(result);
-      if (result) {
-        const receipt = await taalswap.waitTxHash(result.txHash);
-        console.log(receipt);
+      console.log('=====', result);
+      const rslt = JSON.parse(result);
+      console.log('=====', rslt);
+      if (rslt.result) {
+        const receipt = await taalswap.waitTxHash(rslt.txHash);
+        console.log('=====', receipt);
         enqueueSnackbar('Swap success', {
           variant: 'success'
         });
       } else {
-        console.log(result.message);
+        console.log('=====', rslt.message);
         enqueueSnackbar('Swap fail', {
           variant: 'fail'
         });
       }
     } catch (e) {
-      console.log(e);
+      console.log('=====', e);
       enqueueSnackbar('Swap error', {
         variant: 'error'
       });
