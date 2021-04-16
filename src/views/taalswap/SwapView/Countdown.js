@@ -93,11 +93,15 @@ function Countdown({ className, pool, ...other }) {
         if (poolStatus === PoolStatus.LIVE) {
           const endEpoch = moment.unix(pool.endDate);
           setEndFlag(false);
-          setTimeTillDate(endEpoch.format('MM DD YYYY, h:mm a'));
+          setTimeTillDate(endEpoch.format('MM DD YYYY, hh:mm a'));
+          console.log(`endEpoch : ${endEpoch.format('MM DD YYYY, hh:mm a')}`);
         } else if (poolStatus === PoolStatus.UPCOMING) {
           const startEpoch = moment.unix(pool.startDate);
+          console.log(
+            `startDate : ${startEpoch.format('MM DD YYYY, hh:mm a')}`
+          );
           setEndFlag(false);
-          setTimeTillDate(startEpoch.format('MM DD YYYY, h:mm a'));
+          setTimeTillDate(startEpoch.format('MM DD YYYY, hh:mm a'));
         } else {
           setEndFlag(true);
         }
@@ -105,7 +109,7 @@ function Countdown({ className, pool, ...other }) {
     } catch (error) {
       console.log(error);
     }
-  }, [pool, poolStatus]);
+  }, [poolStatus]);
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>

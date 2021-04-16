@@ -42,64 +42,76 @@ const useStyles = makeStyles((theme) => ({
 const TimeCounter = ({ timeTillDate, endFlag, poolStatus, timeFormat }) => {
   const classes = useStyles();
   const [state, setState] = useState({
-    // days: undefined,
-    // hours: undefined,
-    // minutes: undefined,
-    // seconds: undefined
-    days: '00',
-    hours: '00',
-    minutes: '00',
-    seconds: '00'
+    days: undefined,
+    hours: undefined,
+    minutes: undefined,
+    seconds: undefined
   });
 
   const then = moment(timeTillDate, timeFormat);
   const now = moment();
 
-  useEffect(() => {
-    console.log(`poolStatus : ${poolStatus}`);
-    if (endFlag === false) {
-      console.log('....in');
-      const interval = setInterval(() => {
-        const countdown = moment(then - now);
-        const days = countdown.format('DD');
-        const hours = countdown.format('HH');
-        const minutes = countdown.format('mm');
-        const seconds = countdown.format('ss');
+  const countdown = moment(then - now);
+  console.log(`then : ${then.format('MM DD YYYY, hh:mm ss')} , ${then}`);
+  console.log(`now  : ${now.format('MM DD YYYY, hh:mm ss')} , ${now}`);
 
-        setState({ days, hours, minutes, seconds });
-      }, 1000);
-      return () => clearInterval(interval);
-    } else {
-      console.log('....end');
-      setState({ days: '00', hours: '00', minutes: '00', seconds: '00' });
+  const days = countdown.format('DD');
+  const hours = countdown.format('HH');
+  const minutes = countdown.format('mm');
+  const seconds = countdown.format('ss');
+
+  // var difftIME = {
+  //   days = moment.duration(then.diff(now)).asDays();
+  //   hours = moment.duration(then.diff(now)).();
+  //   minutes = moment.duration(then.diff(now)).asDays();
+  //   seconds = moment.duration(then.diff(now)).asDays();
+  // }
+  // const days = moment.duration(then.diff(now)).days();
+  // const hours = moment.duration(then.diff(now)).hours();
+  // const minutes = moment.duration(then.diff(now)).minutes();
+  // const seconds = moment.duration(then.diff(now)).seconds();
+
+  useEffect(() => {
+    try {
+      if (endFlag === false) {
+        const interval = setInterval(() => {
+          setState({ days, hours, minutes, seconds });
+        }, 1000);
+        return () => clearInterval(interval);
+      } else {
+        setState({ days: '00', hours: '00', minutes: '00', seconds: '00' });
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [timeTillDate]);
+
   return (
     <>
       {endFlag === false ? (
         <Box>
           <div className={classes.countdownWrapper}>
-            {state.days && (
+            {days && (
               <Box className={classes.countdownItem}>
-                {state.days}
+                {days}
                 <span>days</span>
               </Box>
             )}
-            {state.hours && (
+            {hours && (
               <Box className={classes.countdownItem}>
-                {state.hours}
+                {hours}
                 <span>hours</span>
               </Box>
             )}
-            {state.minutes && (
+            {minutes && (
               <Box className={classes.countdownItem}>
-                {state.minutes}
+                {minutes}
                 <span>min</span>
               </Box>
             )}
-            {state.seconds && (
+            {seconds && (
               <Box className={classes.countdownItem}>
-                {state.seconds}
+                {seconds}
                 <span>sec</span>
               </Box>
             )}
