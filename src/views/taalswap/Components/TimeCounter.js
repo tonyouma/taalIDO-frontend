@@ -74,19 +74,21 @@ const TimeCounter = ({ timeTillDate, endFlag, poolStatus, timeFormat }) => {
           <div className={classes.countdownWrapper}>
             <Box className={classes.countdownItem}>
               {days}
-              <span>days</span>
+              <span>DD</span>
             </Box>
             <Box className={classes.countdownItem}>
               {hours}
-              <span>hours</span>
+              <span>HH</span>
             </Box>
+            :
             <Box className={classes.countdownItem}>
               {minutes}
-              <span>min</span>
+              <span>MM</span>
             </Box>
+            :
             <Box className={classes.countdownItem}>
               {seconds}
-              <span>sec</span>
+              <span>SS</span>
             </Box>
           </div>
         </Box>
@@ -95,22 +97,21 @@ const TimeCounter = ({ timeTillDate, endFlag, poolStatus, timeFormat }) => {
           <div className={classes.countdownWrapper}>
             <Box className={classes.countdownItem}>
               00
-              <span>days</span>
+              <span>DD</span>
             </Box>
-
             <Box className={classes.countdownItem}>
               00
-              <span>hours</span>
+              <span>HH</span>
             </Box>
-
+            :
             <Box className={classes.countdownItem}>
               00
-              <span>min</span>
+              <span>MM</span>
             </Box>
-
+            :
             <Box className={classes.countdownItem}>
               00
-              <span>sec</span>
+              <span>SS</span>
             </Box>
           </div>
         </Box>
