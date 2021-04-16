@@ -139,6 +139,18 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         enqueueSnackbar('Swap success', {
           variant: 'success'
         });
+        if (receipt.status === 1) {
+          enqueueSnackbar('Swap success', {
+            variant: 'success'
+          });
+          await setWarningMessage('');
+          await addSwap();
+
+          history.push({
+            pathname: '/app/taalswap/pools',
+            state: { tabValue: 1 }
+          });
+        }
       } else {
         enqueueSnackbar('Swap fail', {
           variant: 'fail'
@@ -188,6 +200,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                       value: ETHToWei
                     });
                     const msgContents = {
+                      // method: 'swap',
                       from: wallet,
                       to: pool.contractAddress,
                       value: ETHToWei,
