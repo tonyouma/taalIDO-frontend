@@ -6,13 +6,13 @@ import { infuraChainId, infuraApiKey } from 'src/config';
 
 class Taalswap {
   constructor({
-    application,
-    account,
-    library,
-    tokenAddress,
-    contractAddress,
-    notConnected
-  }) {
+                application,
+                account,
+                library,
+                tokenAddress,
+                contractAddress,
+                notConnected
+              }) {
     try {
       let fixedContractAddress = '';
       let tokenContractAddress = '';
@@ -32,35 +32,35 @@ class Taalswap {
           tokenContractAddress === ''
             ? {}
             : new Contract(
-                tokenContractAddress,
-                ContractFactory.getInterface(tokenData.abi),
-                provider
-              );
+            tokenContractAddress,
+            ContractFactory.getInterface(tokenData.abi),
+            provider
+            );
         fixedContract =
           fixedContractAddress === ''
             ? {}
             : new Contract(
-                fixedContractAddress,
-                ContractFactory.getInterface(fixedData.abi),
-                provider
-              );
+            fixedContractAddress,
+            ContractFactory.getInterface(fixedData.abi),
+            provider
+            );
       } else {
         fixedContract =
           fixedContractAddress === ''
             ? {}
             : new Contract(
-                fixedContractAddress,
-                ContractFactory.getInterface(fixedData.abi),
-                library.getSigner(account).connectUnchecked()
-              );
+            fixedContractAddress,
+            ContractFactory.getInterface(fixedData.abi),
+            library.getSigner(account).connectUnchecked()
+            );
         tokenContract =
           tokenContractAddress === ''
             ? {}
             : new Contract(
-                tokenContractAddress,
-                ContractFactory.getInterface(tokenData.abi),
-                library.getSigner(account).connectUnchecked()
-              );
+            tokenContractAddress,
+            ContractFactory.getInterface(tokenData.abi),
+            library.getSigner(account).connectUnchecked()
+            );
       }
       this.params = {
         application: application,
@@ -84,12 +84,16 @@ class Taalswap {
     return this.params.tokenContract;
   }
 
+  async getGasPrice() {
+    return await this.params.infuraProvider.getGasPrice();
+  }
+
   async waitTxHash(txHash) {
     if (!this.params.infuraProvider) return;
     return await this.params.infuraProvider.waitForTransaction(
       txHash,
       1,
-      2 * 60 * 1000
+      10 * 60 * 1000
     );
   }
 
@@ -103,6 +107,7 @@ class Taalswap {
         amountWithDecimals,
         {
           value: value,
+          gasPrice: await this.getGasPrice(),
           gasLimit: 300000
         }
       );
@@ -127,7 +132,8 @@ class Taalswap {
 
     return await this.params.tokenContract
       .approve(this.params.fixedContractAddress, amountWithDecimals, {
-        gasLimit: 300000
+        gasLimit: 300000,
+        gasPrice: await this.getGasPrice()
       })
       .catch((error) => {
         console.log(error);
@@ -143,7 +149,8 @@ class Taalswap {
 
     return await this.params.fixedContract
       .fund(amountWithDecimals, {
-        gasLimit: 3000000
+        gasLimit: 3000000,
+        gasPrice: await this.getGasPrice()
       })
       .catch((error) => {
         console.log(error);
@@ -177,7 +184,8 @@ class Taalswap {
 
     // return await this.params.fixedContract.add(addressesClean);
     return await this.params.fixedContract.add(addresses, {
-      gasLimit: 3000000
+      gasLimit: 3000000,
+      gasPrice: await this.getGasPrice()
     });
   }
 
@@ -476,7 +484,8 @@ class Taalswap {
    */
   async withdrawUnsoldTokens() {
     return await this.params.fixedContract.withdrawUnsoldTokens({
-      gasLimit: 3000000
+      gasLimit: 3000000,
+      gasPrice: await this.getGasPrice()
     });
   }
 
@@ -486,7 +495,8 @@ class Taalswap {
    */
   async withdrawFunds() {
     return await this.params.fixedContract.withdrawFunds({
-      gasLimit: 3000000
+      gasLimit: 3000000,
+      gasPrice: await this.getGasPrice()
     });
   }
 
@@ -528,6 +538,7 @@ class Taalswap {
     return await this.params.fixedContract.swap(amountWithDecimals, {
       from: account,
       value: ETHToWei,
+      gasPrice: await this.getGasPrice(),
       gasLimit: 3000000 // TODO: 어떻게 처리할까 ?
     });
   }
