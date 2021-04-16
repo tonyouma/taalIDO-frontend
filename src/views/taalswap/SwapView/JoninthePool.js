@@ -66,6 +66,7 @@ JoninthePool.propTypes = {
 };
 
 function nativeCallbackTxHash(res) {
+  console.log('=====', window.MobileSendPopupComponent);
   window.MobileSendPopupComponent.setRes(res);
 }
 
@@ -132,6 +133,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
     dispatch(createSwap(swap));
   };
+
   const setRes = async (result) => {
     try {
       console.log(result);
