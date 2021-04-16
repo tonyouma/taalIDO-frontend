@@ -155,7 +155,11 @@ function TablePoolRow({ row, handleOpenModal }) {
         <LinearProgressWithLabel value={progressValue} />
       </TableCell>
       <TableCell align="right" width="15%">
-        <StatusLabel poolStatus={poolStatus} />
+        {poolStatus === '' ? (
+          <CircularProgress color="primary" size="1rem" />
+        ) : (
+          <StatusLabel poolStatus={poolStatus} />
+        )}
       </TableCell>
     </TableRow>
   );
