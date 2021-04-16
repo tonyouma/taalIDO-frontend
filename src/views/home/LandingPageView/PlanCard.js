@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-
+import faker from 'faker';
 import { makeStyles } from '@material-ui/core/styles';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
 import {
@@ -29,6 +29,26 @@ import Numbers from 'src/utils/Numbers';
 // import { PoolStatus } from 'src/utils/poolStatus';
 
 // ----------------------------------------------------------------------
+const BEST_SALES = [
+  {
+    name: faker.name.findName(),
+    email: faker.internet.email(),
+    avatar: '/static/images/avatars/avatar_8.jpg',
+    category: 'CAP',
+    flag: '/static/icons/ic_flag_de.svg',
+    total: faker.finance.amount(),
+    rank: 'top_1'
+  },
+  {
+    name: faker.name.findName(),
+    email: faker.internet.email(),
+    avatar: '/static/images/avatars/avatar_2.jpg',
+    category: 'Branded Shoes',
+    flag: '/static/icons/ic_flag_en.svg',
+    total: faker.finance.amount(),
+    rank: 'top_2'
+  }
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -155,20 +175,20 @@ function PlanCard({ pool, ethPrice, index, className }) {
   return (
     <Card className={clsx(classes.root, className)}>
       <StatusLabel poolStatus={pool.poolStatus} absolute />
-
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
         <Typography variant="h3" sx={{ mx: 1 }}>
           {pool.poolName}
         </Typography>
       </Box>
+      <Box>Rank</Box>
       <Box
         component="img"
         src={`/static/icons/json-logo.svg`}
         sx={{
-          top: 27,
+          top: 60,
           left: 32,
-          width: 50,
-          height: 50,
+          width: 45,
+          height: 45,
           position: 'absolute'
         }}
       />

@@ -15,6 +15,7 @@ import {
   CardHeader
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+import { divide } from 'lodash-es';
 import './APP.css';
 // ----------------------------------------------------------------------
 
@@ -84,14 +85,15 @@ function General({ className, ...other }) {
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>
-      <CardHeader title="Select Application" />
       <div className={clsx(classes.root, className)}>
         <Box
           className={classes.box2rem}
           display="flex"
           justifyContent="space-between"
         >
-          <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+          <Typography variant="h7" sx={{ my: -1, mb: 2 }}>
+            Select Application
+          </Typography>
           <TextField
             select
             label="Applications"
@@ -114,9 +116,11 @@ function General({ className, ...other }) {
           display="flex"
           justifyContent="space-between"
         >
-          <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+          <Typography variant="h7" sx={{ my: -1, mb: 2 }}>
+            Approve
+          </Typography>
           <TextField
-            label="Approve"
+            label="Amount"
             variant="standard"
             InputLabelProps={{
               shrink: 'true'
@@ -130,9 +134,33 @@ function General({ className, ...other }) {
           display="flex"
           justifyContent="space-between"
         >
-          <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+          <Typography variant="h7" sx={{ my: -1, mb: 2 }}>
+            {' '}
+          </Typography>
+          <Box
+            style={{ width: '59%' }}
+            sx={{ mt: 1, display: 'flex', justifyContent: 'flex-end' }}
+          >
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              fullWidth
+              pending={isSubmitting}
+            >
+              Approve
+            </LoadingButton>
+          </Box>
+        </Box>
+        <Box
+          className={classes.box2rem}
+          display="flex"
+          justifyContent="space-between"
+        >
+          <Typography variant="h7" sx={{ my: -1, mb: 2 }}>
+            Fund
+          </Typography>
           <TextField
-            label="Fund"
+            label="Amount"
             variant="standard"
             InputLabelProps={{
               shrink: 'true'
@@ -146,7 +174,31 @@ function General({ className, ...other }) {
           display="flex"
           justifyContent="space-between"
         >
-          <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+          <Typography variant="h7" sx={{ my: -1, mb: 2 }}>
+            {' '}
+          </Typography>
+          <Box
+            style={{ width: '59%' }}
+            sx={{ mt: 1, display: 'flex', justifyContent: 'flex-end' }}
+          >
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              fullWidth
+              pending={isSubmitting}
+            >
+              Fund
+            </LoadingButton>
+          </Box>
+        </Box>
+        <Box
+          className={classes.box2rem}
+          display="flex"
+          justifyContent="space-between"
+        >
+          <Typography variant="h7" sx={{ my: -1, mb: 2 }}>
+            WhiteList
+          </Typography>
           <TextField
             label="WhiteList"
             variant="standard"
@@ -165,7 +217,7 @@ function General({ className, ...other }) {
           display="flex"
           justifyContent="space-between"
         >
-          <Typography variant="h4" sx={{ mb: 1 }}></Typography>
+          <Typography variant="h7" sx={{ mb: 1 }}></Typography>
           <Box
             style={{ width: '59%' }}
             sx={{ mt: 1, display: 'flex', justifyContent: 'flex-end' }}
