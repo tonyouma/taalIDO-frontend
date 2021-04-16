@@ -16,7 +16,7 @@
     "ViewAllProjects": "View All",
     "ApplyForIDO": "Apply for IDO",
     "Ratio": "Ratio",
-    "Maximum":"Maximum",
+    "Maximum": "Maximum",
     "Access": "Access",
     "Participants": "Participants",
     "TotalRaise": "Total Raise",
@@ -64,6 +64,9 @@
     "ConnectToWallet": "CONNECT TO A WALLET",
     "TotalAllocatedTokens": "Total Allocated Tokens",
     "TotalParticipants": "Total Participants",
-    "CurrentProgress": "Current Progress"
+    "CurrentProgress": "Current Progress",
+    "CountDown": "Countdown",
+    "CountDownLive": "Countdown to IDO End",
+    "CountDownUpcoming": "Countdown to IDO Start"
   }
 }

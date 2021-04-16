@@ -35,6 +35,7 @@ import buyIcon from '@iconify-icons/icons8/buy';
 import bxDetail from '@iconify-icons/bx/bx-detail';
 import peopleAudience24Regular from '@iconify-icons/fluent/people-audience-24-regular';
 import locationCompany from '@iconify-icons/carbon/location-company';
+import Countdown from './Countdown';
 
 // ----------------------------------------------------------------------
 
@@ -209,8 +210,11 @@ function PaymentView({ className, ...other }) {
             <Grid item xs={12} sm={6} md={4}>
               <TotalPurchasers pool={pool} />
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            {/* <Grid item xs={12} sm={6} md={4}>
               <CurrentProgress pool={pool} />
+            </Grid> */}
+            <Grid item xs={12} sm={6} md={4}>
+              <Countdown pool={pool} />
             </Grid>
           </Grid>
           <Box sx={{ my: 3 }}></Box>

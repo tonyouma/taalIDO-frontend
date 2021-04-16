@@ -84,22 +84,24 @@ function TotalAllocatedTokens({ className, pool, ...other }) {
         <Typography marginBottom="20px" variant="subtitle2">
           {t('taalswap.TotalAllocatedTokens')}
         </Typography>
-
         <Typography variant="h3">
-          <AnimatedNumber
-            // component="number"
-            value={tokensAllocated}
-            style={{
-              transition: '0.8s ease-out'
-              // fontSize: 48,
-              // transitionProperty: 'background-color, color, opacity'
-            }}
-            // frameStyle={(perc) =>
-            //   perc === 100 ? {} : { backgroundColor: '#ffeb3b' }
-            // }
-            duration={1000}
-            formatValue={(n) => fNumber(n)}
-          />
+          <Box display="flex" alignItems="baseline">
+            <AnimatedNumber
+              // component="number"
+              value={tokensAllocated}
+              style={{
+                transition: '0.8s ease-out'
+                // fontSize: 48,
+                // transitionProperty: 'background-color, color, opacity'
+              }}
+              // frameStyle={(perc) =>
+              //   perc === 100 ? {} : { backgroundColor: '#ffeb3b' }
+              // }
+              duration={1000}
+              formatValue={(n) => `${fNumber(n)}`}
+            />
+            <Typography>/ {pool.tradeAmount}</Typography>
+          </Box>
         </Typography>
       </Box>
 
