@@ -91,21 +91,16 @@ function Countdown({ className, pool, ...other }) {
         var nowEpoch = moment();
 
         if (poolStatus === PoolStatus.LIVE) {
-          console.log('live -> Countdown to IDO End');
           const endEpoch = moment.unix(pool.endDate);
           setEndFlag(false);
           setTimeTillDate(endEpoch.format('MM DD YYYY, h:mm a'));
         } else if (poolStatus === PoolStatus.UPCOMING) {
-          console.log('upcoming -> Countdown to IDO Start');
           const startEpoch = moment.unix(pool.startDate);
           setEndFlag(false);
           setTimeTillDate(startEpoch.format('MM DD YYYY, h:mm a'));
         } else {
-          console.log('else -> 00 : : 00 : 00 : 00');
           setEndFlag(true);
         }
-      } else {
-        console.log('188');
       }
     } catch (error) {
       console.log(error);
