@@ -6,13 +6,13 @@ import { infuraChainId, infuraApiKey } from 'src/config';
 
 class Taalswap {
   constructor({
-                application,
-                account,
-                library,
-                tokenAddress,
-                contractAddress,
-                notConnected
-              }) {
+    application,
+    account,
+    library,
+    tokenAddress,
+    contractAddress,
+    notConnected
+  }) {
     try {
       let fixedContractAddress = '';
       let tokenContractAddress = '';
@@ -32,35 +32,35 @@ class Taalswap {
           tokenContractAddress === ''
             ? {}
             : new Contract(
-            tokenContractAddress,
-            ContractFactory.getInterface(tokenData.abi),
-            provider
-            );
+                tokenContractAddress,
+                ContractFactory.getInterface(tokenData.abi),
+                provider
+              );
         fixedContract =
           fixedContractAddress === ''
             ? {}
             : new Contract(
-            fixedContractAddress,
-            ContractFactory.getInterface(fixedData.abi),
-            provider
-            );
+                fixedContractAddress,
+                ContractFactory.getInterface(fixedData.abi),
+                provider
+              );
       } else {
         fixedContract =
           fixedContractAddress === ''
             ? {}
             : new Contract(
-            fixedContractAddress,
-            ContractFactory.getInterface(fixedData.abi),
-            library.getSigner(account).connectUnchecked()
-            );
+                fixedContractAddress,
+                ContractFactory.getInterface(fixedData.abi),
+                library.getSigner(account).connectUnchecked()
+              );
         tokenContract =
           tokenContractAddress === ''
             ? {}
             : new Contract(
-            tokenContractAddress,
-            ContractFactory.getInterface(tokenData.abi),
-            library.getSigner(account).connectUnchecked()
-            );
+                tokenContractAddress,
+                ContractFactory.getInterface(tokenData.abi),
+                library.getSigner(account).connectUnchecked()
+              );
       }
       this.params = {
         application: application,
