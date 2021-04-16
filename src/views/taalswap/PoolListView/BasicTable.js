@@ -21,7 +21,8 @@ import {
   Box,
   Hidden,
   Checkbox,
-  Divider
+  Divider,
+  CircularProgress
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -198,11 +199,15 @@ function TablePoolRow({ row, handleOpenModal }) {
         </TableCell>
       </Hidden>
       {/* <TableCell align="center" width="5%"></TableCell> */}
-      <TableCell align="right" width="35%">
+      <TableCell align="right" width="30%">
         <LinearProgressWithLabel value={progressValue} />
       </TableCell>
-      <TableCell align="right" width="15%">
-        <StatusLabel poolStatus={poolStatus} />
+      <TableCell align="right" width="20%">
+        {poolStatus === '' ? (
+          <CircularProgress color="primary" size="1rem" />
+        ) : (
+          <StatusLabel poolStatus={poolStatus} />
+        )}
       </TableCell>
     </TableRow>
   );

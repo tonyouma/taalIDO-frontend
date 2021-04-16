@@ -60,6 +60,12 @@
     "FillApplication": "IDO 신청서 작성하기",
     "Purchaser": "구매자",
     "Timestamp": "구입 일시",
-    "Finalized": "완료 여부"
+    "Finalized": "완료 여부",
+    "ConnectToWallet": "연결할 전자지갑 선택",
+    "TotalAllocatedTokens": "총 판매 토큰개수",
+    "TotalParticipants": "총 구매자수",
+    "CurrentProgress": "현재 진행상황"
+
+
   }
 }
