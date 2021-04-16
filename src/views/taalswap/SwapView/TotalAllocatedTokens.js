@@ -1,21 +1,26 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import ReactApexChart from 'react-apexcharts';
 import { fNumber, fPercent } from 'src/utils/formatNumber';
-import trendingUpFill from '@iconify-icons/eva/trending-up-fill';
-import trendingDownFill from '@iconify-icons/eva/trending-down-fill';
+import Taalswap from 'src/utils/taalswap';
+import { useWeb3React } from '@web3-react/core';
 import { alpha, useTheme, makeStyles } from '@material-ui/core/styles';
 import { Box, Card, Typography } from '@material-ui/core';
-
+import AnimatedNumber from 'react-animated-number';
+import sharpMonetizationOn from '@iconify-icons/ic/sharp-monetization-on';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
+    color: theme.palette.warning.darker
+    // backgroundColor: theme.palette.warning.lighter
+
+    // height: '160px'
   },
   trending: {
     display: 'flex',
@@ -46,71 +51,57 @@ TotalAllocatedTokens.propTypes = {
   className: PropTypes.string
 };
 
-const PERCENT = 2.6;
-const TOTAL_USER = 18765;
-
-function TotalAllocatedTokens({ className, ...other }) {
+function TotalAllocatedTokens({ className, pool, ...other }) {
   const classes = useStyles();
-  const theme = useTheme();
+  const context = useWeb3React();
+  const [tokensAllocated, setTokensAllocated] = useState(0);
 
-  const chartData = [
-    { data: [2532, 6632, 4132, 8932, 6332, 2532, 4432, 1232, 3632, 932, 3354] }
-  ];
-  const chartOptions = {
-    colors: [theme.palette.primary.main],
-    chart: { sparkline: { enabled: true } },
-    plotOptions: { bar: { columnWidth: '68%', endingShape: 'rounded' } },
-    labels: [1, 2, 3, 4, 5, 6, 7, 8],
-    tooltip: {
-      x: { show: false },
-      y: {
-        formatter: (seriesName) => fNumber(seriesName),
-        title: {
-          formatter: function (seriesName) {
-            return '';
-          }
-        }
-      },
-      marker: { show: false }
+  const { library, account } = context;
+
+  useEffect(async () => {
+    if (!!library) {
+      const taalswap = new Taalswap({
+        application: pool,
+        account,
+        library
+      });
+
+      await taalswap
+        .tokensAllocated()
+        .then((result) => {
+          console.log(result);
+          setTokensAllocated(result);
+        })
+        .catch((error) => console.log(error));
     }
-  };
+  }, [library]);
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle2">Total Allocated Tokens</Typography>
-        <div className={classes.trending}>
-          <div
-            className={clsx(classes.trendingIcon, {
-              [classes.isTrendingDown]: PERCENT < 0
-            })}
-          >
-            <Icon
-              width={16}
-              height={16}
-              icon={PERCENT >= 0 ? trendingUpFill : trendingDownFill}
-            />
-          </div>
-          <Typography
-            component="span"
-            variant="subtitle2"
-            color={PERCENT >= 0 ? 'primary' : 'error'}
-          >
-            {PERCENT > 0 && '+'}
-            {fPercent(PERCENT)}
-          </Typography>
-        </div>
+        <Typography marginBottom="20px" variant="subtitle2">
+          Total Allocated Tokens
+        </Typography>
 
-        <Typography variant="h3">{fNumber(TOTAL_USER)}</Typography>
+        <Typography variant="h3">
+          <AnimatedNumber
+            // component="number"
+            value={tokensAllocated}
+            style={{
+              transition: '0.8s ease-out'
+              // fontSize: 48,
+              // transitionProperty: 'background-color, color, opacity'
+            }}
+            // frameStyle={(perc) =>
+            //   perc === 100 ? {} : { backgroundColor: '#ffeb3b' }
+            // }
+            duration={1000}
+            formatValue={(n) => fNumber(n)}
+          />
+        </Typography>
       </Box>
 
-      <ReactApexChart
-        type="bar"
-        series={chartData}
-        options={chartOptions}
-        width={60}
-        height={36}
-      />
+      <Icon icon={sharpMonetizationOn} width={60} height={60} />
     </Card>
   );
 }

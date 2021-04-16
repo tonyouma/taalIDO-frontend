@@ -204,13 +204,13 @@ function PaymentView({ className, ...other }) {
           {/* <Container> */}
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={4}>
-              <TotalAllocatedTokens />
+              <TotalAllocatedTokens pool={pool} />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <TotalPurchasers />
+              <TotalPurchasers pool={pool} />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <CurrentProgress />
+              <CurrentProgress pool={pool} />
             </Grid>
           </Grid>
           <Box sx={{ my: 3 }}></Box>
