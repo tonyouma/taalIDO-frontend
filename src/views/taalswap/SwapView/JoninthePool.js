@@ -148,6 +148,9 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       }
     } catch (e) {
       console.log(e);
+      enqueueSnackbar('Swap error', {
+        variant: 'error'
+      });
     }
     onBackdrop(false);
   };
