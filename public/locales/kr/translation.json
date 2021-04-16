@@ -64,8 +64,9 @@
     "ConnectToWallet": "연결할 전자지갑 선택",
     "TotalAllocatedTokens": "총 판매 토큰개수",
     "TotalParticipants": "총 구매자수",
-    "CurrentProgress": "현재 진행상황"
-
-
+    "CurrentProgress": "현재 진행상황",
+    "CountDown": "남은 시간",
+    "CountDownLive": "IDO 종료 까지 남은 시간",
+    "CountDownUpcoming": "IDO 시작 까지 남은 시간"
   }
 }
