@@ -104,6 +104,7 @@ function TablePoolRow({ row, handleOpenModal }) {
   const { library, account } = context;
 
   useEffect(async () => {
+    console.log(';laskdjf;laksjdf');
     if (!!library) {
       const taalswap = new Taalswap({
         application: row,
@@ -184,6 +185,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
     (state) => state.pool
   );
   const { library, account } = context;
+  const { os, wallet, from } = useSelector((state) => state.talken);
+
   let taalswap;
   if (!!library) {
     taalswap = new Taalswap({
@@ -202,9 +205,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   };
 
   useEffect(async () => {
-    await dispatch(getSwapList(account));
+    await dispatch(getSwapList(wallet ? wallet : account));
     await getMySwapList();
-  }, [getMySwapList, dispatch]);
+  }, [dispatch]);
 
   // const handleFilterByName = (event) => {
   //   setFilterName(event.target.value);
