@@ -127,7 +127,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       amount: amount,
       joinDate: moment().unix()
     };
-
+    console.log('=====', JSON.stringify(swap));
     dispatch(createSwap(swap));
   };
 
