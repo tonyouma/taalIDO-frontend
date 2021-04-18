@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
+import { jsonServerUrl } from 'src/config';
 
 // ----------------------------------------------------------------------
 
@@ -97,7 +98,7 @@ export function getPoolList() {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3002/pools?_sort=id&_order=desc'
+        `${jsonServerUrl}/pools?_sort=id&_order=desc`
       );
       // response.data.map((resp) => {
       //   resp.ratio = 0.03 + resp.id;
@@ -117,7 +118,7 @@ export function getApplicationList() {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3002/pools?_sort=id&_order=desc'
+        `${jsonServerUrl}/pools?_sort=id&_order=desc`
       );
       dispatch(slice.actions.getApplicationListSuccess(response.data));
     } catch (error) {
@@ -131,8 +132,7 @@ export function searchApplicationListByCreator(creator) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3002/pools?_sort=id&_order=desc&creator=' +
-          creator
+        `${jsonServerUrl}/pools?_sort=id&_order=desc&creator=` + creator
       );
       dispatch(slice.actions.getApplicationListSuccess(response.data));
     } catch (error) {
@@ -146,7 +146,7 @@ export function createApplication(newApplication, accessToken) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.post(
-        'http://133.186.222.82:3002/pools',
+        `${jsonServerUrl}/pools`,
         newApplication,
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
@@ -165,7 +165,7 @@ export function updateApplication(id, updateItem, accessToken) {
       console.log(id);
       console.log(accessToken);
       const response = await axios.patch(
-        'http://taalswap.finance:3002/pools/' + id,
+        `${jsonServerUrl}/pools/` + id,
         updateItem,
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
@@ -182,7 +182,7 @@ export function getSwapList(walletAddress) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(
-        'http://133.186.222.82:3002/swaps?walletAddress=' + walletAddress
+        `${jsonServerUrl}/swaps?walletAddress=` + walletAddress
       );
       dispatch(slice.actions.getSwapListSuccess(response.data));
     } catch (error) {
@@ -195,10 +195,7 @@ export function createSwap(newSwap) {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.post(
-        'http://133.186.222.82:3002/swaps',
-        newSwap
-      );
+      const response = await axios.post(`${jsonServerUrl}/swaps`, newSwap);
       dispatch(slice.actions.createSwapSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));

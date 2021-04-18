@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { jsonServerUrl } from 'src/config';
 
 export async function login({ creator, password, key }) {
   const response = await axios
-    .post('http://taalswap.finance:3002/login', {
+    .post(`${jsonServerUrl}/login`, {
       creator,
       password,
       key
@@ -16,7 +17,7 @@ export async function login({ creator, password, key }) {
 
 export async function register({ creator, password, key }) {
   const response = await axios
-    .post('http://taalswap.finance:3002/register', {
+    .post(`${jsonServerUrl}/register`, {
       creator,
       password,
       key
@@ -30,7 +31,7 @@ export async function register({ creator, password, key }) {
 
 export async function getMaxId() {
   const response = await axios
-    .get('http://taalswap.finance:3002/pools?_sort=id&_order=desc&_limit=1')
+    .get(`${jsonServerUrl}/pools?_sort=id&_order=desc&_limit=1`)
     .catch((error) => {
       console.log(error);
       throw error;
