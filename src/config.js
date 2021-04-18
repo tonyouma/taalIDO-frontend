@@ -27,7 +27,7 @@ export const targetNetwork = '0x4';
 export const targetNetworkMsg =
   'Rinkeby 테스트 네트워크가 선택되지 않았습니다.';
 
-export const jsonServerUrl = 'http://taalswap.finance:3003';
+export const jsonServerUrl = 'http://taalswap.finance:3002';
 
 export const admin = {
   addresses: [
