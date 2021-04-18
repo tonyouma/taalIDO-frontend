@@ -105,7 +105,7 @@ function DarkMode({ className }) {
                 {/* <Typography variant="h4" paragraph>
                   TaalSwap
                 </Typography> */}
-                <Logo footer={'true'} />
+                <Logo />
               </MotionInView>
               <MotionInView
                 variants={varFadeInUp}

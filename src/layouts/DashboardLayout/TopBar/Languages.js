@@ -59,7 +59,7 @@ function Languages() {
     // Language Default = 한국어
     currentLang = LANGS.find((_lang) => _lang.value === 'kr');
   }
-  console.log(currentLang);
+
   return (
     <>
       <MIconButton

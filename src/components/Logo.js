@@ -12,7 +12,7 @@ function Logo({ className, ...other }) {
   const { auth, profile } = useSelector((state) => state.firebase);
   const { themeMode } = useSelector((state) => state.settings);
 
-  const length = new String(className).split(' ').length;
+  const length = String(className).split(' ').length;
   let logoFile;
 
   if (themeMode === 'light') {
