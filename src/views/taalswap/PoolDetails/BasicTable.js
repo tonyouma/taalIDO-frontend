@@ -15,6 +15,7 @@ import getMax from '../../../utils/getMax';
 import moment from 'moment';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +37,7 @@ General.propTypes = {
 
 function General({ className, pool }) {
   const classes = useStyles();
+  const { i18n, t } = useTranslation();
   const context = useWeb3React();
 
   const [name, setName] = useState('');
@@ -87,7 +89,9 @@ function General({ className, pool }) {
               <Grid container spacing={4}>
                 <Grid item xs={12} sm={12}>
                   {/* 타이틀 삽입 */}
-                  <Box sx={{ fontSize: 20 }}> Pool Information</Box>
+                  <Box sx={{ fontSize: 20 }}>
+                    {t('taalswap.PoolInformation')}
+                  </Box>
                 </Grid>
                 <Grid item xs={12} sm={12}>
                   <div className={classes.row}>
@@ -96,7 +100,7 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Token Distribution
+                      {t('taalswap.PoolStart')}
                     </Typography>
                     <Typography
                       component="p"
@@ -117,7 +121,7 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Max. Allocation
+                      {t('taalswap.MaxIndiv')}
                     </Typography>
                     <Typography
                       component="p"
@@ -136,7 +140,7 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Min. Allocation
+                      {t('taalswap.MinIndiv')}
                     </Typography>
                     <Typography
                       component="p"
@@ -155,7 +159,7 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Min. Swap Level
+                      {t('taalswap.MinRaise')}
                     </Typography>
                     <Typography
                       component="p"
@@ -174,7 +178,7 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Access Type
+                      {t('taalswap.Access')}
                     </Typography>
                     <Typography
                       component="p"
@@ -196,7 +200,9 @@ function General({ className, pool }) {
               <Grid container spacing={4}>
                 <Grid item xs={12} sm={12}>
                   {/* 타이틀 삽입 */}
-                  <Box sx={{ fontSize: 20 }}> Token Information</Box>
+                  <Box sx={{ fontSize: 20 }}>
+                    {t('taalswap.TokenInformation')}
+                  </Box>
                 </Grid>
                 <Grid item xs={12} sm={12}>
                   <div className={classes.row}>
@@ -205,7 +211,7 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Name
+                      {t('taalswap.TokenName')}
                     </Typography>
                     <Typography
                       component="p"
@@ -224,7 +230,7 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Address
+                      {t('taalswap.TokenAddress')}
                     </Typography>
                     <Typography
                       component="p"
@@ -243,7 +249,7 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Total Supply
+                      {t('taalswap.TotalSupply')}
                     </Typography>
                     <Typography
                       component="p"
@@ -262,7 +268,7 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Holders
+                      {t('taalswap.TokenHolders')}
                     </Typography>
                     <Typography
                       component="p"
@@ -281,7 +287,7 @@ function General({ className, pool }) {
                       variant="subtitle2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      Transfers
+                      {t('taalswap.TokenTransfers')}
                     </Typography>
                     <Typography
                       component="p"

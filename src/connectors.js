@@ -43,7 +43,7 @@ export const network = new NetworkConnector({
 export const walletconnect = (useQR) => {
   const chainId = parseInt(targetNetwork);
   return new WalletConnectConnector({
-    rpc: { chainId: RPC_URLS[chainId] },
+    rpc: { [chainId]: RPC_URLS[chainId] },
     bridge: 'https://bridge.walletconnect.org',
     qrcode: useQR,
     pollingInterval: POLLING_INTERVAL

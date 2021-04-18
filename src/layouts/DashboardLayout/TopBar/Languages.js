@@ -47,12 +47,18 @@ function Languages() {
   const [isOpen, setOpen] = useState(false);
 
   const langStorage = localStorage.getItem('i18nextLng');
-  const currentLang = LANGS.find((_lang) => _lang.value === langStorage);
+  let currentLang = LANGS.find((_lang) => _lang.value === langStorage);
 
   const handleChangeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     setOpen(false);
+    localStorage.setItem('i18nextLng', lng);
   };
+
+  if (currentLang === undefined) {
+    // Language Default = 한국어
+    currentLang = LANGS.find((_lang) => _lang.value === 'kr');
+  }
 
   return (
     <>

@@ -21,9 +21,12 @@ import {
   searchApplicationListByCreator,
   updateApplication
 } from 'src/redux/slices/pool';
-// import TotalPurchasers from '../../../general/DashboardAppView/TotalPurchasers';
-// import TotalAllocated from '../../../general/DashboardAppView/TotalAllocated';
-// import TopRelatedApplications from '../../../general/DashboardAppView/TopRelatedApplications';
+import TotalAllocated from './TotalAllocated';
+import TotalPurchasers from './TotalPurchasers';
+import Progress from './Progress';
+import InputForm from './InputForm';
+import Widgets1 from './Widgets1';
+import Widgets2 from './Widgets2';
 import { useWeb3React } from '@web3-react/core';
 import { useLocation } from 'react-router';
 import { useSnackbar } from 'notistack';
@@ -102,12 +105,12 @@ async function callWithDrawFunds(application, swapContract) {
 
 async function callWithDrawUnsoldTokens(application, swapContract) {
   const result = await swapContract.withdrawUnsoldTokens().catch((error) => {
-    // console.log('callWithDrawUnsoldTokens', error);
+    console.log('callWithDrawUnsoldTokens', error);
     throw error;
   });
-  // console.log('callWithDrawUnsoldTokens', result);
+  console.log('callWithDrawUnsoldTokens', result);
   const receipt = await result.wait();
-  // console.log('receipt ', receipt);
+  console.log('receipt ', receipt);
   return receipt;
 }
 
@@ -318,6 +321,9 @@ const AdminView = () => {
     // console.log('selected pool', selectedPool);
   }, [account, open]);
 
+  const handleOpen = (open) => {
+    setOpen(open);
+  };
   return (
     <>
       {/* <Backdrop className={classes.backdrop} open={open}>
@@ -344,21 +350,38 @@ const AdminView = () => {
           <HeaderDashboard heading="Admin" links={[{ name: 'settings' }]} />
 
           <Container maxWidth="xl">
-            {/* <Grid container spacing={3}>
+            <Grid container spacing={3}>
               <Grid item xs={12} md={4}>
-                <TopRelatedApplications />
+                <TotalAllocated selectedItem={location.state.selectedItem} />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <TotalPurchasers />
+                <TotalPurchasers selectedItem={location.state.selectedItem} />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <TotalAllocated />
+                <Progress />
               </Grid>
-            </Grid> */}
+              <Grid item xs={12} md={6} lg={8}>
+                <InputForm
+                  applicationList={applicationList}
+                  selectedItem={location.state.selectedItem}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6} lg={4}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Widgets1 handleOpen={handleOpen} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Widgets2 handleOpen={handleOpen} />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
           </Container>
-
+          {/* 
           <CardContent>
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
@@ -499,7 +522,7 @@ const AdminView = () => {
                 </Card>
               </Grid>
             </Grid>
-          </CardContent>
+          </CardContent> */}
         </Container>
       </Page>
     </>

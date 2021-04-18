@@ -106,7 +106,6 @@ function CurrentProgress({ className, pool, ...other }) {
           />
         </Typography>
       </Box>
-
       <Icon icon={baselineHistory} width={60} height={60} />
     </Card>
   );

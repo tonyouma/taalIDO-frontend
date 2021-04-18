@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 //   className: PropTypes.string
 // };
 
-function Countdown({ className, pool, ...other }) {
+function Countdown({ className, pool, value, ...other }) {
   const classes = useStyles();
   const { i18n, t } = useTranslation();
   const context = useWeb3React();
@@ -85,51 +85,36 @@ function Countdown({ className, pool, ...other }) {
           pool.status,
           pool.minFundRaise
         );
-        console.log(status);
+        console.log(`poolStatus : ${status}`);
         setPoolStatus(status);
 
         var nowEpoch = moment();
 
-        if (poolStatus === PoolStatus.LIVE) {
+        if (status === PoolStatus.LIVE) {
           const endEpoch = moment.unix(pool.endDate);
           setEndFlag(false);
           setTimeTillDate(endEpoch.format('MM DD YYYY, hh:mm a'));
-          console.log(`endEpoch : ${endEpoch.format('MM DD YYYY, hh:mm a')}`);
-        } else if (poolStatus === PoolStatus.UPCOMING) {
+        } else if (status === PoolStatus.UPCOMING) {
           const startEpoch = moment.unix(pool.startDate);
-          console.log(
-            `startDate : ${startEpoch.format('MM DD YYYY, hh:mm a')}`
-          );
+
           setEndFlag(false);
           setTimeTillDate(startEpoch.format('MM DD YYYY, hh:mm a'));
         } else {
           setEndFlag(true);
         }
+      } else {
+        setEndFlag(true);
       }
     } catch (error) {
       console.log(error);
     }
-  }, [poolStatus]);
+  }, [library, value]);
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>
-      {poolStatus === PoolStatus.LIVE && (
-        <Typography marginBottom="20px" variant="subtitle2">
-          {t('taalswap.CountDown')} {endFlag && ` - ${t('taalswap.Finish')}`}
-        </Typography>
-      )}
-
-      {poolStatus === PoolStatus.UPCOMING && (
-        <Typography marginBottom="20px" variant="subtitle2">
-          {t('taalswap.CountDown')} {endFlag && ` - ${t('taalswap.Finish')}`}
-        </Typography>
-      )}
-
-      {poolStatus !== PoolStatus.LIVE && poolStatus !== PoolStatus.UPCOMING && (
-        <Typography marginBottom="20px" variant="subtitle2">
-          {t('taalswap.CountDown')}
-        </Typography>
-      )}
+      <Typography marginBottom="20px" variant="subtitle2">
+        {t('taalswap.CountDown')}
+      </Typography>
 
       <TimeCounter
         timeTillDate={timeTillDate}

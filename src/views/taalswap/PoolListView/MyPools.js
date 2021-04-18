@@ -102,14 +102,23 @@ function TablePoolRow({ row, handleOpenModal }) {
   const [max, setMax] = useState(0);
 
   const { library, account } = context;
+  const { os, wallet, from } = useSelector((state) => state.talken);
 
   useEffect(async () => {
-    if (!!library) {
-      const taalswap = new Taalswap({
-        application: row,
-        account,
-        library
-      });
+    if (!!library || !!from) {
+      let taalswap;
+      if (!!library) {
+        taalswap = new Taalswap({
+          application: row,
+          account,
+          library
+        });
+      } else if (!!from) {
+        taalswap = new Taalswap({
+          application: row,
+          notConnected: true
+        });
+      }
 
       await taalswap
         .tokensAllocated()
@@ -184,12 +193,19 @@ export default function MyPools({ filterName, category, onBackdrop }) {
     (state) => state.pool
   );
   const { library, account } = context;
+  const { os, wallet, from } = useSelector((state) => state.talken);
+
   let taalswap;
   if (!!library) {
     taalswap = new Taalswap({
       application: selectedPool,
       account,
       library
+    });
+  } else if (!!from) {
+    taalswap = new Taalswap({
+      application: selectedPool,
+      notConnected: true
     });
   }
 
@@ -202,9 +218,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   };
 
   useEffect(async () => {
-    await dispatch(getSwapList(account));
+    await dispatch(getSwapList(wallet ? wallet : account));
     await getMySwapList();
-  }, [getMySwapList, dispatch]);
+  }, [dispatch]);
 
   // const handleFilterByName = (event) => {
   //   setFilterName(event.target.value);
