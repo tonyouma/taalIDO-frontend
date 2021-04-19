@@ -294,7 +294,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
             onBackdrop(true);
             if (from) {
               const data = await taalswap.getRedeemGivenMinimumGoalNotAchievedABI(
-                purchases
+                {
+                  purchase_id: purchases
+                }
               );
               console.log('=====data', data);
               const msgContents = {
