@@ -282,9 +282,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
 
   const handleOnClickClaimETH = async () => {
     try {
-      if (!!library) {
+      if (!!library || from) {
         const myPurchases = await taalswap.getAddressPurchaseIds({
-          address: account
+          address: from ? wallet : account
         });
 
         if (!!myPurchases.error) {
@@ -353,8 +353,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   const handleOnClickClaimTokens = async () => {
     try {
       if (!!library || from) {
+        console.log('=====handleOnClickClaimTokens');
         const myPurchases = await taalswap.getAddressPurchaseIds({
-          address: account
+          address: from ? wallet : account
         });
 
         if (!!myPurchases.error) {

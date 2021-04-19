@@ -120,17 +120,19 @@ class Taalswap {
     return data;
   }
 
-  async getRedeemTokensABI(purchaseId) {
+  async getRedeemTokensABI({ purchase_id }) {
     const data = this.params.fixedContract.interface.encodeFunctionData(
-      'redeemTokens'
+      'redeemTokens',
+      [purchase_id]
     );
     console.log('=====getRedeemTokensABI', data);
     return data;
   }
 
-  async getRedeemGivenMinimumGoalNotAchievedABI(purchaseId) {
+  async getRedeemGivenMinimumGoalNotAchievedABI({ purchase_id }) {
     const data = this.params.fixedContract.interface.encodeFunctionData(
-      'redeemGivenMinimumGoalNotAchieved'
+      'redeemGivenMinimumGoalNotAchieved',
+      [purchase_id]
     );
     console.log('=====redeemGivenMinimumGoalNotAchieved', data);
     return data;
