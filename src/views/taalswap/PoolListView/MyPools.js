@@ -293,9 +293,10 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           myPurchases.map(async (purchases) => {
             onBackdrop(true);
             if (from) {
-              const data = taalswap.getRedeemGivenMinimumGoalNotAchievedABI(
+              const data = await taalswap.getRedeemGivenMinimumGoalNotAchievedABI(
                 purchases
               );
+              console.log('=====data', data);
               const msgContents = {
                 method: 'redeemGivenMinimumGoalNotAchieved',
                 from: wallet,
@@ -303,6 +304,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 purchase_id: purchases,
                 data: data
               };
+              console.log('=====', JSON.stringify(msgContents));
               let sendData = {
                 callback: 'onCallbackTxHash',
                 msgContents: msgContents
@@ -368,6 +370,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               const data = await taalswap.getRedeemTokensABI({
                 purchase_id: purchases
               });
+              console.log('=====data', data);
               const msgContents = {
                 method: 'redeemTokens',
                 from: wallet,
@@ -375,6 +378,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 purchase_id: purchases,
                 data: data
               };
+              console.log('=====', JSON.stringify(msgContents));
               let sendData = {
                 callback: 'onCallbackTxHash',
                 msgContents: msgContents
