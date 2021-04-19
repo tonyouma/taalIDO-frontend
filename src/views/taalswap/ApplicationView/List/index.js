@@ -750,7 +750,7 @@ export default function ApplicationListView() {
           </Box>
         </Backdrop>
         <Box className={classes.tableTop}>
-          <Box className={classes.tableTab}>
+          <Box className={classes.tableTab} className="tab_Line">
             <HeaderDashboard
               heading={t('taalswap.applications')}
               links={[{ name: '' }]}
