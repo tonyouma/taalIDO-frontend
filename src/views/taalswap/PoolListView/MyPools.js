@@ -289,6 +289,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
 
         if (!!myPurchases.error) {
         } else {
+          console.log('===== start handleOnClickClaimETH');
           myPurchases.map(async (purchases) => {
             onBackdrop(true);
             if (from) {
@@ -300,8 +301,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 from: wallet,
                 to: selectedPool.contractAddress,
                 purchase_id: purchases,
-                data: data,
-                gasLimit: 300000
+                data: data
               };
               let sendData = {
                 callback: 'onCallbackTxHash',
@@ -346,7 +346,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
         dispatch(closeModal());
       }
     } catch (error) {
-      console.log(error);
+      console.log('=====', error);
     }
   };
 
@@ -360,6 +360,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
         if (!!myPurchases.error) {
           console.log(myPurchases.error);
         } else {
+          console.log('===== start handleOnClickClaimTokens');
           myPurchases.map(async (purchases) => {
             onBackdrop(true);
             if (from) {
@@ -371,8 +372,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 from: wallet,
                 to: selectedPool.contractAddress,
                 purchase_id: purchases,
-                data: data,
-                gasLimit: 300000
+                data: data
               };
               let sendData = {
                 callback: 'onCallbackTxHash',
@@ -417,7 +417,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
         dispatch(closeModal());
       }
     } catch (error) {
-      console.log(error);
+      console.log('=====', error);
     }
   };
 

@@ -124,7 +124,7 @@ class Taalswap {
     const data = this.params.fixedContract.interface.encodeFunctionData(
       'redeemTokens'
     );
-    console.log('getRedeemTokensABI', data);
+    console.log('=====getRedeemTokensABI', data);
     return data;
   }
 
@@ -132,7 +132,7 @@ class Taalswap {
     const data = this.params.fixedContract.interface.encodeFunctionData(
       'redeemGivenMinimumGoalNotAchieved'
     );
-    console.log('redeemGivenMinimumGoalNotAchieved', data);
+    console.log('=====redeemGivenMinimumGoalNotAchieved', data);
     return data;
   }
 
