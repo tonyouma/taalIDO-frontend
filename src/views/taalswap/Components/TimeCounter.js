@@ -7,14 +7,17 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(3),
-    color: theme.palette.info.darker
+    // padding: theme.spacing(3),
+    color: theme.palette.warning.main
+
+    // paddingBottom: 10
   },
   countdownWrapper: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap'
+    // border: '1px solid red'
   },
 
   countdownItem: {
@@ -24,11 +27,12 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    margin: '2px',
-    position: 'relative',
-    width: '50px',
+    // position: 'relative',
+    width: '40px',
+    // padding: 0,
+    // margin: 0,
+    // border: '1px solid blue',
     '& span': {
-      color: theme.palette.info.darker,
       fontSize: '10px',
       fontWeight: '600',
       textTransform: 'uppercase'
@@ -76,6 +80,7 @@ const TimeCounter = ({ timeTillDate, endFlag, poolStatus, timeFormat }) => {
               {days}
               <span>DD</span>
             </Box>
+            :
             <Box className={classes.countdownItem}>
               {hours}
               <span>HH</span>
@@ -99,6 +104,7 @@ const TimeCounter = ({ timeTillDate, endFlag, poolStatus, timeFormat }) => {
               00
               <span>DD</span>
             </Box>
+            :
             <Box className={classes.countdownItem}>
               00
               <span>HH</span>

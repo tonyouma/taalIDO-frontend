@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(3),
-    color: theme.palette.warning.darker
+    color: theme.palette.text.primary
+    // color: theme.palette.warning.darker
     // backgroundColor: theme.palette.warning.lighter
 
     // height: '160px'
@@ -29,15 +30,15 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(0.5)
   },
   trendingIcon: {
-    width: 24,
-    height: 24,
-    display: 'flex',
-    borderRadius: '50%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: theme.spacing(1),
-    color: theme.palette.primary.main,
-    backgroundColor: alpha(theme.palette.primary.main, 0.16)
+    // width: 24,
+    // height: 24,
+    // display: 'flex',
+    // borderRadius: '50%',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // marginRight: theme.spacing(1),
+    color: theme.palette.warning.darker
+    // backgroundColor: alpha(theme.palette.primary.main, 0.16)
   },
   isTrendingDown: {
     color: theme.palette.error.main,
@@ -104,7 +105,12 @@ function TotalAllocatedTokens({ className, pool, ...other }) {
         </Typography>
       </Box>
 
-      <Icon icon={sharpMonetizationOn} width={60} height={60} />
+      <Icon
+        className={classes.trendingIcon}
+        icon={sharpMonetizationOn}
+        width={60}
+        height={60}
+      />
     </Card>
   );
 }

@@ -18,14 +18,18 @@ import { getPoolStatus } from '../../../utils/getPoolStatus';
 import { useTranslation } from 'react-i18next';
 import TimeCounter from 'src/views/taalswap/Components/TimeCounter';
 import moment from 'moment';
+import outlineWatchLater from '@iconify-icons/ic/outline-watch-later';
+
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    // minWidth: '335px',
     // display: 'flex',
     // alignItems: 'center',
     padding: theme.spacing(3),
-    color: theme.palette.info.darker
+    // color: theme.palette.info.darker
+    color: theme.palette.text.primary
     // backgroundColor: theme.palette.info.lighter
 
     // height: '160px'
@@ -37,15 +41,16 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(0.5)
   },
   trendingIcon: {
-    width: 24,
-    height: 24,
-    display: 'flex',
-    borderRadius: '50%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: theme.spacing(1),
-    color: theme.palette.primary.main,
-    backgroundColor: alpha(theme.palette.primary.main, 0.16)
+    // width: 24,
+    // height: 24,
+    // display: 'flex',
+    // borderRadius: '50%',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // marginRight: theme.spacing(1),
+    color: theme.palette.warning.main
+
+    // backgroundColor: alpha(theme.palette.primary.main, 0.16)
   },
   isTrendingDown: {
     color: theme.palette.error.main,
@@ -112,17 +117,29 @@ function Countdown({ className, pool, value, ...other }) {
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>
-      <Typography marginBottom="20px" variant="subtitle2">
+      <Typography marginBottom="10px" variant="subtitle2">
         {t('taalswap.CountDown')}
       </Typography>
 
-      <TimeCounter
-        timeTillDate={timeTillDate}
-        endFlag={endFlag}
-        timeFormat="MM DD YYYY, h:mm a"
-        color={theme.palette.info.darker}
-        poolStatus={poolStatus}
-      />
+      <Box display="flex" justifyContent="space-between">
+        <Box style={{ marginTop: '13px' }}>
+          <TimeCounter
+            timeTillDate={timeTillDate}
+            endFlag={endFlag}
+            timeFormat="MM DD YYYY, h:mm a"
+            color={theme.palette.info.darker}
+            poolStatus={poolStatus}
+          />
+        </Box>
+        <Box style={{ marginTop: '-10px' }}>
+          <Icon
+            className={classes.trendingIcon}
+            icon={outlineWatchLater}
+            width={60}
+            height={60}
+          />
+        </Box>
+      </Box>
     </Card>
   );
 }
