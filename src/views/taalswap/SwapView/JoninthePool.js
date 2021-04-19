@@ -204,6 +204,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                       value: ETHToWei
                     });
                     const msgContents = {
+                      method: 'swap',
                       from: wallet,
                       to: pool.contractAddress,
                       value: ETHToWei,

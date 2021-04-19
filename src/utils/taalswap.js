@@ -102,21 +102,37 @@ class Taalswap {
       'swap',
       [amountWithDecimals]
     );
-    try {
-      const test = await this.params.fixedContract.estimateGas.swap(
-        amountWithDecimals,
-        {
-          value: value,
-          gasPrice: await this.getGasPrice(),
-          gasLimit: 300000
-        }
-      );
-      console.log('test', test);
-    } catch (e) {
-      console.log(e);
-    }
+    // try {
+    //   const test = await this.params.fixedContract.estimateGas.swap(
+    //     amountWithDecimals,
+    //     {
+    //       value: value,
+    //       gasPrice: await this.getGasPrice(),
+    //       gasLimit: 300000
+    //     }
+    //   );
+    //   console.log('test', test);
+    // } catch (e) {
+    //   console.log(e);
+    // }
 
     console.log('getSwapABI', data);
+    return data;
+  }
+
+  async getRedeemTokensABI(purchaseId) {
+    const data = this.params.fixedContract.interface.encodeFunctionData(
+      'redeemTokens'
+    );
+    console.log('getRedeemTokensABI', data);
+    return data;
+  }
+
+  async getRedeemGivenMinimumGoalNotAchievedABI(purchaseId) {
+    const data = this.params.fixedContract.interface.encodeFunctionData(
+      'redeemGivenMinimumGoalNotAchieved'
+    );
+    console.log('redeemGivenMinimumGoalNotAchieved', data);
     return data;
   }
 

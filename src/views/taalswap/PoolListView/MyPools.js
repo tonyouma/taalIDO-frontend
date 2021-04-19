@@ -62,6 +62,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function nativeCallbackTxHash(res) {
+  window.setRes(res);
+}
+
+window.onCallbackTxHash = nativeCallbackTxHash.bind(this);
+
 function LinearProgressWithLabel(props) {
   return (
     <Box display="flex" alignItems="center">
@@ -209,6 +215,35 @@ export default function MyPools({ filterName, category, onBackdrop }) {
     });
   }
 
+  const setRes = async (result) => {
+    try {
+      const rslt = JSON.parse(result);
+      if (rslt.result) {
+        const receipt = await taalswap.waitTxHash(rslt.txHash);
+        console.log('=====', JSON.stringify(receipt));
+        if (receipt.status === 1) {
+          enqueueSnackbar('Claim success', {
+            variant: 'success'
+          });
+        } else {
+          console.log('=====', receipt.status);
+          enqueueSnackbar('Claim fail', {
+            variant: 'fail'
+          });
+        }
+      } else {
+        enqueueSnackbar('Claim fail', {
+          variant: 'fail'
+        });
+      }
+    } catch (e) {
+      enqueueSnackbar('Claim error', {
+        variant: 'error'
+      });
+    }
+    onBackdrop(false);
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -220,6 +255,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   useEffect(async () => {
     await dispatch(getSwapList(wallet ? wallet : account));
     await getMySwapList();
+    window.setRes = setRes;
   }, [dispatch]);
 
   // const handleFilterByName = (event) => {
@@ -255,26 +291,55 @@ export default function MyPools({ filterName, category, onBackdrop }) {
         } else {
           myPurchases.map(async (purchases) => {
             onBackdrop(true);
-            const result = await taalswap
-              .redeemGivenMinimumGoalNotAchieved({
-                purchase_id: purchases
-              })
-              .catch((error) => {
-                console.log(error);
-                enqueueSnackbar('Claim ETH fail', {
-                  variant: 'fail'
-                });
-              });
-
-            if (result !== undefined) {
-              const receipt = await result.wait();
-              if (receipt.status === 1) {
-                enqueueSnackbar('Claim ETH success', {
-                  variant: 'success'
-                });
+            if (from) {
+              const data = taalswap.getRedeemGivenMinimumGoalNotAchievedABI(
+                purchases
+              );
+              const msgContents = {
+                method: 'redeemGivenMinimumGoalNotAchieved',
+                from: wallet,
+                to: selectedPool.contractAddress,
+                purchase_id: purchases,
+                data: data,
+                gasLimit: 300000
+              };
+              let sendData = {
+                callback: 'onCallbackTxHash',
+                msgContents: msgContents
+              };
+              if (os.toLowerCase() === 'ios') {
+                /*eslint-disable */
+                webkit.messageHandlers.sendEthTransaction.postMessage(
+                  JSON.stringify(sendData)
+                );
+                /*eslint-enable */
+              } else {
+                /*eslint-disable */
+                SubWebviewBridge.sendEthTransaction(JSON.stringify(sendData));
+                /*eslint-enable */
               }
+            } else {
+              const result = await taalswap
+                .redeemGivenMinimumGoalNotAchieved({
+                  purchase_id: purchases
+                })
+                .catch((error) => {
+                  console.log(error);
+                  enqueueSnackbar('Claim ETH fail', {
+                    variant: 'fail'
+                  });
+                });
+
+              if (result !== undefined) {
+                const receipt = await result.wait();
+                if (receipt.status === 1) {
+                  enqueueSnackbar('Claim ETH success', {
+                    variant: 'success'
+                  });
+                }
+              }
+              onBackdrop(false);
             }
-            onBackdrop(false);
           });
         }
 
@@ -287,7 +352,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
 
   const handleOnClickClaimTokens = async () => {
     try {
-      if (!!library) {
+      if (!!library || from) {
         const myPurchases = await taalswap.getAddressPurchaseIds({
           address: account
         });
@@ -297,26 +362,55 @@ export default function MyPools({ filterName, category, onBackdrop }) {
         } else {
           myPurchases.map(async (purchases) => {
             onBackdrop(true);
-            const result = await taalswap
-              .redeemTokens({
+            if (from) {
+              const data = await taalswap.getRedeemTokensABI({
                 purchase_id: purchases
-              })
-              .catch((error) => {
-                console.log(error);
-                enqueueSnackbar('Claim Tokens fail', {
-                  variant: 'fail'
-                });
               });
-
-            if (result !== undefined) {
-              const receipt = await result.wait();
-              if (receipt.status === 1) {
-                enqueueSnackbar('Claim Tokens success', {
-                  variant: 'success'
-                });
+              const msgContents = {
+                method: 'redeemTokens',
+                from: wallet,
+                to: selectedPool.contractAddress,
+                purchase_id: purchases,
+                data: data,
+                gasLimit: 300000
+              };
+              let sendData = {
+                callback: 'onCallbackTxHash',
+                msgContents: msgContents
+              };
+              if (os.toLowerCase() === 'ios') {
+                /*eslint-disable */
+                webkit.messageHandlers.sendEthTransaction.postMessage(
+                  JSON.stringify(sendData)
+                );
+                /*eslint-enable */
+              } else {
+                /*eslint-disable */
+                SubWebviewBridge.sendEthTransaction(JSON.stringify(sendData));
+                /*eslint-enable */
               }
+            } else {
+              const result = await taalswap
+                .redeemTokens({
+                  purchase_id: purchases
+                })
+                .catch((error) => {
+                  console.log(error);
+                  enqueueSnackbar('Claim Tokens fail', {
+                    variant: 'fail'
+                  });
+                });
+
+              if (result !== undefined) {
+                const receipt = await result.wait();
+                if (receipt.status === 1) {
+                  enqueueSnackbar('Claim Tokens success', {
+                    variant: 'success'
+                  });
+                }
+              }
+              onBackdrop(false);
             }
-            onBackdrop(false);
           });
         }
 
