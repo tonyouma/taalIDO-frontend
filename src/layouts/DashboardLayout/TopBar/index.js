@@ -144,6 +144,8 @@ function TopBar({ onOpenNav, className }) {
       } catch (e) {
         console.log(e);
       }
+    } else if (window.klayton) {
+      console.log('test=====', window.klayton);
     }
   }, [activatingConnector, connector, account, library]);
 

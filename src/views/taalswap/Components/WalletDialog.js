@@ -59,6 +59,9 @@ const walletList = [
   },
   {
     name: 'Binance Wallet'
+  },
+  {
+    name: 'KaikasWallet'
   }
 ];
 
@@ -77,6 +80,11 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
         const wc = walletconnect(true);
         await activate(wc, undefined, true);
         window.localStorage.setItem('chainId', wc);
+      } else if (wallet.name === 'KaikasWallet') {
+        console.log('KaikasWallet', window.klaytn);
+        const accounts = await window.klaytn.enable();
+        console.log('account', accounts[0]);
+        window.localStorage.setItem('chainId', 'klayton');
       }
       console.log('end', wallet);
     } catch (e) {

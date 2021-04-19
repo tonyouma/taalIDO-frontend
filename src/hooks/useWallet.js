@@ -10,7 +10,13 @@ export function useEagerConnect() {
 
   useEffect(() => {
     const connectorId = window.localStorage.getItem('chainId');
-    if (!connectorId) return;
+    if (!connectorId || connectorId === 'klayton') {
+      if (!window.klayton) {
+        window.localStorage.removeItem('chainId');
+        return;
+      }
+      window.klayton.enable();
+    }
     injected.isAuthorized().then((isAuthorized: boolean) => {
       if (isAuthorized) {
         activate(injected, undefined, true).catch(() => {
