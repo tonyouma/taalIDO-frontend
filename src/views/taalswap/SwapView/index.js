@@ -36,6 +36,7 @@ import bxDetail from '@iconify-icons/bx/bx-detail';
 import peopleAudience24Regular from '@iconify-icons/fluent/people-audience-24-regular';
 import locationCompany from '@iconify-icons/carbon/location-company';
 import Countdown from './Countdown';
+import { infuraChainId } from 'src/config';
 
 // ----------------------------------------------------------------------
 
@@ -163,7 +164,7 @@ function PaymentView({ className, ...other }) {
           heading={pool.poolName}
           links={[{ name: pool.tokenContractAddr }]}
           subTitle={pool.tokenContractAddr}
-          url={`https://rinkeby.etherscan.io/address/${pool.tokenContractAddr}`}
+          url={`https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`}
         />
 
         <Tabs
