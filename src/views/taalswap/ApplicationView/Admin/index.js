@@ -366,6 +366,7 @@ const AdminView = () => {
                 <InputForm
                   applicationList={applicationList}
                   selectedItem={location.state.selectedItem}
+                  setOpen={setOpen}
                 />
               </Grid>
 

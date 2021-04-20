@@ -111,7 +111,13 @@ TopAuthors.propTypes = {
   className: PropTypes.string
 };
 
-function TopAuthors({ className, applicationList, selectedItem, ...other }) {
+function TopAuthors({
+  className,
+  applicationList,
+  selectedItem,
+  setOpen,
+  ...other
+}) {
   const classes = useStyles();
 
   return (
@@ -120,6 +126,7 @@ function TopAuthors({ className, applicationList, selectedItem, ...other }) {
         <IdoInformation
           applicationList={applicationList}
           selectedItem={selectedItem}
+          setOpen={setOpen}
         />
       </CardContent>
     </Card>
