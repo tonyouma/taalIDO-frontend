@@ -525,7 +525,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 });
               }
             }
-            setProgressFlag(true);
+            setProgressFlag(false);
           }
         }
         // console.log('=====handleOnClickClaimTokens');
@@ -680,12 +680,12 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               id="customized-dialog-title"
               onClose={handleCloseModal}
             >
-              Pool Details
+              {t('taalswap.ClaimDetails')}
             </DialogTitle>
             <DialogContent dividers>
               <TextField
                 className={classes.contentTextField}
-                label="Token Address"
+                label={t('taalswap.TokenAddress')}
                 variant="standard"
                 InputLabelProps={{
                   shrink: true
@@ -695,7 +695,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               />
               <TextField
                 className={classes.contentTextField}
-                label="Total Purchases"
+                label={t('taalswap.TotalPurchases')}
                 variant="standard"
                 InputLabelProps={{
                   shrink: true
@@ -705,7 +705,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               />
               <TextField
                 className={classes.contentTextField}
-                label="Claim Done"
+                label={t('taalswap.ClaimDone')}
                 variant="standard"
                 InputLabelProps={{
                   shrink: true
@@ -716,7 +716,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               <TextField
                 className={classes.contentTextField}
                 color="primary"
-                label="Claim Left"
+                label={t('taalswap.ClaimLeft')}
                 variant="standard"
                 InputLabelProps={{
                   shrink: true
@@ -737,7 +737,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 >
                   <CircularProgress />
                   <Typography variant="body2">
-                    In progress… Please wait.
+                    {t('taalswap.InProgress')}
                   </Typography>
                 </Box>
               )}
@@ -749,7 +749,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 color="inherit"
                 onClick={handleCloseModal}
               >
-                Cancel
+                {t('taalswap.Cancel')}
               </Button>
               {poolStatus === PoolStatus.LIVE && (
                 <Button
@@ -759,7 +759,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                   color="primary"
                   autoFocus
                 >
-                  Swap
+                  {t('taalswap.Swap')}
                 </Button>
               )}
 
@@ -772,7 +772,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                   autoFocus
                   disabled={finalizedFalseList.length === 0 || progressFlag}
                 >
-                  Claim ETH
+                  {t('taalswap.ClaimETH')}
                 </Button>
               )}
               {(poolStatus === PoolStatus.FILLED.SUCCESS.ACCOMPLISHED ||
@@ -785,7 +785,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                   autoFocus
                   disabled={finalizedFalseList.length === 0 || progressFlag}
                 >
-                  Claim Tokens
+                  {t('taalswap.ClaimTokens')}
                 </Button>
               )}
             </DialogActions>

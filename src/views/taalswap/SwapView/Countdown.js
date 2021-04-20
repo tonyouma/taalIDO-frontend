@@ -123,16 +123,22 @@ function Countdown({ className, pool, value, ...other }) {
 
       <Box display="flex" justifyContent="space-between">
         <Box style={{ marginTop: '13px' }}>
-          <TimeCounter
-            timeTillDate={timeTillDate}
-            endFlag={endFlag}
-            timeFormat="MM DD YYYY, h:mm a"
-            color={theme.palette.info.darker}
-            poolStatus={poolStatus}
-          />
+          {poolStatus === PoolStatus.LIVE ||
+          poolStatus === PoolStatus.UPCOMING ? (
+            <TimeCounter
+              timeTillDate={timeTillDate}
+              endFlag={endFlag}
+              timeFormat="MM DD YYYY, h:mm a"
+              color={theme.palette.info.darker}
+              poolStatus={poolStatus}
+            />
+          ) : (
+            <Typography variant="h4"> {poolStatus}</Typography>
+          )}
         </Box>
-        <Box style={{ marginTop: '-10px' }}>
+        <Box style={{ marginTop: '-17px', marginBottom: '10px' }}>
           <Icon
+            // style={{ marginTop: '-10px' }}
             className={classes.trendingIcon}
             icon={outlineWatchLater}
             width={60}

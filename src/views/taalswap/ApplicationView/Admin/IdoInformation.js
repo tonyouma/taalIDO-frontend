@@ -13,7 +13,8 @@ import {
   Card,
   Typography,
   TextField,
-  CardHeader
+  Backdrop,
+  CircularProgress
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { divide } from 'lodash-es';
@@ -51,7 +52,13 @@ General.propTypes = {
   className: PropTypes.string
 };
 
-function General({ className, applicationList, selectedItem, ...other }) {
+function General({
+  className,
+  applicationList,
+  selectedItem,
+  setOpen,
+  ...other
+}) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -61,7 +68,7 @@ function General({ className, applicationList, selectedItem, ...other }) {
   const { enqueueSnackbar } = useSnackbar();
   const { user, updateProfile } = useAuth();
   const [selectedPool, setSelectedPool] = useState('');
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [inputs, setInputs] = useState({
     approveAmount: '',
     fundAmount: '',
@@ -192,6 +199,7 @@ function General({ className, applicationList, selectedItem, ...other }) {
   const onClickApprove = async () => {
     if (!Number.isInteger(parseInt(approveAmount))) {
       //approveAmount 는 int 여야함.
+      console.log('11111');
       alert('approveAmount는 정수여야합니다.');
       return;
     }
@@ -299,6 +307,22 @@ function General({ className, applicationList, selectedItem, ...other }) {
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>
+      {/* <Backdrop
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column'
+        }}
+        className={classes.backdrop}
+        open={open}
+      >
+        <Box>
+          <CircularProgress color="inherit" />
+        </Box>
+        <Box>
+          <Typography>In progress… Please wait.</Typography>
+        </Box>
+      </Backdrop> */}
       <div className={clsx(classes.root, className)}>
         <Box
           className={classes.box2rem}
