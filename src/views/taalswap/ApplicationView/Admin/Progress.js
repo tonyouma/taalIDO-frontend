@@ -1,11 +1,15 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import baselineHistory from '@iconify-icons/ic/baseline-history';
 import { fNumber } from 'src/utils/formatNumber';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import { Box, Card, Typography } from '@material-ui/core';
+import Taalswap from 'src/utils/taalswap';
+import { useWeb3React } from '@web3-react/core';
+import { useTranslation } from 'react-i18next';
+import getProgressValue from 'src/utils/getProgressValue';
 
 // ----------------------------------------------------------------------
 
@@ -38,15 +42,38 @@ Progress.propTypes = {
   className: PropTypes.string
 };
 
-const TOTAL = 20;
+const TOTAL = 120;
 
-function Progress({ className, ...other }) {
+function Progress({ className, selectedItem, ...other }) {
   const classes = useStyles();
+
+  const { i18n, t } = useTranslation();
+  const context = useWeb3React();
+  const [progressValue, setProgressValue] = useState(0);
+
+  const { library, account } = context;
+
+  useEffect(async () => {
+    if (!!library) {
+      const taalswap = new Taalswap({
+        application: selectedItem,
+        account,
+        library
+      });
+
+      await taalswap
+        .tokensAllocated()
+        .then((result) => {
+          setProgressValue(getProgressValue(result, selectedItem.tradeAmount));
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [library]);
 
   return (
     <Card className={clsx(classes.root, className)} {...other}>
       <Box sx={{ ml: 3 }}>
-        <Typography variant="h3"> {fNumber(TOTAL)}%</Typography>
+        <Typography variant="h3"> {fNumber(progressValue)}%</Typography>
         <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
           Progress
         </Typography>

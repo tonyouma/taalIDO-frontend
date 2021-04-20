@@ -360,7 +360,7 @@ const AdminView = () => {
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <Progress />
+                <Progress selectedItem={location.state.selectedItem} />
               </Grid>
               <Grid item xs={12} md={6} lg={8}>
                 <InputForm
