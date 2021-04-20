@@ -12,7 +12,9 @@ import {
   Switch,
   Grid,
   Card,
-  CardContent
+  CardContent,
+  Divider,
+  Typography
 } from '@material-ui/core';
 import { MobileDatePicker } from '@material-ui/lab';
 import moment from 'moment';
@@ -42,6 +44,18 @@ const useStyles = makeStyles((theme) => ({
   },
   visible: {
     visibility: 'hidden'
+  },
+  box: {
+    marginTop: '1rem',
+    marginBottom: '1rem',
+    paddingLeft: '1rem',
+    paddingRight: '1rem'
+  },
+  box2rem: {
+    marginTop: '2rem',
+    marginBottom: '2rem',
+    paddingLeft: '1rem',
+    paddingRight: '1rem'
   }
 }));
 
@@ -77,13 +91,470 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
         className={clsx(classes.root, className)}
         {...other}
       >
+        {/* 추가 시작 */}
+        <Divider />
+        <div className={clsx(classes.root, className)}>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}>
+              IDO Information
+            </Typography>
+            <TextField
+              label="Project Name"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('poolName')}
+              error={Boolean(touched.poolName && errors.poolName)}
+              helperText={touched.poolName && errors.poolName}
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+            // style={{ border: '1px solid red' }}
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Token Contract Address"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('tokenContractAddr')}
+              error={Boolean(
+                touched.tokenContractAddr && errors.tokenContractAddr
+              )}
+              helperText={touched.tokenContractAddr && errors.tokenContractAddr}
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Trade Value (In ETH)"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('tradeValue')}
+              error={Boolean(touched.tradeValue && errors.tradeValue)}
+              // helperText={
+              //   (touched.tradeValue && errors.tradeValue) || '(In ETH)'
+              // }
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Total Raise (Total # of tokens for sale)"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('tradeAmount')}
+              error={Boolean(touched.tradeAmount && errors.tradeAmount)}
+              // helperText={
+              //   (touched.tradeAmount && errors.tradeAmount) ||
+              //   '(Total # of tokens for sale)'
+              // }
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Min.Fund Raise (Min. # of tokens to be sold)"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('minFundRaise')}
+              error={Boolean(touched.minFundRaise && errors.minFundRaise)}
+              // helperText={
+              //   (touched.minFundRaise && errors.minFundRaise) ||
+              //   '(Min. # of tokens to be sold)'
+              // }
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              select
+              label="Access"
+              placeholder="Select"
+              variant="standard"
+              className={classes.margin}
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('access')}
+              SelectProps={{ native: true }}
+              error={Boolean(touched.access && errors.access)}
+              helperText={touched.access && errors.access}
+            >
+              {ACCESS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Min.Allocation (Min. # of tokens allowed per wallet)"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('minIndividuals')}
+              error={Boolean(touched.minIndividuals && errors.minIndividuals)}
+              // helperText={
+              //   (touched.minIndividuals && errors.minIndividuals) ||
+              //   '(Min. # of tokens allowed per wallet)'
+              // }
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Max. Allocation(Max. # of tokens allowed per wallet)"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('maxIndividuals')}
+              error={Boolean(touched.maxIndividuals && errors.maxIndividuals)}
+              // helperText={
+              //   (touched.maxIndividuals && errors.maxIndividuals) ||
+              //   '(Max. # of tokens allowed per wallet)'
+              // }
+            />
+          </Box>
+
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            {/*<TextField
+              label="Perferred Start Date"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              value="0.008881"
+            /> */}
+            <Box style={{ width: '59%' }}>
+              <MobileDatePicker
+                label="Preferred Start Date"
+                minDate={isEdit ? '' : moment().add(1, 'd').toDate()}
+                disabled={isEdit}
+                value={values.preferredStartDate}
+                size="small"
+                onChange={(date) => setFieldValue('preferredStartDate', date)}
+                renderInput={(params) => (
+                  <TextField {...params} fullWidth margin="normal" />
+                )}
+              />
+            </Box>
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Fee Amount (> 2%)"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('feeAmount')}
+              error={Boolean(touched.feeAmount && errors.feeAmount)}
+              // helperText={(touched.feeAmount && errors.feeAmount) || '(> 2%)'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">%</InputAdornment>
+                )
+              }}
+            />
+          </Box>
+        </div>
+
+        <Divider />
+
+        <div className={clsx(classes.root, className)}>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}>
+              Project Information
+            </Typography>
+            <TextField
+              label="Project Name"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('name')}
+              error={Boolean(touched.name && errors.name)}
+              helperText={touched.name && errors.name}
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              select
+              label="Category"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('category')}
+              SelectProps={{ native: true }}
+              error={Boolean(touched.category && errors.category)}
+              helperText={touched.category && errors.category}
+            >
+              {CATEGORIES.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Website URL"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('websiteUrl')}
+              error={Boolean(touched.websiteUrl && errors.websiteUrl)}
+              helperText={touched.websiteUrl && errors.websiteUrl}
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Email Address"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('email')}
+              error={Boolean(touched.email && errors.email)}
+              helperText={touched.email && errors.email}
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Telegra Handle"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('telegramHandle')}
+              error={Boolean(touched.telegramHandle && errors.telegramHandle)}
+              helperText={touched.telegramHandle && errors.telegramHandle}
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              {...getFieldProps('projectDesc')}
+              disabled={isEdit}
+              error={Boolean(touched.projectDesc && errors.projectDesc)}
+              helperText={touched.projectDesc && errors.projectDesc}
+              label="Description"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              multiline
+              minRows={6}
+              maxRows={6}
+              style={{ width: '59%' }}
+            />
+          </Box>
+
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+
+            {isEdit ? (
+              <TextField
+                className={clsx(classes.visible, className)}
+                disabled={isEdit}
+                {...getFieldProps('secret')}
+                error={Boolean(touched.secret && errors.secret)}
+                helperText={touched.secret && errors.secret}
+                label="Password"
+                variant="standard"
+                InputLabelProps={{
+                  shrink: 'true'
+                }}
+                style={{ width: '59%' }}
+                type="password"
+              />
+            ) : (
+              <TextField
+                disabled={isEdit}
+                {...getFieldProps('secret')}
+                error={Boolean(touched.secret && errors.secret)}
+                helperText={touched.secret && errors.secret}
+                label="Password"
+                variant="standard"
+                InputLabelProps={{
+                  shrink: 'true'
+                }}
+                style={{ width: '59%' }}
+                type="password"
+              />
+            )}
+          </Box>
+
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 1 }}></Typography>
+            <Box
+              style={{ width: '59%' }}
+              sx={{ mt: 1, display: 'flex', justifyContent: 'flex-end' }}
+            >
+              <FormControlLabel
+                control={
+                  <Switch
+                    disabled={isEdit}
+                    {...getFieldProps('isAtomic')}
+                    color="primary"
+                  />
+                }
+                labelPlacement="start"
+                label="Atomic"
+              />
+              <Box sx={{ ml: 5 }}></Box>
+              {!isEdit ? (
+                <LoadingButton
+                  type="submit"
+                  // fullWidth
+                  disabled={isEdit && account}
+                  variant="contained"
+                  pending={isSubmitting}
+                >
+                  {!account ? 'Connect Wallet' : 'Create'}
+                </LoadingButton>
+              ) : (
+                <Button
+                  type="button"
+                  // fullWidth
+                  variant="contained"
+                  onClick={history.goBack}
+                >
+                  Back
+                </Button>
+              )}
+            </Box>
+          </Box>
+        </div>
+
+        {/* 추가 끝 */}
+        {/* 
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Card>
               <CardContent>
                 <Grid container spacing={4}>
                   <Grid item xs={12} sm={12}>
-                    {/* 타이틀 삽입 */}
                     <Box sx={{ fontSize: 18 }}> IDO Information</Box>
                   </Grid>
                   <Grid item xs={12} sm={12}>
@@ -256,7 +727,6 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
               <CardContent>
                 <Grid container spacing={4}>
                   <Grid item xs={12} sm={12}>
-                    {/* 타이틀 삽입 */}
                     <Box sx={{ fontSize: 18 }}> Project Information</Box>
                   </Grid>
                   <Grid item xs={12} sm={12}>
@@ -416,7 +886,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
               </CardContent>
             </Card>
           </Grid>
-        </Grid>
+        </Grid> */}
       </Form>
     </FormikProvider>
   );
