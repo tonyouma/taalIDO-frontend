@@ -60,6 +60,7 @@ import { login } from 'src/utils/auth';
 
 import StatusLabel from '../../Components/StatusLabel';
 import './APP.css';
+import { styles } from '@material-ui/lab/PickersDay/PickersDay';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -766,7 +767,7 @@ export default function ApplicationListView() {
           </Box>
         </Backdrop>
         <Box className={classes.tableTop}>
-          <Box className={classes.tableTab}>
+          <Box className={classes.tableTab} className="tab_Line">
             <HeaderDashboard
               heading={t('taalswap.Applications')}
               links={[{ name: '' }]}
