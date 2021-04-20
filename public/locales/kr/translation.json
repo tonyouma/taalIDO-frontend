@@ -79,6 +79,14 @@
     "MinIndiv": "최소 구입 수량",
     "PoolStart": "판매 시작일",
     "MinRaise": "최소 판매 희망 수량",
-    "Claim": "청구"
+    "Claim": "청구",
+    "ClaimDone": "청구 완료 건수",
+    "ClaimLeft": "잔여 청구 건수",
+    "TotalPurchases": "전체 청구 건수",
+    "ClaimDetails": "청구 상세정보",
+    "InProgress": "처리 중입니다. 잠시만 기다리세요.",
+    "ClaimETH": "ETH 청구",
+    "ClaimTokens": "토큰 청구",
+    "Swap": "토큰 교환"
   }
 }

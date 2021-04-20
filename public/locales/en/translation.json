@@ -79,6 +79,14 @@
     "MinIndiv": "Min. Allocation",
     "PoolStart": "Token Distribution",
     "MinRaise": "Min. Swap Level",
-    "Claim": "Claim"
+    "Claim": "Claim",
+    "ClaimDone": "Claim Done",
+    "ClaimLeft": "Claim Left",
+    "TotalPurchases": "Total Purchases",
+    "ClaimDetails": "Claim Details",
+    "InProgress": "In progress… Please wait.",
+    "ClaimETH": "Claim ETH",
+    "ClaimTokens": "Claim Tokens",
+    "Swap": "Swap"
   }
 }
