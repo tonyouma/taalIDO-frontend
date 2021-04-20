@@ -19,7 +19,9 @@ import {
   TextField,
   Box,
   CircularProgress,
-  Hidden
+  Hidden,
+  IconButton,
+  Icon
 } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,6 +39,8 @@ import { PoolStatus } from 'src/utils/poolStatus';
 import Numbers from 'src/utils/Numbers';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import RedeemIcon from '@material-ui/icons/Redeem';
+import { set } from 'immutable';
 
 // ----------------------------------------------------------------------
 
@@ -53,13 +57,13 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogTitle: {
     color: theme.palette.primary.main
-  },
-
-  row: {
-    '&:hover': {
-      cursor: 'pointer'
-    }
   }
+
+  // row: {
+  //   '&:hover': {
+  //     cursor: 'pointer'
+  //   }
+  // }
 }));
 
 function nativeCallbackTxHash(res) {
@@ -110,21 +114,35 @@ function TablePoolRow({ row, handleOpenModal }) {
   const { library, account } = context;
   const { os, wallet, from } = useSelector((state) => state.talken);
 
+  let taalswap;
+  if (!!library) {
+    taalswap = new Taalswap({
+      application: row,
+      account,
+      library
+    });
+  } else if (!!from) {
+    taalswap = new Taalswap({
+      application: row,
+      notConnected: true
+    });
+  }
+
   useEffect(async () => {
     if (!!library || !!from) {
-      let taalswap;
-      if (!!library) {
-        taalswap = new Taalswap({
-          application: row,
-          account,
-          library
-        });
-      } else if (!!from) {
-        taalswap = new Taalswap({
-          application: row,
-          notConnected: true
-        });
-      }
+      // let taalswap;
+      // if (!!library) {
+      //   taalswap = new Taalswap({
+      //     application: row,
+      //     account,
+      //     library
+      //   });
+      // } else if (!!from) {
+      //   taalswap = new Taalswap({
+      //     application: row,
+      //     notConnected: true
+      //   });
+      // }
 
       await taalswap
         .tokensAllocated()
@@ -145,12 +163,16 @@ function TablePoolRow({ row, handleOpenModal }) {
     return () => {};
   }, [row, library]);
 
+  const test = () => {
+    console.log(taalswap);
+  };
+
   return (
     <TableRow
       key={row.poolName}
       hover
       className={(classes.hideLastBorder, classes.row)}
-      onClick={(event) => handleOpenModal(row, poolStatus)}
+      // onClick={(event) => handleOpenModal(row, poolStatus)}
     >
       <TableCell component="th" scope="row" width="20%">
         {row.poolName}
@@ -176,6 +198,18 @@ function TablePoolRow({ row, handleOpenModal }) {
           <StatusLabel poolStatus={poolStatus} />
         )}
       </TableCell>
+      <TableCell align="right" width="20%">
+        {poolStatus !== PoolStatus.LIVE ? (
+          <IconButton
+            variant="contained"
+            size="small"
+            onClick={(event) => handleOpenModal(row, poolStatus, taalswap)}
+            // onClick={(event) => test()}
+          >
+            <RedeemIcon />
+          </IconButton>
+        ) : null}
+      </TableCell>
     </TableRow>
   );
 }
@@ -191,6 +225,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [poolStatus, setPoolStatus] = useState('');
+  const [myPurchases, setMyPurchases] = useState([]);
+  const [finalizedFalseList, setFinalizedFalseList] = useState([]);
+  const [progressFlag, setProgressFlag] = useState(false);
   const [max, setMax] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const context = useWeb3React();
@@ -262,10 +299,32 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   //   setFilterName(event.target.value);
   // };
 
-  const handleOpenModal = (row, poolStatus) => {
-    setPoolStatus(poolStatus);
-    setMax(getMax(row.maxIndividuals, row.tradeValue));
-    dispatch(openModal(row));
+  const handleOpenModal = async (row, poolStatus, taalswap) => {
+    try {
+      if (!!library || from) {
+        console.log(taalswap);
+        console.log(account);
+        const myPurchases = await taalswap.getAddressPurchaseIds({
+          address: from ? wallet : account
+        });
+        let wasFinalizedArray = [];
+        await myPurchases.map(async (purchaseid) => {
+          await taalswap.purchases({ id: purchaseid }).then((result) => {
+            console.log(result.wasFinalized);
+            if (result.wasFinalized === false)
+              wasFinalizedArray = wasFinalizedArray.concat(purchaseid);
+            setFinalizedFalseList(wasFinalizedArray);
+          });
+        });
+
+        setMyPurchases(myPurchases);
+        setPoolStatus(poolStatus);
+        setMax(getMax(row.maxIndividuals, row.tradeValue));
+        dispatch(openModal(row));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCloseModal = () => {
@@ -283,71 +342,134 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   const handleOnClickClaimETH = async () => {
     try {
       if (!!library || from) {
-        const myPurchases = await taalswap.getAddressPurchaseIds({
-          address: from ? wallet : account
-        });
-
-        if (!!myPurchases.error) {
-        } else {
-          console.log('===== start handleOnClickClaimETH');
-          myPurchases.map(async (purchases) => {
-            onBackdrop(true);
-            if (from) {
-              const data = await taalswap.getRedeemGivenMinimumGoalNotAchievedABI(
-                {
-                  purchase_id: purchases
-                }
+        if (finalizedFalseList.length !== 0) {
+          // onBackdrop(true);
+          setProgressFlag(true);
+          if (from) {
+            const data = await taalswap.getRedeemGivenMinimumGoalNotAchievedABI(
+              {
+                purchase_id: finalizedFalseList[0]
+              }
+            );
+            console.log('=====data', data);
+            const msgContents = {
+              method: 'redeemGivenMinimumGoalNotAchieved',
+              from: wallet,
+              to: selectedPool.contractAddress,
+              purchase_id: finalizedFalseList[0],
+              data: data
+            };
+            console.log('=====', JSON.stringify(msgContents));
+            let sendData = {
+              callback: 'onCallbackTxHash',
+              msgContents: msgContents
+            };
+            if (os.toLowerCase() === 'ios') {
+              /*eslint-disable */
+              webkit.messageHandlers.sendEthTransaction.postMessage(
+                JSON.stringify(sendData)
               );
-              console.log('=====data', data);
-              const msgContents = {
-                method: 'redeemGivenMinimumGoalNotAchieved',
-                from: wallet,
-                to: selectedPool.contractAddress,
-                purchase_id: purchases,
-                data: data
-              };
-              console.log('=====', JSON.stringify(msgContents));
-              let sendData = {
-                callback: 'onCallbackTxHash',
-                msgContents: msgContents
-              };
-              if (os.toLowerCase() === 'ios') {
-                /*eslint-disable */
-                webkit.messageHandlers.sendEthTransaction.postMessage(
-                  JSON.stringify(sendData)
-                );
-                /*eslint-enable */
-              } else {
-                /*eslint-disable */
-                SubWebviewBridge.sendEthTransaction(JSON.stringify(sendData));
-                /*eslint-enable */
-              }
+              /*eslint-enable */
             } else {
-              const result = await taalswap
-                .redeemGivenMinimumGoalNotAchieved({
-                  purchase_id: purchases
-                })
-                .catch((error) => {
-                  console.log(error);
-                  enqueueSnackbar('Claim ETH fail', {
-                    variant: 'fail'
-                  });
-                });
-
-              if (result !== undefined) {
-                const receipt = await result.wait();
-                if (receipt.status === 1) {
-                  enqueueSnackbar('Claim ETH success', {
-                    variant: 'success'
-                  });
-                }
-              }
-              onBackdrop(false);
+              /*eslint-disable */
+              SubWebviewBridge.sendEthTransaction(JSON.stringify(sendData));
+              /*eslint-enable */
             }
-          });
+          } else {
+            const result = await taalswap
+              .redeemGivenMinimumGoalNotAchieved({
+                purchase_id: finalizedFalseList[0]
+              })
+              .catch((error) => {
+                console.log(error);
+                enqueueSnackbar('Claim ETH fail', {
+                  variant: 'fail'
+                });
+              });
+
+            if (result !== undefined) {
+              const receipt = await result.wait();
+              if (receipt.status === 1) {
+                const newList = finalizedFalseList.filter(
+                  (id) => id !== finalizedFalseList[0]
+                );
+                console.log(newList);
+                setFinalizedFalseList(newList);
+                enqueueSnackbar('Claim ETH success', {
+                  variant: 'success'
+                });
+              }
+            }
+            setProgressFlag(false);
+          }
         }
 
-        dispatch(closeModal());
+        // console.log(taalswap);
+        // const myPurchases = await taalswap.getAddressPurchaseIds({
+        //   address: from ? wallet : account
+        // });
+
+        // if (!!myPurchases.error) {
+        // } else {
+        //   console.log('===== start handleOnClickClaimETH');
+        //   myPurchases.map(async (purchases) => {
+        //     onBackdrop(true);
+        //     if (from) {
+        //       const data = await taalswap.getRedeemGivenMinimumGoalNotAchievedABI(
+        //         {
+        //           purchase_id: purchases
+        //         }
+        //       );
+        //       console.log('=====data', data);
+        //       const msgContents = {
+        //         method: 'redeemGivenMinimumGoalNotAchieved',
+        //         from: wallet,
+        //         to: selectedPool.contractAddress,
+        //         purchase_id: purchases,
+        //         data: data
+        //       };
+        //       console.log('=====', JSON.stringify(msgContents));
+        //       let sendData = {
+        //         callback: 'onCallbackTxHash',
+        //         msgContents: msgContents
+        //       };
+        //       if (os.toLowerCase() === 'ios') {
+        //         /*eslint-disable */
+        //         webkit.messageHandlers.sendEthTransaction.postMessage(
+        //           JSON.stringify(sendData)
+        //         );
+        //         /*eslint-enable */
+        //       } else {
+        //         /*eslint-disable */
+        //         SubWebviewBridge.sendEthTransaction(JSON.stringify(sendData));
+        //         /*eslint-enable */
+        //       }
+        //     } else {
+        //       const result = await taalswap
+        //         .redeemGivenMinimumGoalNotAchieved({
+        //           purchase_id: purchases
+        //         })
+        //         .catch((error) => {
+        //           console.log(error);
+        //           enqueueSnackbar('Claim ETH fail', {
+        //             variant: 'fail'
+        //           });
+        //         });
+
+        //       if (result !== undefined) {
+        //         const receipt = await result.wait();
+        //         if (receipt.status === 1) {
+        //           enqueueSnackbar('Claim ETH success', {
+        //             variant: 'success'
+        //           });
+        //         }
+        //       }
+        //       onBackdrop(false);
+        //     }
+        //   });
+        // }
+
+        // dispatch(closeModal());
       }
     } catch (error) {
       console.log('=====', error);
@@ -357,71 +479,129 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   const handleOnClickClaimTokens = async () => {
     try {
       if (!!library || from) {
-        console.log('=====handleOnClickClaimTokens');
-        const myPurchases = await taalswap.getAddressPurchaseIds({
-          address: from ? wallet : account
-        });
-
-        if (!!myPurchases.error) {
-          console.log(myPurchases.error);
-        } else {
-          console.log('===== start handleOnClickClaimTokens');
-          myPurchases.map(async (purchases) => {
-            onBackdrop(true);
-            if (from) {
-              const data = await taalswap.getRedeemTokensABI({
-                purchase_id: purchases
-              });
-              console.log('=====data', data);
-              const msgContents = {
-                method: 'redeemTokens',
-                from: wallet,
-                to: selectedPool.contractAddress,
-                purchase_id: purchases,
-                data: data
-              };
-              console.log('=====', JSON.stringify(msgContents));
-              let sendData = {
-                callback: 'onCallbackTxHash',
-                msgContents: msgContents
-              };
-              if (os.toLowerCase() === 'ios') {
-                /*eslint-disable */
-                webkit.messageHandlers.sendEthTransaction.postMessage(
-                  JSON.stringify(sendData)
-                );
-                /*eslint-enable */
-              } else {
-                /*eslint-disable */
-                SubWebviewBridge.sendEthTransaction(JSON.stringify(sendData));
-                /*eslint-enable */
-              }
+        if (finalizedFalseList.length !== 0) {
+          setProgressFlag(true);
+          if (from) {
+            const data = await taalswap.getRedeemTokensABI({
+              purchase_id: finalizedFalseList[0]
+            });
+            console.log('=====data', data);
+            const msgContents = {
+              method: 'redeemTokens',
+              from: wallet,
+              to: selectedPool.contractAddress,
+              purchase_id: finalizedFalseList[0],
+              data: data
+            };
+            console.log('=====', JSON.stringify(msgContents));
+            let sendData = {
+              callback: 'onCallbackTxHash',
+              msgContents: msgContents
+            };
+            if (os.toLowerCase() === 'ios') {
+              /*eslint-disable */
+              webkit.messageHandlers.sendEthTransaction.postMessage(
+                JSON.stringify(sendData)
+              );
+              /*eslint-enable */
             } else {
-              const result = await taalswap
-                .redeemTokens({
-                  purchase_id: purchases
-                })
-                .catch((error) => {
-                  console.log(error);
-                  enqueueSnackbar('Claim Tokens fail', {
-                    variant: 'fail'
-                  });
-                });
-
-              if (result !== undefined) {
-                const receipt = await result.wait();
-                if (receipt.status === 1) {
-                  enqueueSnackbar('Claim Tokens success', {
-                    variant: 'success'
-                  });
-                }
-              }
-              onBackdrop(false);
+              /*eslint-disable */
+              SubWebviewBridge.sendEthTransaction(JSON.stringify(sendData));
+              /*eslint-enable */
             }
-          });
-        }
+          } else {
+            const result = await taalswap
+              .redeemTokens({
+                purchase_id: finalizedFalseList[0]
+              })
+              .catch((error) => {
+                console.log(error);
+                enqueueSnackbar('Claim Tokens fail', {
+                  variant: 'fail'
+                });
+              });
 
-        dispatch(closeModal());
+            if (result !== undefined) {
+              const receipt = await result.wait();
+              if (receipt.status === 1) {
+                const newList = finalizedFalseList.filter(
+                  (id) => id !== finalizedFalseList[0]
+                );
+                console.log(newList);
+                setFinalizedFalseList(newList);
+                enqueueSnackbar('Claim Tokens success', {
+                  variant: 'success'
+                });
+              }
+            }
+            setProgressFlag(true);
+          }
+        }
+        // console.log('=====handleOnClickClaimTokens');
+        // const myPurchases = await taalswap.getAddressPurchaseIds({
+        //   address: from ? wallet : account
+        // });
+
+        // if (!!myPurchases.error) {
+        //   console.log(myPurchases.error);
+        // } else {
+        //   console.log('===== start handleOnClickClaimTokens');
+        //   myPurchases.map(async (purchases) => {
+        //     onBackdrop(true);
+        //     if (from) {
+        //       const data = await taalswap.getRedeemTokensABI({
+        //         purchase_id: purchases
+        //       });
+        //       console.log('=====data', data);
+        //       const msgContents = {
+        //         method: 'redeemTokens',
+        //         from: wallet,
+        //         to: selectedPool.contractAddress,
+        //         purchase_id: purchases,
+        //         data: data
+        //       };
+        //       console.log('=====', JSON.stringify(msgContents));
+        //       let sendData = {
+        //         callback: 'onCallbackTxHash',
+        //         msgContents: msgContents
+        //       };
+        //       if (os.toLowerCase() === 'ios') {
+        //         /*eslint-disable */
+        //         webkit.messageHandlers.sendEthTransaction.postMessage(
+        //           JSON.stringify(sendData)
+        //         );
+        //         /*eslint-enable */
+        //       } else {
+        //         /*eslint-disable */
+        //         SubWebviewBridge.sendEthTransaction(JSON.stringify(sendData));
+        //         /*eslint-enable */
+        //       }
+        //     } else {
+        //       const result = await taalswap
+        //         .redeemTokens({
+        //           purchase_id: purchases
+        //         })
+        //         .catch((error) => {
+        //           console.log(error);
+        //           enqueueSnackbar('Claim Tokens fail', {
+        //             variant: 'fail'
+        //           });
+        //         });
+
+        //       if (result !== undefined) {
+        //         const receipt = await result.wait();
+        //         if (receipt.status === 1) {
+        //           enqueueSnackbar('Claim Tokens success', {
+        //             variant: 'success'
+        //           });
+        //         }
+        //       }
+        //       onBackdrop(false);
+        //     }
+        //   });
+        // }
+
+        // dispatch(closeModal());
       }
     } catch (error) {
       console.log('=====', error);
@@ -472,6 +652,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 </Hidden>
                 <TableCell align="right">{t('taalswap.Progress')}</TableCell>
                 <TableCell align="right">{t('taalswap.Status')}</TableCell>
+                <TableCell align="right">claim</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -513,16 +694,6 @@ export default function MyPools({ filterName, category, onBackdrop }) {
             <DialogContent dividers>
               <TextField
                 className={classes.contentTextField}
-                label="Pool"
-                variant="standard"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                value={selectedPool.poolName}
-                fullWidth
-              />
-              <TextField
-                className={classes.contentTextField}
                 label="Token Address"
                 variant="standard"
                 InputLabelProps={{
@@ -533,27 +704,52 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               />
               <TextField
                 className={classes.contentTextField}
-                label="Max"
+                label="Total Purchases"
                 variant="standard"
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={`${Numbers.toFloat(max)} Token`}
+                value={myPurchases.length}
+                fullWidth
+              />
+              <TextField
+                className={classes.contentTextField}
+                label="Claim Done"
+                variant="standard"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={myPurchases.length - finalizedFalseList.length}
                 fullWidth
               />
               <TextField
                 className={classes.contentTextField}
                 color="primary"
-                label="Access"
+                label="Claim Left"
                 variant="standard"
                 InputLabelProps={{
                   shrink: true
                 }}
-                value={selectedPool.access}
+                value={finalizedFalseList.length}
                 fullWidth
               />
+              {progressFlag && (
+                <Box
+                  style={{
+                    // border: '1px solid red',
+                    marginTop: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                    // padding: '5px'
+                  }}
+                >
+                  <CircularProgress />
+                  <Typography variant="body2"> 처리 중...</Typography>
+                </Box>
+              )}
             </DialogContent>
-            <DialogActions>
+            <DialogActions style={{ marginTop: '-30px' }}>
               <Button
                 className={classes.button}
                 variant="outlined"
@@ -581,6 +777,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                   onClick={handleOnClickClaimETH}
                   color="primary"
                   autoFocus
+                  disabled={finalizedFalseList.length === 0 || progressFlag}
                 >
                   Claim ETH
                 </Button>
@@ -593,6 +790,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                   onClick={handleOnClickClaimTokens}
                   color="primary"
                   autoFocus
+                  disabled={finalizedFalseList.length === 0 || progressFlag}
                 >
                   Claim Tokens
                 </Button>
