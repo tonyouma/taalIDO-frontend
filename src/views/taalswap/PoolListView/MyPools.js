@@ -525,7 +525,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 });
               }
             }
-            setProgressFlag(true);
+            setProgressFlag(false);
           }
         }
         // console.log('=====handleOnClickClaimTokens');
