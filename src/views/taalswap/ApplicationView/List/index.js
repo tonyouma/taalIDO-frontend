@@ -752,11 +752,13 @@ export default function ApplicationListView() {
         <Box className={classes.tableTop}>
           <Box className={classes.tableTab} className="tab_Line">
             <HeaderDashboard
+              className="apply_icon3123"
               heading={t('taalswap.applications')}
               links={[{ name: '' }]}
             />
             <Tooltip title="apply for IDO">
               <Box
+                className="apply_icon"
                 component="img"
                 src={`/static/icons/ic_write_25.png`}
                 sx={{
@@ -767,7 +769,7 @@ export default function ApplicationListView() {
               />
             </Tooltip>
           </Box>
-          <Box className={classes.tableSearch}>
+          <Box className={classes.tableSearch} className="apply_searchbox">
             <ToolbarTable
               filterName={filterName}
               onFilterName={handleFilterByName}
