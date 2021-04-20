@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
 import { injected, walletconnect } from '../connectors';
+import { instanceOf } from 'prop-types';
 
 export function useEagerConnect() {
   const { activate, active } = useWeb3React();
@@ -17,17 +18,21 @@ export function useEagerConnect() {
       }
       window.klayton.enable();
     }
-    injected.isAuthorized().then((isAuthorized: boolean) => {
-      if (isAuthorized) {
-        activate(injected, undefined, true).catch(() => {
+    if (!connectorId || connectorId === 'injected') {
+      injected.isAuthorized().then((isAuthorized: boolean) => {
+        if (isAuthorized) {
+          activate(injected, undefined, true).catch(() => {
+            setTried(true);
+          });
+        } else {
           setTried(true);
-        });
-      } else {
-        setTried(true);
-      }
-    });
-    const wc = walletconnect(false);
-    activate(wc);
+        }
+      });
+    }
+    if (!connectorId || connectorId === 'walletconnect') {
+      const wc = walletconnect(false);
+      activate(wc);
+    }
   }, []); // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
