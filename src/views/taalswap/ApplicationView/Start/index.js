@@ -40,6 +40,7 @@ function ApplicationStart() {
 
   useEffect(() => {
     // console.log('test : ' + account);
+    moment.locale('ko');
     setEdit(location.state ? true : false);
   }, [account]);
 
@@ -47,10 +48,10 @@ function ApplicationStart() {
     name: Yup.string().required('Project Name is required'),
     category: Yup.string().required('Category is required'),
     websiteUrl: Yup.string().url().required('Website URL is required'),
-    // imageUrl: Yup.string().url().required('ICON image URL is required'),
+    iconUrl: Yup.string().url().required('ICON image URL is required'),
     email: Yup.string().email().required('eMail is required'),
     telegramHandle: Yup.string().required('Telegram handle is required'),
-    poolName: Yup.string().required('Pool Name is required'),
+    poolName: Yup.string().required('Project Name is required'),
     tokenContractAddr: Yup.string().required(
       'Token Contract Address is required'
     ),
@@ -79,7 +80,7 @@ function ApplicationStart() {
         ? location.state.selectedItem.projectDesc
         : '',
       websiteUrl: location.state ? location.state.selectedItem.websiteUrl : '',
-      // imageUrl: location.state ? location.state.selectedItem.imageUrl : '',
+      iconUrl: location.state ? location.state.selectedItem.iconUrl : '',
       email: location.state ? location.state.selectedItem.email : '',
       telegramHandle: location.state
         ? location.state.selectedItem.telegramHandle
@@ -103,9 +104,31 @@ function ApplicationStart() {
         ? location.state.selectedItem.maxIndividuals
         : '',
       isAtomic: location.state ? location.state.selectedItem.atomic : false,
-      preferredStartDate: location.state
-        ? moment(location.state.selectedItem.preferredStartDate).toDate()
-        : moment().add(1, 'd').toDate(),
+      // preferredStartDate: location.state
+      //   ? moment(location.state.selectedItem.preferredStartDate).toDate()
+      //   : moment().add(1, 'd').toDate(),
+      startDate: location.state
+        ? moment
+            .unix(location.state.selectedItem.startDate)
+            .add(9, 'h')
+            .format()
+            .substr(0, 16)
+        : moment().add(3, 'd').add(9, 'h').toDate().toISOString().substr(0, 16),
+      endDate: location.state
+        ? moment
+            .unix(location.state.selectedItem.endDate)
+            .add(9, 'h')
+            .format()
+            .substr(0, 16)
+        : moment()
+            .add(24, 'd')
+            .add(9, 'h')
+            .toDate()
+            .toISOString()
+            .substr(0, 16),
+      selectChain: location.state
+        ? location.state.selectedItem.selectChain
+        : 'ERC20',
       feeAmount: location.state ? location.state.selectedItem.feeAmount : 2
     },
     validationSchema: location.state ? undefined : NewApplicationSchema,
@@ -120,7 +143,7 @@ function ApplicationStart() {
           category: values.category,
           projectDesc: values.projectDesc,
           websiteUrl: values.websiteUrl,
-          // imageUrl: values.imageUrl,
+          iconUrl: values.iconUrl,
           email: values.email,
           telegramHandle: values.telegramHandle,
           poolName: values.poolName,
@@ -133,13 +156,14 @@ function ApplicationStart() {
           minIndividuals: values.minIndividuals,
           maxIndividuals: values.maxIndividuals,
           atomic: values.isAtomic,
-          preferredStartDate: values.preferredStartDate,
+          // preferredStartDate: values.preferredStartDate,
           // startDate: moment(values.preferredStartDate.toDateString()).unix(), // preferredStartDate 에포크타임으로 저장
           // endDate: moment(values.preferredStartDate.toDateString())
           //   .add(30, 'd')
           //   .unix(), // startdate + 30일
-          startDate: moment().add(60, 'm').unix(), // preferredStartDate 에포크타임으로 저장
-          endDate: moment().add(90, 'm').unix(), // startdate + 30일
+          startDate: moment(values.startDate.toLocaleString()).unix(), // preferredStartDate 에포크타임으로 저장
+          endDate: moment(values.endDate.toLocaleString()).unix(), // startdate + 30일
+          selectChain: values.selectChain,
           ratio: 1 / values.tradeValue,
           progress: '',
           feeAmount: values.feeAmount,

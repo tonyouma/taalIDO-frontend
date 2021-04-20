@@ -29,6 +29,13 @@ const CATEGORIES = [
   { value: 'Others', label: 'Others' }
 ];
 
+const CHAINS = [
+  { value: 'ERC20', label: 'ERC20' },
+  { value: 'BSC', label: 'BSC' },
+  { value: 'Klaytn', label: 'Klaytn' },
+  { value: 'HECO', label: 'HECO' }
+];
+
 const ACCESS = [
   { value: 'Private', label: 'Private' },
   { value: 'Public', label: 'Public' }
@@ -114,6 +121,33 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
               error={Boolean(touched.poolName && errors.poolName)}
               helperText={touched.poolName && errors.poolName}
             />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              select
+              label="Select Chain"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('selectChain')}
+              SelectProps={{ native: true }}
+              error={Boolean(touched.selectChain && errors.selectChain)}
+              helperText={touched.selectChain && errors.selectChain}
+            >
+              {CHAINS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
           </Box>
           <Box
             className={classes.box2rem}
@@ -292,16 +326,42 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
               value="0.008881"
             /> */}
             <Box style={{ width: '59%' }}>
-              <MobileDatePicker
-                label="Preferred Start Date"
-                minDate={isEdit ? '' : moment().add(1, 'd').toDate()}
+              <TextField
+                id="Start Date"
+                label="Start Date"
+                type="datetime-local"
+                variant="standard"
+                defaultValue={values.startDate}
                 disabled={isEdit}
-                value={values.preferredStartDate}
-                size="small"
-                onChange={(date) => setFieldValue('preferredStartDate', date)}
-                renderInput={(params) => (
-                  <TextField {...params} fullWidth margin="normal" />
-                )}
+                fullWidth
+                {...getFieldProps('startDate')}
+                error={Boolean(touched.startDate && errors.startDate)}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </Box>
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <Box style={{ width: '59%' }}>
+              <TextField
+                id="End Date"
+                label="End Date"
+                type="datetime-local"
+                variant="standard"
+                disabled={isEdit}
+                fullWidth
+                defaultValue={values.endDate}
+                {...getFieldProps('endDate')}
+                error={Boolean(touched.endDate && errors.endDate)}
+                InputLabelProps={{
+                  shrink: true
+                }}
               />
             </Box>
           </Box>
@@ -408,6 +468,25 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
           >
             <Typography variant="h4" sx={{ mb: 2 }}></Typography>
             <TextField
+              label="ICON URL"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('iconUrl')}
+              error={Boolean(touched.iconUrl && errors.iconUrl)}
+              helperText={touched.iconUrl && errors.iconUrl}
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
               label="Email Address"
               variant="standard"
               InputLabelProps={{
@@ -427,7 +506,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
           >
             <Typography variant="h4" sx={{ mb: 2 }}></Typography>
             <TextField
-              label="Telegra Handle"
+              label="Telegram Handle"
               variant="standard"
               InputLabelProps={{
                 shrink: 'true'
@@ -548,7 +627,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
         </div>
 
         {/* 추가 끝 */}
-        {/* 
+        {/*
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Card>
