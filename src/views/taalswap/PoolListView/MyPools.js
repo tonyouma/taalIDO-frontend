@@ -652,7 +652,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 </Hidden>
                 <TableCell align="right">{t('taalswap.Progress')}</TableCell>
                 <TableCell align="right">{t('taalswap.Status')}</TableCell>
-                <TableCell align="right">claim</TableCell>
+                <TableCell align="right">{t('taalswap.Claim')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -745,7 +745,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                   }}
                 >
                   <CircularProgress />
-                  <Typography variant="body2"> 처리 중...</Typography>
+                  <Typography variant="body2">
+                    In progress… Please wait.
+                  </Typography>
                 </Box>
               )}
             </DialogContent>

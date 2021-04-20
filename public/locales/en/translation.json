@@ -78,6 +78,7 @@
     "MaxIndiv": "Max. Allocation",
     "MinIndiv": "Min. Allocation",
     "PoolStart": "Token Distribution",
-    "MinRaise": "Min. Swap Level"
+    "MinRaise": "Min. Swap Level",
+    "Claim": "Claim"
   }
 }

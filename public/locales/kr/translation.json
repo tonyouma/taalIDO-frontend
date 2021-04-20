@@ -78,6 +78,7 @@
     "MaxIndiv": "최대 구입 수량",
     "MinIndiv": "최소 구입 수량",
     "PoolStart": "판매 시작일",
-    "MinRaise": "최소 판매 희망 수량"
+    "MinRaise": "최소 판매 희망 수량",
+    "Claim": "청구"
   }
 }
