@@ -149,11 +149,12 @@ function PoolListView() {
 
   useEffect(async () => {
     await dispatch(getPoolList());
-    await dispatch(getSwapList(wallet ? wallet : account));
+    if (account || wallet)
+      await dispatch(getSwapList(wallet ? wallet : account));
     if (location.state !== null && location.state !== undefined) {
       setValue(location.state.tabValue);
     }
-  }, [dispatch]);
+  }, [dispatch, account]);
 
   return (
     <Page title={t('taalswap.Projects')} className={classes.root}>
