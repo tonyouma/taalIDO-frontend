@@ -7,17 +7,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    // padding: theme.spacing(3),
     color: theme.palette.warning.main
-
-    // paddingBottom: 10
   },
   countdownWrapper: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap'
-    // border: '1px solid red'
   },
 
   countdownItem: {
@@ -27,11 +23,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    // position: 'relative',
     width: '40px',
-    // padding: 0,
-    // margin: 0,
-    // border: '1px solid blue',
     '& span': {
       fontSize: '10px',
       fontWeight: '600',
@@ -46,11 +38,6 @@ const TimeCounter = ({ timeTillDate, endFlag, poolStatus, timeFormat }) => {
   const [hours, setHours] = useState('00');
   const [minutes, setMinutes] = useState('00');
   const [seconds, setSeconds] = useState('00');
-
-  // const days = moment.duration(then.diff(now)).days();
-  // const hours = moment.duration(then.diff(now)).hours();
-  // const minutes = moment.duration(then.diff(now)).minutes();
-  // const seconds = moment.duration(then.diff(now)).seconds();
 
   useEffect(() => {
     try {
