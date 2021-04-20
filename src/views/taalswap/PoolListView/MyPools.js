@@ -163,10 +163,6 @@ function TablePoolRow({ row, handleOpenModal }) {
     return () => {};
   }, [row, library]);
 
-  const test = () => {
-    console.log(taalswap);
-  };
-
   return (
     <TableRow
       key={row.poolName}
@@ -302,15 +298,12 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   const handleOpenModal = async (row, poolStatus, taalswap) => {
     try {
       if (!!library || from) {
-        console.log(taalswap);
-        console.log(account);
         const myPurchases = await taalswap.getAddressPurchaseIds({
           address: from ? wallet : account
         });
         let wasFinalizedArray = [];
         await myPurchases.map(async (purchaseid) => {
           await taalswap.purchases({ id: purchaseid }).then((result) => {
-            console.log(result.wasFinalized);
             if (result.wasFinalized === false)
               wasFinalizedArray = wasFinalizedArray.concat(purchaseid);
             setFinalizedFalseList(wasFinalizedArray);
@@ -393,7 +386,6 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 const newList = finalizedFalseList.filter(
                   (id) => id !== finalizedFalseList[0]
                 );
-                console.log(newList);
                 setFinalizedFalseList(newList);
                 enqueueSnackbar('Claim ETH success', {
                   variant: 'success'
@@ -527,7 +519,6 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 const newList = finalizedFalseList.filter(
                   (id) => id !== finalizedFalseList[0]
                 );
-                console.log(newList);
                 setFinalizedFalseList(newList);
                 enqueueSnackbar('Claim Tokens success', {
                   variant: 'success'
