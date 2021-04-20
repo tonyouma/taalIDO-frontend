@@ -75,11 +75,11 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
       if (wallet.name === 'MetaMask') {
         await activate(injected, null, true);
         dispatch(setActivatingConnector(injected));
-        window.localStorage.setItem('chainId', injected);
+        window.localStorage.setItem('chainId', 'injected');
       } else if (wallet.name === 'WalletConnect') {
         const wc = walletconnect(true);
         await activate(wc, undefined, true);
-        window.localStorage.setItem('chainId', wc);
+        window.localStorage.setItem('chainId', 'walletconnect');
       } else if (wallet.name === 'KaikasWallet') {
         console.log('KaikasWallet', window.klaytn);
         const accounts = await window.klaytn.enable();

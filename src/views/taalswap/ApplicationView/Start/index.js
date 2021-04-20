@@ -47,7 +47,7 @@ function ApplicationStart() {
     name: Yup.string().required('Project Name is required'),
     category: Yup.string().required('Category is required'),
     websiteUrl: Yup.string().url().required('Website URL is required'),
-    imageUrl: Yup.string().url().required('ICON image URL is required'),
+    // imageUrl: Yup.string().url().required('ICON image URL is required'),
     email: Yup.string().email().required('eMail is required'),
     telegramHandle: Yup.string().required('Telegram handle is required'),
     poolName: Yup.string().required('Pool Name is required'),
@@ -79,7 +79,7 @@ function ApplicationStart() {
         ? location.state.selectedItem.projectDesc
         : '',
       websiteUrl: location.state ? location.state.selectedItem.websiteUrl : '',
-      imageUrl: location.state ? location.state.selectedItem.imageUrl : '',
+      // imageUrl: location.state ? location.state.selectedItem.imageUrl : '',
       email: location.state ? location.state.selectedItem.email : '',
       telegramHandle: location.state
         ? location.state.selectedItem.telegramHandle
@@ -120,7 +120,7 @@ function ApplicationStart() {
           category: values.category,
           projectDesc: values.projectDesc,
           websiteUrl: values.websiteUrl,
-          imageUrl: values.imageUrl,
+          // imageUrl: values.imageUrl,
           email: values.email,
           telegramHandle: values.telegramHandle,
           poolName: values.poolName,
