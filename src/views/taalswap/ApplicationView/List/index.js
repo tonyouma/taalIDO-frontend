@@ -505,12 +505,14 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column'
     }
+    // border: '1px solid red'
   },
   tableTab: {
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       marginBottom: '0px'
     }
+    // border: '1px solid blue'
   },
   tableSearch: {
     width: '470px',
@@ -520,6 +522,7 @@ const useStyles = makeStyles((theme) => ({
       textAlign: 'left',
       marginBottom: '1rem'
     }
+    // border: '1px solid black'
   },
   tableDateCell: {
     minWidth: '160px'
@@ -767,7 +770,7 @@ export default function ApplicationListView() {
           </Box>
         </Backdrop>
         <Box className={classes.tableTop}>
-          <Box className={classes.tableTab} className="tab_Line">
+          <Box className={classes.tableTab}>
             <HeaderDashboard
               heading={t('taalswap.Applications')}
               links={[{ name: '' }]}
