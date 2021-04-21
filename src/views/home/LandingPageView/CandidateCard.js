@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   websiteUrl: {
     // '& a': {
     textDecoration: 'none',
-    color: 'black',
+    color: theme.palette.text.primary,
     '&:hover': {
       // textDecoration: 'underline'
       // textShadow: '0 0 24px'
