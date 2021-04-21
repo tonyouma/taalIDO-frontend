@@ -36,7 +36,7 @@ function ApplicationStart() {
   const { from } = useSelector((state) => state.talken);
 
   const context = useWeb3React();
-  const { account, library } = context;
+  const { account, library, activate } = context;
 
   useEffect(() => {
     // console.log('test : ' + account);
@@ -215,6 +215,7 @@ function ApplicationStart() {
         <NewApplicationForm
           formik={formik}
           account={account}
+          activate={activate}
           edit={edit.toString()}
         />
       </Container>
