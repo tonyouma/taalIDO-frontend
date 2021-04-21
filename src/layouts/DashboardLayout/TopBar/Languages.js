@@ -15,11 +15,11 @@ export const LANGS = [
     label: '대한민국',
     icon: '/static/icons/ic_flag_kr.svg'
   },
-  {
-    value: 'cn',
-    label: '中国',
-    icon: '/static/icons/ic_flag_ch.svg'
-  },
+  // {
+  //   value: 'cn',
+  //   label: '中国',
+  //   icon: '/static/icons/ic_flag_ch.svg'
+  // },
   {
     value: 'en',
     label: 'English',

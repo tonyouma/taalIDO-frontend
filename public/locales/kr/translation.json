@@ -87,6 +87,10 @@
     "InProgress": "처리 중입니다. 잠시만 기다리세요.",
     "ClaimETH": "ETH 청구",
     "ClaimTokens": "토큰 청구",
-    "Swap": "토큰 교환"
+    "Swap": "토큰 교환",
+    "WarnLeft": "잔여 토큰 수를 초과하지 않는 수량을 기입하십시오.",
+    "WarnIndivMax": "지갑 별 최대 구입 가능액을 초과하지 않는 수량을 기입하십시오.",
+    "WarnIndivMinMAx": "최대 구입 가능액을 초과하지 않는 수량을 기입하십시오.",
+    "Submit": "제출"
   }
 }
