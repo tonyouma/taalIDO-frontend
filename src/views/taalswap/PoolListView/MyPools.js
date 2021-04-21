@@ -239,6 +239,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           enqueueSnackbar('Claim success', {
             variant: 'success'
           });
+          console.log('===== : ', currentPuchasesId);
           const newList = finalizedFalseList.filter(
             (id) => id !== currentPuchasesId
           );
