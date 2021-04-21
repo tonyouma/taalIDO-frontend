@@ -328,8 +328,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           if (from) {
             const data = await taalswap.getRedeemGivenMinimumGoalNotAchievedABI(
               {
-                // purchase_id: finalizedFalseList[0]
-                purchase_id: currentPuchasesId
+                purchase_id: finalizedFalseList[0]
               }
             );
             console.log('=====data', data);
@@ -337,8 +336,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               method: 'redeemGivenMinimumGoalNotAchieved',
               from: wallet,
               to: selectedPool.contractAddress,
-              // purchase_id: finalizedFalseList[0],
-              purchase_id: currentPuchasesId,
+              purchase_id: finalizedFalseList[0],
               data: data
             };
             console.log('=====', JSON.stringify(msgContents));
@@ -360,8 +358,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           } else {
             const result = await taalswap
               .redeemGivenMinimumGoalNotAchieved({
-                // purchase_id: finalizedFalseList[0]
-                purchase_id: currentPuchasesId
+                purchase_id: finalizedFalseList[0]
               })
               .catch((error) => {
                 console.log(error);
@@ -375,8 +372,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               const receipt = await result.wait();
               if (receipt.status === 1) {
                 const newList = finalizedFalseList.filter(
-                  // (id) => id !== finalizedFalseList[0]
-                  (id) => id !== currentPuchasesId
+                  (id) => id !== finalizedFalseList[0]
                 );
                 setFinalizedFalseList(newList);
                 enqueueSnackbar('Claim ETH success', {
@@ -457,6 +453,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
       }
     } catch (error) {
       console.log('=====', error);
+      setProgressFlag(false);
     }
   };
 
@@ -467,17 +464,16 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           setProgressFlag(true);
           setCurrentPuchasesId(finalizedFalseList[0]);
           if (from) {
+            console.log('=====', currentPuchasesId);
             const data = await taalswap.getRedeemTokensABI({
-              // purchase_id: finalizedFalseList[0]
-              purchase_id: currentPuchasesId
+              purchase_id: finalizedFalseList[0]
             });
             console.log('=====data', data);
             const msgContents = {
               method: 'redeemTokens',
               from: wallet,
               to: selectedPool.contractAddress,
-              // purchase_id: finalizedFalseList[0],
-              purchase_id: currentPuchasesId,
+              purchase_id: finalizedFalseList[0],
               data: data
             };
             console.log('=====', JSON.stringify(msgContents));
@@ -499,8 +495,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           } else {
             const result = await taalswap
               .redeemTokens({
-                // purchase_id: finalizedFalseList[0]
-                purchase_id: currentPuchasesId
+                purchase_id: finalizedFalseList[0]
               })
               .catch((error) => {
                 console.log(error);
@@ -514,8 +509,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               const receipt = await result.wait();
               if (receipt.status === 1) {
                 const newList = finalizedFalseList.filter(
-                  // (id) => id !== finalizedFalseList[0]
-                  (id) => id !== currentPuchasesId
+                  (id) => id !== finalizedFalseList[0]
                 );
                 setFinalizedFalseList(newList);
                 enqueueSnackbar('Claim Tokens success', {
@@ -594,6 +588,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
       }
     } catch (error) {
       console.log('=====', error);
+      setProgressFlag(false);
     }
   };
 
