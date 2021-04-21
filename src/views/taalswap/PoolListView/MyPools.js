@@ -368,8 +368,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 });
               }
             }
-            setProgressFlag(false);
           }
+          setProgressFlag(false);
         }
 
         // console.log(taalswap);
@@ -501,8 +501,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 });
               }
             }
-            setProgressFlag(false);
           }
+          setProgressFlag(false);
         }
         // console.log('=====handleOnClickClaimTokens');
         // const myPurchases = await taalswap.getAddressPurchaseIds({
