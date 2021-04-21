@@ -239,9 +239,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           enqueueSnackbar('Claim success', {
             variant: 'success'
           });
-          console.log('===== : ', currentPuchasesId);
+          console.log('===== : ', rslt.purchase_id);
           const newList = finalizedFalseList.filter(
-            (id) => id !== currentPuchasesId
+            (id) => id !== rslt.purchase_id
           );
           setFinalizedFalseList(newList);
           setProgressFlag(false);
