@@ -18,10 +18,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     padding: theme.spacing(3),
     color: theme.palette.text.primary
-    // color: theme.palette.warning.darker
-    // backgroundColor: theme.palette.warning.lighter
-
-    // height: '160px'
   },
   trending: {
     display: 'flex',
@@ -30,15 +26,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(0.5)
   },
   trendingIcon: {
-    // width: 24,
-    // height: 24,
-    // display: 'flex',
-    // borderRadius: '50%',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // marginRight: theme.spacing(1),
     color: theme.palette.warning.darker
-    // backgroundColor: alpha(theme.palette.primary.main, 0.16)
   },
   isTrendingDown: {
     color: theme.palette.error.main,
@@ -71,7 +59,6 @@ function TotalAllocatedTokens({ className, pool, ...other }) {
       await taalswap
         .tokensAllocated()
         .then((result) => {
-          console.log(result);
           setTokensAllocated(result);
         })
         .catch((error) => console.log(error));
@@ -87,17 +74,12 @@ function TotalAllocatedTokens({ className, pool, ...other }) {
         <Typography variant="h3">
           <Box display="flex" alignItems="baseline">
             <AnimatedNumber
-              // component="number"
+              component="number"
               value={tokensAllocated}
               style={{
                 transition: '0.8s ease-out'
-                // fontSize: 48,
-                // transitionProperty: 'background-color, color, opacity'
               }}
-              // frameStyle={(perc) =>
-              //   perc === 100 ? {} : { backgroundColor: '#ffeb3b' }
-              // }
-              duration={1000}
+              duration={2000}
               formatValue={(n) => `${fNumber(n)}`}
             />
             <Typography>/ {pool.tradeAmount}</Typography>

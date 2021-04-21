@@ -20,11 +20,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(3),
-    // color: theme.palette.primary.darker
     color: theme.palette.text.primary
-    // backgroundColor: theme.palette.primary.lighter
-
-    // height: '160px'
   },
   trending: {
     display: 'flex',
@@ -33,15 +29,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(0.5)
   },
   trendingIcon: {
-    // width: 24,
-    // height: 24,
-    // display: 'flex',
-    // borderRadius: '50%',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // marginRight: theme.spacing(1),
     color: theme.palette.primary.main
-    // backgroundColor: alpha(theme.palette.primary.main, 0.16)
   },
   isTrendingDown: {
     color: theme.palette.error.main,
@@ -86,17 +74,12 @@ function TotalPurchasers({ className, pool, ...other }) {
 
         <Typography variant="h3">
           <AnimatedNumber
-            // component="number"
+            component="number"
             value={participants}
             style={{
               transition: '0.8s ease-out'
-              // fontSize: 48,
-              // transitionProperty: 'background-color, color, opacity'
             }}
-            // frameStyle={(perc) =>
-            //   perc === 100 ? {} : { backgroundColor: '#ffeb3b' }
-            // }
-            duration={1000}
+            duration={2000}
             formatValue={(n) => fNumber(n)}
           />
         </Typography>
