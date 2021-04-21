@@ -85,6 +85,22 @@ function Countdown({ className, pool, value, ...other }) {
     }
   }, [library, value]);
 
+  let poolStatusStr;
+  switch (poolStatus) {
+    case 'Candidate':
+    case 'Approved':
+    case 'Deployed':
+      poolStatusStr = t('taalswap.poolStProcess');
+      break;
+    case 'Upcoming':
+      poolStatusStr = t('taalswap.poolStReady');
+      break;
+    case 'failed':
+    case 'Accomplished':
+      poolStatusStr = t('taalswap.poolStDone');
+      break;
+  }
+
   return (
     <Card className={clsx(classes.root, className)} {...other}>
       <Typography marginBottom="10px" variant="subtitle2">
@@ -102,7 +118,7 @@ function Countdown({ className, pool, value, ...other }) {
               poolStatus={poolStatus}
             />
           ) : (
-            <Typography variant="h4"> {poolStatus}</Typography>
+            <Typography variant="h4"> {poolStatusStr}</Typography>
           )}
         </Box>
         <Box style={{ marginTop: '-17px', marginBottom: '10px' }}>

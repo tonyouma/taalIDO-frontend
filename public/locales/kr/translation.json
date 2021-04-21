@@ -91,6 +91,9 @@
     "WarnLeft": "잔여 토큰 수를 초과하지 않는 수량을 기입하십시오.",
     "WarnIndivMax": "지갑 별 최대 구입 가능액을 초과하지 않는 수량을 기입하십시오.",
     "WarnIndivMinMAx": "최대 구입 가능액을 초과하지 않는 수량을 기입하십시오.",
-    "Submit": "제출"
+    "Submit": "제출",
+    "poolStProcess": "IDO 준비 중",
+    "poolStReady": "IDO 시작 예정",
+    "poolStDone": "IDO 종료"
   }
 }

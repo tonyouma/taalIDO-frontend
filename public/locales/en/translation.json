@@ -91,6 +91,9 @@
     "WarnLeft": "Should be less than the amount tokens left",
     "WarnIndivMax": "Should be less than individual maximum.",
     "WarnIndivMinMAx": "Please input your purchase amount not exceeding Max Allocation.",
-    "Submit": "Submit"
+    "Submit": "Submit",
+    "poolStProcess": "IDO in Processing",
+    "poolStReady": "IDO Soon",
+    "poolStDone": "IDO Done"
   }
 }
