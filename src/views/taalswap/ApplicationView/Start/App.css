@@ -1,0 +1,12 @@
+@media screen and (max-width: 959px) {
+  #info_contentwrap .css-1isk6cz {
+    flex-wrap: wrap;
+    justify-content: start;
+  }
+  #info_contentwrap .css-1isk6cz h4 {
+    width: 100%;
+  }
+  #info_contentwrap .css-1isk6cz div {
+    width: 100% !important;
+  }
+}

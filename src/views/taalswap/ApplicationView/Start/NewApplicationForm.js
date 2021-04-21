@@ -22,7 +22,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import WalletDialog from '../../Components/WalletDialog';
-
+import './App.css';
 // ----------------------------------------------------------------------
 
 const CATEGORIES = [
@@ -106,7 +106,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
       >
         {/* 추가 시작 */}
         <Divider />
-        <div className={clsx(classes.root, className)}>
+        <div className={clsx(classes.root, className)} id="info_contentwrap">
           <Box
             className={classes.box2rem}
             display="flex"
@@ -315,7 +315,6 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
               // }
             />
           </Box>
-
           <Box
             className={classes.box2rem}
             display="flex"
@@ -399,7 +398,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
 
         <Divider />
 
-        <div className={clsx(classes.root, className)}>
+        <div className={clsx(classes.root, className)} id="info_contentwrap">
           <Box
             className={classes.box2rem}
             display="flex"
