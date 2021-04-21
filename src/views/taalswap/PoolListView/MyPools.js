@@ -238,23 +238,28 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           enqueueSnackbar('Claim success', {
             variant: 'success'
           });
+          setProgressFlag(false);
         } else {
           console.log('=====', receipt.status);
           enqueueSnackbar('Claim fail', {
             variant: 'fail'
           });
+          setProgressFlag(false);
         }
       } else {
         enqueueSnackbar('Claim fail', {
           variant: 'fail'
         });
+        setProgressFlag(false);
       }
     } catch (e) {
       enqueueSnackbar('Claim error', {
         variant: 'error'
       });
+      setProgressFlag(false);
     }
-    onBackdrop(false);
+    // onBackdrop(false);
+    // setProgressFlag(false);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -354,6 +359,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 enqueueSnackbar('Claim ETH fail', {
                   variant: 'fail'
                 });
+                setProgressFlag(false);
               });
 
             if (result !== undefined) {
@@ -366,10 +372,10 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 enqueueSnackbar('Claim ETH success', {
                   variant: 'success'
                 });
+                setProgressFlag(false);
               }
             }
           }
-          setProgressFlag(false);
         }
 
         // console.log(taalswap);
@@ -487,6 +493,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 enqueueSnackbar('Claim Tokens fail', {
                   variant: 'fail'
                 });
+                setProgressFlag(false);
               });
 
             if (result !== undefined) {
@@ -499,10 +506,10 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 enqueueSnackbar('Claim Tokens success', {
                   variant: 'success'
                 });
+                setProgressFlag(false);
               }
             }
           }
-          setProgressFlag(false);
         }
         // console.log('=====handleOnClickClaimTokens');
         // const myPurchases = await taalswap.getAddressPurchaseIds({
