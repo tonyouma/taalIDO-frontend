@@ -4,6 +4,32 @@
 .css-1266kxk-MuiButtonBase-root-MuiTab-root .css-17yibpu-MuiTab-wrapper {
   font-size: 32px;
 }
+
+@media screen and (min-width: 960px) {
+  #footer_wrap {
+    padding: 0;
+  }
+  #footer_iconbox {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+  .footer_content {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 24px;
+  }
+  .footer_content .footer_logo {
+    margin-bottom: 0;
+    margin: 0;
+  }
+  .footer_content .footer_caption {
+    margin-left: 20px;
+    align-self: center;
+    width: 70%;
+    text-align: left;
+  }
+}
+
 @media screen and (max-width: 960px) {
   .css-1266kxk-MuiButtonBase-root-MuiTab-root .css-17yibpu-MuiTab-wrapper {
     font-size: 20px;

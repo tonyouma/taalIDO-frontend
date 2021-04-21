@@ -222,9 +222,9 @@ function EnhancedTableHead(props) {
             direction={orderBy === 'projectName' ? order : 'asc'}
             onClick={createSortHandler('projectName')}
           >
-            {/* <Typography variant="h6" gutterBottom> */}
+            <Typography variant="h6" gutterBottom>
             {t('taalswap.ProjectName')}
-            {/* </Typography> */}
+            </Typography>
             {orderBy === 'Project' ? (
               <span className={classes.visuallyHidden}>
                 {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -245,9 +245,9 @@ function EnhancedTableHead(props) {
               direction={orderBy === 'category' ? order : 'asc'}
               onClick={createSortHandler('category')}
             >
-              {/* <Typography variant="h6" gutterBottom> */}
-              {t('taalswap.Category')}
-              {/* </Typography> */}
+              <Typography variant="h6" gutterBottom>
+                {t('taalswap.Category')}
+              </Typography>
               {orderBy === 'Category' ? (
                 <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -268,9 +268,9 @@ function EnhancedTableHead(props) {
             direction={orderBy === 'startDate' ? order : 'asc'}
             onClick={createSortHandler('startDate')}
           >
-            {/* <Typography variant="h6" gutterBottom> */}
-            {t('taalswap.StartDate')}
-            {/* </Typography> */}
+            <Typography variant="h6" gutterBottom>
+              {t('taalswap.StartDate')}
+            </Typography>
             {orderBy === 'startDate' ? (
               <span className={classes.visuallyHidden}>
                 {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -291,9 +291,9 @@ function EnhancedTableHead(props) {
               direction={orderBy === 'endDate' ? order : 'asc'}
               onClick={createSortHandler('endDate')}
             >
-              {/* <Typography variant="h6" gutterBottom> */}
-              {t('taalswap.EndDate')}
-              {/* </Typography> */}
+              <Typography variant="h6" gutterBottom>
+                {t('taalswap.EndDate')}
+              </Typography>
               {orderBy === 'endDate' ? (
                 <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -313,9 +313,9 @@ function EnhancedTableHead(props) {
             direction={orderBy === 'status' ? order : 'asc'}
             onClick={createSortHandler('status')}
           >
-            {/* <Typography variant="h6" gutterBottom> */}
-            {t('taalswap.Status')}
-            {/* </Typography> */}
+            <Typography variant="h6" gutterBottom>
+              {t('taalswap.Status')}
+            </Typography>
             {orderBy === 'status' ? (
               <span className={classes.visuallyHidden}>
                 {order === 'desc' ? 'sorted descending' : 'sorted ascending'}

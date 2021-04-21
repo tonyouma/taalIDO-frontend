@@ -62,14 +62,22 @@ function DarkMode({ className }) {
   const classes = useStyles();
 
   return (
-    <div className={clsx(classes.root, className)}>
-      <Container maxWidth="lg" sx={{ position: 'relative' }}>
-        <Logo sx={{ mb: 1, mx: 'auto' }} footer={'true'} />
+    <div className={clsx(classes.root, className)} id="footer_wrap">
+      <Container
+        maxWidth="lg"
+        sx={{ position: 'relative' }}
+        className="footer_content"
+      >
+        <Logo sx={{ mb: 1, mx: 'auto' }} className="footer_logo" />
 
-        <Typography color="common.white" variant="caption">
+        <Typography
+          color="common.white"
+          variant="caption"
+          className="footer_caption"
+        >
           © All rights reserved. Made by TaalSwap.
         </Typography>
-        <div className={classes.listIcon}>
+        <div className={classes.listIcon} id="footer_iconbox">
           <motion.img src="/static/icons/ic_s_facebook.svg" />
           <motion.img src="/static/icons/ic_s_linkin.svg" />
           <motion.img src="/static/icons/ic_s_instagram.svg" />
