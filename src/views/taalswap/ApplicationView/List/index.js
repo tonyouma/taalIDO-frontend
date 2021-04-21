@@ -223,7 +223,7 @@ function EnhancedTableHead(props) {
             onClick={createSortHandler('projectName')}
           >
             <Typography variant="h6" gutterBottom>
-            {t('taalswap.ProjectName')}
+              {t('taalswap.ProjectName')}
             </Typography>
             {orderBy === 'Project' ? (
               <span className={classes.visuallyHidden}>
