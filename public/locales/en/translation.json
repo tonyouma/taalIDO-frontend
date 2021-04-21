@@ -38,8 +38,8 @@
     "Amount": "Amount",
     "Go": "Go",
     "Price": "Price",
-    "MaxAllocationIn": "Max. Allocation in",
-    "MaxAllocationInETH": "Max Allocation in ETH",
+    "MaxAllocationIn": "Max. Allocation in ",
+    "MaxAllocationInETH": "Max. Allocation in ETH",
     "AboutTheProject": "About The Project",
     "PoolDetail": "Pool Detail",
     "Balance": "Balance",
@@ -87,6 +87,10 @@
     "InProgress": "In progress… Please wait.",
     "ClaimETH": "Claim ETH",
     "ClaimTokens": "Claim Tokens",
-    "Swap": "Swap"
+    "Swap": "Swap",
+    "WarnLeft": "Should be less than the amount tokens left",
+    "WarnIndivMax": "Should be less than individual maximum.",
+    "WarnIndivMinMAx": "Please input your purchase amount not exceeding Max Allocation.",
+    "Submit": "Submit"
   }
 }

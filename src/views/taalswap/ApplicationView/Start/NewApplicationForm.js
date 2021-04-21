@@ -20,6 +20,7 @@ import { MobileDatePicker } from '@material-ui/lab';
 import moment from 'moment';
 import React from 'react';
 import { useHistory } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -87,6 +88,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
   const account = other.account;
   const isEdit = other.edit === 'true' ? true : false;
   const history = useHistory();
+  const { i18n, t } = useTranslation();
 
   // console.log('account : ' + JSON.stringify(account));
   return (
@@ -610,7 +612,9 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                   variant="contained"
                   pending={isSubmitting}
                 >
-                  {!account ? 'Connect Wallet' : 'Create'}
+                  {!account
+                    ? t('taalswap.ConnectWallet')
+                    : t('taalswap.Submit')}
                 </LoadingButton>
               ) : (
                 <Button

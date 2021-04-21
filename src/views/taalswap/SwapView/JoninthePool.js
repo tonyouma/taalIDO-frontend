@@ -268,16 +268,16 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 onBackdrop(false);
               } else {
                 setWarningMessage(
-                  `Should be less than individual maximum! (${swappedAmount} / ${pool.maxIndividuals})`
+                  `${t('taalswap.WarnIndivMAx')} (${swappedAmount} / ${
+                    pool.maxIndividuals
+                  })`
                 );
               }
             } else {
-              setWarningMessage('Should be less than the amount tokens left!');
+              setWarningMessage(`${t('taalswap.WarnLeft')}`);
             }
           } else {
-            setWarningMessage(
-              'Please select an amount between individual minimum ans maximum!'
-            );
+            setWarningMessage(`${t('taalswap.WarnIndivMinMAx')}`);
           }
         }
       } else {
