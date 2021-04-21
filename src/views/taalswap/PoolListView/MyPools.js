@@ -201,6 +201,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [poolStatus, setPoolStatus] = useState('');
+  const [currentPuchasesId, setCurrentPuchasesId] = useState('');
   const [myPurchases, setMyPurchases] = useState([]);
   const [finalizedFalseList, setFinalizedFalseList] = useState([]);
   const [progressFlag, setProgressFlag] = useState(false);
@@ -238,6 +239,10 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           enqueueSnackbar('Claim success', {
             variant: 'success'
           });
+          const newList = finalizedFalseList.filter(
+            (id) => id !== currentPuchasesId
+          );
+          setFinalizedFalseList(newList);
           setProgressFlag(false);
         } else {
           console.log('=====', receipt.status);
@@ -319,10 +324,12 @@ export default function MyPools({ filterName, category, onBackdrop }) {
         if (finalizedFalseList.length !== 0) {
           // onBackdrop(true);
           setProgressFlag(true);
+          setCurrentPuchasesId(finalizedFalseList[0]);
           if (from) {
             const data = await taalswap.getRedeemGivenMinimumGoalNotAchievedABI(
               {
-                purchase_id: finalizedFalseList[0]
+                // purchase_id: finalizedFalseList[0]
+                purchase_id: currentPuchasesId
               }
             );
             console.log('=====data', data);
@@ -330,7 +337,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               method: 'redeemGivenMinimumGoalNotAchieved',
               from: wallet,
               to: selectedPool.contractAddress,
-              purchase_id: finalizedFalseList[0],
+              // purchase_id: finalizedFalseList[0],
+              purchase_id: currentPuchasesId,
               data: data
             };
             console.log('=====', JSON.stringify(msgContents));
@@ -352,7 +360,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           } else {
             const result = await taalswap
               .redeemGivenMinimumGoalNotAchieved({
-                purchase_id: finalizedFalseList[0]
+                // purchase_id: finalizedFalseList[0]
+                purchase_id: currentPuchasesId
               })
               .catch((error) => {
                 console.log(error);
@@ -366,7 +375,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               const receipt = await result.wait();
               if (receipt.status === 1) {
                 const newList = finalizedFalseList.filter(
-                  (id) => id !== finalizedFalseList[0]
+                  // (id) => id !== finalizedFalseList[0]
+                  (id) => id !== currentPuchasesId
                 );
                 setFinalizedFalseList(newList);
                 enqueueSnackbar('Claim ETH success', {
@@ -455,16 +465,19 @@ export default function MyPools({ filterName, category, onBackdrop }) {
       if (!!library || from) {
         if (finalizedFalseList.length !== 0) {
           setProgressFlag(true);
+          setCurrentPuchasesId(finalizedFalseList[0]);
           if (from) {
             const data = await taalswap.getRedeemTokensABI({
-              purchase_id: finalizedFalseList[0]
+              // purchase_id: finalizedFalseList[0]
+              purchase_id: currentPuchasesId
             });
             console.log('=====data', data);
             const msgContents = {
               method: 'redeemTokens',
               from: wallet,
               to: selectedPool.contractAddress,
-              purchase_id: finalizedFalseList[0],
+              // purchase_id: finalizedFalseList[0],
+              purchase_id: currentPuchasesId,
               data: data
             };
             console.log('=====', JSON.stringify(msgContents));
@@ -486,7 +499,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           } else {
             const result = await taalswap
               .redeemTokens({
-                purchase_id: finalizedFalseList[0]
+                // purchase_id: finalizedFalseList[0]
+                purchase_id: currentPuchasesId
               })
               .catch((error) => {
                 console.log(error);
@@ -500,7 +514,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               const receipt = await result.wait();
               if (receipt.status === 1) {
                 const newList = finalizedFalseList.filter(
-                  (id) => id !== finalizedFalseList[0]
+                  // (id) => id !== finalizedFalseList[0]
+                  (id) => id !== currentPuchasesId
                 );
                 setFinalizedFalseList(newList);
                 enqueueSnackbar('Claim Tokens success', {
