@@ -21,9 +21,10 @@ import {
   CircularProgress,
   Hidden,
   IconButton,
-  Icon
+  InputLabel,
+  Input
 } from '@material-ui/core';
-
+import InputAdornment from '@material-ui/core/InputAdornment';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { filter } from 'lodash';
@@ -40,13 +41,15 @@ import Numbers from 'src/utils/Numbers';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import RedeemIcon from '@material-ui/icons/Redeem';
-import { set } from 'immutable';
+import LinkIcon from '@material-ui/icons/Link';
+import { infuraChainId } from 'src/config';
 
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   contentTextField: {
+    color: theme.palette.primary.main,
     '& .MuiFormLabel-root': {
       color: theme.palette.primary.main
     },
@@ -58,12 +61,6 @@ const useStyles = makeStyles((theme) => ({
   dialogTitle: {
     color: theme.palette.primary.main
   }
-
-  // row: {
-  //   '&:hover': {
-  //     cursor: 'pointer'
-  //   }
-  // }
 }));
 
 function nativeCallbackTxHash(res) {
@@ -130,20 +127,6 @@ function TablePoolRow({ row, handleOpenModal }) {
 
   useEffect(async () => {
     if (!!library || !!from) {
-      // let taalswap;
-      // if (!!library) {
-      //   taalswap = new Taalswap({
-      //     application: row,
-      //     account,
-      //     library
-      //   });
-      // } else if (!!from) {
-      //   taalswap = new Taalswap({
-      //     application: row,
-      //     notConnected: true
-      //   });
-      // }
-
       await taalswap
         .tokensAllocated()
         .then((result) => {
@@ -200,7 +183,6 @@ function TablePoolRow({ row, handleOpenModal }) {
             variant="contained"
             size="small"
             onClick={(event) => handleOpenModal(row, poolStatus, taalswap)}
-            // onClick={(event) => test()}
           >
             <RedeemIcon />
           </IconButton>
@@ -215,9 +197,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   const history = useHistory();
   const { i18n, t } = useTranslation();
 
-  // const [filterName, setFilterName] = useState('');
   const [filterPoolList, setFilterPoolList] = useState([]);
-  const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [poolStatus, setPoolStatus] = useState('');
@@ -290,10 +270,6 @@ export default function MyPools({ filterName, category, onBackdrop }) {
     await getMySwapList();
     window.setRes = setRes;
   }, [dispatch]);
-
-  // const handleFilterByName = (event) => {
-  //   setFilterName(event.target.value);
-  // };
 
   const handleOpenModal = async (row, poolStatus, taalswap) => {
     try {
@@ -622,12 +598,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
         ),
     filterName
   );
-  // const filteredPools = applyFilter(filterPoolList, filterName);
-  // const filteredPools = applyFilter(poolList, filterName);
 
   return (
     <div className={classes.root}>
-      {/* <ToolbarTable filterName={filterName} onFilterName={handleFilterByName} /> */}
       <Scrollbars>
         <TableContainer sx={{ mt: 3 }}>
           <Table>
@@ -683,16 +656,32 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               {t('taalswap.ClaimDetails')}
             </DialogTitle>
             <DialogContent dividers>
-              <TextField
+              <InputLabel
                 className={classes.contentTextField}
-                label={t('taalswap.TokenAddress')}
-                variant="standard"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                value={selectedPool.tokenContractAddr}
+                style={{ fontSize: '12px' }}
+                htmlFor="standard-adornment-password"
+                color="primary"
+              >
+                {t('taalswap.TokenAddress')}
+              </InputLabel>
+              <Input
                 fullWidth
+                id="standard-adornment-password"
+                value={selectedPool.tokenContractAddr}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      variant="link"
+                      href={`https://${infuraChainId}.etherscan.io/address/${selectedPool.tokenContractAddr}`}
+                      target="_blank"
+                    >
+                      <LinkIcon />
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
+
               <TextField
                 className={classes.contentTextField}
                 label={t('taalswap.TotalPurchases')}
@@ -727,12 +716,10 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               {progressFlag && (
                 <Box
                   style={{
-                    // border: '1px solid red',
                     marginTop: '1rem',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center'
-                    // padding: '5px'
                   }}
                 >
                   <CircularProgress />
