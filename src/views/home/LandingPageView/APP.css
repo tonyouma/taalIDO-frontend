@@ -25,7 +25,7 @@
   .footer_content .footer_caption {
     margin-left: 20px;
     align-self: center;
-    width: 70%;
+    width: calc(100% - 373px);
     text-align: left;
   }
 }
