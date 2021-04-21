@@ -46,7 +46,7 @@ const TimeCounter = ({ timeTillDate, endFlag, poolStatus, timeFormat }) => {
           const then = moment(timeTillDate);
           const now = moment();
 
-          setDays(moment.duration(then.diff(now)).days());
+          setDays(timeTillDate.diff(now, 'days'));
           setHours(moment.duration(then.diff(now)).hours());
           setMinutes(moment.duration(then.diff(now)).minutes());
           setSeconds(moment.duration(then.diff(now)).seconds());
