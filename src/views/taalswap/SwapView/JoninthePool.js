@@ -24,6 +24,8 @@ import { set } from 'immutable';
 import { useTranslation } from 'react-i18next';
 import publish from '@iconify-icons/ic/publish';
 import { LANGS } from 'src/layouts/DashboardLayout/TopBar/Languages';
+import WalletDialog from '../Components/WalletDialog';
+import { FormikProvider } from 'formik';
 
 // ----------------------------------------------------------------------
 
@@ -92,7 +94,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
   const { os, from, wallet } = useSelector((state) => state.talken);
   const { swapList } = useSelector((state) => state.pool);
-  const { connector, library, account } = context;
+  const { connector, library, account, activate } = context;
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const { i18n, t } = useTranslation();
 
   let taalswap;
@@ -483,7 +486,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       </Box>
 
       <Box sx={{ mt: 5, mb: 2 }}>
-        {pool.access === 'Public' && (
+        {pool.access === 'Public' && account && (
           <LoadingButton
             fullWidth
             size="large"
@@ -496,7 +499,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           </LoadingButton>
         )}
 
-        {pool.access === 'Private' && (
+        {pool.access === 'Private' && account && (
           <LoadingButton
             fullWidth
             size="large"
@@ -505,6 +508,17 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             disabled={status !== PoolStatus.LIVE || isWhiteList === false}
           >
             {t('taalswap.Go')}
+          </LoadingButton>
+        )}
+
+        {!account && (
+          <LoadingButton
+            fullWidth
+            size="large"
+            variant="contained"
+            onClick={() => setIsOpenModal(true)}
+          >
+            {t('taalswap.ConnectWallet')}
           </LoadingButton>
         )}
       </Box>
@@ -533,6 +547,11 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           Have problems Joining? Click here to read instructions.
         </Typography> */}
       </Box>
+      <WalletDialog
+        isOpenModal={isOpenModal}
+        handleCloseModal={() => setIsOpenModal(false)}
+        activate={activate}
+      />
     </Box>
   );
 }

@@ -18,9 +18,10 @@ import {
 } from '@material-ui/core';
 import { MobileDatePicker } from '@material-ui/lab';
 import moment from 'moment';
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import WalletDialog from '../../Components/WalletDialog';
 
 // ----------------------------------------------------------------------
 
@@ -86,8 +87,11 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
     getFieldProps
   } = formik;
   const account = other.account;
+  const activate = other.activate;
+  const handleCloseModal = other.handleCloseModal;
   const isEdit = other.edit === 'true' ? true : false;
   const history = useHistory();
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const { i18n, t } = useTranslation();
 
   // console.log('account : ' + JSON.stringify(account));
@@ -604,7 +608,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                 label="Atomic"
               />
               <Box sx={{ ml: 5 }}></Box>
-              {!isEdit ? (
+              {!isEdit && account ? (
                 <LoadingButton
                   type="submit"
                   // fullWidth
@@ -612,11 +616,12 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                   variant="contained"
                   pending={isSubmitting}
                 >
-                  {!account
-                    ? t('taalswap.ConnectWallet')
-                    : t('taalswap.Submit')}
+                  {t('taalswap.Submit')}
                 </LoadingButton>
               ) : (
+                ''
+              )}
+              {isEdit ? (
                 <Button
                   type="button"
                   // fullWidth
@@ -625,6 +630,21 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
                 >
                   Back
                 </Button>
+              ) : (
+                ''
+              )}
+              {!isEdit && !account ? (
+                <Button
+                  type="button"
+                  // fullWidth
+                  variant="contained"
+                  target="_blank"
+                  onClick={() => setIsOpenModal(true)}
+                >
+                  {t('taalswap.ConnectWallet')}
+                </Button>
+              ) : (
+                ''
               )}
             </Box>
           </Box>
@@ -971,6 +991,11 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
           </Grid>
         </Grid> */}
       </Form>
+      <WalletDialog
+        isOpenModal={isOpenModal}
+        handleCloseModal={() => setIsOpenModal(false)}
+        activate={activate}
+      />
     </FormikProvider>
   );
 }
