@@ -244,11 +244,14 @@ export default function MyPools({ filterName, category, onBackdrop }) {
             variant: 'success'
           });
           console.log('===== : ', window.purchaseId);
+          console.log('===== : ', finalizedFalseList);
           const newList = finalizedFalseList.filter(
             (id) => id !== window.purchaseId
           );
+          console.log('===== : ', newList);
           setFinalizedFalseList(newList);
           setProgressFlag(false);
+          console.log('===== end');
         } else {
           console.log('=====', receipt.status);
           enqueueSnackbar('Claim fail', {
