@@ -58,6 +58,7 @@ PaymentInformation.propTypes = {
 function PaymentInformation({ className, pool, ethPrice, index }) {
   const classes = useStyles();
   const context = useWeb3React();
+  const langStorage = localStorage.getItem('i18nextLng');
 
   const [progressValue, setProgressValue] = useState(0);
   const [progressDollorValue, setProgressDollorValue] = useState(0);
@@ -147,9 +148,13 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
           variant="body2"
           sx={{ color: 'text.secondary' }}
         >
-          {`$ ${Numbers.toFloat(parseFloat(ethPrice) / pool.ratio)} / ${
-            pool.symbol
-          }`}
+          {langStorage === 'kr'
+            ? `₩ ${Numbers.toFloat(parseFloat(ethPrice) / pool.ratio)} / ${
+                pool.symbol
+              }`
+            : `$ ${Numbers.toFloat(parseFloat(ethPrice) / pool.ratio)} / ${
+                pool.symbol
+              }`}
         </Typography>
       </div>
       <div className={classes.row}>
