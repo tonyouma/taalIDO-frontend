@@ -233,7 +233,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
 
   const setRes = async (result) => {
     try {
-      console.log('=====!!!!!', curr_method.msgContents);
+      console.log('=====!!!!!', window.purchaseId);
+      console.log('=====!!!!!', JSON.stringify(result));
       const rslt = JSON.parse(result);
       if (rslt.result) {
         const receipt = await taalswap.waitTxHash(rslt.txHash);
