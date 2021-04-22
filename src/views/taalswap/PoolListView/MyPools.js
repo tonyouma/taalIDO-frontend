@@ -186,7 +186,7 @@ function TablePoolRow({ row, handleOpenModal, finalizedFalseListCount }) {
             variant="contained"
             size="small"
             onClick={(event) => handleOpenModal(row, poolStatus, taalswap)}
-            disabled={finalizedFalseListCount === 0}
+            // disabled={finalizedFalseListCount === 0}
           >
             <RedeemIcon />
           </IconButton>
