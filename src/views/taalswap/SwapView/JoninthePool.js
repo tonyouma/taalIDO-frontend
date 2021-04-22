@@ -486,7 +486,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       </Box>
 
       <Box sx={{ mt: 5, mb: 2 }}>
-        {pool.access === 'Public' && account && (
+        {pool.access === 'Public' && (account || from) && (
           <LoadingButton
             fullWidth
             size="large"
@@ -499,7 +499,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           </LoadingButton>
         )}
 
-        {pool.access === 'Private' && account && (
+        {pool.access === 'Private' && (account || from) && (
           <LoadingButton
             fullWidth
             size="large"
@@ -511,7 +511,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           </LoadingButton>
         )}
 
-        {!account && (
+        {!account && !from && (
           <LoadingButton
             fullWidth
             size="large"
