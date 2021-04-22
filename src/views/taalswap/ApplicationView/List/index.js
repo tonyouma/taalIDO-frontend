@@ -138,25 +138,27 @@ async function taalDeploy(factory, application) {
       }
     )
     .catch(function (err) {
-      // console.log(err);
+      console.log(err);
       ret.err = err;
     });
 
   if (!!ret.err) return ret;
 
-  // console.log('test========');
+  console.log('test========');
   const receipt = await contract.deployTransaction.wait().catch(function (err) {
-    // console.log(err);
+    console.log(err);
     ret.err = err;
   });
   if (!!ret.err) return ret;
   const { confirmations } = receipt;
+  console.log('receipt', receipt);
   ret.confirmations = confirmations;
-  if (confirmations === 1) {
-    // console.log('fixedSwap contract deploy... confirmed!!');
+  if (confirmations > 0) {
+    console.log('fixedSwap contract deploy... confirmed!!', contract);
     const { address } = contract;
     ret.address = address;
   } else {
+    ret.err = receipt;
     console.log(JSON.stringify(receipt));
   }
   return ret;
