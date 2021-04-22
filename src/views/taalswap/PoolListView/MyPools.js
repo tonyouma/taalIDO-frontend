@@ -235,25 +235,25 @@ export default function MyPools({ filterName, category, onBackdrop }) {
 
   const setRes = async (result) => {
     try {
-      console.log('=====!!!!!', window.purchaseId);
-      console.log('=====!!!!!', JSON.stringify(result));
+      // console.log('=====!!!!!', window.purchaseId);
+      // console.log('=====!!!!!', JSON.stringify(result));
       const rslt = JSON.parse(result);
       if (rslt.result) {
         const receipt = await taalswap.waitTxHash(rslt.txHash);
-        console.log('=====', JSON.stringify(receipt));
+        // console.log('=====', JSON.stringify(receipt));
         if (receipt.status === 1) {
           enqueueSnackbar('Claim success', {
             variant: 'success'
           });
-          console.log('===== : ', window.purchaseId);
-          console.log('===== : ', window.finalizedFalseList);
+          // console.log('===== : ', window.purchaseId);
+          // console.log('===== : ', window.finalizedFalseList);
           const newList = window.finalizedFalseList.filter(
             (id) => id !== window.purchaseId
           );
-          console.log('===== : ', newList);
+          // console.log('===== : ', newList);
           setFinalizedFalseList(newList);
           setProgressFlag(false);
-          console.log('===== end');
+          // console.log('===== end');
         } else {
           console.log('=====', receipt.status);
           enqueueSnackbar('Claim fail', {
@@ -341,7 +341,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 purchase_id: finalizedFalseList[0]
               }
             );
-            console.log('=====data', data);
+            // console.log('=====data', data);
             const msgContents = {
               method: 'redeemGivenMinimumGoalNotAchieved',
               from: wallet,
@@ -351,7 +351,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
             };
             window.purchaseId = finalizedFalseList[0];
             window.finalizedFalseList = finalizedFalseList;
-            console.log('=====', JSON.stringify(msgContents));
+            // console.log('=====', JSON.stringify(msgContents));
             let sendData = {
               callback: 'onCallbackTxHash',
               msgContents: msgContents
@@ -476,11 +476,11 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           setProgressFlag(true);
           setCurrentPuchasesId(finalizedFalseList[0]);
           if (from) {
-            console.log('=====', currentPuchasesId);
+            // console.log('=====', currentPuchasesId);
             const data = await taalswap.getRedeemTokensABI({
               purchase_id: finalizedFalseList[0]
             });
-            console.log('=====data', data);
+            // console.log('=====data', data);
             const msgContents = {
               method: 'redeemTokens',
               from: wallet,
@@ -488,7 +488,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               purchase_id: finalizedFalseList[0],
               data: data
             };
-            console.log('=====', JSON.stringify(msgContents));
+            // console.log('=====', JSON.stringify(msgContents));
             let sendData = {
               callback: 'onCallbackTxHash',
               msgContents: msgContents
