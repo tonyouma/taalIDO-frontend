@@ -63,6 +63,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const curr_method = {};
+
 function nativeCallbackTxHash(res) {
   window.setRes(res);
 }
@@ -231,6 +233,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
 
   const setRes = async (result) => {
     try {
+      console.log('=====!!!!!', curr_method.msgContents);
       const rslt = JSON.parse(result);
       if (rslt.result) {
         const receipt = await taalswap.waitTxHash(rslt.txHash);
@@ -340,6 +343,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               purchase_id: finalizedFalseList[0],
               data: data
             };
+            curr_method.msgContents = msgContents;
             console.log('=====', JSON.stringify(msgContents));
             let sendData = {
               callback: 'onCallbackTxHash',
