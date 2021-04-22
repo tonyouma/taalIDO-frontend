@@ -60,7 +60,7 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
             poolStatus = PoolStatus.FILLED.SUCCESS.CLOSED;
           } else {
             // console.log(parseFloat(tokensAllocated), parseFloat(minFundRaise));
-            // if (parseFloat(tokensAllocated) >= parseFloat(minFundRaise)) {
+            // if (parseFloat(tokensAllocated) >== parseFloat(minFundRaise)) {
             if (minimumRaiseAchieved) {
               // 구매자
               // getMyPurchases(지갑주소)
