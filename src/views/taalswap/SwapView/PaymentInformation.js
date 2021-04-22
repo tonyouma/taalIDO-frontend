@@ -17,6 +17,7 @@ import WeeklySales from './WeeklySales';
 import ItemOrders from './ItemOrders';
 import Progress from '../../home/LandingPageView/Progress';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -64,17 +65,25 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
   const [poolStatus, setStatus] = useState('');
   const [price, setPrice] = useState(0);
 
+  const { from } = useSelector((state) => state.talken);
   const { library, account } = context;
   const { i18n, t } = useTranslation();
 
   useEffect(async () => {
-    if (!!library) {
-      const taalswap = new Taalswap({
-        application: pool,
-        account,
-        library
-      });
-
+    if (!!library || from) {
+      let taalswap = null;
+      if (!!library) {
+        taalswap = new Taalswap({
+          application: pool,
+          account,
+          library
+        });
+      } else {
+        taalswap = new Taalswap({
+          application: pool,
+          notConnected: true
+        });
+      }
       await taalswap
         .getBuyers()
         .then((result) => setParticipants(result.length))
