@@ -86,7 +86,7 @@ function TotalAllocatedTokens({ className, pool, ...other }) {
           <Box display="flex" alignItems="baseline">
             <AnimatedNumber
               component="number"
-              value={tokensAllocated}
+              value={tokensAllocated ? tokensAllocated : 0}
               style={{
                 transition: '0.8s ease-out'
               }}
