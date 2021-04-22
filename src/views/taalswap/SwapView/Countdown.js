@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import TimeCounter from 'src/views/taalswap/Components/TimeCounter';
 import moment from 'moment';
 import outlineWatchLater from '@iconify-icons/ic/outline-watch-later';
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -42,6 +43,7 @@ function Countdown({ className, pool, value, ...other }) {
   const context = useWeb3React();
   const theme = useTheme();
   const { library, account } = context;
+  const { from } = useSelector((state) => state.talken);
 
   const [timeTillDate, setTimeTillDate] = useState('');
   const [endFlag, setEndFlag] = useState(true);
@@ -49,13 +51,20 @@ function Countdown({ className, pool, value, ...other }) {
 
   useEffect(async () => {
     try {
-      let taalswap = null;
-      if (!!library) {
-        taalswap = new Taalswap({
-          application: pool,
-          account,
-          library
-        });
+      if (!!library || from) {
+        let taalswap = null;
+        if (!!library) {
+          taalswap = new Taalswap({
+            application: pool,
+            account,
+            library
+          });
+        } else {
+          taalswap = new Taalswap({
+            application: pool,
+            notConnected: true
+          });
+        }
 
         const status = await getPoolStatus(
           taalswap,

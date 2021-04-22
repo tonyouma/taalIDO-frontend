@@ -13,6 +13,7 @@ import { alpha, useTheme, makeStyles } from '@material-ui/core/styles';
 import { Box, Card, Typography } from '@material-ui/core';
 import AnimatedNumber from 'react-animated-number';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -47,17 +48,24 @@ function TotalPurchasers({ className, pool, ...other }) {
   const { i18n, t } = useTranslation();
   const context = useWeb3React();
   const { library, account } = context;
-
+  const { from } = useSelector((state) => state.talken);
   const [participants, setParticipants] = useState(0);
 
   useEffect(async () => {
-    if (!!library) {
-      const taalswap = new Taalswap({
-        application: pool,
-        account,
-        library
-      });
-
+    if (!!library || from) {
+      let taalswap = null;
+      if (!!library) {
+        taalswap = new Taalswap({
+          application: pool,
+          account,
+          library
+        });
+      } else {
+        taalswap = new Taalswap({
+          application: pool,
+          notConnected: true
+        });
+      }
       await taalswap
         .getBuyers()
         .then((result) => setParticipants(result.length))
