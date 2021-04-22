@@ -244,8 +244,8 @@ export default function MyPools({ filterName, category, onBackdrop }) {
             variant: 'success'
           });
           console.log('===== : ', window.purchaseId);
-          console.log('===== : ', finalizedFalseList);
-          const newList = finalizedFalseList.filter(
+          console.log('===== : ', window.finalizedFalseList);
+          const newList = window.finalizedFalseList.filter(
             (id) => id !== window.purchaseId
           );
           console.log('===== : ', newList);
@@ -348,6 +348,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               data: data
             };
             window.purchaseId = finalizedFalseList[0];
+            window.finalizedFalseList = finalizedFalseList;
             console.log('=====', JSON.stringify(msgContents));
             let sendData = {
               callback: 'onCallbackTxHash',
@@ -491,6 +492,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               msgContents: msgContents
             };
             window.purchaseId = finalizedFalseList[0];
+            window.finalizedFalseList = finalizedFalseList;
             if (os.toLowerCase() === 'ios') {
               /*eslint-disable */
               webkit.messageHandlers.sendEthTransaction.postMessage(
