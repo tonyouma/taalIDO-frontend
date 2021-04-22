@@ -129,6 +129,15 @@ class Taalswap {
     return data;
   }
 
+  async getDecodeRedeemTokensABI({ data }) {
+    const purchaseId = this.params.fixedContract.interface.decodeFunctionData(
+      'redeemTokens',
+      [data]
+    );
+    console.log('=====getDecodeRedeemTokensABI', data);
+    return purchaseId;
+  }
+
   async getRedeemGivenMinimumGoalNotAchievedABI({ purchase_id }) {
     const data = this.params.fixedContract.interface.encodeFunctionData(
       'redeemGivenMinimumGoalNotAchieved',
@@ -136,6 +145,15 @@ class Taalswap {
     );
     console.log('=====redeemGivenMinimumGoalNotAchieved', data);
     return data;
+  }
+
+  async getDecodeRedeemGivenMinimumGoalNotAchievedABI({ data }) {
+    const purchaseId = this.params.fixedContract.interface.decodeFunctionData(
+      'redeemGivenMinimumGoalNotAchieved',
+      [data]
+    );
+    console.log('=====getDecodeRedeemGivenMinimumGoalNotAchievedABI', data);
+    return purchaseId;
   }
 
   async getBalance(address) {
