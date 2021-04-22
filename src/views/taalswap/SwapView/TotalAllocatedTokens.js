@@ -69,8 +69,7 @@ function TotalAllocatedTokens({ className, pool, ...other }) {
       await taalswap
         .tokensAllocated()
         .then((result) => {
-          setTokensAllocated(result);
-          console.log(result);
+          setTokensAllocated(parseInt(result));
         })
         .catch((error) => console.log(error));
     }
@@ -86,7 +85,7 @@ function TotalAllocatedTokens({ className, pool, ...other }) {
           <Box display="flex" alignItems="baseline">
             <AnimatedNumber
               component="number"
-              value={tokensAllocated ? tokensAllocated : 0}
+              value={tokensAllocated}
               style={{
                 transition: '0.8s ease-out'
               }}
