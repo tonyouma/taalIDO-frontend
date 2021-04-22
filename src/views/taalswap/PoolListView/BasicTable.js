@@ -153,9 +153,7 @@ function TablePoolRow({ row, handleOpenModal }) {
         row.minFundRaise
       );
       setStatus(status);
-    }
-
-    if (!library && from && row.contractAddress !== '') {
+    } else if (row.contractAddress !== '') {
       const taalswap = new Taalswap({
         application: row,
         notConnected: true
