@@ -38,6 +38,7 @@ import locationCompany from '@iconify-icons/carbon/location-company';
 import Countdown from './Countdown';
 import { infuraChainId } from 'src/config';
 import { useSelector } from 'react-redux';
+import getEthPrice from 'src/utils/getEthPrice';
 
 // ----------------------------------------------------------------------
 
@@ -118,6 +119,7 @@ function PaymentView({ className, ...other }) {
   const [ethPrice, setEthPrice] = useState(0);
   const { os, wallet, from } = useSelector((state) => state.talken);
   const { i18n, t } = useTranslation();
+  const langStorage = localStorage.getItem('i18nextLng');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -131,17 +133,9 @@ function PaymentView({ className, ...other }) {
     }
   };
 
-  useEffect(() => {
-    async function getEthPrice() {
-      await axios
-        .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
-        .then((result) => {
-          setEthPrice(result.data.data.amount);
-        })
-        .catch((error) => console.log(error));
-    }
-    getEthPrice().catch((error) => console.log(error));
-  }, []);
+  useEffect(async () => {
+    setEthPrice(await getEthPrice(langStorage === 'kr' ? 'KRW' : 'USD'));
+  }, [t]);
 
   return (
     <Page title="Swap | TaalSwap" className={classes.root}>

@@ -7,6 +7,10 @@ export function fCurrency(number) {
   return numeral(number).format(Number.isInteger(number) ? '$0,0' : '$0,0.00');
 }
 
+export function fCurrencyKRW(number) {
+  return numeral(number).format(Number.isInteger(number) ? '₩0,0' : '₩0,0.00');
+}
+
 export function fPercent(number) {
   return numeral(number / 100).format('0.0%');
 }

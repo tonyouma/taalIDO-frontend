@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect } from 'react';
 import faker from 'faker';
 import PropTypes from 'prop-types';
-import { fPercent, fCurrency } from 'src/utils/formatNumber';
+import { fPercent, fCurrencyKRW, fCurrency } from 'src/utils/formatNumber';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography, CardContent } from '@material-ui/core';
 import { MLinearProgress } from 'src/theme';
@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
-function Progress({ progress, progressValue, progressDollorValue, index }) {
+function Progress({ progressValue, progressDollorValue }) {
   const classes = useStyles();
   const { i18n, t } = useTranslation();
-
+  const langStorage = localStorage.getItem('i18nextLng');
   return (
     <div className={classes.progressItem}>
       <Box
@@ -43,7 +43,9 @@ function Progress({ progress, progressValue, progressDollorValue, index }) {
         </Typography>
 
         <Typography variant="body2" sx={{ my: 2 }}>
-          {fCurrency(progressDollorValue)}
+          {langStorage === 'kr'
+            ? `₩${fCurrencyKRW(progressDollorValue)}`
+            : fCurrency(progressDollorValue)}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           &nbsp;({fPercent(progressValue)})
@@ -62,12 +64,7 @@ SalesOverview.propTypes = {
   className: PropTypes.string
 };
 
-function SalesOverview({
-  className,
-  progressValue,
-  progressDollorValue,
-  ...other
-}) {
+function SalesOverview({ className, progressValue, progressDollorValue }) {
   const classes = useStyles();
 
   return (
@@ -76,10 +73,8 @@ function SalesOverview({
         return (
           <Progress
             key={progress.label}
-            progress={progress}
             progressValue={progressValue}
             progressDollorValue={progressDollorValue}
-            index={index}
           />
         );
       })}

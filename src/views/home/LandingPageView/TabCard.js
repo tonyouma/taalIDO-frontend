@@ -22,7 +22,7 @@ import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
 import './APP.css';
 import { useTranslation } from 'react-i18next';
-
+import getEthPrice from 'src/utils/getEthPrice';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -93,6 +93,7 @@ function Tabcard() {
     try {
       let tempPools = [];
       let tempAccomplishedPools = [];
+      const langStorage = localStorage.getItem('i18nextLng');
 
       await poolList
         .filter((pool) => !!pool.contractAddress && pool.contractAddress !== '')
@@ -127,19 +128,14 @@ function Tabcard() {
           );
         });
 
-      await axios
-        .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
-        .then((result) => {
-          setEthPrice(result.data.data.amount);
-        })
-        .catch((error) => console.log(error));
+      setEthPrice(await getEthPrice(langStorage === 'kr' ? 'KRW' : 'USD'));
 
       return;
     } catch (error) {
       console.log(error);
       return;
     }
-  }, [poolList, library]);
+  }, [poolList, library, t]);
 
   useEffect(() => {
     try {

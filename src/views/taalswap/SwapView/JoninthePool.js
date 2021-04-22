@@ -97,6 +97,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const { connector, library, account, activate } = context;
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { i18n, t } = useTranslation();
+  const langStorage = localStorage.getItem('i18nextLng');
 
   let taalswap;
 
@@ -430,7 +431,13 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           }}
         >
           {t('taalswap.Amount')}
-          {` : ${price} ETH ($ ${Numbers.toFloat(price * ethPrice).toFixed()})`}
+          {langStorage === 'kr'
+            ? ` : ${price} ETH (₩ ${Numbers.toFloat(
+                price * ethPrice
+              ).toFixed()})`
+            : ` : ${price} ETH ($ ${Numbers.toFloat(
+                price * ethPrice
+              ).toFixed()})`}
           {/* Price : {price} ETH  */}
         </Typography>
       </Box>
