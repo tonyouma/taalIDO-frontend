@@ -22,7 +22,8 @@ import {
   Hidden,
   IconButton,
   InputLabel,
-  Input
+  Input,
+  Tooltip
 } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,6 +43,7 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import RedeemIcon from '@material-ui/icons/Redeem';
 import LinkIcon from '@material-ui/icons/Link';
+import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 import { infuraChainId } from 'src/config';
 
 // ----------------------------------------------------------------------
@@ -619,6 +621,10 @@ export default function MyPools({ filterName, category, onBackdrop }) {
     }
   };
 
+  const addToken = () => {
+    taalswap.addToken().then().catch();
+  };
+
   const filteredPools = applyFilter(
     category === 'All'
       ? filterPoolList.filter((pool) => pool.contractAddress !== '')
@@ -699,14 +705,27 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 value={selectedPool.tokenContractAddr}
                 endAdornment={
                   <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      variant="link"
-                      href={`https://${infuraChainId}.etherscan.io/address/${selectedPool.tokenContractAddr}`}
-                      target="_blank"
-                    >
-                      <LinkIcon />
-                    </IconButton>
+                    {library && library.provider.isMetaMask && (
+                      <Tooltip title="Add Token">
+                        <IconButton
+                          aria-label="Add Token"
+                          variant="button"
+                          onClick={addToken}
+                        >
+                          <LibraryAddIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                    <Tooltip title="Etherscan">
+                      <IconButton
+                        aria-label="etherscan link"
+                        variant="link"
+                        href={`https://${infuraChainId}.etherscan.io/address/${selectedPool.tokenContractAddr}`}
+                        target="_blank"
+                      >
+                        <LinkIcon />
+                      </IconButton>
+                    </Tooltip>
                   </InputAdornment>
                 }
               />

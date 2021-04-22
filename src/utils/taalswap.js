@@ -68,12 +68,28 @@ class Taalswap {
         tokenContract: tokenContract,
         tokenContractAddress: tokenContractAddress,
         fixedContractAddress: fixedContractAddress,
-        infuraProvider: provider
+        infuraProvider: provider,
+        library: library
       };
     } catch (e) {
       console.log('taalswap create error', e);
       throw e;
     }
+  }
+
+  async addToken() {
+    const result = await this.params.library.provider.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: this.params.tokenContractAddress,
+          symbol: this.params.application.symbol,
+          decimals: this.params.application.decimals
+        }
+      }
+    });
+    return result;
   }
 
   getFixedContract() {
