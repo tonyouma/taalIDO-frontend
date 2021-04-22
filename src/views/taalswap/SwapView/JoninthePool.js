@@ -332,7 +332,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
         if (pool.access === 'Private') {
           await taalswap
-            .isWhitelisted(account)
+            .isWhitelisted(wallet ? wallet : account)
             .then((result) => {
               setIsWhiteList(result);
               console.log(`isWhitelisted : ${result}`);

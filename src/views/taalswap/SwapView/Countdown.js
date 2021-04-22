@@ -42,6 +42,7 @@ function Countdown({ className, pool, value, ...other }) {
   const context = useWeb3React();
   const theme = useTheme();
   const { library, account } = context;
+  const from = other.from;
 
   const [timeTillDate, setTimeTillDate] = useState('');
   const [endFlag, setEndFlag] = useState(true);
@@ -50,12 +51,19 @@ function Countdown({ className, pool, value, ...other }) {
   useEffect(async () => {
     try {
       let taalswap = null;
-      if (!!library) {
-        taalswap = new Taalswap({
-          application: pool,
-          account,
-          library
-        });
+      if (!!library || !!from) {
+        if (!!from) {
+          taalswap = new Taalswap({
+            application: pool,
+            notConnected: true
+          });
+        } else {
+          taalswap = new Taalswap({
+            application: pool,
+            account,
+            library
+          });
+        }
 
         const status = await getPoolStatus(
           taalswap,

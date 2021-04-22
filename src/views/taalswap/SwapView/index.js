@@ -37,6 +37,7 @@ import peopleAudience24Regular from '@iconify-icons/fluent/people-audience-24-re
 import locationCompany from '@iconify-icons/carbon/location-company';
 import Countdown from './Countdown';
 import { infuraChainId } from 'src/config';
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -115,6 +116,7 @@ function PaymentView({ className, ...other }) {
   const [pool, setPool] = useState(location.state.selectedPool);
   const [open, setOpen] = useState(false);
   const [ethPrice, setEthPrice] = useState(0);
+  const { os, wallet, from } = useSelector((state) => state.talken);
   const { i18n, t } = useTranslation();
 
   const handleChange = (event, newValue) => {
@@ -215,7 +217,7 @@ function PaymentView({ className, ...other }) {
               <CurrentProgress pool={pool} />
             </Grid> */}
             <Grid item xs={12} sm={6} md={4}>
-              <Countdown pool={pool} />
+              <Countdown pool={pool} from={from} />
             </Grid>
           </Grid>
           <Box sx={{ my: 3 }}></Box>

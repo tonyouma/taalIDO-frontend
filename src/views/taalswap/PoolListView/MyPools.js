@@ -242,9 +242,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
           enqueueSnackbar('Claim success', {
             variant: 'success'
           });
-          console.log('===== : ', rslt.purchase_id);
+          console.log('===== : ', window.purchaseId);
           const newList = finalizedFalseList.filter(
-            (id) => id !== rslt.purchase_id
+            (id) => id !== window.purchaseId
           );
           setFinalizedFalseList(newList);
           setProgressFlag(false);
@@ -343,7 +343,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               purchase_id: finalizedFalseList[0],
               data: data
             };
-            curr_method.msgContents = msgContents;
+            window.purchaseId = finalizedFalseList[0];
             console.log('=====', JSON.stringify(msgContents));
             let sendData = {
               callback: 'onCallbackTxHash',
@@ -486,6 +486,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
               callback: 'onCallbackTxHash',
               msgContents: msgContents
             };
+            window.purchaseId = finalizedFalseList[0];
             if (os.toLowerCase() === 'ios') {
               /*eslint-disable */
               webkit.messageHandlers.sendEthTransaction.postMessage(
