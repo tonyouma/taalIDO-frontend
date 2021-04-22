@@ -2,24 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import Page from 'src/components/Page';
 import BasicTable from './BasicTable';
-import CollapsibleTable from './CollapsibleTable';
 import roundAccountBox from '@iconify-icons/ic/round-account-box';
-import SortingSelecting from './SortingSelecting';
-import { HeaderDashboard } from 'src/layouts/Common';
 import { makeStyles } from '@material-ui/core/styles';
 import Taalswap from 'src/utils/taalswap';
 import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
-import {
-  Box,
-  Grid,
-  Card,
-  Container,
-  CardHeader,
-  Tabs,
-  Tab
-} from '@material-ui/core';
+import { Grid, Card } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -44,22 +34,38 @@ function Participate({ pool }) {
   const [name, setName] = useState('');
   const [allocated, setAllocated] = useState(0);
   const [purchaseList, setPurchaseList] = useState([]);
+  const { library, account } = context;
+  const { from } = useSelector((state) => state.talken);
 
   const handleChangeTab = (event, newValue) => {
     setCurrentTab(newValue);
   };
-  const { library, account } = context;
 
   useEffect(async () => {
     try {
-      if (!!account) {
-        const taalswap = new Taalswap({
-          application: pool,
-          account,
-          library,
-          tokenContractAddress: pool.tokenContractAddr,
-          fixedContractAddress: pool.contractAddress
-        });
+      if (!!account || from) {
+        console.log(from);
+        let taalswap = null;
+        if (!!library) {
+          taalswap = new Taalswap({
+            application: pool,
+            account,
+            library
+          });
+        } else {
+          taalswap = new Taalswap({
+            application: pool,
+            notConnected: true
+          });
+        }
+
+        // const taalswap = new Taalswap({
+        //   application: pool,
+        //   account,
+        //   library,
+        //   tokenContractAddress: pool.tokenContractAddr,
+        //   fixedContractAddress: pool.contractAddress
+        // });
 
         await taalswap
           .nameAsync()

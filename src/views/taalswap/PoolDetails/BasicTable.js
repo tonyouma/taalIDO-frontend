@@ -16,6 +16,7 @@ import moment from 'moment';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +40,7 @@ function General({ className, pool }) {
   const classes = useStyles();
   const { i18n, t } = useTranslation();
   const context = useWeb3React();
+  const { from } = useSelector((state) => state.talken);
 
   const [name, setName] = useState('');
   const [totalSupply, setTotalSupply] = useState(0);
@@ -49,14 +51,20 @@ function General({ className, pool }) {
   const { library, account } = context;
 
   useEffect(async () => {
-    if (!!library) {
-      const taalswap = new Taalswap({
-        application: pool,
-        account,
-        library
-        // tokenAddress: pool.tokenContractAddr,
-        // contractAddress: pool.contractAddress
-      });
+    if (!!library || from) {
+      let taalswap = null;
+      if (!!library) {
+        taalswap = new Taalswap({
+          application: pool,
+          account,
+          library
+        });
+      } else {
+        taalswap = new Taalswap({
+          application: pool,
+          notConnected: true
+        });
+      }
 
       const decimals = await taalswap
         .decimalsAsync()
