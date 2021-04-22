@@ -24,21 +24,21 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
     const minimumRaiseAchieved = await swapContract
       .minimumRaiseAchieved()
       .catch(() => {});
-    const hasStarted = await swapContract.hasStarted().catch((error) => {
-      console.log(error);
-    });
-    const hasFinalized = await swapContract.hasFinalized().catch((error) => {
-      console.log(error);
-    });
+    // const hasStarted = await swapContract.hasStarted().catch((error) => {
+    //   console.log(error);
+    // });
+    // const hasFinalized = await swapContract.hasFinalized().catch((error) => {
+    //   console.log(error);
+    // });
     const hasMinimumRaise = await swapContract
       .hasMinimumRaise()
       .catch((error) => {
         console.log(error);
       });
 
-    const tokensAllocated = await swapContract
-      .tokensAllocated()
-      .catch((error) => console.log(error));
+    // const tokensAllocated = await swapContract
+    //   .tokensAllocated()
+    //   .catch((error) => console.log(error));
 
     // console.log('isOpen :', isPreStart);
     // console.log('isOpen :', isOpen);
@@ -59,9 +59,7 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
           if (parseInt(minFundRaise) === 0) {
             poolStatus = PoolStatus.FILLED.SUCCESS.CLOSED;
           } else {
-            // TODO: minimumRaiseAchieved를 적용해야 함...
-            console.log(parseFloat(tokensAllocated));
-            console.log(parseFloat(minFundRaise));
+            // console.log(parseFloat(tokensAllocated), parseFloat(minFundRaise));
             // if (parseFloat(tokensAllocated) >= parseFloat(minFundRaise)) {
             if (minimumRaiseAchieved) {
               // 구매자
