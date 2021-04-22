@@ -21,6 +21,9 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
     const isPreStart = await swapContract.isPreStart().catch(() => {});
     const isFunded = await swapContract.isFunded().catch(() => {});
     const isOpen = await swapContract.isOpen().catch(() => {});
+    const minimumRaiseAchieved = await swapContract
+      .minimumRaiseAchieved()
+      .catch(() => {});
     const hasStarted = await swapContract.hasStarted().catch((error) => {
       console.log(error);
     });
@@ -57,7 +60,8 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
             poolStatus = PoolStatus.FILLED.SUCCESS.CLOSED;
           } else {
             // TODO: minimumRaiseAchieved를 적용해야 함...
-            if (parseFloat(tokensAllocated) >= parseFloat(minFundRaise)) {
+            // if (parseFloat(tokensAllocated) >= parseFloat(minFundRaise)) {
+            if (minimumRaiseAchieved) {
               // 구매자
               // getMyPurchases(지갑주소)
               // -> return uint256[]
