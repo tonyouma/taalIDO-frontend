@@ -382,17 +382,13 @@ class Taalswap {
    * @returns {Boolean}
    */
   async minimumRaiseAchieved() {
-    var res;
     try {
-      res = await this.params.fixedContract
-        .minimumRaiseAchieved()
-        .catch((err) => {
-          throw err;
-        });
+      console.log('test');
+      return await this.params.fixedContract.minimumRaiseAchieved();
     } catch (err) {
+      // console.log('minimumRaiseAchieved error ', err);
       return false;
     }
-    return res;
   }
 
   /**

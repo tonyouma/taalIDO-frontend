@@ -1,5 +1,6 @@
 import { FastField } from 'formik';
 import { PoolStatus } from './poolStatus';
+import Numbers from './Numbers';
 
 export const getPoolStatus = async (swapContract, status, minFundRaise) => {
   let poolStatus;
@@ -21,9 +22,9 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
     const isPreStart = await swapContract.isPreStart().catch(() => {});
     const isFunded = await swapContract.isFunded().catch(() => {});
     const isOpen = await swapContract.isOpen().catch(() => {});
-    const minimumRaiseAchieved = await swapContract
-      .minimumRaiseAchieved()
-      .catch(() => {});
+    // const minimumRaiseAchieved = await swapContract
+    //   .minimumRaiseAchieved()
+    //   .catch(() => {});
     // const hasStarted = await swapContract.hasStarted().catch((error) => {
     //   console.log(error);
     // });
@@ -36,9 +37,9 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
         console.log(error);
       });
 
-    // const tokensAllocated = await swapContract
-    //   .tokensAllocated()
-    //   .catch((error) => console.log(error));
+    const tokensAllocated = await swapContract
+      .tokensAllocated()
+      .catch((error) => console.log(error));
 
     // console.log('isOpen :', isPreStart);
     // console.log('isOpen :', isOpen);
@@ -60,8 +61,11 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
             poolStatus = PoolStatus.FILLED.SUCCESS.CLOSED;
           } else {
             // console.log(parseFloat(tokensAllocated), parseFloat(minFundRaise));
-            // if (parseFloat(tokensAllocated) >== parseFloat(minFundRaise)) {
-            if (minimumRaiseAchieved) {
+            // console.log(
+            //   parseFloat(tokensAllocated) >= parseFloat(minFundRaise)
+            // );
+            if (parseFloat(tokensAllocated) >= parseFloat(minFundRaise)) {
+              // if (minimumRaiseAchieved) {
               // 구매자
               // getMyPurchases(지갑주소)
               // -> return uint256[]
