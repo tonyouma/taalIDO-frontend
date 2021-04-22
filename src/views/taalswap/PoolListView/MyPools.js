@@ -103,7 +103,7 @@ function applyFilter(array, query) {
 
 // ----------------------------------------------------------------------
 
-function TablePoolRow({ row, handleOpenModal }) {
+function TablePoolRow({ row, handleOpenModal, finalizedFalseListCount }) {
   const classes = useStyles();
   const context = useWeb3React();
   const theme = useTheme();
@@ -143,6 +143,7 @@ function TablePoolRow({ row, handleOpenModal }) {
         row.status,
         row.minFundRaise
       );
+      console.log(`${row.poolName} : ${finalizedFalseListCount}`);
       setStatus(status);
       setMax();
     }
@@ -182,11 +183,12 @@ function TablePoolRow({ row, handleOpenModal }) {
         )}
       </TableCell>
       <TableCell align="right" width="20%">
-        {poolStatus !== PoolStatus.LIVE ? (
+        {poolStatus !== PoolStatus.LIVE && poolStatus !== '' ? (
           <IconButton
             variant="contained"
             size="small"
             onClick={(event) => handleOpenModal(row, poolStatus, taalswap)}
+            // disabled={finalizedFalseListCount === 0}
           >
             <RedeemIcon />
           </IconButton>
@@ -662,6 +664,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                     key={index}
                     row={row}
                     handleOpenModal={handleOpenModal}
+                    finalizedFalseListCount={finalizedFalseList.length}
                   />
                 ))}
             </TableBody>
