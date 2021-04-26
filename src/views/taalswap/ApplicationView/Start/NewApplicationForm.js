@@ -227,7 +227,10 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
           >
             <Typography variant="h4" sx={{ mb: 2 }}></Typography>
             <TextField
-              label="Min.Fund Raise (Min. # of tokens to be sold)"
+              label={
+                (touched.minFundRaise && errors.minFundRaise) ||
+                'Min.Fund Raise (Min. # of tokens to be sold)'
+              }
               variant="standard"
               InputLabelProps={{
                 shrink: 'true'
@@ -278,7 +281,10 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
           >
             <Typography variant="h4" sx={{ mb: 2 }}></Typography>
             <TextField
-              label="Min.Allocation (Min. # of tokens allowed per wallet)"
+              label={
+                (touched.minIndividuals && errors.minIndividuals) ||
+                'Min.Allocation (Min. # of tokens allowed per wallet)'
+              }
               variant="standard"
               InputLabelProps={{
                 shrink: 'true'
@@ -300,7 +306,10 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
           >
             <Typography variant="h4" sx={{ mb: 2 }}></Typography>
             <TextField
-              label="Max. Allocation(Max. # of tokens allowed per wallet)"
+              label={
+                (touched.maxIndividuals && errors.maxIndividuals) ||
+                'Max. Allocation(Max. # of tokens allowed per wallet)'
+              }
               variant="standard"
               InputLabelProps={{
                 shrink: 'true'
@@ -356,7 +365,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
             <Box style={{ width: '59%' }}>
               <TextField
                 id="End Date"
-                label="End Date"
+                label={(touched.endDate && errors.endDate) || 'End Date'}
                 type="datetime-local"
                 variant="standard"
                 disabled={isEdit}
@@ -473,7 +482,7 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
           >
             <Typography variant="h4" sx={{ mb: 2 }}></Typography>
             <TextField
-              label="ICON URL"
+              label={(touched.iconUrl && errors.iconUrl) || 'ICON URL'}
               variant="standard"
               InputLabelProps={{
                 shrink: 'true'
@@ -521,6 +530,44 @@ function NewApplicationDetailsView({ formik, className, ...other }) {
               {...getFieldProps('telegramHandle')}
               error={Boolean(touched.telegramHandle && errors.telegramHandle)}
               helperText={touched.telegramHandle && errors.telegramHandle}
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Twitter ID"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('twitterId')}
+              error={Boolean(touched.twitterId && errors.twitterId)}
+              helperText={touched.twitterId && errors.twitterId}
+            />
+          </Box>
+          <Box
+            className={classes.box2rem}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}></Typography>
+            <TextField
+              label="Medium URL"
+              variant="standard"
+              InputLabelProps={{
+                shrink: 'true'
+              }}
+              style={{ width: '59%' }}
+              disabled={isEdit}
+              {...getFieldProps('mediumURL')}
+              error={Boolean(touched.mediumURL && errors.mediumURL)}
+              helperText={touched.mediumURL && errors.mediumURL}
             />
           </Box>
           <Box

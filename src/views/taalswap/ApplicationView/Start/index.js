@@ -16,6 +16,7 @@ import Taalswap from 'src/utils/taalswap';
 import { useLocation } from 'react-router';
 import { PoolStatus } from 'src/utils/poolStatus';
 import { register, getMaxId } from 'src/utils/auth';
+import { testImage } from 'src/utils/yupValidImageTest';
 
 const crypto = require('crypto');
 
@@ -48,21 +49,40 @@ function ApplicationStart() {
     name: Yup.string().required('Project Name is required'),
     category: Yup.string().required('Category is required'),
     websiteUrl: Yup.string().url().required('Website URL is required'),
-    iconUrl: Yup.string().url().required('ICON image URL is required'),
+    iconUrl: Yup.string()
+      .url()
+      .test('valid-image-url', 'Must use valid ICON URL', (value) =>
+        testImage(value, 1000).then((status) => status === 'success')
+      )
+      .required('ICON image URL is required'),
     email: Yup.string().email().required('eMail is required'),
-    telegramHandle: Yup.string().required('Telegram handle is required'),
+    // telegramHandle: Yup.string().required('Telegram handle is required'),
+    // twitterId: Yup.string().required('Twitter id is required'),
+    // mediumURL: Yup.string().required('Medium URL is required'),
     poolName: Yup.string().required('Project Name is required'),
     tokenContractAddr: Yup.string().required(
       'Token Contract Address is required'
     ),
     tradeValue: Yup.number().positive().required('Trade Value is required'),
     tradeAmount: Yup.number().positive().required('Total Raise is required'),
-    minFundRaise: Yup.number().positive().required('Minimum Raise is required'),
+    minFundRaise: Yup.number()
+      .positive()
+      .max(Yup.ref('tradeAmount'), 'Min.Fund Raise(Cannot exceed Total Raise)')
+      .required('Minimum Raise is required'),
     access: Yup.string().required('Access is required'),
-    minIndividuals: Yup.number().min(0).required('Min. Allocation is required'),
+    minIndividuals: Yup.number()
+      .min(0)
+      .max(Yup.ref('tradeAmount'), 'Min. Allocation(Cannot exceed Total Raise)')
+      .required('Min. Allocation is required'),
     maxIndividuals: Yup.number()
       .positive()
+      .max(Yup.ref('tradeAmount'), 'Max. Allocation(Cannot exceed Total Raise)')
       .required('Max. Allocation is required'),
+    startDate: Yup.date(),
+    endDate: Yup.date().min(
+      Yup.ref('startDate'),
+      'end date can not be before start date'
+    ),
     feeAmount: Yup.number()
       .positive('Fee Amount is positive integer')
       .integer('Fee Amount is positive integer')
@@ -85,6 +105,8 @@ function ApplicationStart() {
       telegramHandle: location.state
         ? location.state.selectedItem.telegramHandle
         : '',
+      twitterId: location.state ? location.state.selectedItem.twitterId : '',
+      mediumURL: location.state ? location.state.selectedItem.mediumURL : '',
       poolName: location.state ? location.state.selectedItem.poolName : '',
       tokenContractAddr: location.state
         ? location.state.selectedItem.tokenContractAddr
@@ -146,6 +168,8 @@ function ApplicationStart() {
           iconUrl: values.iconUrl,
           email: values.email,
           telegramHandle: values.telegramHandle,
+          twitterId: values.twitterId,
+          mediumURL: values.mediumURL,
           poolName: values.poolName,
           tokenContractAddr: values.tokenContractAddr,
           contractAddress: '',
