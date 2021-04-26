@@ -63,7 +63,7 @@ const AboutTheProject = ({ pool }) => {
                         marginTop: '10px'
                       }}
                     >
-                      {pool.projectDesc} project description
+                      {pool.projectDesc}
                     </Typography>
                   </div>
 
