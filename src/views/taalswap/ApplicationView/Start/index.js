@@ -57,7 +57,7 @@ function ApplicationStart() {
       .required('ICON image URL is required'),
     email: Yup.string().email().required('eMail is required'),
     // telegramHandle: Yup.string().required('Telegram handle is required'),
-    // twitterId: Yup.string().required('Twitter id is required'),
+    twitterId: Yup.string().required('Twitter ID is required'),
     // mediumURL: Yup.string().required('Medium URL is required'),
     poolName: Yup.string().required('Project Name is required'),
     tokenContractAddr: Yup.string().required(
