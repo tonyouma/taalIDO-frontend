@@ -164,44 +164,6 @@ async function taalDeploy(factory, application) {
   return ret;
 }
 
-// const headCells = [
-// {
-//   id: 'projectName',
-//   numeric: false,
-//   disablePadding: true,
-//   align: false,
-//   label: 'Project'
-// },
-// {
-//   id: 'category',
-//   numeric: false,
-//   disablePadding: false,
-//   align: true,
-//   label: 'Category'
-// },
-// {
-//   id: 'startDate',
-//   numeric: false,
-//   disablePadding: false,
-//   align: true,
-//   label: 'Start Date'
-// },
-// {
-//   id: 'endDate',
-//   numeric: false,
-//   disablePadding: false,
-//   align: true,
-//   label: 'End Date'
-// },
-// {
-//   id: 'status',
-//   numeric: false,
-//   disablePadding: false,
-//   align: true,
-//   label: 'Status'
-// }
-// ];
-
 function EnhancedTableHead(props) {
   const { i18n, t } = useTranslation();
   const { classes, order, orderBy, onRequestSort } = props;
@@ -224,9 +186,9 @@ function EnhancedTableHead(props) {
             direction={orderBy === 'projectName' ? order : 'asc'}
             onClick={createSortHandler('projectName')}
           >
-            <Typography variant="h6" gutterBottom>
-              {t('taalswap.ProjectName')}
-            </Typography>
+            {/* <Typography variant="h6" gutterBottom> */}
+            {t('taalswap.ProjectName')}
+            {/* </Typography> */}
             {orderBy === 'Project' ? (
               <span className={classes.visuallyHidden}>
                 {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -247,9 +209,9 @@ function EnhancedTableHead(props) {
               direction={orderBy === 'category' ? order : 'asc'}
               onClick={createSortHandler('category')}
             >
-              <Typography variant="h6" gutterBottom>
-                {t('taalswap.Category')}
-              </Typography>
+              {/* <Typography variant="h6" gutterBottom> */}
+              {t('taalswap.Category')}
+              {/* </Typography> */}
               {orderBy === 'Category' ? (
                 <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -270,9 +232,9 @@ function EnhancedTableHead(props) {
             direction={orderBy === 'startDate' ? order : 'asc'}
             onClick={createSortHandler('startDate')}
           >
-            <Typography variant="h6" gutterBottom>
-              {t('taalswap.StartDate')}
-            </Typography>
+            {/* <Typography variant="h6" gutterBottom> */}
+            {t('taalswap.StartDate')}
+            {/* </Typography> */}
             {orderBy === 'startDate' ? (
               <span className={classes.visuallyHidden}>
                 {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -293,9 +255,9 @@ function EnhancedTableHead(props) {
               direction={orderBy === 'endDate' ? order : 'asc'}
               onClick={createSortHandler('endDate')}
             >
-              <Typography variant="h6" gutterBottom>
-                {t('taalswap.EndDate')}
-              </Typography>
+              {/* <Typography variant="h6" gutterBottom> */}
+              {t('taalswap.EndDate')}
+              {/* </Typography> */}
               {orderBy === 'endDate' ? (
                 <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -315,9 +277,9 @@ function EnhancedTableHead(props) {
             direction={orderBy === 'status' ? order : 'asc'}
             onClick={createSortHandler('status')}
           >
-            <Typography variant="h6" gutterBottom>
-              {t('taalswap.Status')}
-            </Typography>
+            {/* <Typography variant="h6" gutterBottom> */}
+            {t('taalswap.Status')}
+            {/* </Typography> */}
             {orderBy === 'status' ? (
               <span className={classes.visuallyHidden}>
                 {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
@@ -500,31 +462,34 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   tableTop: {
+    // border: '1px solid blue',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     // height: '70px',
     [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column'
+      flexDirection: 'column',
+      alignItems: 'start',
+      justifyContent: 'flex-start'
     }
-    // border: '1px solid red'
   },
   tableTab: {
+    // border: '1px solid green',
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       marginBottom: '0px'
     }
-    // border: '1px solid blue'
   },
   tableSearch: {
-    width: '470px',
+    // border: '1px solid black',
+    width: '480px',
     textAlign: 'right',
     padding: '2px',
     [theme.breakpoints.down('sm')]: {
       textAlign: 'left',
-      marginBottom: '1rem'
+      marginBottom: '1rem',
+      width: '200px'
     }
-    // border: '1px solid black'
   },
   tableDateCell: {
     minWidth: '160px'
@@ -896,17 +861,6 @@ export default function ApplicationListView() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </Card>
-            {/* <div align="right">
-              {' '}
-              <Button
-                to="/app/taalswap/application/information"
-                variant="contained"
-                component={RouterLink}
-                sx={{ marginTop: 3, marginRight: 3 }}
-              >
-                apply for IDO
-              </Button>
-            </div> */}
           </Grid>
         </Grid>
         {isSelected && (
