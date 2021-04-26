@@ -26,7 +26,8 @@ const ICONS = {
   copy: <MIcon src={path('ic_copy')} />,
   carousel: <MIcon src={path('ic_carousel')} />,
   language: <MIcon src={path('ic_language')} />,
-  github: <MIcon src={path('ic_github')} />
+  github: <MIcon src={path('ic_github')} />,
+  gitbook: <MIcon src={path('ic_gitbook')} />
 };
 
 const navConfig = [
@@ -128,12 +129,12 @@ const navConfig = [
       {
         title: 'About taalswap',
         href: 'https://taalswap.gitbook.io/taalswap-documents/',
-        icon: ICONS.github
+        icon: ICONS.gitbook
       },
       {
         title: 'Guide to IDO',
         href: 'https://taalswap.gitbook.io/taalswap-documents/',
-        icon: ICONS.github
+        icon: ICONS.gitbook
       }
     ]
   }
