@@ -11,6 +11,7 @@ import { FortmaticConnector } from '@web3-react/fortmatic-connector';
 import { MagicConnector } from '@web3-react/magic-connector';
 import { PortisConnector } from '@web3-react/portis-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
+import { BscConnector } from '@binance-chain/bsc-connector';
 import { targetNetwork } from 'src/config';
 
 const RPC_URL_1 =
@@ -39,6 +40,8 @@ export const network = new NetworkConnector({
   },
   defaultChainId: parseInt(targetNetwork)
 });
+
+export const bscConnector = new BscConnector({ supportedChainIds: [56] });
 
 export const walletconnect = (useQR) => {
   const chainId = parseInt(targetNetwork);

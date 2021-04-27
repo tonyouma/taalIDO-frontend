@@ -8,7 +8,7 @@ import {
   Typography
 } from '@material-ui/core';
 
-import { injected, walletconnect } from 'src/connectors';
+import { bscConnector, injected, walletconnect } from 'src/connectors';
 import { setActivatingConnector } from 'src/redux/slices/wallet';
 import { useDispatch } from 'react-redux';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
@@ -85,6 +85,11 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
         const accounts = await window.klaytn.enable();
         console.log('account', accounts[0]);
         window.localStorage.setItem('chainId', 'klayton');
+      } else if (wallet.name === 'Binance Wallet') {
+        console.log('bscWallet');
+        await activate(bscConnector, null, true);
+        dispatch(setActivatingConnector(bscConnector));
+        window.localStorage.setItem('chainId', 'bsc');
       }
       console.log('end', wallet);
     } catch (e) {

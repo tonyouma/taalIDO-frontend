@@ -92,13 +92,9 @@ function TopBar({ onOpenNav, className }) {
   } = context;
 
   useEffect(async () => {
-    // console.log('1----------> ', activatingConnector);
-    // console.log('1----------> ', connector);
-    // console.log('1----------> ', active);
-    // console.log('1----------> ', activate);
-    console.log('os', os);
-    console.log('wallet', wallet);
-    console.log('from', from);
+    // console.log('1----------> ', window.ethereum);
+    // console.log('2----------> ', window.klaytn);
+    // console.log('3----------> ', window.BinanceChain);
     if (activatingConnector && activatingConnector === connector) {
       dispatch(setActivatingConnector(undefined));
     }
@@ -147,7 +143,7 @@ function TopBar({ onOpenNav, className }) {
     } else if (window.klayton) {
       console.log('test=====', window.klayton);
     }
-  }, [activatingConnector, connector, account, library]);
+  }, [activatingConnector, connector, account, library, window.BinanceChain]);
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
   const triedEager = useEagerConnect();
