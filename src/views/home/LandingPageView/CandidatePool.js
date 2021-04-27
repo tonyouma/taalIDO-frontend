@@ -43,7 +43,7 @@ function CandidatePool() {
   }, [poolList]);
 
   return (
-    <Page title="TaalSwap Finance" className={classes.root}>
+    <Page title="TaalSwap Finace" className={(classes.root, 'candidate_wrap')}>
       <Container maxWidth="lg">
         <Typography variant="h2" align="center" gutterBottom>
           {t('taalswap.CandidateProjects')}
