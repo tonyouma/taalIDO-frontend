@@ -133,7 +133,7 @@ const navConfig = [
       },
       {
         title: 'Guide to IDO',
-        href: 'https://taalswap.gitbook.io/taalswap-documents/',
+        href: 'https://taalswap.gitbook.io/taalswap-documents/taalswap/ido',
         icon: ICONS.gitbook
       }
     ]

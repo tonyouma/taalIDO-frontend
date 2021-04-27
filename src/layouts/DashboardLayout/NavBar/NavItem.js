@@ -101,6 +101,22 @@ function NavItem({
     setShow((show) => !show);
   };
 
+  const moveToUrl = () => {
+    let newUrl = href;
+    if (title === 'Guide to IDO') {
+      const langStorage = localStorage.getItem('i18nextLng');
+
+      if (langStorage === 'kr') {
+        newUrl = 'https://taalswap.gitbook.io/taalswap-documents/taalswap/ido';
+      } else {
+        newUrl =
+          'https://taalswap.gitbook.io/taalswap-documents/how-to-use-taalswap/ido-users-guide';
+      }
+    }
+
+    window.open(newUrl, '_blank');
+  };
+
   if (children) {
     return (
       <>
@@ -134,11 +150,13 @@ function NavItem({
   return href.indexOf('http') >= 0 ? (
     <ListItem
       button
-      to={{ pathname: href }}
-      target="_blank"
-      exact={open}
+      // to={{ pathname: href }}
+      // to={setUrl(title, href)}
+      // target="_blank"
+      // exact={open}
+      onClick={moveToUrl}
       disableGutters
-      component={RouterLink}
+      // component={RouterLink}
       activeClassName={
         isSubItem ? classes.isActiveListItemSub : classes.isActiveListItem
       }
