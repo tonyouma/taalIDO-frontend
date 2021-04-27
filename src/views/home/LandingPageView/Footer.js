@@ -75,7 +75,14 @@ function DarkMode({ className }) {
           variant="caption"
           className="footer_caption"
         >
-          © All rights reserved. Made by TaalSwap. [Audited by HAECHI AUDIT]
+          © All rights reserved. Made by TaalSwap and{' '}
+          <a
+            href="https://taalswap.gitbook.io/taalswap-documents/taalswap-security"
+            target="_blank"
+          >
+            {' '}
+            Audited by HAECHI AUDIT{' '}
+          </a>
         </Typography>
         <div className={classes.listIcon} id="footer_iconbox">
           <motion.img src="/static/icons/ic_s_facebook.svg" />
