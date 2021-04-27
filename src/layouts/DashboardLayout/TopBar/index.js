@@ -13,15 +13,13 @@ import {
   Hidden,
   Toolbar,
   IconButton,
-  Button,
-  Container
+  Button
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
 import {
   getWalletBalance,
   setActivatingConnector,
-  setTalBalance,
   setBalance
 } from '../../../redux/slices/wallet';
 import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
@@ -31,8 +29,6 @@ import Taalswap from 'src/utils/taalswap';
 import { useSnackbar } from 'notistack';
 import { targetNetwork, targetNetworkMsg } from 'src/config';
 import { useTranslation } from 'react-i18next';
-
-const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
 
 // ----------------------------------------------------------------------
 
@@ -69,7 +65,7 @@ TopBar.propTypes = {
 
 function TopBar({ onOpenNav, className }) {
   const classes = useStyles();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   // const { login, logout } = useAuth();
@@ -77,76 +73,70 @@ function TopBar({ onOpenNav, className }) {
   const { activatingConnector, balance, talBalance } = useSelector(
     (state) => state.wallet
   );
-  const { os, wallet, from } = useSelector((state) => state.talken);
+  const { wallet, from } = useSelector((state) => state.talken);
 
   const context = useWeb3React();
-  const {
-    connector,
-    library,
-    chainId,
-    account,
-    activate,
-    deactivate,
-    active,
-    error
-  } = context;
+  const { connector, library, account, activate } = context;
 
-  useEffect(async () => {
-    // console.log('1----------> ', activatingConnector);
-    // console.log('1----------> ', connector);
-    // console.log('1----------> ', active);
-    // console.log('1----------> ', activate);
-    console.log('os', os);
-    console.log('wallet', wallet);
-    console.log('from', from);
-    if (activatingConnector && activatingConnector === connector) {
-      dispatch(setActivatingConnector(undefined));
-    }
-
-    if (!!library && !!account) {
-      if (
-        (library.provider.isMetaMask &&
-          library.provider.chainId !== targetNetwork) ||
-        (!library.provider.isMetaMask &&
-          library.provider.chainId !== parseInt(targetNetwork))
-      ) {
-        enqueueSnackbar(targetNetworkMsg, {
-          variant: 'warning',
-          autoHideDuration: 3000,
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'center'
-          }
-        });
-      } else {
-        dispatch(getWalletBalance(account, library));
-
-        // dispatch(getContractDecimals(account, library));
-
-        // tal 표시 이상해서 제거
-        // const taalswap = new Taalswap({
-        //   account,
-        //   library,
-        //   tokenAddress: TAL_TOKEN_ADDRESS
-        // });
-        //
-        // const talBalance = await taalswap
-        //   .balanceOf(account)
-        //   .catch((error) => console.log(error));
-        // dispatch(setTalBalance(talBalance));
+  useEffect(() => {
+    async function login() {
+      // console.log('1----------> ', activatingConnector);
+      // console.log('1----------> ', connector);
+      // console.log('1----------> ', active);
+      // console.log('1----------> ', activate);
+      // console.log('os', os);
+      // console.log('wallet', wallet);
+      // console.log('from', from);
+      if (activatingConnector && activatingConnector === connector) {
+        dispatch(setActivatingConnector(undefined));
       }
-    } else if (from !== null) {
-      const taalswap = new Taalswap({ notConnected: true });
-      try {
-        const walletBalance = await taalswap.getBalance(wallet);
-        console.log('balance', walletBalance);
-        dispatch(setBalance(walletBalance));
-      } catch (e) {
-        console.log(e);
+
+      if (!!library && !!account) {
+        if (
+          (library.provider.isMetaMask &&
+            library.provider.chainId !== targetNetwork) ||
+          (!library.provider.isMetaMask &&
+            library.provider.chainId !== parseInt(targetNetwork))
+        ) {
+          enqueueSnackbar(targetNetworkMsg, {
+            variant: 'warning',
+            autoHideDuration: 3000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'center'
+            }
+          });
+        } else {
+          dispatch(getWalletBalance(account, library));
+
+          // dispatch(getContractDecimals(account, library));
+
+          // tal 표시 이상해서 제거
+          // const taalswap = new Taalswap({
+          //   account,
+          //   library,
+          //   tokenAddress: TAL_TOKEN_ADDRESS
+          // });
+          //
+          // const talBalance = await taalswap
+          //   .balanceOf(account)
+          //   .catch((error) => console.log(error));
+          // dispatch(setTalBalance(talBalance));
+        }
+      } else if (from !== null) {
+        const taalswap = new Taalswap({ notConnected: true });
+        try {
+          const walletBalance = await taalswap.getBalance(wallet);
+          console.log('balance', walletBalance);
+          dispatch(setBalance(walletBalance));
+        } catch (e) {
+          console.log(e);
+        }
+      } else if (window.klayton) {
+        console.log('test=====', window.klayton);
       }
-    } else if (window.klayton) {
-      console.log('test=====', window.klayton);
     }
+    login();
   }, [activatingConnector, connector, account, library]);
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
