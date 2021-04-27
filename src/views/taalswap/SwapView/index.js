@@ -243,9 +243,9 @@ function PaymentView({ className, ...other }) {
         <TabPanel value={value} index={2}>
           <Participate pool={pool} />
         </TabPanel>
-        {/* <TabPanel value={value} index={3}>
+        <TabPanel value={value} index={3}>
           <AboutTheProject pool={pool} />
-        </TabPanel> */}
+        </TabPanel>
 
         {/* <div className={clsx(classes.root, className)} {...other}>
           <PoolButton />

@@ -77,7 +77,7 @@ const AboutTheProject = ({ pool }) => {
                       Web Site
                     </Typography>
                     <Typography
-                      component="a"
+                      component="p"
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
