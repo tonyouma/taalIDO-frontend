@@ -1,6 +1,4 @@
-import { FastField } from 'formik';
 import { PoolStatus } from './poolStatus';
-import Numbers from './Numbers';
 
 export const getPoolStatus = async (swapContract, status, minFundRaise) => {
   let poolStatus;

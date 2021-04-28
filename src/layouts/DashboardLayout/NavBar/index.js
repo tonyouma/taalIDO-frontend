@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Logo from 'src/components/Logo';
 import { motion } from 'framer-motion';
 import { varFadeInRight } from 'src/components/Animate';
-//import useAuth from 'src/hooks/useAuth';
 import React, { useEffect } from 'react';
 import Scrollbars from 'src/components/Scrollbars';
 import { Link as RouterLink, useLocation, matchPath } from 'react-router-dom';

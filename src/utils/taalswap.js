@@ -198,25 +198,11 @@ class Taalswap {
    * @param { Array | Addresses} Addresses
    */
   async addWhitelistedAddress({ addresses }) {
-    console.log('=====', addresses);
-    if (!addresses || !addresses.length || addresses.length == 0) {
+    // console.log('=====', addresses);
+    if (!addresses || !addresses.length || addresses.length === 0) {
       throw new Error('Addresses not well setup');
     }
 
-    // let oldAddresses = await this.getWhitelistedAddresses();
-    // oldAddresses = oldAddresses.map((a) => String(a).toLowerCase());
-    // addresses = addresses.map((a) => String(a).toLowerCase());
-    //
-    // var addressesClean = [];
-    // addresses = addresses.filter((item) => {
-    //   if (oldAddresses.indexOf(item) < 0 && addressesClean.indexOf(item) < 0) {
-    //     // Does not exist
-    //     addressesClean.push(item);
-    //   }
-    // });
-    // console.log('========>', addressesClean.toString());
-
-    // return await this.params.fixedContract.add(addressesClean);
     return await this.params.fixedContract.add(addresses, {
       gasLimit: 3000000,
       gasPrice: await this.getGasPrice()

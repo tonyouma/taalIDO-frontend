@@ -8,7 +8,7 @@ import settings2Fill from '@iconify-icons/eva/settings-2-fill';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Drawer, Divider, Typography } from '@material-ui/core';
 import { MIconButton } from 'src/theme';
-import { NavLink as RouterLink, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -111,5 +111,4 @@ function Settings({ className, landingPage }) {
     </div>
   );
 }
-
 export default Settings;

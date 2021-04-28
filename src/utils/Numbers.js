@@ -1,9 +1,6 @@
 import moment from 'moment';
 import accounting from 'accounting';
 import dayjs from 'dayjs';
-import BN from 'bn.js';
-import web3 from 'web3';
-let Web3 = new web3();
 
 Number.prototype.noExponents = function () {
   var data = String(this).split(/[eE]/);
@@ -102,17 +99,16 @@ class numbers {
         x = '0.' + new Array(e).join('0') + x.toString().substring(2);
       }
     } else {
-      var e = parseInt(x.toString().split('+')[1]);
-      if (e > 20) {
-        e -= 20;
-        x /= Math.pow(10, e);
-        x += new Array(e + 1).join('0');
+      var h = parseInt(x.toString().split('+')[1]);
+      if (h > 20) {
+        h -= 20;
+        x /= Math.pow(10, h);
+        x += new Array(h + 1).join('0');
       }
     }
     return x;
   }
 }
-
 let Numbers = new numbers();
 
 export default Numbers;

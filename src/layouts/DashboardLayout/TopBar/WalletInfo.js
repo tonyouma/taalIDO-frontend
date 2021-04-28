@@ -1,32 +1,8 @@
-import React, { useState, useEffect, useRef, useReducer } from 'react';
-import {
-  Card,
-  Button,
-  Table,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TablePagination,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Box,
-  IconButton,
-  Icon,
-  Typography,
-  Chip
-} from '@material-ui/core';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
-import EllipsisText from 'react-text-overflow-middle-ellipsis';
+import React from 'react';
+import { Button, Box, Chip } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { formatEther } from '@ethersproject/units';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import copyFill from '@iconify-icons/eva/copy-fill';
-import { MIconButton } from 'src/theme';
 
 import { useSnackbar } from 'notistack';
 import { useWeb3React } from '@web3-react/core';
@@ -55,13 +31,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const WalletInfo = ({ walletAddress, balance, talBalance, disconnect }) => {
+const WalletInfo = ({ walletAddress, balance, disconnect }) => {
   const classes = useStyles();
-  const addressRef = useRef();
   const { enqueueSnackbar } = useSnackbar();
   const context = useWeb3React();
   const { deactivate } = context;
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
 
   const onClickCopy = () => {
     try {
@@ -92,7 +67,7 @@ const WalletInfo = ({ walletAddress, balance, talBalance, disconnect }) => {
 
   const ethStr =
     balance !== null ? parseFloat(formatEther(balance)).toFixed(2) : '0';
-  const talStr = talBalance !== null ? parseFloat(talBalance).toFixed(2) : '0';
+  // const talStr = talBalance !== null ? parseFloat(talBalance).toFixed(2) : '0';
   const n = walletAddress.length;
   const walletStr =
     walletAddress.substr(0, 5) + '...' + walletAddress.substr(n - 5, n);

@@ -1,7 +1,6 @@
 import { PATH_APP } from './paths';
 import React, { lazy } from 'react';
 import { Redirect } from 'react-router-dom';
-import AuthProtect from 'src/components/Auth/AuthProtect';
 import DashboardLayout from 'src/layouts/DashboardLayout';
 
 // ----------------------------------------------------------------------

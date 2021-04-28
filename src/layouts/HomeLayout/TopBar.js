@@ -7,8 +7,7 @@ import homeFill from '@iconify-icons/eva/home-fill';
 import PopoverMenu from 'src/components/PopoverMenu';
 import roundSpeed from '@iconify-icons/ic/round-speed';
 import menu2Fill from '@iconify-icons/eva/menu-2-fill';
-import { PATH_APP, PATH_HOME } from 'src/routes/paths';
-import bookOpenFill from '@iconify-icons/eva/book-open-fill';
+import { PATH_APP } from 'src/routes/paths';
 import roundStreetview from '@iconify-icons/ic/round-streetview';
 import walletIcon from '@iconify-icons/akar-icons/wallet';
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
@@ -29,29 +28,14 @@ import {
 import { MIconButton } from 'src/theme';
 import WalletDialog from 'src/views/taalswap/Components/WalletDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  hasError,
-  setActivatingConnector,
-  setBalance,
-  getWalletBalance,
-  getContractDecimals
-} from 'src/redux/slices/wallet';
 import { useEagerConnect, useInactiveListener } from 'src/hooks/useWallet';
 import { useWeb3React } from '@web3-react/core';
-import { formatEther } from '@ethersproject/units';
-import { fixedData } from '../../contracts';
-import { tokenData } from '../../contracts';
-import Numbers from '../../utils/Numbers';
-import { Contract, ContractFactory } from '@ethersproject/contracts';
-import moment from 'moment';
-import { ethers } from 'ethers';
 import { targetNetwork, targetNetworkMsg } from '../../config';
 import { useSnackbar } from 'notistack';
 import Languages from '../DashboardLayout/TopBar/Languages';
 import Settings from 'src/layouts/Common/Settings';
 import { fromTalken } from 'src/redux/slices/talken';
 import { useTranslation } from 'react-i18next';
-// import getEthAddress from 'src/utils/getEthAddress';
 
 // ----------------------------------------------------------------------
 
@@ -122,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
 
 function TopBar() {
   const classes = useStyles();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const anchorRef = useRef(null);
   const { pathname } = useLocation();
@@ -132,20 +116,11 @@ function TopBar() {
   const { enqueueSnackbar } = useSnackbar();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const { activatingConnector, balance } = useSelector((state) => state.wallet);
+  const { activatingConnector } = useSelector((state) => state.wallet);
   const { os, wallet, from } = useSelector((state) => state.talken);
 
   const context = useWeb3React();
-  const {
-    connector,
-    library,
-    chainId,
-    account,
-    activate,
-    deactivate,
-    active,
-    error
-  } = context;
+  const { connector, library, activate } = context;
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
