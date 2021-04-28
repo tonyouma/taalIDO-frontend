@@ -1,10 +1,8 @@
-import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import faker from 'faker';
 import PropTypes from 'prop-types';
 import { fPercent, fCurrencyKRW, fCurrency } from 'src/utils/formatNumber';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography, CardContent } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { MLinearProgress } from 'src/theme';
 import { useTranslation } from 'react-i18next';
 
@@ -65,12 +63,10 @@ SalesOverview.propTypes = {
   className: PropTypes.string
 };
 
-function SalesOverview({ className, progressValue, progressDollorValue }) {
-  const classes = useStyles();
-
+function SalesOverview({ progressValue, progressDollorValue }) {
   return (
     <Box sx={{ width: '100%' }}>
-      {SALES.map((progress, index) => {
+      {SALES.map((progress) => {
         return (
           <Progress
             key={progress.label}
