@@ -174,8 +174,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
           {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
         </Typography>
       </Box>
-
-
       {pool.selectChain && pool.selectChain !== '' && (
         <MLabel
           variant="filled"
