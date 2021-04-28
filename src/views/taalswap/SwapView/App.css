@@ -1,0 +1,43 @@
+.projects_wrap {
+  position: relative;
+}
+#icon_box {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 15px;
+}
+#icon_box a {
+  width: 34px;
+  height: 34px;
+  margin-right: 10px;
+  display: block;
+}
+
+#icon_box .icon_tweet {
+  background: url(./icon/tweet_icon.png) no-repeat;
+  background-size: contain;
+}
+#icon_box .icon_page {
+  background: url(./icon/page_icon.png) no-repeat;
+  background-size: contain;
+}
+#icon_box .icon_message {
+  background: url(./icon/message_icon.png) no-repeat;
+  background-size: contain;
+}
+
+#icon_box .icon_tweet:hover {
+  background: url(./icon/tweet_hovericon.png) no-repeat;
+  background-size: contain;
+}
+
+#icon_box .icon_page:hover {
+  background: url(./icon/page_hovericon.png) no-repeat;
+  background-size: contain;
+}
+
+#icon_box .icon_message:hover {
+  background: url(./icon/message_hovericon.png) no-repeat;
+  background-size: contain;
+}

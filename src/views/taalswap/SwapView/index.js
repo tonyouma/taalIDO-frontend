@@ -30,6 +30,7 @@ import PoolDetails from '../PoolDetails';
 import { capitalCase } from 'change-case';
 import { Icon } from '@iconify/react';
 import roundAccountBox from '@iconify-icons/ic/round-account-box';
+import './App.css';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -131,7 +132,7 @@ function PaymentView({ className, ...other }) {
 
   return (
     <Page title="Swap | TaalSwap" className={classes.root}>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" className="projects_wrap">
         <Backdrop
           style={{
             display: 'flex',
@@ -154,7 +155,11 @@ function PaymentView({ className, ...other }) {
           subTitle={pool.tokenContractAddr}
           url={`https://rinkeby.etherscan.io/address/${pool.tokenContractAddr}`}
         />
-
+        <div className={classes.listIcon} id="icon_box">
+          <a href="javascript:;" class="icon_tweet"></a>
+          <a href="javascript:;" class="icon_page"></a>
+          <a href="javascript:;" class="icon_message"></a>
+        </div>
         <Tabs
           value={value}
           scrollButtons="auto"
