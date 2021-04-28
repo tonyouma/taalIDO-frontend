@@ -3,16 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Box,
-  Typography,
-  Link,
-  IconButton,
-  Button,
-  Hidden
-} from '@material-ui/core';
+import { Box, Typography, Link, IconButton, Hidden } from '@material-ui/core';
 import LinkIcon from '@material-ui/icons/Link';
-// import { MBreadcrumbs } from 'src/theme';
 
 // ----------------------------------------------------------------------
 
@@ -52,10 +44,6 @@ function HeaderDashboard({
   const classes = useStyles();
   const [walletAddress, setWalletAddress] = useState('');
 
-  const handleClickUrl = () => {
-    console.log(url);
-  };
-
   useEffect(() => {
     if (subTitle !== undefined) {
       const n = subTitle.length;
@@ -64,7 +52,7 @@ function HeaderDashboard({
 
       setWalletAddress(shortAddress);
     }
-  }, []);
+  }, [subTitle]);
 
   return (
     <Box className={clsx(classes.root, className)}>

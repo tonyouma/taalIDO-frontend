@@ -1,6 +1,6 @@
 import React from 'react';
-import { MLabel, MIcon } from 'src/theme';
-import { PATH_APP, PATH_HOME, PATH_PAGE } from 'src/routes/paths';
+import { MIcon } from 'src/theme';
+import { PATH_APP } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -557,5 +557,4 @@ const navConfig = [
   //   ]
   // }
 ];
-
 export default navConfig;

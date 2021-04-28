@@ -9,7 +9,6 @@ Logo.propTypes = {
 };
 
 function Logo({ className, ...other }) {
-  const { auth, profile } = useSelector((state) => state.firebase);
   const { themeMode } = useSelector((state) => state.settings);
 
   const length = String(className).split(' ').length;

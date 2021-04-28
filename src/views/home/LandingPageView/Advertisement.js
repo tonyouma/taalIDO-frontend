@@ -2,14 +2,13 @@ import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { BASE_IMG } from 'src/utils/getImages';
-import { PATH_HOME } from 'src/routes/paths';
 import {
   varFadeInDown,
   varFadeInUp,
   MotionInView
 } from 'src/components/Animate';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link, Box, Container, Typography } from '@material-ui/core';
+import { Box, Container, Typography } from '@material-ui/core';
 import { MButton } from 'src/theme';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -47,10 +46,10 @@ Advertisement.propTypes = {
 
 function Advertisement({ className }) {
   const classes = useStyles();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
 
   return (
-    <div className={clsx(classes.root, className)}>
+    <div className={clsx(classes.root, className)} id="adverisement_wrap">
       <Container maxWidth="lg">
         <div className={classes.container}>
           <MotionInView variants={varFadeInUp} sx={{ mb: { xs: 3, md: 0 } }}>

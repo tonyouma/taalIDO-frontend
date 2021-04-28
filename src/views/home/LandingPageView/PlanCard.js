@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-
 import { makeStyles } from '@material-ui/core/styles';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
 import {
@@ -22,14 +21,11 @@ import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
 import { useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
-import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../../taalswap/Components/StatusLabel';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
 import { MLabel } from 'src/theme';
-
 import { useTranslation } from 'react-i18next';
-// import { PoolStatus } from 'src/utils/poolStatus';
 
 // ----------------------------------------------------------------------
 
@@ -69,18 +65,12 @@ function PlanCard({ pool, ethPrice, index, className }) {
   const [progressDollorValue, setProgressDollorValue] = useState(0);
   const [totalRaise, setTotalRaise] = useState(0);
   const [participants, setParticipants] = useState(0);
-  // const [poolStatus, setStatus] = useState('');
   const [isOpenModal, setOpenModal] = useState(false);
   const [checkWarning, setCheckWarning] = useState(false);
   const [showWarningMessage, setShowWarningMessage] = useState(false);
 
   const { library, account } = context;
   const { i18n, t } = useTranslation();
-
-  // const handleOpenModal = (row) => {
-  //   // setOpenModal(row);
-  //   setOpenModal(true);
-  // };
 
   const handleCloseModal = () => {
     setCheckWarning(false);
@@ -138,7 +128,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
         })
         .catch((error) => console.log(error));
 
-      // setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
       setMax(getMax(pool.maxIndividuals, pool.tradeValue));
 
       return () => {};
@@ -150,30 +139,35 @@ function PlanCard({ pool, ethPrice, index, className }) {
 
   const onClickDetails = () => {
     setOpenModal(true);
-    // history.push({
-    //   pathname: '/app/taalswap/pools/swap',
-    //   state: { selectedPool: pool }
-    // });
   };
 
   return (
     <Card className={clsx(classes.root, className)}>
       <StatusLabel poolStatus={pool.poolStatus} absolute />
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
-        <Typography variant="h3" sx={{ mx: 1 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          my: 2,
+          flexWrap: 'wrap'
+        }}
+      >
+        <Typography variant="h3" sx={{ mx: 1 }} className="card_title">
           {pool.poolName}
         </Typography>
+        <Typography variant="h5" className="card_subtitle">
+          {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
+        </Typography>
       </Box>
-
       {pool.selectChain && pool.selectChain !== '' && (
         <MLabel
           variant="filled"
-          color="warning"
           sx={{
             top: 17,
             left: 25,
             position: 'absolute'
           }}
+          className="erc_label"
         >
           {pool.selectChain}
         </MLabel>
@@ -181,36 +175,25 @@ function PlanCard({ pool, ethPrice, index, className }) {
 
       <Box
         component="img"
-        src={pool.iconUrl ? `${pool.iconUrl}` : `/static/icons/json-logo.svg`}
+        src={
+          pool.iconUrl !== ''
+            ? `${pool.iconUrl}`
+            : `/static/icons/json-logo.svg`
+        }
         sx={{
-          top: 58,
+          top: 67,
           left: 32,
           width: 49,
           height: 49,
           position: 'absolute'
         }}
+        className="plancard_icon"
       />
-
-      <Box component="ul" sx={{ my: 5, width: '100%' }}>
-        {/* Ratio */}
-        <Box
-          key="ratio"
-          component="li"
-          sx={{
-            display: 'flex',
-            typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
-          }}
-        >
-          {t('taalswap.Ratio')}
-          <Box sx={{ flex: 1 }} />
-          <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>
-              {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
-            </Box>
-          </Box>
-        </Box>
-
+      <Box
+        component="ul"
+        sx={{ my: 5, width: '100%' }}
+        className="plancard_wrap"
+      >
         {/* Maximum */}
         <Box
           key="maximum"
@@ -218,16 +201,18 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
         >
           {t('taalswap.Maximum')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(max)} ETH</Box>
+            <Box sx={{ mr: 1.5, color: '#212B36' }} className="text_effect">
+              {Numbers.toFloat(max)} ETH
+            </Box>
           </Box>
         </Box>
-
         {/* Access */}
         <Box
           key="access"
@@ -235,13 +220,16 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
         >
           {t('taalswap.Access')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{!!pool.access && pool.access}</Box>
+            <Box sx={{ mr: 1.5, color: '#212B36', fontSize: '20px' }}>
+              {!!pool.access && pool.access}
+            </Box>
           </Box>
         </Box>
 
@@ -252,13 +240,16 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
         >
           {t('taalswap.Participants')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{participants}</Box>
+            <Box sx={{ mr: 1.5, color: '#212B36', fontSize: '20px' }}>
+              {participants}
+            </Box>
           </Box>
         </Box>
 
@@ -269,13 +260,16 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
         >
           {t('taalswap.TotalRaise')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(totalRaise)} ETH</Box>
+            <Box sx={{ mr: 1.5, color: '#00AB55', fontSize: '20px' }}>
+              {Numbers.toFloat(totalRaise)} ETH
+            </Box>
           </Box>
         </Box>
 
@@ -286,13 +280,15 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
+          className="start_date"
         >
           {t('taalswap.StartDate')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5, color: '#212B36' }}>
               {moment.unix(pool.startDate).format('YYYY-MM-DD')}
             </Box>
           </Box>
@@ -305,13 +301,14 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
         >
           {t('taalswap.EndDate')}
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5, color: '#212B36' }}>
               {moment.unix(pool.endDate).format('YYYY-MM-DD')}
             </Box>
           </Box>
@@ -371,10 +368,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             </Typography>
           </Box>
           <Divider />
-          <Box
-            textAlign="right"
-            // marginTop="20px"
-          >
+          <Box textAlign="right">
             <Box display="flex" justifyContent="flex-end" alignItems="center">
               <Checkbox
                 checked={checkWarning}

@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">  <image id="image0" width="24" height="24" x="0" y="0"
-    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAS1BMVEUAAAAAqesAqusAquwA
-q+sAqu8AquwAq+0Aqu8Aq+wAqesAquwAquwAquwAqewAq+0AqusAqewAqewAquwAr+8AquwAquwA
-quz////R+shyAAAAF3RSTlMAgM+/QDCwfz9P0O/g8FBwwF+gYBCQn/v5g1MAAAABYktHRBibaYUe
-AAAAB3RJTUUH5QQICCQlDpbK5wAAAH1JREFUKM+9kEcCgCAMBBGNlWbN/3+qYECCZ91TsgNpQvyt
-SmLdZClQ0KJX1w+Uj9NNGiQpAhonE35GYAm4K5YzJDDGHgtyVRGsBTARbJoDSPNa5qtnEVqgbOGL
-ZURv7Bj7u3UQyHK5+xZHer/mvkq2A1ZHmOW6inZ7YX+uEzJtD8r/wV/YAAAAJXRFWHRkYXRlOmNy
-ZWF0ZQAyMDIxLTA0LTA4VDA4OjM2OjM3KzAwOjAwBBhs2QAAACV0RVh0ZGF0ZTptb2RpZnkAMjAy
-MS0wNC0wOFQwODozNjozNyswMDowMHVF1GUAAAAASUVORK5CYII=" />
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="tweet" transform="translate(0 -0.205)">
+    <g id="___Icons_ic_replace" data-name="__🥬Icons/ ic_replace" transform="translate(0 0.205)">
+      <g id="twitter">
+        <path id="Path" d="M0,0H24V24H0" fill="#708495" opacity="0"/>
+        <path id="Path-2" data-name="Path" d="M5.076,16A11.07,11.07,0,0,0,16.516,5,8.09,8.09,0,0,0,18,2.157a.44.44,0,0,0-.62-.51,1.88,1.88,0,0,1-2.16-.38,3.89,3.89,0,0,0-5.58-.17A4.13,4.13,0,0,0,8.486,5c-3.35.2-5.65-1.39-7.49-3.57a.43.43,0,0,0-.75.24,9.68,9.68,0,0,0,4.6,10.05A6.73,6.73,0,0,1,.376,14a.45.45,0,0,0-.14.84A11,11,0,0,0,5.076,16" transform="translate(3.004 4.003)" fill="#708495"/>
+      </g>
+    </g>
+  </g>
 </svg>

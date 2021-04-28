@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import CandidateCard from './CandidateCard';
 import Page from 'src/components/Page';
 import { Link as RouterLink } from 'react-router-dom';
@@ -35,7 +35,7 @@ function CandidatePool() {
   const classes = useStyles();
   const { poolList } = useSelector((state) => state.pool);
   const [candidates, setCandidates] = useState([]);
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // dispatch(getPoolList());
@@ -43,9 +43,9 @@ function CandidatePool() {
   }, [poolList]);
 
   return (
-    <Page title="TaalSwap Finace" className={(classes.root, 'candidate_wrap')}>
+    <Page title="TaalSwap Finance" className={(classes.root, 'candidate_wrap')}>
       <Container maxWidth="lg">
-        <Typography variant="h2" align="center" gutterBottom>
+        <Typography variant="h3" align="center" gutterBottom>
           {t('taalswap.CandidateProjects')}
         </Typography>
 
@@ -59,9 +59,9 @@ function CandidatePool() {
           ></Box>
         </Box>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
           {candidates.map((candidate, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid item xs={12} md={3} key={index}>
               <CandidateCard key={index} pool={candidate} index={index} />
             </Grid>
           ))}
