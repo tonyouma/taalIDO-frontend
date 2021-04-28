@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BASE_IMG } from 'src/utils/getImages';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Container, Typography } from '@material-ui/core';
 import {

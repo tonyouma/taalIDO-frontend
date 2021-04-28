@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion';
 import LazySize from 'src/components/LazySize';
-import { BASE_IMG } from 'src/utils/getImages';
 import flashFill from '@iconify-icons/eva/flash-fill';
 import { Link as RouterLink } from 'react-router-dom';
-import { PATH_APP, PATH_HOME } from 'src/routes/paths';
+import { PATH_APP } from 'src/routes/paths';
 import {
   varFadeIn,
   varWrapEnter,
@@ -15,7 +14,7 @@ import {
   varFadeInRight
 } from 'src/components/Animate';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Box, Link, Container, Typography } from '@material-ui/core';
+import { Button, Box, Container, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
@@ -104,7 +103,7 @@ Hero.propTypes = {
 
 function Hero({ className }) {
   const classes = useStyles();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <>
