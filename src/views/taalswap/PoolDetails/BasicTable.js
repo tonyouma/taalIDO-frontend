@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -47,7 +48,8 @@ function General({ className, pool }) {
   const [minSwapLevel, setMinSwapLevel] = useState(0);
   const [max, setMax] = useState(0);
   const [min, setMin] = useState(0);
-
+  const [holders, setHolders] = useState(0);
+  const [transfers, setTransfers] = useState(0);
   const { library, account } = context;
 
   useEffect(async () => {
@@ -81,6 +83,16 @@ function General({ className, pool }) {
       await taalswap
         .minimumRaise()
         .then((result) => setMinSwapLevel(result))
+        .catch((error) => console.log(error));
+
+      await axios
+        .get(
+          `https://api.ethplorer.io/getTokenInfo/${pool.tokenContractAddress}/?apiKey=freekey`
+        )
+        .then((response) => {
+          setHolders(response.data.holdersCount);
+          setTransfers(response.data.transfersCount);
+        })
         .catch((error) => console.log(error));
     }
 
@@ -283,7 +295,7 @@ function General({ className, pool }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      6,223 (연동예정)
+                      {holders}
                     </Typography>
                   </div>
 
@@ -302,7 +314,7 @@ function General({ className, pool }) {
                       variant="body2"
                       sx={{ color: 'text.secondary' }}
                     >
-                      35,576 (연동예정)
+                      {transfers}
                     </Typography>
                   </div>
                 </Grid>
