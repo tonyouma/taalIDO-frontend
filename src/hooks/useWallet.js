@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
-import { bscConnector, injected, walletconnect } from '../connectors';
-import { instanceOf } from 'prop-types';
+import {
+  kaikasConnector,
+  bscConnector,
+  injected,
+  walletconnect
+} from '../connectors';
 
 export function useEagerConnect() {
   // const { activate, active } = useWeb3React();
@@ -13,7 +17,6 @@ export function useEagerConnect() {
     chainId,
     account,
     activate,
-    deactivate,
     active,
     error
   } = context;
@@ -28,14 +31,14 @@ export function useEagerConnect() {
     console.log('account', account);
     console.log('connectorId', error);
 
-    if (connectorId && connectorId === 'klayton') {
-      console.log('klayton');
-      if (!window.klayton) {
-        window.localStorage.removeItem('chainId');
-        return;
-      }
-      window.klayton.enable();
-    }
+    // if (connectorId && connectorId === 'klayton') {
+    //   console.log('klayton');
+    //   if (!window.klayton) {
+    //     window.localStorage.removeItem('chainId');
+    //     return;
+    //   }
+    //   window.klayton.enable();
+    // }
     if (connectorId && connectorId === 'injected') {
       console.log('injected');
       injected.isAuthorized().then((isAuthorized: boolean) => {
@@ -61,6 +64,12 @@ export function useEagerConnect() {
         // window.BinanceChain 의 로드가 느려서 1초후에 실행되도록 하였음.
         if (!window.BinanceChain)
           setTimeout(() => activate(bscConnector), 1000);
+      });
+    }
+    if (connectorId && connectorId === 'kaikas') {
+      console.log('kaikas', kaikasConnector);
+      activate(kaikasConnector, undefined, true).catch((error) => {
+        console.log(error);
       });
     }
   }, []); // intentionally only running on mount (make sure it's only mounted once :))

@@ -54,6 +54,7 @@
     "@react-google-maps/api": "^1.13.0",
     "@react-pdf/renderer": "^1.6.12",
     "@reduxjs/toolkit": "^1.5.0",
+    "@taalswap/kaikas-connector": "/Users/ksj1026/IdeaProjects/study/web3-react/packages/kaikas-connector",
     "@turf/bbox": "^6.0.1",
     "@web3-react/authereum-connector": "^6.1.9",
     "@web3-react/core": "^6.1.9",

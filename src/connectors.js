@@ -12,6 +12,7 @@ import { MagicConnector } from '@web3-react/magic-connector';
 import { PortisConnector } from '@web3-react/portis-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
 import { BscConnector } from '@binance-chain/bsc-connector';
+import { KaikasConnector } from '@taalswap/kaikas-connector';
 import { targetNetwork } from 'src/config';
 
 const RPC_URL_1 =
@@ -42,6 +43,10 @@ export const network = new NetworkConnector({
 });
 
 export const bscConnector = new BscConnector({ supportedChainIds: [56] });
+
+export const kaikasConnector = new KaikasConnector({
+  supportedChainIds: [8217, 1001]
+});
 
 export const walletconnect = (useQR) => {
   const chainId = parseInt(targetNetwork);
