@@ -163,7 +163,7 @@ function Tabcard() {
   return (
     <Page title="TaalSwap Finance" className={classes.root}>
       <Container maxWidth="lg">
-        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+        <Box sx={{ width: '100%' }}>
           <Tabs value={value} onChange={handleChange} centered>
             {POOLS_TABS.map((tab) => {
               let labelStr;
