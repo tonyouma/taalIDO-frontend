@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import CandidateCard from './CandidateCard';
 import Page from 'src/components/Page';
 import { Link as RouterLink } from 'react-router-dom';
@@ -35,7 +35,7 @@ function CandidatePool() {
   const classes = useStyles();
   const { poolList } = useSelector((state) => state.pool);
   const [candidates, setCandidates] = useState([]);
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // dispatch(getPoolList());

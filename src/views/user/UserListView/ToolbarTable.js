@@ -3,14 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import searchFill from '@iconify-icons/eva/search-fill';
-import trash2Fill from '@iconify-icons/eva/trash-2-fill';
-import roundFilterList from '@iconify-icons/ic/round-filter-list';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
   Toolbar,
-  Tooltip,
-  IconButton,
   Typography,
   OutlinedInput,
   InputAdornment
@@ -51,7 +47,7 @@ ToolbarTable.propTypes = {
 
 function ToolbarTable({ numSelected, filterName, onFilterName, className }) {
   const classes = useStyles();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Toolbar
