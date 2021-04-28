@@ -155,27 +155,27 @@ function NavItem({
       // target="_blank"
       // exact={open}
       onClick={moveToUrl}
-      disableGutters
+      // disableGutters
       // component={RouterLink}
-      activeClassName={
-        isSubItem ? classes.isActiveListItemSub : classes.isActiveListItem
-      }
+      // activeClassName={
+      //   isSubItem ? classes.isActiveListItemSub : classes.isActiveListItem
+      // }
       className={clsx(classes.listItem, className)}
-      isActive={(match, location) => {
-        if (!match) {
-          return false;
-        }
-        const { url } = match;
-        const { pathname } = location;
-        const isMatch = url === pathname;
+      // isActive={(match, location) => {
+      //   if (!match) {
+      //     return false;
+      //   }
+      //   const { url } = match;
+      //   const { pathname } = location;
+      //   const isMatch = url === pathname;
 
-        if (!isSubItem) {
-          return url.length && pathname.includes(url);
-        }
+      //   if (!isSubItem) {
+      //     return url.length && pathname.includes(url);
+      //   }
 
-        return isMatch;
-      }}
-      {...other}
+      //   return isMatch;
+      // }}
+      // {...other}
     >
       <ListItemIcon className={classes.listItemIcon}>
         {isSubItem ? <span className={classes.subIcon} /> : icon}
