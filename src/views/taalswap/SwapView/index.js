@@ -40,6 +40,7 @@ import { infuraChainId } from 'src/config';
 import { useSelector } from 'react-redux';
 import getEthPrice from 'src/utils/getEthPrice';
 
+import './App.css';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -139,7 +140,7 @@ function PaymentView({ className, ...other }) {
 
   return (
     <Page title="Swap | TaalSwap" className={classes.root}>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" className="projects_wrap">
         <Backdrop
           style={{
             display: 'flex',
@@ -162,7 +163,11 @@ function PaymentView({ className, ...other }) {
           subTitle={pool.tokenContractAddr}
           url={`https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`}
         />
-
+        <div className={classes.listIcon} id="icon_box">
+          <a href="javascript:;" class="icon_tweet"></a>
+          <a href="javascript:;" class="icon_page"></a>
+          <a href="javascript:;" class="icon_message"></a>
+        </div>
         <Tabs
           value={value}
           scrollButtons="auto"
