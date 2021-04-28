@@ -5,7 +5,13 @@ import shieldFill from '@iconify-icons/eva/shield-fill';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Divider, Typography, TextField } from '@material-ui/core';
+import {
+  Box,
+  Divider,
+  Typography,
+  TextField,
+  CircularProgress
+} from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
@@ -80,6 +86,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const history = useHistory();
 
   const { enqueueSnackbar } = useSnackbar();
+  const [progressFlag, setProgressFlag] = useState(false);
   const [amount, setAmount] = useState(0);
   const [price, setPrice] = useState(0);
   const [tokensLeft, setTokensLeft] = useState(0);
@@ -169,7 +176,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         variant: 'error'
       });
     }
-    onBackdrop(false);
+    // onBackdrop(false);
+    setProgressFlag(false);
   };
 
   const onClickSwap = async () => {
@@ -189,7 +197,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 Numbers.toFloat(pool.maxIndividuals) >=
                 Numbers.toFloat(amount) + Numbers.toFloat(swappedAmount)
               ) {
-                onBackdrop(true);
+                // onBackdrop(true);
+                setProgressFlag(true);
                 if (from) {
                   try {
                     let amountWithDecimals = Numbers.toSmartContractDecimals(
@@ -236,7 +245,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                     }
                   } catch (e) {
                     console.log(e);
-                    onBackdrop(false);
+                    // onBackdrop(false);
+                    setProgressFlag(false);
                   }
                   return;
                 } else {
@@ -251,7 +261,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                       enqueueSnackbar('Swap fail', {
                         variant: 'fail'
                       });
-                      onBackdrop(false);
+                      // onBackdrop(false);
+                      setProgressFlag(false);
                     });
 
                   const receipt = await result.wait();
@@ -269,7 +280,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                   }
                 }
 
-                onBackdrop(false);
+                // onBackdrop(false);
+                setProgressFlag(false);
               } else {
                 setWarningMessage(
                   `${t('taalswap.WarnIndivMAx')} (${swappedAmount} / ${
@@ -514,7 +526,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             onClick={onClickSwap}
             disabled={status !== PoolStatus.LIVE || isWhiteList === false}
           >
-            {t('taalswap.Go')}
+            {progressFlag === true ? <CircularProgress /> : t('taalswap.Go')}
           </LoadingButton>
         )}
 
@@ -525,7 +537,11 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             variant="contained"
             onClick={() => setIsOpenModal(true)}
           >
-            {t('taalswap.ConnectWallet')}
+            {progressFlag === true ? (
+              <CircularProgress />
+            ) : (
+              t('taalswap.ConnectWallet')
+            )}
           </LoadingButton>
         )}
       </Box>
