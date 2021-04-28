@@ -26,12 +26,8 @@ import { PoolStatus } from 'src/utils/poolStatus';
 import { getPoolStatus } from '../../../utils/getPoolStatus';
 import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router-dom';
-import { set } from 'immutable';
 import { useTranslation } from 'react-i18next';
-import publish from '@iconify-icons/ic/publish';
-import { LANGS } from 'src/layouts/DashboardLayout/TopBar/Languages';
 import WalletDialog from '../Components/WalletDialog';
-import { FormikProvider } from 'formik';
 
 // ----------------------------------------------------------------------
 
@@ -139,7 +135,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       amount: amount,
       joinDate: moment().unix()
     };
-    console.log('=====', JSON.stringify(swap));
+    // console.log('=====', JSON.stringify(swap));
     dispatch(createSwap(swap));
   };
 
@@ -148,11 +144,12 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
       const rslt = JSON.parse(result);
       if (rslt.result) {
         const receipt = await taalswap.waitTxHash(rslt.txHash);
-        console.log('=====', JSON.stringify(receipt));
+        // console.log('=====', JSON.stringify(receipt));
         if (receipt.status === 1) {
           enqueueSnackbar('Swap success', {
             variant: 'success'
           });
+          setProgressFlag(false);
           await setWarningMessage('');
           await addSwap();
 
@@ -161,27 +158,30 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             state: { tabValue: 1 }
           });
         } else {
-          console.log('=====', receipt.status);
+          setProgressFlag(false);
+          // console.log('=====', receipt.status);
           enqueueSnackbar('Swap fail', {
             variant: 'fail'
           });
         }
       } else {
+        setProgressFlag(false);
         enqueueSnackbar('Swap fail', {
           variant: 'fail'
         });
       }
     } catch (e) {
+      setProgressFlag(false);
       enqueueSnackbar('Swap error', {
         variant: 'error'
       });
     }
     // onBackdrop(false);
-    setProgressFlag(false);
   };
 
   const onClickSwap = async () => {
     try {
+      setProgressFlag(true);
       if (!!library || from) {
         if (pool.access === 'Private' && !isWhiteList) {
           setWarningMessage(
@@ -229,7 +229,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                       callback: 'onCallbackTxHash',
                       msgContents: msgContents
                     };
-                    console.log('sendData', sendData);
+                    // console.log('sendData', sendData);
                     if (os.toLowerCase() === 'ios') {
                       /*eslint-disable */
                       webkit.messageHandlers.sendEthTransaction.postMessage(
@@ -250,7 +250,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                   }
                   return;
                 } else {
-                  console.log(`taalswap web, swap..`);
+                  // console.log(`taalswap web, swap..`);
+                  // console.log(progressFlag);
                   const result = await taalswap
                     .swap({
                       tokenAmount: amount,
@@ -258,6 +259,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                     })
                     .catch((error) => {
                       console.log('error : ' + JSON.stringify(error));
+
                       enqueueSnackbar('Swap fail', {
                         variant: 'fail'
                       });
@@ -318,7 +320,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
   useEffect(async () => {
     try {
-      console.log('in...........');
+      // console.log('in...........');
       window.setRes = setRes;
       setDate();
       setAmount(0);
@@ -329,18 +331,18 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           .tokensLeft()
           .then((result) => {
             setTokensLeft(result);
-            console.log(`tokensLeft : ${result}`);
+            // console.log(`tokensLeft : ${result}`);
           })
           .catch((error) => console.log(error));
 
         await taalswap.individualMinimumAmount().then((result) => {
           setMinAmount(result);
-          console.log(`individualMinimumAmount : ${result}`);
+          // console.log(`individualMinimumAmount : ${result}`);
         });
 
         await taalswap.individualMaximumAmount().then((result) => {
           setMaxAmount(result);
-          console.log(`individualMaximumAmount : ${result}`);
+          // console.log(`individualMaximumAmount : ${result}`);
         });
 
         if (pool.access === 'Private') {
@@ -348,7 +350,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             .isWhitelisted(wallet ? wallet : account)
             .then((result) => {
               setIsWhiteList(result);
-              console.log(`isWhitelisted : ${result}`);
+              // console.log(`isWhitelisted : ${result}`);
             })
             .catch((error) => console.log(error));
         }
@@ -514,7 +516,16 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             disabled={status !== PoolStatus.LIVE}
             // disabled={status !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED}
           >
-            {t('taalswap.Go')}
+            {progressFlag === true ? (
+              <Box display="flex" alignItems="center">
+                <CircularProgress color="inherit" />
+                <Typography marginLeft="1rem">
+                  {t('taalswap.InProgress')}{' '}
+                </Typography>
+              </Box>
+            ) : (
+              t('taalswap.Go')
+            )}
           </LoadingButton>
         )}
 
@@ -526,7 +537,17 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             onClick={onClickSwap}
             disabled={status !== PoolStatus.LIVE || isWhiteList === false}
           >
-            {progressFlag === true ? <CircularProgress /> : t('taalswap.Go')}
+            {progressFlag === true ? (
+              <Box display="flex" alignItems="center">
+                <CircularProgress color="inherit" />
+                <Typography marginLeft="1rem">
+                  {t('taalswap.InProgress')}{' '}
+                </Typography>
+              </Box>
+            ) : (
+              t('taalswap.Go')
+            )}
+            {/* {progressFlag && <CircularProgress />} {t('taalswap.Go')} */}
           </LoadingButton>
         )}
 
@@ -537,11 +558,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             variant="contained"
             onClick={() => setIsOpenModal(true)}
           >
-            {progressFlag === true ? (
-              <CircularProgress />
-            ) : (
-              t('taalswap.ConnectWallet')
-            )}
+            {t('taalswap.ConnectWallet')}
           </LoadingButton>
         )}
       </Box>
