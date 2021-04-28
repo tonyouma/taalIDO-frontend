@@ -43,9 +43,9 @@ function CandidatePool() {
   }, [poolList]);
 
   return (
-    <Page title="TaalSwap Finace" className={(classes.root, 'candidate_wrap')}>
+    <Page title="TaalSwap Finance" className={(classes.root, 'candidate_wrap')}>
       <Container maxWidth="lg">
-        <Typography variant="h2" align="center" gutterBottom>
+        <Typography variant="h3" align="center" gutterBottom>
           {t('taalswap.CandidateProjects')}
         </Typography>
 
@@ -59,9 +59,9 @@ function CandidatePool() {
           ></Box>
         </Box>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
           {candidates.map((candidate, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid item xs={12} md={3} key={index}>
               <CandidateCard key={index} pool={candidate} index={index} />
             </Grid>
           ))}

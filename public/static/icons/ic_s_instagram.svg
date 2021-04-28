@@ -1,13 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">  <image id="image0" width="24" height="24" x="0" y="0"
-    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAPFBMVEUAAADfIGDhLGfgLGjg
-LWnfKmrfK2nfLGjfLGjfLWnfLGjfLGnhLGjjLWnfLWjgLWjgLGniLWfgLWn///+A48LOAAAAEnRS
-TlMAEG+/7zBw0IBQQMB/P/Dfz0+UF/otAAAAAWJLR0QTDLtclgAAAAd0SU1FB+UECAgkFrFGq/EA
-AACeSURBVCjPtZFLEsQgCEQx8YNoiMn9DztKlFjuZqqmV8gTkQbgJ5ltt3eX3Tcz8k6znbl+f8lX
-8tT4FgeMVBUxtJMXkGqEQFl0ANZjEsD1PoT+SpLQCmgF1PMnJGolA0Qcfc8b4wQI3y9J9R9AnMHc
-XL87qseARQd8ZmW1JAOhiCZLxMSSr6PqyuU10fBqO/dVuYWw09X6pIyT19V+pw9k/BYLbcbl+AAA
-ACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMS0wNC0wOFQwODozNjoyMiswMDowMJqKQ+AAAAAldEVYdGRh
-dGU6bW9kaWZ5ADIwMjEtMDQtMDhUMDg6MzY6MjIrMDA6MDDr1/tcAAAAAElFTkSuQmCC" />
+<svg id="instagram" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="___Icons_ic_replace" data-name="__🥬Icons/ ic_replace">
+    <g id="logo-instagram" transform="translate(0 0)">
+      <path id="Combined_Shape" data-name="Combined Shape" d="M10,20c-2.692,0-3.049-.011-4.123-.059a5.964,5.964,0,0,1-4.2-1.618,5.96,5.96,0,0,1-1.618-4.2C.012,13.052,0,12.7,0,10S.012,6.948.06,5.877a5.959,5.959,0,0,1,1.618-4.2A5.959,5.959,0,0,1,5.877.06C6.948.012,7.3,0,10,0s3.052.012,4.123.06a5.963,5.963,0,0,1,4.2,1.618,5.967,5.967,0,0,1,1.618,4.2C19.988,6.951,20,7.307,20,10s-.011,3.049-.059,4.123a5.968,5.968,0,0,1-1.618,4.2,5.969,5.969,0,0,1-4.2,1.618C13.048,19.988,12.692,20,10,20ZM10,3.334c-1.819,0-2.053.008-2.749.04a3.974,3.974,0,0,0-2.8,1.079,3.974,3.974,0,0,0-1.079,2.8c-.032.7-.04.929-.04,2.749s.008,2.054.04,2.75a3.977,3.977,0,0,0,1.079,2.8,3.98,3.98,0,0,0,2.8,1.078c.728.033.968.041,2.749.041s2.021-.008,2.75-.041a3.98,3.98,0,0,0,2.8-1.078,3.98,3.98,0,0,0,1.078-2.8c.033-.728.041-.968.041-2.75s-.008-2.021-.041-2.749a3.98,3.98,0,0,0-1.078-2.8,3.977,3.977,0,0,0-2.8-1.079C12.054,3.341,11.82,3.334,10,3.334Zm0,12.132c-1.78,0-1.991-.007-2.694-.039a2.9,2.9,0,0,1-2-.728,2.9,2.9,0,0,1-.728-2.005C4.542,12.01,4.535,11.8,4.535,10s.007-2.011.039-2.694a2.9,2.9,0,0,1,.728-2,2.9,2.9,0,0,1,2-.728c.683-.032.891-.039,2.694-.039s2.011.007,2.694.039A2.9,2.9,0,0,1,14.7,5.3a2.9,2.9,0,0,1,.728,2c.032.7.039.913.039,2.694s-.007,1.991-.039,2.694A2.9,2.9,0,0,1,14.7,14.7a2.9,2.9,0,0,1-2.005.728C11.991,15.459,11.78,15.466,10,15.466Zm3.559-9.824a.8.8,0,1,0,.8.8A.8.8,0,0,0,13.559,5.641Z" fill="#708495"/>
+    </g>
+  </g>
 </svg>

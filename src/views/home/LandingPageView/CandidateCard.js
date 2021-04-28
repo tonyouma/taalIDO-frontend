@@ -53,7 +53,7 @@ function CandidateCard({ pool, index, className }) {
   const { t } = useTranslation();
 
   return (
-    <Card className={clsx(classes.root, className)}>
+    <Card className={clsx(classes.root, className)} id="cardbox_wrap">
       <Box sx={{ my: 0, width: '100%' }}>
         {/* Project Name */}
         <Box
@@ -70,10 +70,11 @@ function CandidateCard({ pool, index, className }) {
           >
             <Box
               sx={{
-                mr: 1.5
+                mr: 1.5,
+                color: '#637381'
               }}
               fontWeight={'bold'}
-              fontSize={20}
+              fontSize={14}
             >
               {t('taalswap.ProjectName')}
             </Box>
@@ -98,13 +99,14 @@ function CandidateCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box>
+          <Box className="candidate_text">
             <Box
               sx={{
-                mr: 1.5
+                mr: 1.5,
+                color: '#637381'
               }}
               fontWeight={'bold'}
-              fontSize={20}
+              fontSize={14}
             >
               {t('taalswap.WebsiteURL')}
             </Box>
@@ -160,13 +162,14 @@ function CandidateCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box>
+          <Box className="candidate_text">
             <Box
               sx={{
-                mr: 1.5
+                mr: 1.5,
+                color: '#637381'
               }}
               fontWeight={'bold'}
-              fontSize={20}
+              fontSize={14}
             >
               {t('taalswap.Category')}
             </Box>
@@ -188,13 +191,14 @@ function CandidateCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box>
+          <Box className="candidate_text">
             <Box
               sx={{
-                mr: 1.5
+                mr: 1.5,
+                color: '#637381'
               }}
               fontWeight={'bold'}
-              fontSize={20}
+              fontSize={14}
             >
               {t('taalswap.MaxAllocationPerWallet')}
             </Box>
@@ -216,13 +220,14 @@ function CandidateCard({ pool, index, className }) {
             '&:not(:last-of-type)': { mb: 2 }
           }}
         >
-          <Box>
+          <Box className="candidate_text">
             <Box
               sx={{
-                mr: 1.5
+                mr: 1.5,
+                color: '#637381'
               }}
               fontWeight={'bold'}
-              fontSize={20}
+              fontSize={14}
             >
               {t('taalswap.TotalSupply')}
             </Box>

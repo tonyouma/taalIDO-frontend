@@ -49,7 +49,7 @@ function Advertisement({ className }) {
   const { t } = useTranslation();
 
   return (
-    <div className={clsx(classes.root, className)}>
+    <div className={clsx(classes.root, className)} id="adverisement_wrap">
       <Container maxWidth="lg">
         <div className={classes.container}>
           <MotionInView variants={varFadeInUp} sx={{ mb: { xs: 3, md: 0 } }}>
