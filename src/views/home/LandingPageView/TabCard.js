@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PlanCard from './PlanCard';
