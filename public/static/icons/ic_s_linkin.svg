@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">  <image id="image0" width="24" height="24" x="0" y="0"
-    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAS1BMVEUAAAAAfLsAfbsAfrsA
-fboAfboAgLoAfbsAfboAfroAgL8AfbsAgL8AfrwAfrsAfroAfrsAfbsAfLwAfbsAfrsAfboAfroA
-frv///9a8R+ZAAAAF3RSTlMAQK/vn9Aw8GCgEHAgX39vgL9Qj7DAkIgHT/0AAAABYktHRBibaYUe
-AAAAB3RJTUUH5QQICCQev50jwwAAAHZJREFUKM/N0sEOgCAIAFDSUrIyLYv//9NgWcvNdeoQBzf2
-HAIT4NNolG6r0BGRqYFlwBr0DK5aywzjexdu8n5+3AkxKnl80SSx3iBZAEDK0Zbg9AXUFDDwaRFl
-qFRAf04zSlbAlmv8BaT1BXYeQ/aUiLpvP8IBZRwO56nsA6cAAAAldEVYdGRhdGU6Y3JlYXRlADIw
-MjEtMDQtMDhUMDg6MzY6MzArMDA6MDDBv1JXAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA0LTA4
-VDA4OjM2OjMwKzAwOjAwsOLq6wAAAABJRU5ErkJggg==" />
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24.001" viewBox="0 0 24 24.001">
+  <g id="linkin" transform="translate(0 -0.204)">
+    <g id="___Icons_ic_replace" data-name="__🥬Icons/ ic_replace" transform="translate(0 0.205)">
+      <g id="linkedin">
+        <rect id="Rectangle" width="24" height="24" transform="translate(24 23.999) rotate(180)" fill="#708495" opacity="0"/>
+        <path id="Path" d="M5.85,0A5.83,5.83,0,0,0,0,5.82V11.7a.9.9,0,0,0,.9.9H3a.9.9,0,0,0,.9-.9V5.82A1.94,1.94,0,0,1,6.05,3.89a2,2,0,0,1,1.75,2V11.7a.9.9,0,0,0,.9.9h2.1a.9.9,0,0,0,.9-.9V5.82A5.83,5.83,0,0,0,5.85,0Z" transform="translate(9.3 8.4)" fill="#708495"/>
+        <rect id="Rectangle-2" data-name="Rectangle" width="4.5" height="11.7" rx="0.9" transform="translate(3 9.3)" fill="#708495"/>
+        <circle id="Oval" cx="2.25" cy="2.25" r="2.25" transform="translate(3 3)" fill="#708495"/>
+      </g>
+    </g>
+  </g>
 </svg>

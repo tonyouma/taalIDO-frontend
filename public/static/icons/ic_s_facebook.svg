@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">  <image id="image0" width="24" height="24" x="0" y="0"
-    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAALVBMVEUAAAAWdvIYd/IXdvEY
-dvIYePIYdvIXd/IYdvEQcP8Xd/IXd/MXd/EYd/L////uMDr3AAAADXRSTlMAUL/voGDA0IAQsJDw
-2Zg+FQAAAAFiS0dEDm+9ME8AAAAHdElNRQflBAgIIy7WBYWoAAAATklEQVQY02NgIAEw6t41gHN8
-7969AGOz3kXisN293tEA4/DevYnQz4tQhMpZpHv3ktIGKOcuCDggcwKgnGW5d6+lTSBoGlkcnrsH
-SAkKALEFK7tZ8f1tAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIxLTA0LTA4VDA4OjM1OjQ2KzAwOjAw
-Q53VdwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMS0wNC0wOFQwODozNTo0NiswMDowMDLAbcsAAAAA
-SUVORK5CYII=" />
+<svg id="facebook" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="그룹_264" data-name="그룹 264">
+    <g id="___Icons_ic_replace" data-name="__🥬Icons/ ic_replace">
+      <g id="facebook-2" data-name="facebook">
+        <rect id="Rectangle" width="24" height="24" transform="translate(24 24) rotate(180)" fill="#708495" opacity="0"/>
+        <path id="Path" d="M11,.506a.5.5,0,0,0-.5-.5H8a4.77,4.77,0,0,0-5,4.5v2.7H.5a.5.5,0,0,0-.5.5v2.6a.5.5,0,0,0,.5.5H3v6.7a.5.5,0,0,0,.5.5h3a.5.5,0,0,0,.5-.5v-6.7H9.62a.5.5,0,0,0,.49-.37l.72-2.6a.5.5,0,0,0-.48-.63H7v-2.7a1,1,0,0,1,1-.9h2.5a.5.5,0,0,0,.5-.5Z" transform="translate(6 2.994)" fill="#708495"/>
+      </g>
+    </g>
+  </g>
 </svg>

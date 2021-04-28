@@ -50,6 +50,7 @@ function Progress({ progress, progressValue, progressDollorValue, index }) {
         variant="determinate"
         value={progressValue}
         color="warning"
+        className="porgessbar"
       />
     </div>
   );

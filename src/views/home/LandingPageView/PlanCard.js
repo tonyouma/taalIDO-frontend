@@ -177,36 +177,51 @@ function PlanCard({ pool, ethPrice, index, className }) {
   return (
     <Card className={clsx(classes.root, className)}>
       <StatusLabel poolStatus={pool.poolStatus} absolute />
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
-        <Typography variant="h3" sx={{ mx: 1 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          my: 2,
+          flexWrap: 'wrap'
+        }}
+      >
+        <Typography variant="h3" sx={{ mx: 1 }} className="card_title">
           {pool.poolName}
+        </Typography>
+        <Typography variant="h5" className="card_subtitle">
+          50 TALK = 1 ETH
         </Typography>
       </Box>
       <MLabel
         variant="filled"
-        color="warning"
         sx={{
           top: 17,
           left: 25,
           position: 'absolute'
         }}
+        className="erc_label"
       >
-        Primary
+        ERC20
       </MLabel>{' '}
       <Box
         component="img"
         src={`/static/icons/json-logo.svg`}
         sx={{
-          top: 58,
+          top: 67,
           left: 32,
           width: 49,
           height: 49,
           position: 'absolute'
         }}
+        className="plancard_icon"
       />
-      <Box component="ul" sx={{ my: 5, width: '100%' }}>
+      <Box
+        component="ul"
+        sx={{ my: 5, width: '100%' }}
+        className="plancard_wrap"
+      >
         {/* Ratio */}
-        <Box
+        {/*<Box
           key="ratio"
           component="li"
           sx={{
@@ -222,8 +237,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
               {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
             </Box>
           </Box>
-        </Box>
-
+        </Box>*/}
         {/* Maximum */}
         <Box
           key="maximum"
@@ -231,16 +245,18 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
         >
           Maximum
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(max)} ETH</Box>
+            <Box sx={{ mr: 1.5, color: '#212B36' }} className="text_effect">
+              {Numbers.toFloat(max)} ETH
+            </Box>
           </Box>
         </Box>
-
         {/* Access */}
         <Box
           key="access"
@@ -248,16 +264,18 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
         >
           Access
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{!!pool.access && pool.access}</Box>
+            <Box sx={{ mr: 1.5, color: '#212B36', fontSize: '20px' }}>
+              {!!pool.access && pool.access}
+            </Box>
           </Box>
         </Box>
-
         {/* Participants */}
         <Box
           key="participants"
@@ -265,16 +283,18 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
         >
           Participants
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{participants}</Box>
+            <Box sx={{ mr: 1.5, color: '#212B36', fontSize: '20px' }}>
+              {participants}
+            </Box>
           </Box>
         </Box>
-
         {/* Total Raise */}
         <Box
           key="totalraise"
@@ -282,16 +302,18 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
         >
           Total Raise
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>{Numbers.toFloat(totalRaise)} ETH</Box>
+            <Box sx={{ mr: 1.5, color: '#00AB55', fontSize: '20px' }}>
+              {Numbers.toFloat(totalRaise)} ETH
+            </Box>
           </Box>
         </Box>
-
         {/* Start Date */}
         <Box
           key="startDate"
@@ -299,18 +321,19 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
+          className="start_date"
         >
           Start Date
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5, color: '#212B36' }}>
               {moment.unix(pool.startDate).format('YYYY-MM-DD')}
             </Box>
           </Box>
         </Box>
-
         {/* End Date */}
         <Box
           key="endDate"
@@ -318,13 +341,14 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
+            '&:not(:last-of-type)': { mb: 2 },
+            color: '#637381'
           }}
         >
           End Date
           <Box sx={{ flex: 1 }} />
           <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>
+            <Box sx={{ mr: 1.5, color: '#212B36' }}>
               {moment.unix(pool.endDate).format('YYYY-MM-DD')}
             </Box>
           </Box>

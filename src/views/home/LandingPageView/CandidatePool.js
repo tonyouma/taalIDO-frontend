@@ -41,10 +41,10 @@ function CandidatePool() {
   }, [poolList]);
 
   return (
-    <Page title="TaalSwap Finance" className={classes.root}>
+    <Page title="TaalSwap Finance" className={(classes.root, 'candidate_wrap')}>
       <Container maxWidth="lg">
         <Typography variant="h3" align="center" gutterBottom>
-          Candidate Pools
+          Candidate Projects
         </Typography>
 
         <Box sx={{ my: 5 }}>
@@ -57,9 +57,9 @@ function CandidatePool() {
           ></Box>
         </Box>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
           {candidates.map((candidate, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid item xs={12} md={3} key={index}>
               <CandidateCard key={index} pool={candidate} index={index} />
             </Grid>
           ))}

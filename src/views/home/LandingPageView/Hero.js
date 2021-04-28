@@ -95,8 +95,7 @@ const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------------------
 
-const getImg = (width) =>
-  `${BASE_IMG}w_${width}/v1611472901/upload_minimal/home/hero.png`;
+// const getImg = (width) => `${BASE_IMG}w_${width}/static/images/hero.png`;
 
 Hero.propTypes = {
   className: PropTypes.string
@@ -125,8 +124,9 @@ function Hero({ className }) {
           noBlur
           noPlaceholder
           alt="hero"
-          src={getImg(600)}
-          size={`${getImg(600)} 600w, ${getImg(1200)} 960w`}
+          // src={getImg(600)}
+          // size={`${getImg(600)} 600w, ${getImg(1200)} 960w`}
+          src="/static/images/hero.png"
           variants={varFadeInUp}
           className={classes.heroImg}
         />
