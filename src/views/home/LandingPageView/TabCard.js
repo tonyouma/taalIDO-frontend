@@ -198,7 +198,7 @@ function Tabcard() {
                   labelStr = t('taalswap.LiveUpcoming');
                   break;
                 case 1:
-                  labelStr = t('taalswap.Accomplished');
+                  labelStr = t('taalswap.Finished');
                   break;
               }
               return (
