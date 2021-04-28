@@ -164,9 +164,23 @@ function PaymentView({ className, ...other }) {
           url={`https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`}
         />
         <div className={classes.listIcon} id="icon_box">
-          <a href="javascript:;" class="icon_tweet"></a>
-          <a href="javascript:;" class="icon_page"></a>
-          <a href="javascript:;" class="icon_message"></a>
+          <a
+            href={`https://twitter.com/${pool.twitterId}`}
+            target="_blank"
+            class={pool.twitterId !== '' ? 'icon_tweet' : 'icon_tweet_null'}
+          ></a>
+          <a
+            href={`https://t.me/${pool.telegramHandle.replace('@', '')}`}
+            target="_blank"
+            class={pool.telegramHandle !== '' ? 'icon_page' : 'icon_page_null'}
+          ></a>
+
+          <a
+            disabled="true"
+            href={pool.mediumURL}
+            target="_blank"
+            class={pool.mediumURL !== '' ? 'icon_message' : 'icon_message_null'}
+          ></a>
         </div>
         <Tabs
           value={value}

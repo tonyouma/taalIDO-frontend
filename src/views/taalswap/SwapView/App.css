@@ -41,3 +41,19 @@
   background: url(./icon/message_hovericon.png) no-repeat;
   background-size: contain;
 }
+
+#icon_box .icon_tweet_null {
+  pointer-events: none;
+  background: url(./icon/tweet_icon.png) no-repeat;
+  background-size: contain;
+}
+#icon_box .icon_page_null {
+  pointer-events: none;
+  background: url(./icon/page_icon.png) no-repeat;
+  background-size: contain;
+}
+#icon_box .icon_message_null {
+  pointer-events: none;
+  background: url(./icon/message_icon.png) no-repeat;
+  background-size: contain;
+}
