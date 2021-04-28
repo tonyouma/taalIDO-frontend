@@ -181,7 +181,6 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
   const onClickSwap = async () => {
     try {
-      setProgressFlag(true);
       if (!!library || from) {
         if (pool.access === 'Private' && !isWhiteList) {
           setWarningMessage(
