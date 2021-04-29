@@ -419,8 +419,12 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           component="p"
           sx={{ color: 'text.secondary' }}
         >
-          {time.published && i18n.language === 'en'
-            ? `Starting in ${time.date}.`
+          {time.published === true
+            ? i18n.language === 'en'
+              ? `Started in ${time.date}.`
+              : `${time.date} 시작됨`
+            : i18n.language === 'en'
+            ? `Starting ${time.date}.`
             : `${time.date} 시작됨`}
         </Typography>
       </div>
