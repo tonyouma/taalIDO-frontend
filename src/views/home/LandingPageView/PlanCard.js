@@ -155,7 +155,11 @@ function PlanCard({ pool, ethPrice, index, className }) {
       >
         <Box
           component="img"
-          src={`/static/icons/json-logo.png`}
+          src={
+            pool.iconUrl && pool.iconUrl !== ''
+              ? `${pool.iconUrl}`
+              : `/static/icons/json-logo.svg`
+          }
           sx={{
             width: 32,
             height: 51
@@ -164,9 +168,9 @@ function PlanCard({ pool, ethPrice, index, className }) {
         />
         <Typography variant="h3" sx={{ mx: 1 }} className="card_title">
           {pool.poolName}
-        </Typography>
-        <Typography variant="h5" className="card_subtitle">
-          {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
+          <Typography variant="h5" className="card_subtitle">
+            {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
+          </Typography>
         </Typography>
       </Box>
       {pool.selectChain && pool.selectChain !== '' && (
@@ -183,22 +187,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
         </MLabel>
       )}
 
-      <Box
-        component="img"
-        src={
-          pool.iconUrl !== ''
-            ? `${pool.iconUrl}`
-            : `/static/icons/json-logo.svg`
-        }
-        sx={{
-          top: 67,
-          left: 32,
-          width: 49,
-          height: 49,
-          position: 'absolute'
-        }}
-        className="plancard_icon"
-      />
       <Box
         component="ul"
         sx={{ my: 5, width: '100%' }}
