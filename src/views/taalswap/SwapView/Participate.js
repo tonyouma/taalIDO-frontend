@@ -43,67 +43,66 @@ function Participate({ pool }) {
 
   useEffect(async () => {
     try {
-      if (!!account || from) {
-        console.log(from);
-        let taalswap = null;
-        if (!!library) {
-          taalswap = new Taalswap({
-            application: pool,
-            account,
-            library
-          });
-        } else {
-          taalswap = new Taalswap({
-            application: pool,
-            notConnected: true
-          });
-        }
-
-        // const taalswap = new Taalswap({
-        //   application: pool,
-        //   account,
-        //   library,
-        //   tokenContractAddress: pool.tokenContractAddr,
-        //   fixedContractAddress: pool.contractAddress
-        // });
-
-        await taalswap
-          .nameAsync()
-          .then((result) => setName(result))
-          .catch((error) => console.log(error));
-        await taalswap
-          .tokensAllocated()
-          .then((result) => setAllocated(result))
-          .catch((error) => console.log(error));
-
-        let tempList = [];
-        const purchaseids = await taalswap
-          .getPurchaseIds()
-          .catch((error) => console.log(error));
-
-        if (purchaseids.length > 0) {
-          purchaseids.map(async (purchaseid) => {
-            await taalswap
-              .purchases({ id: purchaseid })
-              .then((result) => {
-                const newRow = {
-                  purchaser: result.purchaser,
-                  amount: result.amount * Math.pow(10, pool.decimals * -1),
-                  ethAmount:
-                    result.ethAmount * Math.pow(10, pool.decimals * -1),
-                  timestamp: moment
-                    .unix(result.timestamp)
-                    .format('YYYY-MM-DD HH:mm'),
-                  wasFinalized: result.wasFinalized
-                };
-
-                tempList = tempList.concat(newRow);
-                setPurchaseList(tempList);
-              })
-              .catch((error) => console.log(error));
-          });
-        }
+      // if (!!account || from) {
+      //   console.log(from);
+      let taalswap = null;
+      if (!!library) {
+        taalswap = new Taalswap({
+          application: pool,
+          account,
+          library
+        });
+      } else {
+        taalswap = new Taalswap({
+          application: pool,
+          notConnected: true
+        });
       }
+
+      // const taalswap = new Taalswap({
+      //   application: pool,
+      //   account,
+      //   library,
+      //   tokenContractAddress: pool.tokenContractAddr,
+      //   fixedContractAddress: pool.contractAddress
+      // });
+
+      await taalswap
+        .nameAsync()
+        .then((result) => setName(result))
+        .catch((error) => console.log(error));
+      await taalswap
+        .tokensAllocated()
+        .then((result) => setAllocated(result))
+        .catch((error) => console.log(error));
+
+      let tempList = [];
+      const purchaseids = await taalswap
+        .getPurchaseIds()
+        .catch((error) => console.log(error));
+
+      if (purchaseids.length > 0) {
+        purchaseids.map(async (purchaseid) => {
+          await taalswap
+            .purchases({ id: purchaseid })
+            .then((result) => {
+              const newRow = {
+                purchaser: result.purchaser,
+                amount: result.amount * Math.pow(10, pool.decimals * -1),
+                ethAmount: result.ethAmount * Math.pow(10, pool.decimals * -1),
+                timestamp: moment
+                  .unix(result.timestamp)
+                  .format('YYYY-MM-DD HH:mm'),
+                wasFinalized: result.wasFinalized
+              };
+
+              tempList = tempList.concat(newRow);
+              setPurchaseList(tempList);
+            })
+            .catch((error) => console.log(error));
+        });
+      }
+      // }
     } catch (error) {
       console.log(error);
     }

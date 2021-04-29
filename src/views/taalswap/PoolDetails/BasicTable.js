@@ -53,48 +53,48 @@ function General({ className, pool }) {
   const { library, account } = context;
 
   useEffect(async () => {
-    if (!!library || from) {
-      let taalswap = null;
-      if (!!library) {
-        taalswap = new Taalswap({
-          application: pool,
-          account,
-          library
-        });
-      } else {
-        taalswap = new Taalswap({
-          application: pool,
-          notConnected: true
-        });
-      }
-
-      const decimals = await taalswap
-        .decimalsAsync()
-        .catch((error) => console.log(error));
-
-      await taalswap
-        .nameAsync()
-        .then((result) => setName(result))
-        .catch((error) => console.log(error));
-      await taalswap
-        .totalSupplyAsync()
-        .then((result) => setTotalSupply(result * Math.pow(10, decimals * -1)))
-        .catch((error) => console.log(error));
-      await taalswap
-        .minimumRaise()
-        .then((result) => setMinSwapLevel(result))
-        .catch((error) => console.log(error));
-
-      await axios
-        .get(
-          `https://api.ethplorer.io/getTokenInfo/${pool.tokenContractAddress}/?apiKey=freekey`
-        )
-        .then((response) => {
-          setHolders(response.data.holdersCount);
-          setTransfers(response.data.transfersCount);
-        })
-        .catch((error) => console.log(error));
+    // if (!!library || from) {
+    let taalswap;
+    if (!!library) {
+      taalswap = new Taalswap({
+        application: pool,
+        account,
+        library
+      });
+    } else {
+      taalswap = new Taalswap({
+        application: pool,
+        notConnected: true
+      });
     }
+
+    const decimals = await taalswap
+      .decimalsAsync()
+      .catch((error) => console.log(error));
+
+    await taalswap
+      .nameAsync()
+      .then((result) => setName(result))
+      .catch((error) => console.log(error));
+    await taalswap
+      .totalSupplyAsync()
+      .then((result) => setTotalSupply(result * Math.pow(10, decimals * -1)))
+      .catch((error) => console.log(error));
+    await taalswap
+      .minimumRaise()
+      .then((result) => setMinSwapLevel(result))
+      .catch((error) => console.log(error));
+
+    await axios
+      .get(
+        `https://api.ethplorer.io/getTokenInfo/${pool.tokenContractAddress}/?apiKey=freekey`
+      )
+      .then((response) => {
+        setHolders(response.data.holdersCount);
+        setTransfers(response.data.transfersCount);
+      })
+      .catch((error) => console.log(error));
+    // }
 
     setMax(getMax(pool.maxIndividuals, pool.tradeValue));
     setMin(pool.minIndividuals * pool.tradeValue);
