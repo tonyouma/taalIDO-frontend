@@ -40,7 +40,11 @@ function CleanInterfaces({ className }) {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="lg" className={clsx(classes.root, className)}>
+    <Container
+      maxWidth="lg"
+      className={clsx(classes.root, className)}
+      id="interfaces_wrap"
+    >
       <div className={classes.heading}>
         <MotionInView variants={varFadeInUp}>
           <Typography

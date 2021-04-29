@@ -132,7 +132,7 @@ function Hero({ className }) {
         />
 
         <Container maxWidth="lg">
-          <div className={classes.content}>
+          <div className={classes.content} id="topcontent_wrap">
             <motion.div variants={varFadeInRight}>
               <Typography variant="h1" sx={{ color: 'common.white' }}>
                 Fire up your project with <br />

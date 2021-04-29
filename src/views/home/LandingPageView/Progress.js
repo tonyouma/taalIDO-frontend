@@ -39,7 +39,7 @@ function Progress({ progress, progressValue, progressDollorValue, index }) {
           {progress.label}
         </Typography>
 
-        <Typography variant="body2" sx={{ my: 2 }}>
+        <Typography variant="body2" sx={{ my: 1 }}>
           {fCurrency(progressDollorValue)}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>

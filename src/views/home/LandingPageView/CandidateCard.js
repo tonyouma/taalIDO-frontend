@@ -64,7 +64,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.5,
                 color: '#637381'
               }}
-              fontWeight={'bold'}
+              fontWeight={'500'}
               fontSize={14}
             >
               Project Name
@@ -96,7 +96,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.5,
                 color: '#637381'
               }}
-              fontWeight={'bold'}
+              fontWeight={'500'}
               fontSize={14}
             >
               Website URL
@@ -153,7 +153,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.5,
                 color: '#637381'
               }}
-              fontWeight={'bold'}
+              fontWeight={'500'}
               fontSize={14}
             >
               Category
@@ -182,7 +182,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.5,
                 color: '#637381'
               }}
-              fontWeight={'bold'}
+              fontWeight={'500'}
               fontSize={14}
             >
               Max.Allocation per Wallet
@@ -211,7 +211,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.5,
                 color: '#637381'
               }}
-              fontWeight={'bold'}
+              fontWeight={'500'}
               fontSize={14}
             >
               Total Supply

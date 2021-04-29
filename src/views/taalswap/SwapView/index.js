@@ -154,6 +154,11 @@ function PaymentView({ className, ...other }) {
           links={[{ name: pool.tokenContractAddr }]}
           subTitle={pool.tokenContractAddr}
           url={`https://rinkeby.etherscan.io/address/${pool.tokenContractAddr}`}
+          className="projectstitle_box"
+        />
+        <img
+          src="/static/icons/taalswap_coinsymbol.svg"
+          className="symbol_icon"
         />
         <div className={classes.listIcon} id="icon_box">
           <a href="javascript:;" class="icon_tweet"></a>

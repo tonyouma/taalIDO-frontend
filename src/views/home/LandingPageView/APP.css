@@ -22,21 +22,33 @@
   color: #229a16;
 }
 
+.cardtitle_wrap {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.plancard_icon {
+  align-self: center;
+}
+
 .card_title {
   font-size: 1.6rem;
-  width: 100%;
+  width: calc(100% - 32px);
+  padding-left: 10px;
+  margin: 0;
   text-align: left;
   box-sizing: border-box;
-  padding-left: 40px;
 }
 
 .card_subtitle {
-  width: 100%;
-  margin: 0 8px;
-  box-sizing: border-box;
-  padding-left: 40px;
   color: #637381;
   font-size: 16px;
+}
+
+.plancard_wrap {
+  margin: 0;
 }
 
 .plancard_wrap li {
@@ -54,7 +66,7 @@
 }
 
 .start_date {
-  padding-top: 16px;
+  padding-top: 8px;
   border-top: 2px dotted #d5dee5;
   box-sizing: border-box;
   position: relative;
@@ -115,6 +127,27 @@
 
 .cleanlnterfaces_title {
   font-size: 32px;
+}
+
+.projects_wrap {
+  position: relative;
+}
+#icon_box {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 15px;
+}
+#icon_box a {
+  width: 36px;
+  margin-right: 10px;
+}
+#icon_box a img {
+  width: 100%;
+}
+
+#plan_card .css-17aciay {
+  align-self: flex-end;
 }
 
 @media screen and (min-width: 960px) {
@@ -209,6 +242,32 @@
   .icon_btn img {
     width: 44px;
   }
+
+  #topcontent_wrap {
+    padding-bottom: 10px;
+  }
+  #tabcard_wrap {
+    padding-top: 40px;
+    padding-bottom: 50px;
+  }
+  .tabcard_loading {
+    margin: 15px 0;
+  }
+  .view_btnwrap {
+    margin: 24px 0 0 0;
+  }
+  .candidate_wrap {
+    padding: 0 0 50px 0;
+  }
+  .pooltitle_wrap {
+    margin: 0 0 24px 0;
+  }
+  #adverisement_wrap {
+    padding: 40px 0;
+  }
+  #interfaces_wrap {
+    padding: 0 16px 50px;
+  }
 }
 
 @media screen and (max-width: 459px) {
@@ -232,9 +291,9 @@
 }
 
 @media screen and (max-width: 414px) {
-  .plancard_icon {
-    top: 52px;
-    left: 23px;
+  .erc_label {
+    top: 24px;
+    left: 24px;
   }
 }
 
