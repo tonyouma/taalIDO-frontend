@@ -167,19 +167,31 @@ function PaymentView({ className, ...other }) {
           <a
             href={`https://twitter.com/${pool.twitterId}`}
             target="_blank"
-            class={pool.twitterId !== '' ? 'icon_tweet' : 'icon_tweet_null'}
+            class={
+              pool.twitterId && pool.twitterId !== ''
+                ? 'icon_tweet'
+                : 'icon_tweet_null'
+            }
           ></a>
           <a
             href={`https://t.me/${pool.telegramHandle.replace('@', '')}`}
             target="_blank"
-            class={pool.telegramHandle !== '' ? 'icon_page' : 'icon_page_null'}
+            class={
+              pool.telegramHandle && pool.telegramHandle !== ''
+                ? 'icon_page'
+                : 'icon_page_null'
+            }
           ></a>
 
           <a
             disabled="true"
             href={pool.mediumURL}
             target="_blank"
-            class={pool.mediumURL !== '' ? 'icon_message' : 'icon_message_null'}
+            class={
+              pool.mediumURL && pool.mediumURL !== ''
+                ? 'icon_message'
+                : 'icon_message_null'
+            }
           ></a>
         </div>
         <Tabs
