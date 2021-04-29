@@ -785,7 +785,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                 color="inherit"
                 onClick={handleCloseModal}
               >
-                {t('taalswap.Cancel')}
+                {t('taalswap.Close')}
               </Button>
               {poolStatus === PoolStatus.LIVE && (
                 <Button

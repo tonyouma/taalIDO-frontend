@@ -161,8 +161,8 @@ function PlanCard({ pool, ethPrice, index, className }) {
               : `/static/icons/json-logo.svg`
           }
           sx={{
-            width: 32,
-            height: 51
+            width: 45,
+            height: 45
           }}
           className="plancard_icon"
         />

@@ -24,7 +24,7 @@
 
 .cardtitle_wrap {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   width: 100%;
   justify-content: flex-start;
 }
@@ -35,7 +35,6 @@
 
 .card_title {
   font-size: 1.6rem;
-  width: calc(100% - 32px);
   padding-left: 10px;
   margin: 0;
   text-align: left;
@@ -150,6 +149,61 @@
   align-self: flex-end;
 }
 
+.scroll_down {
+  display: block;
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+}
+
+.scroll_down .scrolldown_text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 13px;
+  font-weight: normal;
+  color: #fff;
+}
+.scroll_down .scrolldown_text::before {
+  display: block;
+  content: '';
+  width: 2px;
+  height: 120px;
+  position: absolute;
+  background: #fff;
+  left: -15px;
+  animation: moveline 2.5s infinite;
+  -moz-animation: moveline 2.5s infinite;
+  -webkit-animation: moveline 2.5s infinite;
+}
+
+@keyframes moveline {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 150px;
+  }
+}
+
+@-webkit-keyframes moveline {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 150px;
+  }
+}
+
+@-moz--webkit-keyframes moveline {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 150px;
+  }
+}
 @media screen and (min-width: 960px) {
   #footer_wrap {
     padding: 0;
@@ -232,6 +286,9 @@
 }
 
 @media screen and (max-width: 599px) {
+  .scroll_down {
+    display: none;
+  }
   .multipage_wrap {
     height: 736px;
   }
