@@ -168,6 +168,9 @@ function Hero({ className }) {
             <div className={classes.listIcon}></div>
           </div>
         </Container>
+        <div className="scroll_down">
+          <Typography className="scrolldown_text">Scroll Down</Typography>
+        </div>
       </motion.div>
       <Box sx={{ height: { md: '100vh' } }} />
     </>
