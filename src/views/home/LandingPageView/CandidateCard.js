@@ -73,7 +73,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.5,
                 color: '#637381'
               }}
-              fontWeight={'bold'}
+              fontWeight={'500'}
               fontSize={14}
             >
               {t('taalswap.ProjectName')}
@@ -105,7 +105,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.5,
                 color: '#637381'
               }}
-              fontWeight={'bold'}
+              fontWeight={'500'}
               fontSize={14}
             >
               {t('taalswap.WebsiteURL')}
@@ -168,7 +168,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.5,
                 color: '#637381'
               }}
-              fontWeight={'bold'}
+              fontWeight={'500'}
               fontSize={14}
             >
               {t('taalswap.Category')}
@@ -197,7 +197,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.5,
                 color: '#637381'
               }}
-              fontWeight={'bold'}
+              fontWeight={'500'}
               fontSize={14}
             >
               {t('taalswap.MaxAllocationPerWallet')}
@@ -226,7 +226,7 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.5,
                 color: '#637381'
               }}
-              fontWeight={'bold'}
+              fontWeight={'500'}
               fontSize={14}
             >
               {t('taalswap.TotalSupply')}

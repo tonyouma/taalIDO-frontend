@@ -187,7 +187,7 @@ function Tabcard() {
   };
 
   return (
-    <Page title="TaalSwap Finance" className={classes.root}>
+    <Page title="TaalSwap Finance" className={classes.root} id="tabcard_wrap">
       <Container maxWidth="lg">
         <Box sx={{ width: '100%' }}>
           <Tabs value={value} onChange={handleChange} centered>
@@ -213,7 +213,7 @@ function Tabcard() {
             })}
           </Tabs>
           <TabPanel value={value} index={0}>
-            <Box sx={{ my: 5 }}>
+            <Box sx={{ my: 5 }} className="tabcard_loading">
               <Box
                 sx={{
                   display: 'flex',
@@ -267,7 +267,7 @@ function Tabcard() {
         </Box>
       </Container>
       <Container maxWidth="lg">
-        <Box sx={{ my: 7 }}>
+        <Box sx={{ my: 7 }} className="view_btnwrap">
           <Box
             sx={{
               display: 'flex',

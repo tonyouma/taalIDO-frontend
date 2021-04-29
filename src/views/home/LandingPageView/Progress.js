@@ -40,7 +40,7 @@ function Progress({ progressValue, progressDollorValue }) {
           {t('taalswap.Progress')}
         </Typography>
 
-        <Typography variant="body2" sx={{ my: 2 }}>
+        <Typography variant="body2" sx={{ my: 1 }}>
           {langStorage === 'kr'
             ? `₩${fCurrencyKRW(progressDollorValue)}`
             : fCurrency(progressDollorValue)}

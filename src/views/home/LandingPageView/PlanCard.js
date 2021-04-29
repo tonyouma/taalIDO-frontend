@@ -142,8 +142,8 @@ function PlanCard({ pool, ethPrice, index, className }) {
   };
 
   return (
-    <Card className={clsx(classes.root, className)}>
-      <StatusLabel poolStatus={pool.poolStatus} absolute />
+    <Card className={clsx(classes.root, className)} id="plan_card">
+      <StatusLabel poolStatus={pool.poolStatus} />
       <Box
         sx={{
           display: 'flex',
@@ -151,7 +151,17 @@ function PlanCard({ pool, ethPrice, index, className }) {
           my: 2,
           flexWrap: 'wrap'
         }}
+        className="cardtitle_wrap"
       >
+        <Box
+          component="img"
+          src={`/static/icons/json-logo.png`}
+          sx={{
+            width: 32,
+            height: 51
+          }}
+          className="plancard_icon"
+        />
         <Typography variant="h3" sx={{ mx: 1 }} className="card_title">
           {pool.poolName}
         </Typography>
@@ -163,8 +173,8 @@ function PlanCard({ pool, ethPrice, index, className }) {
         <MLabel
           variant="filled"
           sx={{
-            top: 17,
-            left: 25,
+            top: 40,
+            left: 40,
             position: 'absolute'
           }}
           className="erc_label"
@@ -201,16 +211,15 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 },
-            color: '#637381'
+            '&:not(:last-of-type)': { mb: 0.7 }
           }}
         >
-          {t('taalswap.Maximum')}
+          <Typography color="#637381" fontSize="0.875rem">
+            {t('taalswap.Maximum')}
+          </Typography>
           <Box sx={{ flex: 1 }} />
-          <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5, color: '#212B36' }} className="text_effect">
-              {Numbers.toFloat(max)} ETH
-            </Box>
+          <Box>
+            <Box className="text_effect">{Numbers.toFloat(max)} ETH</Box>
           </Box>
         </Box>
         {/* Access */}
@@ -220,16 +229,15 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 },
-            color: '#637381'
+            '&:not(:last-of-type)': { mb: 0.7 }
           }}
         >
-          {t('taalswap.Access')}
+          <Typography color="#637381" fontSize="0.875rem">
+            {t('taalswap.Access')}
+          </Typography>
           <Box sx={{ flex: 1 }} />
-          <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5, color: '#212B36', fontSize: '20px' }}>
-              {!!pool.access && pool.access}
-            </Box>
+          <Box>
+            <Box sx={{ fontSize: '20px' }}>{!!pool.access && pool.access}</Box>
           </Box>
         </Box>
 
@@ -240,16 +248,15 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 },
-            color: '#637381'
+            '&:not(:last-of-type)': { mb: 0.7 }
           }}
         >
-          {t('taalswap.Participants')}
+          <Typography color="#637381" fontSize="0.875rem">
+            {t('taalswap.Participants')}
+          </Typography>
           <Box sx={{ flex: 1 }} />
-          <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5, color: '#212B36', fontSize: '20px' }}>
-              {participants}
-            </Box>
+          <Box>
+            <Box sx={{ fontSize: '20px' }}>{participants}</Box>
           </Box>
         </Box>
 
@@ -260,14 +267,15 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 },
-            color: '#637381'
+            '&:not(:last-of-type)': { mb: 0.7 }
           }}
         >
-          {t('taalswap.TotalRaise')}
+          <Typography color="#637381" fontSize="0.875rem">
+            {t('taalswap.TotalRaise')}
+          </Typography>
           <Box sx={{ flex: 1 }} />
-          <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5, color: '#00AB55', fontSize: '20px' }}>
+          <Box>
+            <Box sx={{ color: '#00AB55', fontSize: '20px' }}>
               {Numbers.toFloat(totalRaise)} ETH
             </Box>
           </Box>
@@ -280,17 +288,16 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 },
-            color: '#637381'
+            '&:not(:last-of-type)': { mb: 0.7 }
           }}
           className="start_date"
         >
-          {t('taalswap.StartDate')}
+          <Typography color="#637381" fontSize="0.875rem">
+            {t('taalswap.StartDate')}
+          </Typography>
           <Box sx={{ flex: 1 }} />
-          <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5, color: '#212B36' }}>
-              {moment.unix(pool.startDate).format('YYYY-MM-DD')}
-            </Box>
+          <Box>
+            <Box>{moment.unix(pool.startDate).format('YYYY-MM-DD')}</Box>
           </Box>
         </Box>
 
@@ -301,16 +308,15 @@ function PlanCard({ pool, ethPrice, index, className }) {
           sx={{
             display: 'flex',
             typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 },
-            color: '#637381'
+            '&:not(:last-of-type)': { mb: 0.7 }
           }}
         >
-          {t('taalswap.EndDate')}
+          <Typography color="#637381" fontSize="0.875rem">
+            {t('taalswap.EndDate')}
+          </Typography>
           <Box sx={{ flex: 1 }} />
-          <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5, color: '#212B36' }}>
-              {moment.unix(pool.endDate).format('YYYY-MM-DD')}
-            </Box>
+          <Box>
+            <Box>{moment.unix(pool.endDate).format('YYYY-MM-DD')}</Box>
           </Box>
         </Box>
       </Box>
@@ -318,7 +324,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
         progressValue={progressValue}
         progressDollorValue={progressDollorValue}
       />
-      <Box sx={{ my: 2 }}></Box>
+      <Box sx={{ my: 1.3 }}></Box>
       <Button
         fullWidth
         size="large"

@@ -49,7 +49,7 @@ function CandidatePool() {
           {t('taalswap.CandidateProjects')}
         </Typography>
 
-        <Box sx={{ my: 5 }}>
+        <Box sx={{ my: 5 }} className="pooltitle_wrap">
           <Box
             sx={{
               display: 'flex',
@@ -68,7 +68,7 @@ function CandidatePool() {
         </Grid>
       </Container>
       <Container maxWidth="lg">
-        <Box sx={{ my: 7 }}>
+        <Box sx={{ my: 7 }} className="view_btnwrap">
           <Box
             sx={{
               display: 'flex',
