@@ -35,7 +35,6 @@
 
 .card_title {
   font-size: 1.6rem;
-  width: calc(100% - 32px);
   padding-left: 10px;
   margin: 0;
   text-align: left;
