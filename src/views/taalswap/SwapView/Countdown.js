@@ -51,44 +51,44 @@ function Countdown({ className, pool, value, ...other }) {
 
   useEffect(async () => {
     try {
-      if (!!library || from) {
-        let taalswap = null;
-        if (!!library) {
-          taalswap = new Taalswap({
-            application: pool,
-            account,
-            library
-          });
-        } else {
-          taalswap = new Taalswap({
-            application: pool,
-            notConnected: true
-          });
-        }
+      // if (!!library || from) {
+      let taalswap;
+      if (!!library) {
+        taalswap = new Taalswap({
+          application: pool,
+          account,
+          library
+        });
+      } else {
+        taalswap = new Taalswap({
+          application: pool,
+          notConnected: true
+        });
+      }
 
-        const status = await getPoolStatus(
-          taalswap,
-          pool.status,
-          pool.minFundRaise
-        );
+      const status = await getPoolStatus(
+        taalswap,
+        pool.status,
+        pool.minFundRaise
+      );
 
-        setPoolStatus(status);
+      setPoolStatus(status);
 
-        if (status === PoolStatus.LIVE) {
-          const endEpoch = moment.unix(pool.endDate);
-          setEndFlag(false);
-          setTimeTillDate(endEpoch);
-        } else if (status === PoolStatus.UPCOMING) {
-          const startEpoch = moment.unix(pool.startDate);
+      if (status === PoolStatus.LIVE) {
+        const endEpoch = moment.unix(pool.endDate);
+        setEndFlag(false);
+        setTimeTillDate(endEpoch);
+      } else if (status === PoolStatus.UPCOMING) {
+        const startEpoch = moment.unix(pool.startDate);
 
-          setEndFlag(false);
-          setTimeTillDate(startEpoch);
-        } else {
-          setEndFlag(true);
-        }
+        setEndFlag(false);
+        setTimeTillDate(startEpoch);
       } else {
         setEndFlag(true);
       }
+      // } else {
+      //   setEndFlag(true);
+      // }
     } catch (error) {
       console.log(error);
     }

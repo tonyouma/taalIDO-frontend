@@ -71,34 +71,34 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
   const { i18n, t } = useTranslation();
 
   useEffect(async () => {
-    if (!!library || from) {
-      let taalswap = null;
-      if (!!library) {
-        taalswap = new Taalswap({
-          application: pool,
-          account,
-          library
-        });
-      } else {
-        taalswap = new Taalswap({
-          application: pool,
-          notConnected: true
-        });
-      }
-      await taalswap
-        .getBuyers()
-        .then((result) => setParticipants(result.length))
-        .catch((error) => console.log(error));
-      await taalswap
-        .tokensAllocated()
-        .then((result) => {
-          setProgressValue(getProgressValue(result, pool.tradeAmount));
-          setProgressDollorValue((parseFloat(ethPrice) / pool.ratio) * result);
-        })
-        .catch((error) => console.log(error));
-
-      setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
+    // if (!!library || from) {
+    let taalswap;
+    if (!!library) {
+      taalswap = new Taalswap({
+        application: pool,
+        account,
+        library
+      });
+    } else {
+      taalswap = new Taalswap({
+        application: pool,
+        notConnected: true
+      });
     }
+    await taalswap
+      .getBuyers()
+      .then((result) => setParticipants(result.length))
+      .catch((error) => console.log(error));
+    await taalswap
+      .tokensAllocated()
+      .then((result) => {
+        setProgressValue(getProgressValue(result, pool.tradeAmount));
+        setProgressDollorValue((parseFloat(ethPrice) / pool.ratio) * result);
+      })
+      .catch((error) => console.log(error));
+
+    setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
+    // }
   }, [pool, library, ethPrice]);
 
   return (
