@@ -7,6 +7,7 @@ import { jsonServerUrl } from 'src/config';
 const initialState = {
   isLoading: false,
   isOpenModal: false,
+  swapFlag: false,
   error: false,
   poolList: [],
   applicationList: [],
@@ -21,6 +22,16 @@ const slice = createSlice({
     // START LOADING
     startLoading(state) {
       state.isLoading = true;
+    },
+
+    //START SWAP
+    startSwap(state) {
+      state.swapFlag = true;
+    },
+
+    //End SWAP{
+    endSwap(state) {
+      state.swapFlag = false;
     },
 
     // HAS ERROR
@@ -91,6 +102,14 @@ export default slice.reducer;
 
 // Actions
 export const { openModal, closeModal } = slice.actions;
+
+export function changeSwapStart() {
+  return (dispatch) => dispatch(slice.actions.startSwap());
+}
+
+export function changeSwapEnd() {
+  return (dispatch) => dispatch(slice.actions.endSwap());
+}
 
 export function getPoolList() {
   // mock.restore();

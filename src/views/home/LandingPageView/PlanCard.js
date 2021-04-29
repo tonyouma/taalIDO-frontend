@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-
 import { makeStyles } from '@material-ui/core/styles';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
 import {
@@ -22,14 +21,11 @@ import getMax from '../../../utils/getMax';
 import getProgressValue from '../../../utils/getProgressValue';
 import { useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
-import { getPoolStatus } from '../../../utils/getPoolStatus';
 import StatusLabel from '../../taalswap/Components/StatusLabel';
 import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
 import { MLabel } from 'src/theme';
-
 import { useTranslation } from 'react-i18next';
-// import { PoolStatus } from 'src/utils/poolStatus';
 
 // ----------------------------------------------------------------------
 
@@ -69,18 +65,12 @@ function PlanCard({ pool, ethPrice, index, className }) {
   const [progressDollorValue, setProgressDollorValue] = useState(0);
   const [totalRaise, setTotalRaise] = useState(0);
   const [participants, setParticipants] = useState(0);
-  // const [poolStatus, setStatus] = useState('');
   const [isOpenModal, setOpenModal] = useState(false);
   const [checkWarning, setCheckWarning] = useState(false);
   const [showWarningMessage, setShowWarningMessage] = useState(false);
 
   const { library, account } = context;
   const { i18n, t } = useTranslation();
-
-  // const handleOpenModal = (row) => {
-  //   // setOpenModal(row);
-  //   setOpenModal(true);
-  // };
 
   const handleCloseModal = () => {
     setCheckWarning(false);
@@ -138,7 +128,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
         })
         .catch((error) => console.log(error));
 
-      // setStatus(await getPoolStatus(taalswap, pool.status, pool.minFundRaise));
       setMax(getMax(pool.maxIndividuals, pool.tradeValue));
 
       return () => {};
@@ -150,10 +139,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
 
   const onClickDetails = () => {
     setOpenModal(true);
-    // history.push({
-    //   pathname: '/app/taalswap/pools/swap',
-    //   state: { selectedPool: pool }
-    // });
   };
 
   return (
@@ -190,7 +175,11 @@ function PlanCard({ pool, ethPrice, index, className }) {
 
       <Box
         component="img"
-        src={pool.iconUrl ? `${pool.iconUrl}` : `/static/icons/json-logo.svg`}
+        src={
+          pool.iconUrl !== ''
+            ? `${pool.iconUrl}`
+            : `/static/icons/json-logo.svg`
+        }
         sx={{
           top: 67,
           left: 32,
@@ -205,24 +194,6 @@ function PlanCard({ pool, ethPrice, index, className }) {
         sx={{ my: 5, width: '100%' }}
         className="plancard_wrap"
       >
-        {/* Ratio */}
-        {/*<Box
-          key="ratio"
-          component="li"
-          sx={{
-            display: 'flex',
-            typography: 'body2',
-            '&:not(:last-of-type)': { mb: 2 }
-          }}
-        >
-          {t('taalswap.Ratio')}
-          <Box sx={{ flex: 1 }} />
-          <Box sx={{ mr: 1.5 }}>
-            <Box sx={{ mr: 1.5 }}>
-              {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
-            </Box>
-          </Box>
-        </Box>*/}
         {/* Maximum */}
         <Box
           key="maximum"
@@ -397,10 +368,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             </Typography>
           </Box>
           <Divider />
-          <Box
-            textAlign="right"
-            // marginTop="20px"
-          >
+          <Box textAlign="right">
             <Box display="flex" justifyContent="flex-end" alignItems="center">
               <Checkbox
                 checked={checkWarning}

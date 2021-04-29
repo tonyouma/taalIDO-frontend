@@ -19,7 +19,12 @@ import 'moment/locale/en-gb';
 import 'moment/locale/ko';
 import { getWalletBalance } from '../../../redux/slices/wallet';
 import { formatEther } from '@ethersproject/units';
-import { createSwap, getSwapList } from '../../../redux/slices/pool';
+import {
+  createSwap,
+  getSwapList,
+  changeSwapStart,
+  changeSwapEnd
+} from '../../../redux/slices/pool';
 import Numbers from 'src/utils/Numbers';
 import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
@@ -82,7 +87,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const history = useHistory();
 
   const { enqueueSnackbar } = useSnackbar();
-  const [progressFlag, setProgressFlag] = useState(false);
+  // const [progressFlag, setProgressFlag] = useState(false);
   const [amount, setAmount] = useState(0);
   const [price, setPrice] = useState(0);
   const [tokensLeft, setTokensLeft] = useState(0);
@@ -96,7 +101,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const [diffTime, setDiffTime] = useState({});
   const { activatingConnector, balance } = useSelector((state) => state.wallet);
   const { os, from, wallet } = useSelector((state) => state.talken);
-  const { swapList } = useSelector((state) => state.pool);
+  const { swapList, swapFlag } = useSelector((state) => state.pool);
   const { connector, library, account, activate } = context;
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { i18n, t } = useTranslation();
@@ -149,7 +154,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           enqueueSnackbar('Swap success', {
             variant: 'success'
           });
-          setProgressFlag(false);
+          // setProgressFlag(false);
+          dispatch(changeSwapEnd());
           await setWarningMessage('');
           await addSwap();
 
@@ -158,20 +164,23 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             state: { tabValue: 1 }
           });
         } else {
-          setProgressFlag(false);
+          // setProgressFlag(false);
+          dispatch(changeSwapEnd());
           // console.log('=====', receipt.status);
           enqueueSnackbar('Swap fail', {
             variant: 'fail'
           });
         }
       } else {
-        setProgressFlag(false);
+        // setProgressFlag(false);
+        dispatch(changeSwapEnd());
         enqueueSnackbar('Swap fail', {
           variant: 'fail'
         });
       }
     } catch (e) {
-      setProgressFlag(false);
+      // setProgressFlag(false);
+      dispatch(changeSwapEnd());
       enqueueSnackbar('Swap error', {
         variant: 'error'
       });
@@ -181,7 +190,6 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
 
   const onClickSwap = async () => {
     try {
-      setProgressFlag(true);
       if (!!library || from) {
         if (pool.access === 'Private' && !isWhiteList) {
           setWarningMessage(
@@ -198,7 +206,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 Numbers.toFloat(amount) + Numbers.toFloat(swappedAmount)
               ) {
                 // onBackdrop(true);
-                setProgressFlag(true);
+                // setProgressFlag(true);
+                dispatch(changeSwapStart());
                 if (from) {
                   try {
                     let amountWithDecimals = Numbers.toSmartContractDecimals(
@@ -246,7 +255,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                   } catch (e) {
                     console.log(e);
                     // onBackdrop(false);
-                    setProgressFlag(false);
+                    // setProgressFlag(false);
+                    dispatch(changeSwapEnd());
                   }
                   return;
                 } else {
@@ -264,7 +274,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                         variant: 'fail'
                       });
                       // onBackdrop(false);
-                      setProgressFlag(false);
+                      // setProgressFlag(false);
+                      dispatch(changeSwapEnd());
                     });
 
                   const receipt = await result.wait();
@@ -283,7 +294,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 }
 
                 // onBackdrop(false);
-                setProgressFlag(false);
+                // setProgressFlag(false);
+                dispatch(changeSwapEnd());
               } else {
                 setWarningMessage(
                   `${t('taalswap.WarnIndivMAx')} (${swappedAmount} / ${
@@ -408,7 +420,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           sx={{ color: 'text.secondary' }}
         >
           {time.published && i18n.language === 'en'
-            ? `Published about ${time.date}`
+            ? `Starting in ${time.date}.`
             : `${time.date} 시작됨`}
         </Typography>
       </div>
@@ -513,10 +525,11 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             size="large"
             variant="contained"
             onClick={onClickSwap}
-            disabled={status !== PoolStatus.LIVE}
+            disabled={status !== PoolStatus.LIVE || swapFlag === true}
             // disabled={status !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED}
           >
-            {progressFlag === true ? (
+            {/* {progressFlag === true ? ( */}
+            {swapFlag === true ? (
               <Box display="flex" alignItems="center">
                 <CircularProgress color="inherit" />
                 <Typography marginLeft="1rem">
@@ -535,9 +548,14 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             size="large"
             variant="contained"
             onClick={onClickSwap}
-            disabled={status !== PoolStatus.LIVE || isWhiteList === false}
+            disabled={
+              status !== PoolStatus.LIVE ||
+              isWhiteList === false ||
+              swapFlag === true
+            }
           >
-            {progressFlag === true ? (
+            {/* {progressFlag === true ? ( */}
+            {swapFlag === true ? (
               <Box display="flex" alignItems="center">
                 <CircularProgress color="inherit" />
                 <Typography marginLeft="1rem">

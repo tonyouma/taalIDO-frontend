@@ -18,8 +18,6 @@ import { PoolStatus } from 'src/utils/poolStatus';
 import { register, getMaxId } from 'src/utils/auth';
 import { testImage } from 'src/utils/yupValidImageTest';
 
-const crypto = require('crypto');
-
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ApplicationStart() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
@@ -66,7 +64,7 @@ function ApplicationStart() {
     tradeValue: Yup.number().positive().required('Trade Value is required'),
     tradeAmount: Yup.number().positive().required('Total Raise is required'),
     minFundRaise: Yup.number()
-      .positive()
+      .min(0)
       .max(Yup.ref('tradeAmount'), 'Min.Fund Raise(Cannot exceed Total Raise)')
       .required('Minimum Raise is required'),
     access: Yup.string().required('Access is required'),
