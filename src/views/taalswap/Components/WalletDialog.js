@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
@@ -11,7 +11,6 @@ import {
 import { injected, walletconnect } from 'src/connectors';
 import { setActivatingConnector } from 'src/redux/slices/wallet';
 import { useDispatch } from 'react-redux';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
@@ -68,7 +67,7 @@ const walletList = [
 const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
 
   const onClickWallet = async (wallet) => {
     try {
@@ -80,15 +79,10 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
         const wc = walletconnect(true);
         await activate(wc, undefined, true);
         window.localStorage.setItem('chainId', 'walletconnect');
-      } else if (wallet.name === 'KaikasWallet') {
-        console.log('KaikasWallet', window.klaytn);
-        const accounts = await window.klaytn.enable();
-        console.log('account', accounts[0]);
-        window.localStorage.setItem('chainId', 'klayton');
       }
-      console.log('end', wallet);
+      // console.log('end', wallet);
     } catch (e) {
-      console.log('login error', e);
+      console.log('connect wallet error', e);
     }
 
     handleCloseModal(wallet.name);
