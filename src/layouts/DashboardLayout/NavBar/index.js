@@ -206,23 +206,23 @@ function NavBar({ isOpenNav, onCloseNav }) {
           <a href="">
             <motion.img
               variants={varFadeInRight}
-              src="/static/icons/ic_s_facebook.svg"
+              src="/static/icons/tweet_icon.png"
             />
           </a>
           <a href="">
             <motion.img
               variants={varFadeInRight}
-              src="/static/icons/ic_s_linkin.svg"
+              src="/static/icons/page_icon.png"
             />
           </a>
-          <a href="">
+          <a href="https://medium.com/taalswap" target="_blank">
             <motion.img
               variants={varFadeInRight}
-              src="/static/icons/ic_s_instagram.svg"
+              src="/static/icons/message_icon.png"
             />
           </a>
-          <a
-            href="https://twitter.com/taalswap"
+          {/* <a
+            href="https://medium.com/taalswap"
             target="_blank"
             rel="noreferrer"
           >
@@ -230,7 +230,7 @@ function NavBar({ isOpenNav, onCloseNav }) {
               variants={varFadeInRight}
               src="/static/icons/ic_s_tweet.svg"
             />
-          </a>
+          </a> */}
         </div>
       </Box>
     </Scrollbars>

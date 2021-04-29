@@ -85,10 +85,28 @@ function DarkMode({ className }) {
           </a>
         </Typography>
         <div className={classes.listIcon} id="footer_iconbox">
-          <motion.img src="/static/icons/ic_s_facebook.svg" />
+          {/* <motion.img src="/static/icons/ic_s_facebook.svg" />
           <motion.img src="/static/icons/ic_s_linkin.svg" />
           <motion.img src="/static/icons/ic_s_instagram.svg" />
-          <motion.img src="/static/icons/ic_s_tweet.svg" />
+          <motion.img src="/static/icons/ic_s_tweet.svg" /> */}
+          <a href="">
+            <motion.img
+              // variants={varFadeInRight}
+              src="/static/icons/tweet_icon.png"
+            />
+          </a>
+          <a href="">
+            <motion.img
+              // variants={varFadeInRight}
+              src="/static/icons/page_icon.png"
+            />
+          </a>
+          <a href="https://medium.com/taalswap" target="_blank">
+            <motion.img
+              // variants={varFadeInRight}
+              src="/static/icons/message_icon.png"
+            />
+          </a>
         </div>
       </Container>
     </div>
