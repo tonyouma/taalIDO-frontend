@@ -58,9 +58,6 @@ const walletList = [
   },
   {
     name: 'Binance Wallet'
-  },
-  {
-    name: 'KaikasWallet'
   }
 ];
 
@@ -112,7 +109,7 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
               key={index}
               className={classes.walletBoxWrapper}
               boxShadow="3"
-              onClick={() => onClickWallet(wallet)}
+              onClick={index !== 2 ? () => onClickWallet(wallet) : undefined}
             >
               <Box
                 component="img"
