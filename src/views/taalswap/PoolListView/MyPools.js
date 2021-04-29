@@ -65,8 +65,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const curr_method = {};
-
 function nativeCallbackTxHash(res) {
   window.setRes(res);
 }
@@ -107,7 +105,7 @@ function TablePoolRow({ row, handleOpenModal, finalizedFalseListCount }) {
   const classes = useStyles();
   const context = useWeb3React();
   const theme = useTheme();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [progressValue, setProgressValue] = useState(0);
   const [poolStatus, setStatus] = useState('');
   const [max, setMax] = useState(0);
@@ -143,7 +141,7 @@ function TablePoolRow({ row, handleOpenModal, finalizedFalseListCount }) {
         row.status,
         row.minFundRaise
       );
-      console.log(`${row.poolName} : ${finalizedFalseListCount}`);
+
       setStatus(status);
       setMax();
     }
