@@ -141,7 +141,7 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
           variant="subtitle2"
           sx={{ color: 'text.secondary' }}
         >
-          {t('taalswap.Price')} ($)
+          {t('taalswap.Price')}
         </Typography>
         <Typography
           component="p"
