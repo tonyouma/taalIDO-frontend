@@ -95,6 +95,7 @@
     "Submit": "Submit",
     "poolStProcess": "IDO in Processing",
     "poolStReady": "IDO Soon",
-    "poolStDone": "IDO Done"
+    "poolStDone": "IDO Done",
+    "Close": "Close"
   }
 }

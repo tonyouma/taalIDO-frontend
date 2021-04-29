@@ -95,6 +95,7 @@
     "Submit": "제출",
     "poolStProcess": "IDO 준비 중",
     "poolStReady": "IDO 시작 예정",
-    "poolStDone": "IDO 종료"
+    "poolStDone": "IDO 종료",
+    "Close": "닫기"
   }
 }
