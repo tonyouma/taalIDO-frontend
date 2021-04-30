@@ -290,7 +290,7 @@ class Taalswap {
    * @returns {Integer} Amount in Tokens
    */
   async tokensAllocated() {
-    return Numbers.fromDecimals(
+    return Numbers.fromDecimalsOnlySelect(
       await this.params.fixedContract.tokensAllocated(),
       this.params.application.decimals
     );
