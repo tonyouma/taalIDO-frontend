@@ -392,7 +392,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             color="inherit"
             onClick={handleCloseModal}
           >
-            Cancel
+            {t('taalswap.Cancel')}
           </Button>
           <Button
             className={classes.button}
@@ -401,7 +401,7 @@ function PlanCard({ pool, ethPrice, index, className }) {
             color="primary"
             autoFocus
           >
-            Proceed
+            {t('taalswap.Proceed')}
           </Button>
         </DialogActions>
       </Dialog>
