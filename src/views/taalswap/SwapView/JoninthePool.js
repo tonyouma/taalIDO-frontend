@@ -262,20 +262,14 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 } else {
                   // console.log(`taalswap web, swap..`);
                   // console.log(progressFlag);
+
                   const result = await taalswap
                     .swap({
                       tokenAmount: amount,
                       account: from ? wallet : account
                     })
                     .catch((error) => {
-                      console.log('error : ' + JSON.stringify(error));
-
-                      enqueueSnackbar('Swap fail', {
-                        variant: 'fail'
-                      });
-                      // onBackdrop(false);
-                      // setProgressFlag(false);
-                      dispatch(changeSwapEnd());
+                      console.log(error);
                     });
 
                   const receipt = await result.wait();
@@ -290,6 +284,14 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                       pathname: '/app/taalswap/pools',
                       state: { tabValue: 1 }
                     });
+                  } else {
+                    // console.log(receipt);
+                    enqueueSnackbar('Swap fail', {
+                      variant: 'fail'
+                    });
+                    // onBackdrop(false);
+                    // setProgressFlag(false);
+                    dispatch(changeSwapEnd());
                   }
                 }
 
@@ -298,7 +300,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                 dispatch(changeSwapEnd());
               } else {
                 setWarningMessage(
-                  `${t('taalswap.WarnIndivMAx')} (${swappedAmount} / ${
+                  `${t('taalswap.WarnIndivMax')} (${swappedAmount} / ${
                     pool.maxIndividuals
                   })`
                 );
