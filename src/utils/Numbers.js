@@ -1,7 +1,7 @@
 import moment from 'moment';
 import accounting from 'accounting';
 import dayjs from 'dayjs';
-// import { BigNumber } from 'ethers';
+import { BigNumber } from 'ethers';
 
 Number.prototype.noExponents = function () {
   var data = String(this).split(/[eE]/);
@@ -86,14 +86,15 @@ class numbers {
     return (value / Math.pow(10, decimals)) * 1000000000000000000;
   }
 
-  // fromDecimals(value, decimals) {
-  //   return Number(
-  //     parseFloat(
-  //       // eslint-disable-next-line no-undef
-  //       BigNumber.from(value).toBigInt() / BigInt(10 ** decimals)
-  //     ).toPrecision(decimals)
-  //   ).noExponents();
-  // }
+  fromDecimalsOnlySelect(value, decimals) {
+    return Number(
+      parseFloat(
+        // eslint-disable-next-line no-undef
+        BigNumber.from(value).toBigInt() / BigInt(10 ** decimals)
+      ).toPrecision(decimals)
+    ).noExponents();
+  }
+
   fromDecimals(value, decimals) {
     return Number(
       parseFloat(value / 10 ** decimals).toPrecision(decimals)
