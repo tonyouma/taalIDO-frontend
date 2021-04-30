@@ -65,7 +65,8 @@ function CandidateCard({ pool, index, className }) {
           }}
         >
           <Box
-            className={clsx(classes.box, className)}
+            // className={clsx(classes.box, className)}
+            className="candidate_text"
             // title={pool.tokenContractAddr}
           >
             <Box
@@ -125,34 +126,6 @@ function CandidateCard({ pool, index, className }) {
             </Link>
           </Box>
         </Box>
-
-        {/* WhitePager/LitePaper */}
-        {/* <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            // color: item.isAvailable ? 'text.primary' : 'text.disabled',
-            '&:not(:last-of-type)': { mb: 2 }
-          }}
-        >
-          <Box>
-            <Box
-              sx={{
-                mr: 1.5
-              }}
-              fontWeight={'bold'}
-              fontSize={20}
-            >
-              WhitePager/LitePaper
-            </Box>
-            <Box
-              sx={{
-                mr: 1.0
-              }}
-            />
-            연동 필요
-          </Box>
-        </Box> */}
 
         {/* Project Introduction */}
         <Box
