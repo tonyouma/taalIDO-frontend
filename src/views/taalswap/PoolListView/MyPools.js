@@ -721,7 +721,11 @@ export default function MyPools({ filterName, category, onBackdrop }) {
                       <IconButton
                         aria-label="etherscan link"
                         variant="link"
-                        href={`https://${infuraChainId}.etherscan.io/address/${selectedPool.tokenContractAddr}`}
+                        href={
+                          infuraChainId === 'mainnet'
+                            ? `https://etherscan.io/address/${selectedPool.tokenContractAddr}`
+                            : `https://${infuraChainId}.etherscan.io/address/${selectedPool.tokenContractAddr}`
+                        }
                         target="_blank"
                       >
                         <LinkIcon />

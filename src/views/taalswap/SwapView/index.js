@@ -161,7 +161,12 @@ function PaymentView({ className, ...other }) {
           heading={pool.poolName}
           links={[{ name: pool.tokenContractAddr }]}
           subTitle={pool.tokenContractAddr}
-          url={`https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`}
+          // url={`https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`}
+          url={
+            infuraChainId === 'mainnet'
+              ? `https://etherscan.io/address/${pool.tokenContractAddr}`
+              : `https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`
+          }
           className="projectstitle_box"
         />
         <img
