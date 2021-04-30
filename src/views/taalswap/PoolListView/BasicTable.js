@@ -284,7 +284,7 @@ export default function BasicTable({ filterName, category }) {
     <div className={classes.root}>
       {/* <ToolbarTable filterName={filterName} onFilterName={handleFilterByName} /> */}
       <Scrollbars>
-        <TableContainer sx={{ mt: 3 }}>
+        <TableContainer sx={{ mt: 1, mb: 1 }}>
           <Table>
             <TableHead>
               <TableRow>

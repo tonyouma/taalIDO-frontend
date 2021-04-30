@@ -637,7 +637,7 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   return (
     <div className={classes.root}>
       <Scrollbars>
-        <TableContainer sx={{ mt: 3 }}>
+        <TableContainer sx={{ mt: 1, mb: 1 }}>
           <Table>
             <TableHead>
               <TableRow>

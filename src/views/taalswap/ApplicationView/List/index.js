@@ -773,7 +773,7 @@ export default function ApplicationListView() {
                 <div className={classes.paper}></div>
               )}
 
-              <TableContainer>
+              <TableContainer sx={{ mt: 1, mb: 1 }}>
                 <Table
                   className={classes.table}
                   aria-labelledby="tableTitle"
