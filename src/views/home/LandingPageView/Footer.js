@@ -95,7 +95,7 @@ function DarkMode({ className }) {
               src="/static/icons/tweet_icon.png"
             />
           </a>
-          <a href="">
+          <a href="https://t.me/TaalSwapOfficial" target="_blank">
             <motion.img
               // variants={varFadeInRight}
               src="/static/icons/page_icon.png"

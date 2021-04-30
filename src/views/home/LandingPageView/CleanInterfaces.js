@@ -87,10 +87,18 @@ function CleanInterfaces({ className }) {
             <a href="javascript:;" class="icon_btn">
               <img src="/static/icons/gray_twittericon.png" />
             </a>
-            <a href="javascript:;" class="icon_btn">
+            <a
+              href="https://t.me/TaalSwapOfficial"
+              target="_blank"
+              class="icon_btn"
+            >
               <img src="/static/icons/gray_papericon.png" />
             </a>
-            <a href="javascript:;" class="icon_btn">
+            <a
+              href="https://medium.com/taalswap"
+              target="_blank"
+              class="icon_btn"
+            >
               <img src="/static/icons/gray_messageicon.png" />
             </a>
           </div>
