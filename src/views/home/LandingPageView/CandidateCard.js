@@ -83,10 +83,11 @@ function CandidateCard({ pool, index, className }) {
                 mr: 1.0
               }}
             />
-            <EllipsisText
+            {pool.projectName}
+            {/* <EllipsisText
               text={pool.projectName}
               className={'centerText'}
-            ></EllipsisText>
+            ></EllipsisText> */}
           </Box>
         </Box>
 
