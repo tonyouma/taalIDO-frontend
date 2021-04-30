@@ -207,6 +207,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
               ) {
                 // onBackdrop(true);
                 // setProgressFlag(true);
+                setWarningMessage('');
                 dispatch(changeSwapStart());
                 if (from) {
                   try {
@@ -277,7 +278,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
                     enqueueSnackbar('Swap success', {
                       variant: 'success'
                     });
-                    await setWarningMessage('');
+                    setWarningMessage('');
                     await addSwap();
 
                     history.push({
