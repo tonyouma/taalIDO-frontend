@@ -203,7 +203,7 @@ function NavBar({ isOpenNav, onCloseNav }) {
           </Typography>
         </div>
         <div className={classes.listIcon}>
-          <a href="">
+          <a href="https://twitter.com/taal_fi" target="_blank">
             <motion.img
               variants={varFadeInRight}
               src="/static/icons/tweet_icon.png"

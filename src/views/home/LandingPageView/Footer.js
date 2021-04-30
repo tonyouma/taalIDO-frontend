@@ -89,7 +89,7 @@ function DarkMode({ className }) {
           <motion.img src="/static/icons/ic_s_linkin.svg" />
           <motion.img src="/static/icons/ic_s_instagram.svg" />
           <motion.img src="/static/icons/ic_s_tweet.svg" /> */}
-          <a href="">
+          <a href="https://twitter.com/taal_fi" target="_blank">
             <motion.img
               // variants={varFadeInRight}
               src="/static/icons/tweet_icon.png"
