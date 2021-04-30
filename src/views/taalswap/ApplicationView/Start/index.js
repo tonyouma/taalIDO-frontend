@@ -130,14 +130,12 @@ function ApplicationStart() {
       startDate: location.state
         ? moment
             .unix(location.state.selectedItem.startDate)
-            .add(9, 'h')
             .format()
             .substr(0, 16)
         : moment().add(3, 'd').add(9, 'h').toDate().toISOString().substr(0, 16),
       endDate: location.state
         ? moment
             .unix(location.state.selectedItem.endDate)
-            .add(9, 'h')
             .format()
             .substr(0, 16)
         : moment()
