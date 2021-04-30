@@ -1,53 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="%PUBLIC_URL%/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="%PUBLIC_URL%/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="%PUBLIC_URL%/favicon/favicon-16x16.png"
+    />
 
-<head>
-  <meta charset="utf-8" />
-  <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon/favicon-16x16.png">
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-  <meta name="theme-color" content="#000000" />
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Using Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500&amp;display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Using Google Font -->
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500&amp;display=swap" rel="stylesheet"/>
+    <!-- Using Local Font -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/fonts/index.css"
+    />
 
-  <!-- Using Local Font -->
-  <link rel="stylesheet" type="text/css" href="%PUBLIC_URL%/fonts/index.css" />
+    <title>TaalSwap Finance</title>
+    <meta
+      name="description"
+      content="TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction."
+    />
+    <meta
+      name="keywords"
+      content="defi,ido,DeFi,IDO,Swap,AMM,Pool,pools,farming,yield,leverage,auto"
+    />
+    <meta name="author" content="TaalSwap Finance" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Expires" content="-1" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="No-Cache" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction."
+    />
+    <meta
+      property="og:description"
+      content="TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction."
+    />
+    <meta
+      property="og:image"
+      content="https://taalswap.finance/static/symbol/taalsymbol.png"
+    />
+    <meta property="og:url" content="https://taalswap.finance" />
+    <meta property="og:site_name" content="TaalSwap Finance" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:url" content="https://taalswap.finance" />
+    <meta name="twitter:domain" content="taalswap.finance" />
+    <meta
+      name="twitter:title"
+      content="TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction."
+    />
+    <meta
+      name="twitter:description"
+      content="TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction."
+    />
+    <meta
+      name="twitter:image"
+      content="https://taalswap.finance/static/symbol/taalsymbol.png"
+    />
 
-  <title>TaalSwap Finance</title>
-  <meta name="description"
-    content="TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction." />
-  <meta name="keywords" content="defi,ido,DeFi,IDO,Swap,AMM,Pool,pools,farming,yield,leverage,auto" />
-  <meta name="author" content="TaalSwap Finance"/>
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <meta http-equiv="Expires" content="-1" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Cache-Control" content="No-Cache" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction." />
-  <meta property="og:description" content="TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction." />
-  <meta property="og:image" content="https://taalswap.finance/static/symbol/taalsymbol.png" />
-  <meta property="og:url" content="https://taalswap.finance" />
-  <meta property="og:site_name" content="TaalSwap Finance" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:url" content="https://taalswap.finance" />
-  <meta name="twitter:domain" content="taalswap.finance" />
-  <meta name="twitter:title" content="TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction." />
-  <meta name="twitter:description" content="TaalSwap is a decentralized and interoperable multi-chain platform for IDO, yield farming and NFT auction." />
-  <meta name="twitter:image" content="https://taalswap.finance/static/symbol/taalsymbol.png" />
-</head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-4HPGY485F5"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
 
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
-</body>
+      gtag('config', 'G-4HPGY485F5');
+    </script>
+  </head>
 
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
 </html>
