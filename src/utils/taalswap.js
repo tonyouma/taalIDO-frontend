@@ -289,8 +289,14 @@ class Taalswap {
    * @description Get Total tokens Allocated already, therefore the tokens bought until now
    * @returns {Integer} Amount in Tokens
    */
+  // async tokensAllocated() {
+  //   return Numbers.fromDecimalsOnlySelect(
+  //     await this.params.fixedContract.tokensAllocated(),
+  //     this.params.application.decimals
+  //   );
+  // }
   async tokensAllocated() {
-    return Numbers.fromDecimalsOnlySelect(
+    return Numbers.fromDecimals(
       await this.params.fixedContract.tokensAllocated(),
       this.params.application.decimals
     );

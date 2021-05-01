@@ -2,6 +2,7 @@ import moment from 'moment';
 import accounting from 'accounting';
 import dayjs from 'dayjs';
 import { BigNumber } from 'ethers';
+const Web3 = require('web3');
 
 Number.prototype.noExponents = function () {
   var data = String(this).split(/[eE]/);
@@ -75,10 +76,15 @@ class numbers {
     return accounting.formatNumber(number);
   }
 
+  // toSmartContractDecimals(value, decimals) {
+  //   let numberWithNoExponents = new Number(
+  //     value * 10 ** decimals
+  //   ).noExponents();
+  //   return numberWithNoExponents;
+  // }
   toSmartContractDecimals(value, decimals) {
-    let numberWithNoExponents = new Number(
-      value * 10 ** decimals
-    ).noExponents();
+    let newValue = Web3.utils.toWei(value.toString());
+    let numberWithNoExponents = new Number(newValue).noExponents();
     return numberWithNoExponents;
   }
 
@@ -95,10 +101,14 @@ class numbers {
     ).noExponents();
   }
 
+  // fromDecimals(value, decimals) {
+  //   return Number(
+  //     parseFloat(value / 10 ** decimals).toPrecision(decimals)
+  //   ).noExponents();
+  // }
   fromDecimals(value, decimals) {
-    return Number(
-      parseFloat(value / 10 ** decimals).toPrecision(decimals)
-    ).noExponents();
+    const newValue = Web3.utils.fromWei(value.toString());
+    return Number(newValue).noExponents();
   }
 
   fromExponential(x) {
