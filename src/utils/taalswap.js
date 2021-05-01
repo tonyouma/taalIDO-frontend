@@ -555,7 +555,7 @@ class Taalswap {
       from: account,
       value: ETHToWei,
       gasPrice: await this.getGasPrice(),
-      gasLimit: 300000 // TODO: 어떻게 처리할까 ?
+      gasLimit: 400000 // TODO: 어떻게 처리할까 ?
     });
   }
 }
