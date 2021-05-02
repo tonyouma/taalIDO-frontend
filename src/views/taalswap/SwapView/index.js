@@ -136,7 +136,7 @@ function PaymentView({ className, ...other }) {
 
   useEffect(async () => {
     setEthPrice(await getEthPrice(langStorage === 'kr' ? 'KRW' : 'USD'));
-  }, [langStorage]);
+  }, [t, langStorage]);
 
   return (
     <Page title="Swap | TaalSwap" className={classes.root}>
