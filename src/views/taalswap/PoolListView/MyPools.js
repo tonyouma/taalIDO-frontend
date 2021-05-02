@@ -181,7 +181,9 @@ function TablePoolRow({ row, handleOpenModal, finalizedFalseListCount }) {
         )}
       </TableCell>
       <TableCell align="right" width="20%">
-        {poolStatus !== PoolStatus.LIVE && poolStatus !== '' ? (
+        {poolStatus !== PoolStatus.LIVE &&
+        poolStatus !== PoolStatus.PAUSED &&
+        poolStatus !== '' ? (
           <IconButton
             variant="contained"
             size="small"
