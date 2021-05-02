@@ -122,7 +122,7 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           }}
           color="error"
         >
-          Closed
+          Filled
         </MLabel>
       ) : null}
       {poolStatus === PoolStatus.FILLED.FAILED ? (

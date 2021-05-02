@@ -11,8 +11,8 @@ export const PoolStatus = {
     SUCCESS: {
       ACCOMPLISHED: 'Accomplished', //
       // ACHIEVED: 'achieved', /
-      CLOSED: 'Filled'
+      CLOSED: 'closed'
     },
-    FAILED: 'Failed'
+    FAILED: 'failed'
   }
 };
