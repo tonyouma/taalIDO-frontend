@@ -20,6 +20,7 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
     const isPreStart = await swapContract.isPreStart().catch(() => {});
     const isFunded = await swapContract.isFunded().catch(() => {});
     const isOpen = await swapContract.isOpen().catch(() => {});
+    const paused = await swapContract.paused().catch(() => {});
     // const minimumRaiseAchieved = await swapContract
     //   .minimumRaiseAchieved()
     //   .catch(() => {});
@@ -45,6 +46,10 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
     // console.log('hasFinalized :', hasFinalized);
     // console.log('hasMinimumRaise :', hasMinimumRaise);
     // console.log('minimumRaiseAchieved :', minimumRaiseAchieved);
+
+    if (paused) {
+      return PoolStatus.PAUSED;
+    }
 
     if (isOpen) {
       poolStatus = PoolStatus.LIVE;

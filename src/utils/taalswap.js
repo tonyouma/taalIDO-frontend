@@ -323,6 +323,10 @@ class Taalswap {
     return await this.params.fixedContract.isOpen();
   }
 
+  async paused() {
+    return await this.params.fixedContract.paused();
+  }
+
   /**
    * @function hasStarted
    * @description Verify if the Token Sale has started the Swap
