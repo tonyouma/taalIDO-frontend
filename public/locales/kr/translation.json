@@ -97,6 +97,7 @@
     "poolStReady": "IDO 시작 예정",
     "poolStDone": "IDO 종료",
     "poolStPaused": "IDO 잠시 멈춤",
+    "poolStSoldout": "판매 완료",
     "Close": "닫기"
   }
 }

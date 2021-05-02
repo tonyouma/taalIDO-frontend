@@ -97,6 +97,7 @@
     "poolStReady": "IDO Soon",
     "poolStDone": "IDO Done",
     "poolStPaused": "Waiting Live Soon",
+    "poolStSoldout": "Sold Out",
     "Close": "Close"
   }
 }

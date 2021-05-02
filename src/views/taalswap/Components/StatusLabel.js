@@ -53,6 +53,18 @@ const StatusLabel = ({ poolStatus, absolute }) => {
           Paused
         </MLabel>
       ) : null}
+      poolStatus === PoolStatus.SOLDOUT ? (
+      <MLabel
+        sx={{
+          top: 16,
+          right: 16,
+          position: absolute && 'absolute'
+        }}
+        color="success"
+      >
+        Soldout
+      </MLabel>
+      ) : null}
       {poolStatus === PoolStatus.UPCOMING ? (
         <MLabel
           sx={{
