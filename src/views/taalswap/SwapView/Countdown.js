@@ -119,13 +119,16 @@ function Countdown({ className, pool, value, ...other }) {
   return (
     <Card className={clsx(classes.root, className)} {...other}>
       <Typography marginBottom="10px" variant="subtitle2">
-        {t('taalswap.CountDown')}
+        {poolStatus === PoolStatus.SOLDOUT
+          ? 'Claimable in'
+          : t('taalswap.CountDown')}
       </Typography>
 
       <Box display="flex" justifyContent="space-between">
         <Box style={{ marginTop: '13px' }}>
           {poolStatus === PoolStatus.LIVE ||
-          poolStatus === PoolStatus.UPCOMING ? (
+          poolStatus === PoolStatus.UPCOMING ||
+          poolStatus === PoolStatus.SOLDOUT ? (
             <TimeCounter
               timeTillDate={timeTillDate}
               endFlag={endFlag}
