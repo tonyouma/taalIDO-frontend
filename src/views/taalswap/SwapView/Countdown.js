@@ -120,7 +120,7 @@ function Countdown({ className, pool, value, ...other }) {
     <Card className={clsx(classes.root, className)} {...other}>
       <Typography marginBottom="10px" variant="subtitle2">
         {poolStatus === PoolStatus.SOLDOUT
-          ? t('taalswap.CountDownSoldout')}
+          ? t('taalswap.CountDownSoldout')
           : t('taalswap.CountDown')}
       </Typography>
 
