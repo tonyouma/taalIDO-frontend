@@ -136,7 +136,8 @@ function Tabcard() {
               } else if (
                 result === PoolStatus.UPCOMING ||
                 result === PoolStatus.LIVE ||
-                result === PoolStatus.PAUSED
+                result === PoolStatus.PAUSED ||
+                result === PoolStatus.SOLDOUT
               ) {
                 tempUpcomingLivePools = tempUpcomingLivePools.concat({
                   ...pool,
