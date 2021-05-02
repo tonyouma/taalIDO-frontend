@@ -69,6 +69,7 @@
     "CountDown": "Countdown",
     "CountDownLive": "Countdown to IDO End",
     "CountDownUpcoming": "Countdown to IDO Start",
+    "CountDownSoldout": "Claimable in",
     "PoolInformation": "Pool Information",
     "TokenInformation": "Token Information",
     "TokenName": "Name",
