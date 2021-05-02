@@ -74,7 +74,7 @@ function Countdown({ className, pool, value, ...other }) {
 
       setPoolStatus(status);
 
-      if (status === PoolStatus.LIVE) {
+      if (status === PoolStatus.LIVE || status === PoolStatus.SOLDOUT) {
         const endEpoch = moment.unix(pool.endDate);
         setEndFlag(false);
         setTimeTillDate(endEpoch);
