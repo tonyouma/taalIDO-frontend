@@ -92,6 +92,8 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
     await taalswap
       .tokensAllocated()
       .then((result) => {
+        console.log('ethPrice', ethPrice);
+        console.log('tokensAllocated', result);
         setProgressValue(getProgressValue(result, pool.tradeAmount));
         setProgressDollorValue((parseFloat(ethPrice) / pool.ratio) * result);
       })
