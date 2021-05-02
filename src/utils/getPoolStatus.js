@@ -15,10 +15,6 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
     return PoolStatus.DEPLOYED;
   }
 
-  if (status === 'Soldout') {
-    return PoolStatus.SOLDOUT;
-  }
-
   if (swapContract.params.contractAddress !== '') {
     // Pool의 현재 상태 확인
     const isPreStart = await swapContract.isPreStart().catch(() => {});
@@ -58,7 +54,11 @@ export const getPoolStatus = async (swapContract, status, minFundRaise) => {
     }
 
     if (isOpen) {
-      poolStatus = PoolStatus.LIVE;
+      if (status === 'Soldout') {
+        return PoolStatus.SOLDOUT;
+      } else {
+        poolStatus = PoolStatus.LIVE;
+      }
     } else {
       if (isPreStart) {
         if (isFunded) {
