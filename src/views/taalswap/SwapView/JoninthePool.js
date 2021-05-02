@@ -12,7 +12,7 @@ import {
   TextField,
   CircularProgress
 } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { LoadingButton, treeViewClasses } from '@material-ui/lab';
 import { useWeb3React } from '@web3-react/core';
 import moment from 'moment';
 import 'moment/locale/en-gb';
@@ -94,6 +94,7 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const [minAmount, setMinAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(0);
   const [swappedAmount, setSwappedAmount] = useState(0);
+  const [soldoutFlag, setSoldout] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
   const [status, setStatus] = useState('');
   const [isWhiteList, setIsWhiteList] = useState(false);
@@ -346,6 +347,11 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
           .tokensLeft()
           .then((result) => {
             setTokensLeft(result);
+            if (result === 0) {
+              setSoldout(true);
+            } else {
+              setSoldout(false);
+            }
             // console.log(`tokensLeft : ${result}`);
           })
           .catch((error) => console.log(error));
@@ -532,7 +538,11 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             size="large"
             variant="contained"
             onClick={onClickSwap}
-            disabled={status !== PoolStatus.LIVE || swapFlag === true}
+            disabled={
+              status !== PoolStatus.LIVE ||
+              swapFlag === true ||
+              soldoutFlag === true
+            }
             // disabled={status !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED}
           >
             {/* {progressFlag === true ? ( */}
@@ -558,7 +568,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
             disabled={
               status !== PoolStatus.LIVE ||
               isWhiteList === false ||
-              swapFlag === true
+              swapFlag === true ||
+              soldoutFlag === true
             }
           >
             {/* {progressFlag === true ? ( */}
