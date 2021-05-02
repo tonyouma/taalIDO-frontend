@@ -104,6 +104,9 @@ function Countdown({ className, pool, value, ...other }) {
     case 'Upcoming':
       poolStatusStr = t('taalswap.poolStReady');
       break;
+    case 'Paused':
+      poolStatusStr = t('taalswap.poolStPaused');
+      break;
     case 'failed':
     case 'Accomplished':
       poolStatusStr = t('taalswap.poolStDone');

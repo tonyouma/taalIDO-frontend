@@ -96,6 +96,7 @@
     "poolStProcess": "IDO in Processing",
     "poolStReady": "IDO Soon",
     "poolStDone": "IDO Done",
+    "poolStPaused": "Waiting Live Soon",
     "Close": "Close"
   }
 }
