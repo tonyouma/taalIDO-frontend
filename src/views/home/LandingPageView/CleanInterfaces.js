@@ -84,7 +84,11 @@ function CleanInterfaces({ className }) {
               Be the first to know about new <br />
               pools and other TaalSwap events.
             </Typography>
-            <a href="https://twitter.com/taal_fi" className="icon_btn">
+            <a
+              href="https://twitter.com/taal_fi"
+              target="_blank"
+              className="icon_btn"
+            >
               <img src="/static/icons/gray_twittericon.png" />
             </a>
             <a
