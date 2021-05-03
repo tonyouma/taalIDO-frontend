@@ -93,7 +93,8 @@ function PaymentInformation({ className, pool, ethPrice, index }) {
       .tokensAllocated()
       .then((result) => {
         setProgressValue(getProgressValue(result, pool.tradeAmount));
-        setProgressDollorValue((parseFloat(ethPrice) / pool.ratio) * result);
+        if (ethPrice !== 0)
+          setProgressDollorValue((parseFloat(ethPrice) / pool.ratio) * result);
       })
       .catch((error) => console.log(error));
 
