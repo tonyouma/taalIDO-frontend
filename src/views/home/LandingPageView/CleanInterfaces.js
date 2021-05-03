@@ -90,14 +90,14 @@ function CleanInterfaces({ className }) {
             <a
               href="https://t.me/TaalSwapOfficial"
               target="_blank"
-              class="icon_btn"
+              className="icon_btn"
             >
               <img src="/static/icons/gray_papericon.png" />
             </a>
             <a
               href="https://medium.com/taalswap"
               target="_blank"
-              class="icon_btn"
+              className="icon_btn"
             >
               <img src="/static/icons/gray_messageicon.png" />
             </a>
