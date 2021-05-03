@@ -69,6 +69,7 @@
     "CountDown": "남은 시간",
     "CountDownLive": "IDO 종료 까지 남은 시간",
     "CountDownUpcoming": "IDO 시작 까지 남은 시간",
+    "CountDownSoldout": "청구 시작 시간",
     "PoolInformation": "풀 상세정보",
     "TokenInformation": "토큰 상세정보",
     "TokenName": "토큰명",

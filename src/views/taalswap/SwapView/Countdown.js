@@ -74,7 +74,7 @@ function Countdown({ className, pool, value, ...other }) {
 
       setPoolStatus(status);
 
-      if (status === PoolStatus.LIVE) {
+      if (status === PoolStatus.LIVE || status === PoolStatus.SOLDOUT) {
         const endEpoch = moment.unix(pool.endDate);
         setEndFlag(false);
         setTimeTillDate(endEpoch);
@@ -120,7 +120,7 @@ function Countdown({ className, pool, value, ...other }) {
     <Card className={clsx(classes.root, className)} {...other}>
       <Typography marginBottom="10px" variant="subtitle2">
         {poolStatus === PoolStatus.SOLDOUT
-          ? 'Claimable in'
+          ? t('taalswap.CountDownSoldout')
           : t('taalswap.CountDown')}
       </Typography>
 
