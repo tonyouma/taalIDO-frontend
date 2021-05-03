@@ -87,13 +87,15 @@ function General({ className, pool }) {
 
     await axios
       .get(
-        `https://api.ethplorer.io/getTokenInfo/${pool.tokenContractAddress}/?apiKey=freekey`
+        `https://api.ethplorer.io/getTokenInfo/${pool.tokenContractAddr}/?apiKey=freekey`
       )
       .then((response) => {
         setHolders(response.data.holdersCount);
         setTransfers(response.data.transfersCount);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+      });
     // }
 
     setMax(getMax(pool.maxIndividuals, pool.tradeValue));
