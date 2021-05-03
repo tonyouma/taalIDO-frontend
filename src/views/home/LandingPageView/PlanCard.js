@@ -168,9 +168,11 @@ function PlanCard({ pool, ethPrice, index, className }) {
         />
         <Typography variant="h3" sx={{ mx: 1 }} className="card_title">
           {pool.poolName}
-          <Typography variant="h5" className="card_subtitle">
-            {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
-          </Typography>
+          <Box>
+            <Typography variant="h5" className="card_subtitle">
+              {Numbers.toFloat(pool.ratio)} {pool.symbol} = 1 ETH
+            </Typography>
+          </Box>
         </Typography>
       </Box>
       {pool.selectChain && pool.selectChain !== '' && (
