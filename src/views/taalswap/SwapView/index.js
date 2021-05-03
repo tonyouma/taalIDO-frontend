@@ -181,7 +181,7 @@ function PaymentView({ className, ...other }) {
           <a
             href={`https://twitter.com/${pool.twitterId}`}
             target="_blank"
-            class={
+            className={
               pool.twitterId && pool.twitterId !== ''
                 ? 'icon_tweet'
                 : 'icon_tweet_null'
@@ -190,7 +190,7 @@ function PaymentView({ className, ...other }) {
           <a
             href={`https://t.me/${pool.telegramHandle.replace('@', '')}`}
             target="_blank"
-            class={
+            className={
               pool.telegramHandle && pool.telegramHandle !== ''
                 ? 'icon_page'
                 : 'icon_page_null'
@@ -198,10 +198,10 @@ function PaymentView({ className, ...other }) {
           ></a>
 
           <a
-            disabled="true"
+            disabled={true}
             href={pool.mediumURL}
             target="_blank"
-            class={
+            className={
               pool.mediumURL && pool.mediumURL !== ''
                 ? 'icon_message'
                 : 'icon_message_null'
