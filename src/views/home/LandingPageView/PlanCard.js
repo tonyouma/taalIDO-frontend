@@ -81,8 +81,9 @@ function PlanCard({ pool, ethPrice, index, className }) {
     if (checkWarning) {
       setCheckWarning(false);
       history.push({
-        pathname: '/app/taalswap/pools/swap',
-        state: { selectedPool: pool }
+        // pathname: '/app/taalswap/pools/swap',
+        pathname: `/app/taalswap/pools/swap/${pool.id}`
+        // state: { selectedPool: pool }
       });
     } else {
       setShowWarningMessage(true);

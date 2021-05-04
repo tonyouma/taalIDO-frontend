@@ -256,8 +256,9 @@ export default function BasicTable({ filterName, category }) {
     if (checkWarning) {
       dispatch(closeModal());
       history.push({
-        pathname: '/app/taalswap/pools/swap',
-        state: { selectedPool: selectedPool }
+        // pathname: '/app/taalswap/pools/swap',
+        pathname: `/app/taalswap/pools/swap/${selectedPool.id}`
+        // state: { selectedPool: selectedPool }
       });
     } else {
       setShowWarningMessage(true);

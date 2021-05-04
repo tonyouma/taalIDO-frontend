@@ -325,8 +325,9 @@ export default function MyPools({ filterName, category, onBackdrop }) {
   const handleOnClickSwap = () => {
     dispatch(closeModal());
     history.push({
-      pathname: '/app/taalswap/pools/swap',
-      state: { selectedPool: selectedPool }
+      // pathname: '/app/taalswap/pools/swap',
+      pathname: `/app/taalswap/pools/swap/${selectedPool.id}`
+      // state: { selectedPool: selectedPool }
     });
   };
 
@@ -397,73 +398,6 @@ export default function MyPools({ filterName, category, onBackdrop }) {
             }
           }
         }
-
-        // console.log(taalswap);
-        // const myPurchases = await taalswap.getAddressPurchaseIds({
-        //   address: from ? wallet : account
-        // });
-
-        // if (!!myPurchases.error) {
-        // } else {
-        //   console.log('===== start handleOnClickClaimETH');
-        //   myPurchases.map(async (purchases) => {
-        //     onBackdrop(true);
-        //     if (from) {
-        //       const data = await taalswap.getRedeemGivenMinimumGoalNotAchievedABI(
-        //         {
-        //           purchase_id: purchases
-        //         }
-        //       );
-        //       console.log('=====data', data);
-        //       const msgContents = {
-        //         method: 'redeemGivenMinimumGoalNotAchieved',
-        //         from: wallet,
-        //         to: selectedPool.contractAddress,
-        //         purchase_id: purchases,
-        //         data: data
-        //       };
-        //       console.log('=====', JSON.stringify(msgContents));
-        //       let sendData = {
-        //         callback: 'onCallbackTxHash',
-        //         msgContents: msgContents
-        //       };
-        //       if (os.toLowerCase() === 'ios') {
-        //         /*eslint-disable */
-        //         webkit.messageHandlers.sendEthTransaction.postMessage(
-        //           JSON.stringify(sendData)
-        //         );
-        //         /*eslint-enable */
-        //       } else {
-        //         /*eslint-disable */
-        //         SubWebviewBridge.sendEthTransaction(JSON.stringify(sendData));
-        //         /*eslint-enable */
-        //       }
-        //     } else {
-        //       const result = await taalswap
-        //         .redeemGivenMinimumGoalNotAchieved({
-        //           purchase_id: purchases
-        //         })
-        //         .catch((error) => {
-        //           console.log(error);
-        //           enqueueSnackbar('Claim ETH fail', {
-        //             variant: 'fail'
-        //           });
-        //         });
-
-        //       if (result !== undefined) {
-        //         const receipt = await result.wait();
-        //         if (receipt.status === 1) {
-        //           enqueueSnackbar('Claim ETH success', {
-        //             variant: 'success'
-        //           });
-        //         }
-        //       }
-        //       onBackdrop(false);
-        //     }
-        //   });
-        // }
-
-        // dispatch(closeModal());
       }
     } catch (error) {
       console.log('=====', error);
@@ -536,71 +470,6 @@ export default function MyPools({ filterName, category, onBackdrop }) {
             }
           }
         }
-        // console.log('=====handleOnClickClaimTokens');
-        // const myPurchases = await taalswap.getAddressPurchaseIds({
-        //   address: from ? wallet : account
-        // });
-
-        // if (!!myPurchases.error) {
-        //   console.log(myPurchases.error);
-        // } else {
-        //   console.log('===== start handleOnClickClaimTokens');
-        //   myPurchases.map(async (purchases) => {
-        //     onBackdrop(true);
-        //     if (from) {
-        //       const data = await taalswap.getRedeemTokensABI({
-        //         purchase_id: purchases
-        //       });
-        //       console.log('=====data', data);
-        //       const msgContents = {
-        //         method: 'redeemTokens',
-        //         from: wallet,
-        //         to: selectedPool.contractAddress,
-        //         purchase_id: purchases,
-        //         data: data
-        //       };
-        //       console.log('=====', JSON.stringify(msgContents));
-        //       let sendData = {
-        //         callback: 'onCallbackTxHash',
-        //         msgContents: msgContents
-        //       };
-        //       if (os.toLowerCase() === 'ios') {
-        //         /*eslint-disable */
-        //         webkit.messageHandlers.sendEthTransaction.postMessage(
-        //           JSON.stringify(sendData)
-        //         );
-        //         /*eslint-enable */
-        //       } else {
-        //         /*eslint-disable */
-        //         SubWebviewBridge.sendEthTransaction(JSON.stringify(sendData));
-        //         /*eslint-enable */
-        //       }
-        //     } else {
-        //       const result = await taalswap
-        //         .redeemTokens({
-        //           purchase_id: purchases
-        //         })
-        //         .catch((error) => {
-        //           console.log(error);
-        //           enqueueSnackbar('Claim Tokens fail', {
-        //             variant: 'fail'
-        //           });
-        //         });
-
-        //       if (result !== undefined) {
-        //         const receipt = await result.wait();
-        //         if (receipt.status === 1) {
-        //           enqueueSnackbar('Claim Tokens success', {
-        //             variant: 'success'
-        //           });
-        //         }
-        //       }
-        //       onBackdrop(false);
-        //     }
-        //   });
-        // }
-
-        // dispatch(closeModal());
       }
     } catch (error) {
       console.log('=====', error);

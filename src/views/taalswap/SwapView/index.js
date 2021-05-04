@@ -10,6 +10,8 @@ import Participate from '../SwapView/Participate';
 import AboutTheProject from '../SwapView/AboutTheProject';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
+import { BrowserRouter as Router, useParams } from 'react-router-dom';
+
 import {
   Grid,
   Card,
@@ -25,7 +27,7 @@ import TotalAllocatedTokens from './TotalAllocatedTokens';
 import TotalPurchasers from './TotalPurchasers';
 import CurrentProgress from './CurrentProgress';
 import PoolButton from './PoolButton';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import PoolDetails from '../PoolDetails';
 import { capitalCase } from 'change-case';
 import { Icon } from '@iconify/react';
@@ -37,8 +39,10 @@ import peopleAudience24Regular from '@iconify-icons/fluent/people-audience-24-re
 import locationCompany from '@iconify-icons/carbon/location-company';
 import Countdown from './Countdown';
 import { infuraChainId } from 'src/config';
-import { useSelector } from 'react-redux';
+
 import getEthPrice from 'src/utils/getEthPrice';
+import { getPoolList } from '../../../redux/slices/pool';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './App.css';
 // ----------------------------------------------------------------------
@@ -106,6 +110,10 @@ function TabPanel(props) {
 function PaymentView({ className, ...other }) {
   const classes = useStyles();
   const location = useLocation();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { id } = useParams();
+  const { poolList } = useSelector((state) => state.pool);
   const upMd = useBreakpoints('up', 'md');
   const formik = useFormik({
     initialValues: {
@@ -115,7 +123,8 @@ function PaymentView({ className, ...other }) {
     }
   });
   const [value, setValue] = useState(0);
-  const [pool, setPool] = useState(location.state.selectedPool);
+  // const [pool, setPool] = useState(location.state.selectedPool);
+  const [pool, setPool] = useState(null);
   const [open, setOpen] = useState(false);
   const [ethPrice, setEthPrice] = useState(0);
   const { os, wallet, from } = useSelector((state) => state.talken);
@@ -135,164 +144,177 @@ function PaymentView({ className, ...other }) {
   };
 
   useEffect(async () => {
+    if (poolList !== null && poolList.length !== 0) {
+      let result = null;
+      poolList.map((pool) => pool.id == id && (result = pool));
+      if (result === null) {
+        history.push('/app/taalswap/pools');
+      } else {
+        setPool(result);
+      }
+    } else {
+      await dispatch(getPoolList());
+    }
+
     setEthPrice(await getEthPrice(langStorage === 'kr' ? 'KRW' : 'USD'));
-  }, [t, langStorage]);
+  }, [t, poolList, langStorage]);
 
   return (
     <Page title="Swap | TaalSwap" className={classes.root}>
-      <Container maxWidth="lg" className="projects_wrap">
-        <Backdrop
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column'
-          }}
-          className={classes.backdrop}
-          open={open}
-        >
-          <Box>
-            <CircularProgress color="inherit" />
-          </Box>
-          <Box>
-            <Typography>In progress… Please wait.</Typography>
-          </Box>
-        </Backdrop>
-        <HeaderDashboard
-          heading={pool.poolName}
-          links={[{ name: pool.tokenContractAddr }]}
-          subTitle={pool.tokenContractAddr}
-          // url={`https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`}
-          url={
-            infuraChainId === 'mainnet'
-              ? `https://etherscan.io/address/${pool.tokenContractAddr}`
-              : `https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`
-          }
-          className="projectstitle_box"
-        />
-        <img
-          src={
-            pool.iconUrl && pool.iconUrl !== ''
-              ? `${pool.iconUrl}`
-              : `/static/icons/json-logo.svg`
-          }
-          className="symbol_icon"
-        />
-        <div className={classes.listIcon} id="icon_box">
-          <a
-            href={`https://twitter.com/${pool.twitterId}`}
-            target="_blank"
-            className={
-              pool.twitterId && pool.twitterId !== ''
-                ? 'icon_tweet'
-                : 'icon_tweet_null'
+      {pool && (
+        <Container maxWidth="lg" className="projects_wrap">
+          <Backdrop
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'column'
+            }}
+            className={classes.backdrop}
+            open={open}
+          >
+            <Box>
+              <CircularProgress color="inherit" />
+            </Box>
+            <Box>
+              <Typography>In progress… Please wait.</Typography>
+            </Box>
+          </Backdrop>
+          <HeaderDashboard
+            heading={pool.poolName}
+            links={[{ name: pool.tokenContractAddr }]}
+            subTitle={pool.tokenContractAddr}
+            // url={`https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`}
+            url={
+              infuraChainId === 'mainnet'
+                ? `https://etherscan.io/address/${pool.tokenContractAddr}`
+                : `https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`
             }
-          ></a>
-          <a
-            href={`https://t.me/${pool.telegramHandle.replace('@', '')}`}
-            target="_blank"
-            className={
-              pool.telegramHandle && pool.telegramHandle !== ''
-                ? 'icon_page'
-                : 'icon_page_null'
+            className="projectstitle_box"
+          />
+          <img
+            src={
+              pool.iconUrl && pool.iconUrl !== ''
+                ? `${pool.iconUrl}`
+                : `/static/icons/json-logo.svg`
             }
-          ></a>
+            className="symbol_icon"
+          />
+          <div className={classes.listIcon} id="icon_box">
+            <a
+              href={`https://twitter.com/${pool.twitterId}`}
+              target="_blank"
+              className={
+                pool.twitterId && pool.twitterId !== ''
+                  ? 'icon_tweet'
+                  : 'icon_tweet_null'
+              }
+            ></a>
+            <a
+              href={`https://t.me/${pool.telegramHandle.replace('@', '')}`}
+              target="_blank"
+              className={
+                pool.telegramHandle && pool.telegramHandle !== ''
+                  ? 'icon_page'
+                  : 'icon_page_null'
+              }
+            ></a>
 
-          <a
-            disabled={true}
-            href={pool.mediumURL}
-            target="_blank"
-            className={
-              pool.mediumURL && pool.mediumURL !== ''
-                ? 'icon_message'
-                : 'icon_message_null'
-            }
-          ></a>
-        </div>
-        <Tabs
-          value={value}
-          scrollButtons="auto"
-          variant="scrollable"
-          allowScrollButtonsMobile
-          onChange={handleChange}
-          className={classes.tabBar}
-        >
-          {TABS.map((tab) => {
-            let tabTitle;
-            switch (tab.value) {
-              case 0:
-                tabTitle = t('taalswap.JoinThePool');
-                break;
-              case 1:
-                tabTitle = t('taalswap.PoolDetail');
-                break;
-              case 2:
-                tabTitle = t('taalswap.Participants');
-                break;
-              case 3:
-                tabTitle = t('taalswap.AboutTheProject');
-                break;
-            }
-            return (
-              <Tab
-                disableRipple
-                key={tab.value}
-                label={tabTitle}
-                icon={tab.icon}
-                value={tab.value}
-              />
-            );
-          })}
-        </Tabs>
-        <TabPanel value={value} index={0}>
-          {/* <Container> */}
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={4}>
-              <TotalAllocatedTokens pool={pool} />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <TotalPurchasers pool={pool} />
-            </Grid>
-            {/* <Grid item xs={12} sm={6} md={4}>
+            <a
+              disabled={true}
+              href={pool.mediumURL}
+              target="_blank"
+              className={
+                pool.mediumURL && pool.mediumURL !== ''
+                  ? 'icon_message'
+                  : 'icon_message_null'
+              }
+            ></a>
+          </div>
+          <Tabs
+            value={value}
+            scrollButtons="auto"
+            variant="scrollable"
+            allowScrollButtonsMobile
+            onChange={handleChange}
+            className={classes.tabBar}
+          >
+            {TABS.map((tab) => {
+              let tabTitle;
+              switch (tab.value) {
+                case 0:
+                  tabTitle = t('taalswap.JoinThePool');
+                  break;
+                case 1:
+                  tabTitle = t('taalswap.PoolDetail');
+                  break;
+                case 2:
+                  tabTitle = t('taalswap.Participants');
+                  break;
+                case 3:
+                  tabTitle = t('taalswap.AboutTheProject');
+                  break;
+              }
+              return (
+                <Tab
+                  disableRipple
+                  key={tab.value}
+                  label={tabTitle}
+                  icon={tab.icon}
+                  value={tab.value}
+                />
+              );
+            })}
+          </Tabs>
+          <TabPanel value={value} index={0}>
+            {/* <Container> */}
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6} md={4}>
+                <TotalAllocatedTokens pool={pool} />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <TotalPurchasers pool={pool} />
+              </Grid>
+              {/* <Grid item xs={12} sm={6} md={4}>
               <CurrentProgress pool={pool} />
             </Grid> */}
-            <Grid item xs={12} sm={6} md={4}>
-              <Countdown pool={pool} from={from} />
-            </Grid>
-          </Grid>
-          <Box sx={{ my: 3 }}></Box>
-          <Card>
-            <Grid container spacing={upMd ? 5 : 2}>
-              <Grid item xs={12} md={6}>
-                <PaymentInformation
-                  formik={formik}
-                  pool={pool}
-                  ethPrice={ethPrice}
-                />
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <JoninthePool
-                  formik={formik}
-                  pool={pool}
-                  onBackdrop={handleBackdrop}
-                  ethPrice={ethPrice}
-                />
+              <Grid item xs={12} sm={6} md={4}>
+                <Countdown pool={pool} from={from} />
               </Grid>
             </Grid>
-          </Card>
-          {/* </Container> */}
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <PoolDetails pool={pool} />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <Participate pool={pool} />
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <AboutTheProject pool={pool} />
-        </TabPanel>
+            <Box sx={{ my: 3 }}></Box>
+            <Card>
+              <Grid container spacing={upMd ? 5 : 2}>
+                <Grid item xs={12} md={6}>
+                  <PaymentInformation
+                    formik={formik}
+                    pool={pool}
+                    ethPrice={ethPrice}
+                  />
+                </Grid>
 
-        {/* <div className={clsx(classes.root, className)} {...other}>
+                <Grid item xs={12} md={6}>
+                  <JoninthePool
+                    formik={formik}
+                    pool={pool}
+                    onBackdrop={handleBackdrop}
+                    ethPrice={ethPrice}
+                  />
+                </Grid>
+              </Grid>
+            </Card>
+            {/* </Container> */}
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <PoolDetails pool={pool} />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <Participate pool={pool} />
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <AboutTheProject pool={pool} />
+          </TabPanel>
+
+          {/* <div className={clsx(classes.root, className)} {...other}>
           <PoolButton />
         </div>
         <Card>
@@ -313,7 +335,8 @@ function PaymentView({ className, ...other }) {
         <Card style={{ marginTop: '3rem' }}>
           <PoolDetails pool={pool} />
         </Card> */}
-      </Container>
+        </Container>
+      )}
     </Page>
   );
 }
