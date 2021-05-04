@@ -11,6 +11,7 @@ import { Box, Card, Typography } from '@material-ui/core';
 import AnimatedNumber from 'react-animated-number';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import Numbers from 'src/utils/Numbers';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +70,7 @@ function TotalAllocatedTokens({ className, pool, ...other }) {
     await taalswap
       .tokensAllocated()
       .then((result) => {
-        setTokensAllocated(parseInt(result));
+        setTokensAllocated(Numbers.toFloat4(result));
       })
       .catch((error) => console.log(error));
     // }
@@ -90,7 +91,7 @@ function TotalAllocatedTokens({ className, pool, ...other }) {
                 transition: '0.8s ease-out'
               }}
               duration={2000}
-              formatValue={(n) => `${fNumber(n)}`}
+              formatValue={(n) => `${Numbers.toFloat(n)}`}
             />
             <Typography>/ {pool.tradeAmount}</Typography>
           </Box>
