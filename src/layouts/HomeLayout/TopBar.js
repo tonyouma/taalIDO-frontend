@@ -144,11 +144,10 @@ function TopBar() {
     // console.log('wallet', wallet);
     // console.log('from', from);
     if (!!library) {
+      console.log('=====', library.provider);
       if (
-        (library.provider.isMetaMask &&
-          library.provider.chainId !== targetNetwork) ||
-        (!library.provider.isMetaMask &&
-          library.provider.chainId !== parseInt(targetNetwork))
+        library.provider.chainId !== parseInt(targetNetwork) &&
+        library.provider.chainId !== targetNetwork
       ) {
         enqueueSnackbar(targetNetworkMsg, {
           variant: 'warning',
