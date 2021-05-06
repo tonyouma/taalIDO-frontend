@@ -12,6 +12,7 @@ import { injected, walletconnect } from 'src/connectors';
 import { setActivatingConnector } from 'src/redux/slices/wallet';
 import { useDispatch } from 'react-redux';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import './APP.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -51,13 +52,28 @@ const useStyles = makeStyles((theme) => ({
 
 const walletList = [
   {
-    name: 'MetaMask'
+    name: 'Talken',
+    name2: 'All'
   },
   {
-    name: 'WalletConnect'
+    name: 'MetaMask',
+    name2: 'ETH, BSC, HECO'
   },
   {
-    name: 'Binance Wallet'
+    name: 'WalletConnect',
+    name2: 'ETH'
+  },
+  {
+    name: 'Binance Wallet',
+    name2: 'BSC'
+  },
+  {
+    name: 'Kaikas',
+    name2: 'Klaytn'
+  },
+  {
+    name: "d'Cent",
+    name2: 'Klaytn'
   }
 ];
 
@@ -93,7 +109,9 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
         aria-labelledby="max-width-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Box className={classes.dialogTitle}>CONNECT TO A WALLET</Box>
+        <Box className={classes.dialogTitle} id="dialog_title">
+          Connect Wallet
+        </Box>
         <DialogTitle
           className={classes.dialogTitle}
           id="customized-dialog-title"
@@ -101,23 +119,31 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
         />
         <DialogContent>
           {walletList.map((wallet, index) => (
-            <Box
+            <fieldset
               key={index}
               className={classes.walletBoxWrapper}
-              boxShadow="3"
               onClick={() => onClickWallet(wallet)}
+              id="list_box"
             >
+              <legend>{wallet.name2}</legend>
               <Box
                 component="img"
                 alt="logo"
                 src={'/static/icons/wallet_icon0' + (index + 1) + '.png'}
                 height={index == 1 ? 30 : 40}
                 className={classes.walletBoxIcon}
+                id="logo_icon"
               />
               <Box className={classes.walletBoxContent}>
                 <Typography>{wallet.name}</Typography>
               </Box>
-            </Box>
+              <Box
+                component="img"
+                alt="arrow"
+                src={'/static/icons/path.png'}
+                className="arrow_icon"
+              />
+            </fieldset>
           ))}
         </DialogContent>
       </Dialog>
