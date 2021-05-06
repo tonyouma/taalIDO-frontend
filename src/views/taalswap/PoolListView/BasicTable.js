@@ -39,7 +39,7 @@ import Numbers from 'src/utils/Numbers';
 import { targetNetwork, targetNetworkMsg } from '../../../config';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-
+import { infuraChainId } from 'src/config';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -60,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       cursor: 'pointer'
     }
+  },
+  tokenLinkWrapper: {
+    backgroundColor: theme.palette.background.neutral,
+    padding: '15px',
+    marginTop: '15px'
   }
 }));
 
@@ -365,7 +370,53 @@ export default function BasicTable({ filterName, category }) {
                   {t('taalswap.Alert3')}
                 </Typography>
               </Box>
-              <Divider />
+              <Box className={classes.tokenLinkWrapper}>
+                <Box
+                  display="flex"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                >
+                  <Box
+                    component="img"
+                    src={
+                      selectedPool.iconUrl && selectedPool.iconUrl !== ''
+                        ? `${selectedPool.iconUrl}`
+                        : `/static/icons/json-logo.svg`
+                    }
+                    sx={{
+                      width: 35,
+                      height: 35
+                    }}
+                    className="plancard_icon"
+                  />
+                  <Box display="flex" flexDirection="column" marginLeft="10px">
+                    <Box>
+                      <Typography>{`${selectedPool.poolName} (${selectedPool.symbol})`}</Typography>
+                    </Box>
+                    <Box>
+                      <Typography
+                        component="a"
+                        marginTop="5px"
+                        href={
+                          infuraChainId === 'mainnet'
+                            ? `https://etherscan.io/address/${selectedPool.tokenContractAddr}`
+                            : `https://${infuraChainId}.etherscan.io/address/${selectedPool.tokenContractAddr}`
+                        }
+                        target="_blank"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        {selectedPool.tokenContractAddr.substr(0, 8) +
+                          '...' +
+                          selectedPool.tokenContractAddr.substr(
+                            selectedPool.tokenContractAddr.length - 8,
+                            selectedPool.tokenContractAddr.length
+                          )}{' '}
+                        ({t('taalswap.ViewOnEthScan')})
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
               <Box
                 textAlign="right"
                 // marginTop="20px"

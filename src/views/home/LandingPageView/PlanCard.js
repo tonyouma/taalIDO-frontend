@@ -26,7 +26,7 @@ import Taalswap from 'src/utils/taalswap';
 import Numbers from 'src/utils/Numbers';
 import { MLabel } from 'src/theme';
 import { useTranslation } from 'react-i18next';
-
+import { infuraChainId } from 'src/config';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       boxShadow: `0 0 0 1.5px ${theme.palette.primary.main}`
     }
+  },
+  tokenLinkWrapper: {
+    backgroundColor: theme.palette.background.neutral,
+    padding: '15px',
+    marginTop: '15px'
   }
 }));
 
@@ -364,7 +369,50 @@ function PlanCard({ pool, ethPrice, index, className }) {
               {t('taalswap.Alert3')}
             </Typography>
           </Box>
-          <Divider />
+
+          <Box className={classes.tokenLinkWrapper}>
+            <Box display="flex" justifyContent="flex-start" alignItems="center">
+              <Box
+                component="img"
+                src={
+                  pool.iconUrl && pool.iconUrl !== ''
+                    ? `${pool.iconUrl}`
+                    : `/static/icons/json-logo.svg`
+                }
+                sx={{
+                  width: 35,
+                  height: 35
+                }}
+                className="plancard_icon"
+              />
+              <Box display="flex" flexDirection="column" marginLeft="10px">
+                <Box>
+                  <Typography>{`${pool.poolName} (${pool.symbol})`}</Typography>
+                </Box>
+                <Box>
+                  <Typography
+                    component="a"
+                    marginTop="5px"
+                    href={
+                      infuraChainId === 'mainnet'
+                        ? `https://etherscan.io/address/${pool.tokenContractAddr}`
+                        : `https://${infuraChainId}.etherscan.io/address/${pool.tokenContractAddr}`
+                    }
+                    target="_blank"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    {pool.tokenContractAddr.substr(0, 8) +
+                      '...' +
+                      pool.tokenContractAddr.substr(
+                        pool.tokenContractAddr.length - 8,
+                        pool.tokenContractAddr.length
+                      )}{' '}
+                    ({t('taalswap.ViewOnEthScan')})
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
           <Box textAlign="right">
             <Box display="flex" justifyContent="flex-end" alignItems="center">
               <Checkbox
