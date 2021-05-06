@@ -99,6 +99,7 @@
     "poolStDone": "IDO Done",
     "poolStPaused": "Waiting Live Soon",
     "poolStSoldout": "Sold Out",
-    "Close": "Close"
+    "Close": "Close",
+    "ViewOnEthScan": "View on EthScan"
   }
 }
