@@ -94,10 +94,8 @@ function TopBar({ onOpenNav, className }) {
       if (!!library && !!account) {
         console.log('=====', library.provider);
         if (
-          (library.provider.isMetaMask &&
-            library.provider.chainId !== targetNetwork) ||
-          (!library.provider.isMetaMask &&
-            library.provider.chainId !== parseInt(targetNetwork))
+          library.provider.chainId !== parseInt(targetNetwork) &&
+          library.provider.chainId !== targetNetwork
         ) {
           enqueueSnackbar(targetNetworkMsg, {
             variant: 'warning',
