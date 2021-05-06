@@ -159,37 +159,23 @@ function Tabcard() {
   };
 
   return (
-    <Page title="TaalSwap Finance" className={classes.root} id="tabcard_wrap">
+    <Page title="TaalSwap Finance" className={classes.root} id="finished_wrap">
       <Container maxWidth="lg">
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <Typography variant="h3" align="center" gutterBottom>
-            Live & Upcoming
+            Finished
           </Typography>
-          <Box sx={{ my: 5 }} className="tabcard_loading">
+          <Box sx={{ my: 5 }}>
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'flex-end'
               }}
-            >
-              {loadingFlag && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'column'
-                  }}
-                >
-                  <CircularProgress />
-                  <Typography color="primary">loading..</Typography>
-                </Box>
-              )}
-            </Box>
+            ></Box>
           </Box>
           <Grid container spacing={3}>
-            {pools.map((pool, index) => (
+            {accomplishedPools.map((pool, index) => (
               <Grid item xs={12} md={4} key={index}>
                 <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
               </Grid>
