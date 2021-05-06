@@ -45,7 +45,7 @@ function CandidatePool() {
   return (
     <Page title="TaalSwap Finance" className={(classes.root, 'candidate_wrap')}>
       <Container maxWidth="lg">
-        <Typography variant="h3" align="center" gutterBottom>
+        <Typography variant="h4" align="center" gutterBottom>
           {t('taalswap.CandidateProjects')}
         </Typography>
 

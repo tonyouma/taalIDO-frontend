@@ -193,29 +193,6 @@ function Tabcard() {
     <Page title="TaalSwap Finance" className={classes.root} id="tabcard_wrap">
       <Container maxWidth="lg">
         <Box sx={{ width: '100%' }}>
-          <Tabs value={value} onChange={handleChange} centered>
-            {POOLS_TABS.map((tab) => {
-              let labelStr;
-              switch (tab.value) {
-                case 0:
-                  labelStr = t('taalswap.LiveUpcoming');
-                  break;
-                case 1:
-                  labelStr = t('taalswap.Finished');
-                  break;
-              }
-              return (
-                <Tab
-                  disableRipple
-                  key={tab.value}
-                  label={labelStr}
-                  value={tab.value}
-                  className={classes.label}
-                />
-              );
-            })}
-          </Tabs>
-
           {loadingFlag && (
             <Box
               sx={{
@@ -223,7 +200,7 @@ function Tabcard() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexDirection: 'column',
-                marginTop: '100px'
+                marginBottom: '2rem'
               }}
             >
               <CircularProgress />
@@ -231,44 +208,48 @@ function Tabcard() {
             </Box>
           )}
 
-          <TabPanel value={value} index={0}>
-            <Box sx={{ my: 5 }} className="tabcard_loading">
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              ></Box>
-            </Box>
-            <Grid container spacing={3}>
-              {/* {pools.map((pool, index) => ( */}
-              {upcomingLivePools.map((pool, index) => (
-                <Grid item xs={12} md={4} key={index}>
-                  <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
-                </Grid>
-              ))}
-            </Grid>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Box sx={{ my: 5 }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end'
-                }}
-              ></Box>
-            </Box>
-            <Grid container spacing={3}>
-              {/* {accomplishedPools.map((pool, index) => ( */}
-              {finishedPools.map((pool, index) => (
-                <Grid item xs={12} md={4} key={index}>
-                  <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
-                </Grid>
-              ))}
-            </Grid>
-          </TabPanel>
+          <Box textAlign="center">
+            <Typography variant="h4">{t('taalswap.Finished')}</Typography>
+          </Box>
+          <Box sx={{ my: 5 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end'
+              }}
+            ></Box>
+          </Box>
+          <Grid container spacing={3}>
+            {/* {accomplishedPools.map((pool, index) => ( */}
+            {finishedPools.map((pool, index) => (
+              <Grid item xs={12} md={4} key={index}>
+                <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
+              </Grid>
+            ))}
+          </Grid>
+
+          <Box textAlign="center" sx={{ my: 5 }}>
+            <Typography variant="h4">{t('taalswap.LiveUpcoming')}</Typography>
+          </Box>
+
+          <Box sx={{ my: 5 }} className="tabcard_loading">
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            ></Box>
+          </Box>
+          <Grid container spacing={3}>
+            {/* {pools.map((pool, index) => ( */}
+            {upcomingLivePools.map((pool, index) => (
+              <Grid item xs={12} md={4} key={index}>
+                <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       </Container>
       <Container maxWidth="lg">
