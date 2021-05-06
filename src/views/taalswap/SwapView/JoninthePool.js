@@ -10,7 +10,9 @@ import {
   Divider,
   Typography,
   TextField,
-  CircularProgress
+  CircularProgress,
+  Chip,
+  Button
 } from '@material-ui/core';
 import { LoadingButton, treeViewClasses } from '@material-ui/lab';
 import { useWeb3React } from '@web3-react/core';
@@ -93,6 +95,8 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
   const [tokensLeft, setTokensLeft] = useState(0);
   const [minAmount, setMinAmount] = useState(0);
   const [maxAmount, setMaxAmount] = useState(0);
+  const [purchasedAmount, setPurchasedAmount] = useState(0);
+  const [max, setMax] = useState(0);
   const [swappedAmount, setSwappedAmount] = useState(0);
   const [soldoutFlag, setSoldout] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
@@ -334,6 +338,70 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
     setTime(result);
   };
 
+  const onClickMaxAmount = async () => {
+    try {
+      if (!!library || from) {
+        await taalswap
+          .tokensLeft()
+          .then((result) => {
+            setTokensLeft(result);
+
+            // console.log(`tokensLeft : ${result}`);
+          })
+          .catch((error) => console.log(error));
+
+        await taalswap.individualMaximumAmount().then((result) => {
+          setMaxAmount(result);
+          // console.log(`individualMaximumAmount : ${result}`);
+        });
+
+        const myPurchases = await taalswap.getAddressPurchaseIds({
+          address: from ? wallet : account
+        });
+
+        let purchasedAmount = 0;
+        for (let i = 0; i < myPurchases.length; i++) {
+          await taalswap.purchases({ id: myPurchases[i] }).then((result) => {
+            // purchasedAmount =
+            //   parseFloat(purchasedAmount) +
+            //   parseFloat(formatEther(result.amount));
+            purchasedAmount =
+              Numbers.toFloat(purchasedAmount) +
+              Numbers.toFloat(formatEther(result.amount));
+          });
+        }
+
+        // console.log('set max amount');
+        // console.log(`purchasedAmount : ${purchasedAmount}`);
+
+        // console.log(
+        //   `balance         : ${Numbers.toFloat(formatEther(balance))}`
+        // );
+        // console.log(`tokensLeft      : ${tokensLeft}`);
+        // console.log(`maxAmount       : ${maxAmount}`);
+        // console.log(`tradeValue      : ${pool.tradeValue}`);
+
+        let amount =
+          tokensLeft > maxAmount
+            ? maxAmount - purchasedAmount
+            : tokensLeft - purchasedAmount;
+
+        let joinPrice = pool.tradeValue * amount;
+        // console.log(`joinPrice       : ${joinPrice}`);
+
+        if (parseFloat(joinPrice) < parseFloat(formatEther(balance))) {
+          setAmount(amount);
+        } else {
+          const newAmount = formatEther(balance) / pool.tradeValue;
+          console.log(newAmount);
+          setAmount(Numbers.toFloat(newAmount));
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(async () => {
     try {
       // console.log('in...........');
@@ -491,6 +559,19 @@ function JoninthePool({ className, pool, onBackdrop, ethPrice }) {
         >
           {t('taalswap.Amount')}
         </Typography>
+        {/* <Chip color="primary" size="small" label="Max" /> */}
+        <Button
+          style={{
+            fontSize: '10px',
+            padding: '0px',
+            maxWidth: '35px',
+            minWidth: '35px'
+          }}
+          variant="outlined"
+          onClick={onClickMaxAmount}
+        >
+          MAX
+        </Button>
       </Box>
 
       <Box sx={{ mb: 2.5, display: 'flex', justifyContent: 'flex-end' }}>
