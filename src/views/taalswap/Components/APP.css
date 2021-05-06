@@ -1,0 +1,55 @@
+#list_box {
+  border-color: #dce0e4;
+  border-radius: 5px;
+  position: relative;
+  justify-content: flex-start;
+  padding: 8px 0 8px 40px;
+}
+
+#list_box:nth-child(5) {
+  margin-bottom: 0;
+  border-radius: 5px 5px 0 0;
+  border-bottom: none;
+}
+#list_box:nth-child(6) {
+  border-radius: 0 0 5px 5px;
+  position: relative;
+  border-top: none;
+}
+#list_box:nth-child(6)::before {
+  width: calc(100% - 58px);
+  box-sizing: border-box;
+  top: 0;
+  content: '';
+  display: block;
+  height: 1px;
+  background-color: #dce0e4;
+  position: absolute;
+}
+#list_box legend {
+  color: #637381;
+  font-size: 0.9rem;
+}
+.css-1v9kwnv-MuiPaper-root-MuiDialog-paper legend {
+  color: #fff !important;
+}
+#list_box:nth-child(6) legend {
+  display: none;
+}
+
+#logo_icon {
+  width: 30px;
+  height: 30px;
+}
+.arrow_icon {
+  position: absolute;
+  right: 20px;
+}
+
+#dialog_title {
+  text-align: left;
+  padding: 24px 0 0 24px;
+}
+#customized-dialog-title {
+  padding: 0;
+}
