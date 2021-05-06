@@ -143,7 +143,7 @@ const WalletDialog = ({ isOpenModal, handleCloseModal, activate }) => {
               <Box
                 component="img"
                 alt="arrow"
-                src={'/static/icons/path.png'}
+                src={'/static/icons/Path.png'}
                 className="arrow_icon"
               />
             </fieldset>
