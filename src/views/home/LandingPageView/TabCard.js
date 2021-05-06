@@ -174,6 +174,7 @@ function Tabcard() {
         finishedPools.length + upcomingLivePools.length + etcPools.length
       ) {
         setLoadingFlag(false);
+        setValue(1);
       } else {
         setLoadingFlag(true);
       }
@@ -214,6 +215,22 @@ function Tabcard() {
               );
             })}
           </Tabs>
+
+          {loadingFlag && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                marginTop: '100px'
+              }}
+            >
+              <CircularProgress />
+              <Typography color="primary">loading..</Typography>
+            </Box>
+          )}
+
           <TabPanel value={value} index={0}>
             <Box sx={{ my: 5 }} className="tabcard_loading">
               <Box
@@ -222,21 +239,7 @@ function Tabcard() {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}
-              >
-                {loadingFlag && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexDirection: 'column'
-                    }}
-                  >
-                    <CircularProgress />
-                    <Typography color="primary">loading..</Typography>
-                  </Box>
-                )}
-              </Box>
+              ></Box>
             </Box>
             <Grid container spacing={3}>
               {/* {pools.map((pool, index) => ( */}
