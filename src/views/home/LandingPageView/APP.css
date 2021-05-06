@@ -22,7 +22,7 @@
   color: #229a16;
 }
 
-.cardtitle_wrap {
+#cardtitle_wrap {
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
@@ -321,7 +321,7 @@
   .view_btnwrap {
     margin: 24px 0 0 0;
   }
-  .candidate_wrap {
+  #candidate_wrap {
     padding: 0 0 50px 0;
   }
   .pooltitle_wrap {

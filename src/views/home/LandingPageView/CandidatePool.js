@@ -41,7 +41,7 @@ function CandidatePool() {
   }, [poolList]);
 
   return (
-    <Page title="TaalSwap Finance" className={(classes.root, 'candidate_wrap')}>
+    <Page title="TaalSwap Finance" className={classes.root} id="candidate_wrap">
       <Container maxWidth="lg">
         <Typography variant="h3" align="center" gutterBottom>
           Candidate Projects
