@@ -44,17 +44,24 @@
 
 .projectstitle_box .css-1ey68ak-MuiTypography-root {
   margin-left: 45px;
+  margin-top: 1rem;
 }
 .symbol_icon {
   position: absolute;
-  top: 3px;
+  top: 1rem;
   width: 38px;
   height: 38px;
+  /* padding-top: 1rem; */
 }
 @media screen and (max-width: 959px) {
   .symbol_icon {
-    top: 0px;
+    /* top: 0px; */
+    top: 1rem;
   }
+}
+
+#icon_box {
+  padding-top: 1rem;
 }
 
 #icon_box .icon_tweet_null {
