@@ -660,10 +660,9 @@ export default function ApplicationListView() {
   useEffect(async () => {
     if (!!library) {
       if (
-        (library.provider.isMetaMask &&
-          library.provider.chainId !== targetNetwork) ||
-        (!library.provider.isMetaMask &&
-          library.provider.chainId !== parseInt(targetNetwork))
+        library.provider.chainId !== parseInt(targetNetwork) &&
+        library.provider.chainId !== targetNetwork &&
+        library.provider.chainId !== undefined
       ) {
         enqueueSnackbar(targetNetworkMsg, {
           variant: 'warning',

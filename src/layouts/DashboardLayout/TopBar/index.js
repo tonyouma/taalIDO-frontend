@@ -77,7 +77,6 @@ function TopBar({ onOpenNav, className }) {
 
   const context = useWeb3React();
   const { connector, library, account, activate } = context;
-
   useEffect(() => {
     async function login() {
       // console.log('1----------> ', activatingConnector);
@@ -90,13 +89,13 @@ function TopBar({ onOpenNav, className }) {
       if (activatingConnector && activatingConnector === connector) {
         dispatch(setActivatingConnector(undefined));
       }
-
       if (!!library && !!account) {
-        console.log('=====', library.provider);
         if (
           library.provider.chainId !== parseInt(targetNetwork) &&
-          library.provider.chainId !== targetNetwork
+          library.provider.chainId !== targetNetwork &&
+          library.provider.chainId !== undefined
         ) {
+          // chainId 가 2 가 아니고 알파월렛이 아니면
           enqueueSnackbar(targetNetworkMsg, {
             variant: 'warning',
             autoHideDuration: 3000,

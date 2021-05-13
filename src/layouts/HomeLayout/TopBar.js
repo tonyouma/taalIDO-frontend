@@ -147,7 +147,8 @@ function TopBar() {
       console.log('=====', library.provider);
       if (
         library.provider.chainId !== parseInt(targetNetwork) &&
-        library.provider.chainId !== targetNetwork
+        library.provider.chainId !== targetNetwork &&
+        library.provider.chainId !== undefined
       ) {
         enqueueSnackbar(targetNetworkMsg, {
           variant: 'warning',
