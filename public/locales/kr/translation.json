@@ -100,6 +100,10 @@
     "poolStPaused": "IDO 잠시 멈춤",
     "poolStSoldout": "판매 완료",
     "Close": "닫기",
-    "ViewOnEthScan": "이더스캔 조회"
+    "ViewOnEthScan": "이더스캔 조회",
+    "Account": "계정",
+    "ConnectedInfo": "로 연결",
+    "Change": "변경",
+    "CopyAddress": "주소 복사"
   }
 }

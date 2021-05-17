@@ -1,0 +1,12 @@
+#token_num {
+  color: #232c35;
+  background: #eeeff1;
+  box-sizing: border-box;
+  padding: 5px 8px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+}
+.file_icon {
+  padding: 0 7.5px 0 15px;
+  cursor: pointer;
+}

@@ -100,6 +100,10 @@
     "poolStPaused": "Waiting Live Soon",
     "poolStSoldout": "Sold Out",
     "Close": "Close",
-    "ViewOnEthScan": "View on EthScan"
+    "ViewOnEthScan": "View on EthScan",
+    "Account": "Account",
+    "ConnectedInfo": "Connected with",
+    "Change": "Change",
+    "CopyAddress": "Copy Address"
   }
 }
