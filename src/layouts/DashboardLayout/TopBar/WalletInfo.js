@@ -109,7 +109,7 @@ const WalletInfo = ({ walletAddress, balance, disconnect }) => {
     <React.Fragment>
       <Box className={classes.root} onClick={() => setIsOpenAccount(true)}>
         <Typography id="token_num">{walletStr}</Typography>
-        <img src="/static/icons/file_icon.png" className="file_icon" />
+        {/* <img src="/static/icons/file_icon.png" className="file_icon" /> */}
       </Box>
       <Box>
         <Dialog
