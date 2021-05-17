@@ -65,7 +65,7 @@ const WalletInfo = ({ walletAddress, balance, disconnect }) => {
   const onClickCopy = () => {
     try {
       // navigator.clipboard.writeText(walletAddress);
-      if (navigator.clipboard && window.isSecureContext && false) {
+      if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(walletAddress);
       } else {
         let textArea = document.createElement('textarea');
