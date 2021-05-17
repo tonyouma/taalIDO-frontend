@@ -117,7 +117,7 @@ const WalletInfo = ({ walletAddress, balance, disconnect }) => {
           onClose={handleCloseAccount}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
-          maxWidth="sm"
+          maxWidth="lg"
         >
           <DialogTitle
             className={classes.dialogTitle}
@@ -132,14 +132,14 @@ const WalletInfo = ({ walletAddress, balance, disconnect }) => {
                 bgcolor: theme.palette.background.paper,
                 // borderColor: theme.palette.text.secondary,
 
-                paddingLeft: 3,
-                paddingRight: 3,
+                paddingLeft: 1,
+                paddingRight: 1,
                 paddingTop: 0.5,
                 paddingBottom: 2,
                 border: '1',
-                borderColor: 'red',
+                borderColor: 'red'
                 // borderRadius: 5,
-                width: '400px'
+                // width: '400px'
                 // height: '5rem'
               }}
             >
@@ -153,7 +153,7 @@ const WalletInfo = ({ walletAddress, balance, disconnect }) => {
                     ? `${t('taalswap.ConnectedInfo')} MetaMask`
                     : `MetaMask${t('taalswap.ConnectedInfo')}`}
                 </Typography>
-                <Box>
+                <Box marginLeft="2rem">
                   <Button
                     size="small"
                     onClick={async () => {
