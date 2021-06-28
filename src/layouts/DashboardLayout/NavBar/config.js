@@ -109,6 +109,7 @@ const navConfig = [
   // ----------------------------------------------------------------------
   {
     subheader: 'Swap',
+    href: 'https://swap.taalswap.finance/#/swap/',
     items: []
   },
   // TAALSWAP POOLS
