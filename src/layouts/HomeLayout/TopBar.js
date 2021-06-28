@@ -52,7 +52,6 @@ const MENU_LINKS = [
     icon: roundSpeed,
     href: 'https://taalswap.gitbook.io/taalswap-documents/'
   }
-  // { title: 'Account', icon: bookOpenFill, href: PATH_APP.taalswap }
 ];
 
 const APP_BAR_MOBILE = 64;

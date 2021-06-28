@@ -101,28 +101,28 @@ const navConfig = [
   // },
   // MANAGEMENT
   // ----------------------------------------------------------------------
-  {
-    subheader: 'Vote',
-    items: []
-  },
+  // {
+  //   subheader: 'Vote',
+  //   items: []
+  // },
   // TAALSWAP TRADE
   // ----------------------------------------------------------------------
   {
-    subheader: 'Trade',
+    subheader: 'Swap',
     items: []
   },
   // TAALSWAP POOLS
   // ----------------------------------------------------------------------
-  {
-    subheader: 'Pools',
-    items: []
-  },
+  // {
+  //   subheader: 'Pools',
+  //   items: []
+  // },
   // TAALSWAP FARMS
   // ----------------------------------------------------------------------
-  {
-    subheader: 'Farms',
-    items: []
-  },
+  // {
+  //   subheader: 'Farms',
+  //   items: []
+  // },
   {
     subheader: 'Docs',
     items: [
