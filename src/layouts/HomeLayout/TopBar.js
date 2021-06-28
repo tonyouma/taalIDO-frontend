@@ -42,13 +42,10 @@ import { useTranslation } from 'react-i18next';
 const MENU_LINKS = [
   { title: 'Home', icon: homeFill, href: '/' },
   { title: 'IDO', icon: roundStreetview, href: PATH_APP.taalswap.pools },
-  { title: 'Vote', icon: roundStreetview, href: PATH_APP.taalswap },
-  { title: 'Trade', icon: roundStreetview, href: PATH_APP.taalswap },
-  { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap },
   {
-    title: 'Farms',
+    title: 'Swap',
     icon: roundStreetview,
-    href: PATH_APP.taalswap
+    href: 'https://swap.taalswap.finance/#/swap'
   },
   {
     title: 'Docs',
