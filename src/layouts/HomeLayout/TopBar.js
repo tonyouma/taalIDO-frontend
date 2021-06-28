@@ -177,7 +177,7 @@ function TopBar() {
       }}
     >
       {MENU_LINKS.map((link) =>
-        link.title !== 'Docs' || link.title !== 'Swap' ? (
+        link.title !== 'Docs' && link.title !== 'Swap' ? (
           <Link
             exact
             to={link.href}
