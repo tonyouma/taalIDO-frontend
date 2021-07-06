@@ -42,20 +42,16 @@ import { useTranslation } from 'react-i18next';
 const MENU_LINKS = [
   { title: 'Home', icon: homeFill, href: '/' },
   { title: 'IDO', icon: roundStreetview, href: PATH_APP.taalswap.pools },
-  { title: 'Vote', icon: roundStreetview, href: PATH_APP.taalswap },
-  { title: 'Trade', icon: roundStreetview, href: PATH_APP.taalswap },
-  { title: 'Pools', icon: roundStreetview, href: PATH_APP.taalswap },
   {
-    title: 'Farms',
+    title: 'Swap',
     icon: roundStreetview,
-    href: PATH_APP.taalswap
+    href: 'https://swap.taalswap.finance/#/swap'
   },
   {
     title: 'Docs',
     icon: roundSpeed,
     href: 'https://taalswap.gitbook.io/taalswap-documents/'
   }
-  // { title: 'Account', icon: bookOpenFill, href: PATH_APP.taalswap }
 ];
 
 const APP_BAR_MOBILE = 64;
@@ -181,7 +177,7 @@ function TopBar() {
       }}
     >
       {MENU_LINKS.map((link) =>
-        link.title !== 'Docs' ? (
+        link.title !== 'Docs' && link.title !== 'Swap' ? (
           <Link
             exact
             to={link.href}

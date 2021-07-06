@@ -14,9 +14,11 @@ import {
   Drawer,
   Hidden,
   Typography,
-  ListSubheader
+  ListSubheader,
+  Link
 } from '@material-ui/core';
 import './APP.css';
+import clsx from 'clsx';
 
 // ----------------------------------------------------------------------
 
@@ -169,27 +171,54 @@ function NavBar({ isOpenNav, onCloseNav }) {
         </div>
       </Link> */}
 
-      {MenuLinks.map((list, index) => (
-        <List
-          disablePadding
-          // key={list.subheader}
-          key={index}
-          subheader={
-            <ListSubheader
-              disableSticky
-              disableGutters
-              className={classes.subHeader}
-            >
-              {list.subheader}
-            </ListSubheader>
-          }
-        >
-          {renderNavItems({
-            items: list.items,
-            pathname: pathname
-          })}
-        </List>
-      ))}
+      {MenuLinks.map((list, index) =>
+        list.subheader !== 'Swap' ? (
+          <List
+            disablePadding
+            // key={list.subheader}
+            key={index}
+            subheader={
+              <ListSubheader
+                disableSticky
+                disableGutters
+                className={classes.subHeader}
+              >
+                {list.subheader}
+              </ListSubheader>
+            }
+          >
+            {renderNavItems({
+              items: list.items,
+              pathname: pathname
+            })}
+          </List>
+        ) : (
+          <List
+            disablePadding
+            // key={list.subheader}
+            key={index}
+            subheader={
+              <ListSubheader
+                disableSticky
+                disableGutters
+                className={classes.subHeader}
+              >
+                <Link
+                  to={{ pathname: list.href }}
+                  target="_blank"
+                  key={list.subheader}
+                  underline="none"
+                  variant="subtitle2"
+                  component={RouterLink}
+                  sx={{ mr: 5, color: 'text.primary' }}
+                >
+                  {list.subheader}
+                </Link>
+              </ListSubheader>
+            }
+          />
+        )
+      )}
 
       <Box sx={{ px: 4.5, pb: 3, position: 'relative', bottom: 0 }}>
         <div className={classes.doc}>
