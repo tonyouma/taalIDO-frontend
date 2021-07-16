@@ -277,10 +277,11 @@ function TopBar() {
             </MenuItem>
           ) : (
             <MenuItem
-              to={{ pathname: link.href }}
+              exact
+              to={isHome}
               key={link.title}
               component={RouterLink}
-              onClick={() => setOpenMenu(false)}
+              onClick={() => (window.location.href = link.href)}
               activeClassName={classes.isMobileActive}
               sx={{ color: 'text.secondary' }}
             >
