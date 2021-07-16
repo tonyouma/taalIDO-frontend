@@ -259,22 +259,38 @@ function TopBar() {
       onClose={() => setOpenMenu(false)}
     >
       <List>
-        {MENU_LINKS.map((link) => (
-          <MenuItem
-            exact
-            to={link.href}
-            key={link.title}
-            component={RouterLink}
-            onClick={() => setOpenMenu(false)}
-            activeClassName={classes.isMobileActive}
-            sx={{ color: 'text.secondary' }}
-          >
-            <ListItemIcon>
-              <Icon icon={link.icon} width={20} height={20} />
-            </ListItemIcon>
-            <ListItemText>{link.title}</ListItemText>
-          </MenuItem>
-        ))}
+        {MENU_LINKS.map((link) =>
+          link.title !== 'Docs' && link.title !== 'Swap' ? (
+            <MenuItem
+              exact
+              to={link.href}
+              key={link.title}
+              component={RouterLink}
+              onClick={() => setOpenMenu(false)}
+              activeClassName={classes.isMobileActive}
+              sx={{ color: 'text.secondary' }}
+            >
+              <ListItemIcon>
+                <Icon icon={link.icon} width={20} height={20} />
+              </ListItemIcon>
+              <ListItemText>{link.title}</ListItemText>
+            </MenuItem>
+          ) : (
+            <MenuItem
+              to={{ pathname: link.href }}
+              key={link.title}
+              component={RouterLink}
+              onClick={() => setOpenMenu(false)}
+              activeClassName={classes.isMobileActive}
+              sx={{ color: 'text.secondary' }}
+            >
+              <ListItemIcon>
+                <Icon icon={link.icon} width={20} height={20} />
+              </ListItemIcon>
+              <ListItemText>{link.title}</ListItemText>
+            </MenuItem>
+          )
+        )}
         {!connector && (
           <Box>
             <MenuItem
