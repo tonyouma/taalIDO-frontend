@@ -244,14 +244,14 @@ function NavBar({ isOpenNav, onCloseNav }) {
               src="/static/icons/page_icon.png"
             />
           </a>
-          <a href="https://medium.com/taalswap" target="_blank">
+          <a href="https://taalswap.medium.com" target="_blank">
             <motion.img
               variants={varFadeInRight}
               src="/static/icons/message_icon.png"
             />
           </a>
           {/* <a
-            href="https://medium.com/taalswap"
+            href="https://taalswap.medium.com"
             target="_blank"
             rel="noreferrer"
           >

@@ -99,7 +99,7 @@ function CleanInterfaces({ className }) {
               <img src="/static/icons/gray_papericon.png" />
             </a>
             <a
-              href="https://medium.com/taalswap"
+              href="https://taalswap.medium.com"
               target="_blank"
               className="icon_btn"
             >
