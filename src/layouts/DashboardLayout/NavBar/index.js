@@ -221,16 +221,6 @@ function NavBar({ isOpenNav, onCloseNav }) {
       )}
 
       <Box sx={{ px: 4.5, pb: 3, position: 'relative', bottom: 0 }}>
-        <div className={classes.doc}>
-          <Typography
-            gutterBottom
-            align="center"
-            variant="subtitle2"
-            sx={{ mb: 1, color: 'text.disabled', display: 'block' }}
-          >
-            © All rights reserved.
-          </Typography>
-        </div>
         <div className={classes.listIcon}>
           <a href="https://twitter.com/taal_fi" target="_blank">
             <motion.img

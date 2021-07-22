@@ -120,7 +120,7 @@ function DarkMode({ className }) {
                   variant="overline"
                   sx={{ color: 'text.disabled', display: 'block' }}
                 >
-                  © All rights reserved. Made by TaalSwap
+                  Made by TaalSwap
                 </Typography>
               </MotionInView>
               <div className={classes.listIcon}>

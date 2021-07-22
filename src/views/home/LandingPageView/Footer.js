@@ -75,7 +75,7 @@ function DarkMode({ className }) {
           variant="caption"
           className="footer_caption"
         >
-          © All rights reserved. Made by TaalSwap and{' '}
+          Made by TaalSwap and{' '}
           <a
             href="https://taalswap.gitbook.io/taalswap-documents/taalswap-security"
             target="_blank"
