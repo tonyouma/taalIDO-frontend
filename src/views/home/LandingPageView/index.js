@@ -10,7 +10,7 @@ import TabCard from './TabCard';
 import { makeStyles } from '@material-ui/core/styles';
 import CandidatePool from './CandidatePool';
 
-// ----------------------------------------------------------------------
+// --------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   root: {
