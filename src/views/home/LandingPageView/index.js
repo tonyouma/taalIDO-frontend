@@ -13,7 +13,7 @@ import CandidatePool from './CandidatePool';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPoolList } from '../../../redux/slices/pool';
 import './APP.css';
-// ------------------------------------------------------------------------
+// ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -55,7 +55,7 @@ function Advertisement({ className }) {
         <div className={classes.container}>
           <MotionInView variants={varFadeInUp} sx={{ mb: { xs: 3, md: 0 } }}>
             <motion.img src="static/images/rocket_web.png" id="box_rocket" />
-            {/*<Box
+            {/* <Box
               component="img"
               alt="rocket"
               src={getImg(600)}

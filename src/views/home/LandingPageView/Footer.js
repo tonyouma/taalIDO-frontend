@@ -7,7 +7,7 @@ import Logo from 'src/components/Logo';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Typography } from '@material-ui/core';
 
-// ------------------------------------------------------------------
+// ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   // page 3-2 padding 변경
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   handleOn: { width: 20 }
 }));
 
-// ------------------------------------------------------------------------
+// ----------------------------------------------------------------------
 
 DarkMode.propTypes = {
   className: PropTypes.string
@@ -70,7 +70,7 @@ function DarkMode({ className }) {
       >
         <Logo sx={{ mb: 1, mx: 'auto' }} className="footer_logo" />
 
-        {/*<Typography
+        {/* <Typography
           color="common.white"
           variant="caption"
           className="footer_caption"
@@ -78,7 +78,7 @@ function DarkMode({ className }) {
           © All rights reserved. Made by TaalSwap.
         </Typography> */}
         <div className={classes.listIcon} id="footer_iconbox">
-        <motion.img src="/static/icons/twitter_icon_w.svg" />
+          <motion.img src="/static/icons/twitter_icon_w.svg" />
           <motion.img src="/static/icons/page_icon_w.svg" />
           <motion.img src="/static/icons/messege_icon_w.svg" />
           <motion.img src="/static/icons/gitbook_icon_w.svg" />
