@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     [theme.breakpoints.up('md')]: {},
     '& > :not(:last-of-type)': {
-      marginRight: theme.spacing(4.5)
+      marginRight: '18.5px'
     }
   },
   handleOn: { width: 20 }
@@ -70,18 +70,20 @@ function DarkMode({ className }) {
       >
         <Logo sx={{ mb: 1, mx: 'auto' }} className="footer_logo" />
 
-        <Typography
+        {/*<Typography
           color="common.white"
           variant="caption"
           className="footer_caption"
         >
           © All rights reserved. Made by TaalSwap.
-        </Typography>
+        </Typography> */}
         <div className={classes.listIcon} id="footer_iconbox">
-          <motion.img src="/static/icons/ic_s_facebook.svg" />
-          <motion.img src="/static/icons/ic_s_linkin.svg" />
-          <motion.img src="/static/icons/ic_s_instagram.svg" />
-          <motion.img src="/static/icons/ic_s_tweet.svg" />
+        <motion.img src="/static/icons/twitter_icon_w.svg" />
+          <motion.img src="/static/icons/page_icon_w.svg" />
+          <motion.img src="/static/icons/messege_icon_w.svg" />
+          <motion.img src="/static/icons/gitbook_icon_w.svg" />
+          <motion.img src="/static/icons/github_icon_w.svg" />
+          <motion.img src="/static/icons/mail_icon_w.svg" />
         </div>
       </Container>
     </div>
