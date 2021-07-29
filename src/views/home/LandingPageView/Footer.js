@@ -7,7 +7,7 @@ import Logo from 'src/components/Logo';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Typography } from '@material-ui/core';
 
-// ----------------------------------------------------------------------
+// ------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
   // page 3-2 padding 변경
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   handleOn: { width: 20 }
 }));
 
-// ----------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
 DarkMode.propTypes = {
   className: PropTypes.string
