@@ -81,7 +81,7 @@
 }
 
 #adverisement_wrap {
-  padding-top: 136px;
+  padding-top: 56px;
 }
 
 .multipage_wrap {
@@ -176,6 +176,11 @@
   animation: moveline 2.5s infinite;
   -moz-animation: moveline 2.5s infinite;
   -webkit-animation: moveline 2.5s infinite;
+}
+
+.tit_line{
+  border-bottom:3px solid #00AB55;
+  padding-bottom:.5rem;
 }
 
 @keyframes moveline {

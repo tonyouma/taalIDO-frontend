@@ -162,9 +162,11 @@ function Tabcard() {
     <Page title="TaalSwap Finance" className={classes.root} id="finished_wrap">
       <Container maxWidth="lg">
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-          <Typography variant="h3" align="center" gutterBottom>
-            Finished
-          </Typography>
+          <div className="tit_line">
+            <Typography variant="h3" align="left" gutterBottom>
+              Finished
+            </Typography>
+          </div>
           <Box sx={{ my: 5 }}>
             <Box
               sx={{
