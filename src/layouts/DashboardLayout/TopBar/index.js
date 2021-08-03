@@ -13,7 +13,9 @@ import {
   Hidden,
   Toolbar,
   IconButton,
-  Button
+  Button,
+  Typography,
+  Container
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
@@ -28,7 +30,11 @@ import WalletInfo from './WalletInfo';
 import Taalswap from 'src/utils/taalswap';
 import { useSnackbar } from 'notistack';
 import { targetNetwork, targetNetworkMsg } from 'src/config';
+import './App.css';
 import { useTranslation } from 'react-i18next';
+
+const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
+
 
 // ----------------------------------------------------------------------
 
@@ -191,6 +197,8 @@ function TopBar({ onOpenNav, className }) {
             }
           }}
         >
+          <Typography id="token_num">0xa42...26955</Typography>
+          <img src="/static/icons/file_icon.png" className="file_icon" />
           {!!library && (
             <WalletInfo
               walletAddress={account}

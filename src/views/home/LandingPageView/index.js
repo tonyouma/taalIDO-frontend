@@ -6,6 +6,7 @@ import Advertisement from './Advertisement';
 import CleanInterfaces from './CleanInterfaces';
 //import HugePackElements from './HugePackElements';
 import TabCard from './TabCard';
+import Finished from './Finished';
 import { makeStyles } from '@material-ui/core/styles';
 import CandidatePool from './CandidatePool';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,6 +41,7 @@ function LandingPageView() {
       <Hero />
       <div className={classes.content}>
         <TabCard />
+        <Finished />
         <CandidatePool />
         <Advertisement />
         <CleanInterfaces />

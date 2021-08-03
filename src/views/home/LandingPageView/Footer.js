@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     [theme.breakpoints.up('md')]: {},
     '& > :not(:last-of-type)': {
-      marginRight: theme.spacing(4.5)
+      marginRight: '18.5px'
     }
   },
   handleOn: { width: 20 }
@@ -70,42 +70,31 @@ function DarkMode({ className }) {
       >
         <Logo sx={{ mb: 1, mx: 'auto' }} className="footer_logo" />
 
-        <Typography
+        {/* <Typography
           color="common.white"
           variant="caption"
           className="footer_caption"
         >
-          Made by TaalSwap and{' '}
-          <a
-            href="https://taalswap.gitbook.io/taalswap-documents/taalswap-security"
-            target="_blank"
-          >
-            {' '}
-            Audited by HAECHI AUDIT{' '}
-          </a>
-        </Typography>
+          © All rights reserved. Made by TaalSwap.
+        </Typography> */}
         <div className={classes.listIcon} id="footer_iconbox">
-          {/* <motion.img src="/static/icons/ic_s_facebook.svg" />
-          <motion.img src="/static/icons/ic_s_linkin.svg" />
-          <motion.img src="/static/icons/ic_s_instagram.svg" />
-          <motion.img src="/static/icons/ic_s_tweet.svg" /> */}
           <a href="https://twitter.com/taal_fi" target="_blank">
-            <motion.img
-              // variants={varFadeInRight}
-              src="/static/icons/tweet_icon.png"
-            />
-          </a>
-          <a href="https://t.me/TaalSwapOfficial" target="_blank">
-            <motion.img
-              // variants={varFadeInRight}
-              src="/static/icons/page_icon.png"
-            />
+          <motion.img src="/static/icons/twitter_icon_w.svg" />
           </a>
           <a href="https://taalswap.medium.com" target="_blank">
-            <motion.img
-              // variants={varFadeInRight}
-              src="/static/icons/message_icon.png"
-            />
+          <motion.img src="/static/icons/page_icon_w.svg" />
+          </a>
+          <a href="https://t.me/TaalSwapOfficial" target="_blank">
+            <motion.img src="/static/icons/messege_icon_w.svg" />
+          </a>
+          <a href="https://taalswap.gitbook.io/taalswap-docs-v-2-0/" target="_blank">
+            <motion.img src="/static/icons/gitbook_icon_w.svg" />
+          </a>
+          <a href="https://github.com/taalswap" target="_blank">
+            <motion.img src="/static/icons/github_icon_w.svg" />
+          </a>
+          <a href="mailto:taalswap.dev@gmail.com" target="_blank">
+            <motion.img src="/static/icons/mail_icon_w.svg" />
           </a>
         </div>
       </Container>

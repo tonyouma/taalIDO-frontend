@@ -43,11 +43,13 @@ function CandidatePool() {
   }, [poolList]);
 
   return (
-    <Page title="TaalSwap Finance" className={(classes.root, 'candidate_wrap')}>
+    <Page title="TaalSwap Finance" className={classes.root} id="candidate_wrap">
       <Container maxWidth="lg">
-        <Typography variant="h4" align="center" gutterBottom>
-          {t('taalswap.CandidateProjects')}
-        </Typography>
+        <div className="tit_line">
+          <Typography variant="h3" align="left" gutterBottom>
+            {t('taalswap.CandidateProjects')}
+          </Typography>
+        </div>
 
         <Box sx={{ my: 5 }} className="pooltitle_wrap">
           <Box

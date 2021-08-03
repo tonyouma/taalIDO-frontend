@@ -12,6 +12,8 @@ import { Box, Container, Typography } from '@material-ui/core';
 import { MButton } from 'src/theme';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
+import './APP.css';
 
 // ----------------------------------------------------------------------
 
@@ -53,7 +55,8 @@ function Advertisement({ className }) {
       <Container maxWidth="lg">
         <div className={classes.container}>
           <MotionInView variants={varFadeInUp} sx={{ mb: { xs: 3, md: 0 } }}>
-            <Box
+            <motion.img src="static/images/rocket_web.png" id="box_rocket" />
+            {/* <Box
               component="img"
               alt="rocket"
               src={getImg(600)}
@@ -65,7 +68,7 @@ function Advertisement({ className }) {
                   md: 'translateX(0)'
                 }
               }}
-            />
+            /> */}
           </MotionInView>
 
           <Box

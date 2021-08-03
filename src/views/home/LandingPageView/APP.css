@@ -22,7 +22,7 @@
   color: #229a16;
 }
 
-.cardtitle_wrap {
+#cardtitle_wrap {
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
@@ -81,7 +81,7 @@
 }
 
 #adverisement_wrap {
-  padding-top: 136px;
+  padding-top: 56px;
 }
 
 .multipage_wrap {
@@ -178,6 +178,11 @@
   -webkit-animation: moveline 2.5s infinite;
 }
 
+.tit_line{
+  border-bottom:3px solid #00AB55;
+  padding-bottom:.5rem;
+}
+
 @keyframes moveline {
   0% {
     top: 0;
@@ -204,6 +209,11 @@
     top: 150px;
   }
 }
+
+#finished_wrap {
+  padding-top: 0px;
+}
+
 @media screen and (min-width: 960px) {
   #footer_wrap {
     padding: 0;
@@ -321,13 +331,16 @@
     padding-top: 40px;
     padding-bottom: 50px;
   }
+  #finished_wrap {
+    padding-bottom: 50px;
+  }
   .tabcard_loading {
     margin: 15px 0;
   }
   .view_btnwrap {
     margin: 24px 0 0 0;
   }
-  .candidate_wrap {
+  #candidate_wrap {
     padding: 0 0 50px 0;
   }
   .pooltitle_wrap {
@@ -372,4 +385,8 @@
   #cardbox_wrap {
     padding: 20px;
   }
+}
+
+@media screen and (max-width: 920px) {
+  #box_rocket {transform:translateX(-10%);}
 }

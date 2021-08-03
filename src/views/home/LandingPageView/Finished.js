@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PlanCard from './PlanCard';
@@ -20,8 +21,7 @@ import { getPoolStatus } from '../../../utils/getPoolStatus';
 import Taalswap from 'src/utils/taalswap';
 import { PoolStatus } from 'src/utils/poolStatus';
 import './APP.css';
-import { useTranslation } from 'react-i18next';
-import getEthPrice from 'src/utils/getEthPrice';
+
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -60,7 +60,6 @@ const POOLS_TABS = [
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  const { i18n, t } = useTranslation();
 
   return (
     <div
@@ -81,28 +80,16 @@ function Tabcard() {
   const [value, setValue] = useState(0);
   const { poolList } = useSelector((state) => state.pool);
   const [ethPrice, setEthPrice] = useState(0);
-  // const [pools, setPools] = useState([]);
-  // const [accomplishedPools, setAccomplishedPools] = useState([]);
-
-  const [upcomingLivePools, setUpcomingLivePools] = useState([]);
-  const [finishedPools, setFinishedPools] = useState([]);
-  const [etcPools, setEtcPools] = useState([]);
-
+  const [pools, setPools] = useState([]);
+  const [accomplishedPools, setAccomplishedPools] = useState([]);
   const [loadingFlag, setLoadingFlag] = useState(false);
 
   const { library, account } = context;
-  const { i18n, t } = useTranslation();
 
   useEffect(async () => {
     try {
-      // let tempPools = [];
-      // let tempAccomplishedPools = [];
-
-      let tempUpcomingLivePools = [];
-      let tempFinishedPools = [];
-      let tempEtcPools = [];
-
-      const langStorage = localStorage.getItem('i18nextLng');
+      let tempPools = [];
+      let tempAccomplishedPools = [];
 
       await poolList
         .filter((pool) => !!pool.contractAddress && pool.contractAddress !== '')
@@ -123,47 +110,30 @@ function Tabcard() {
 
           await getPoolStatus(taalswap, pool.status, pool.minFundRaise).then(
             (result) => {
-              if (
-                result === PoolStatus.FILLED.SUCCESS.ACCOMPLISHED ||
-                result === PoolStatus.FILLED.SUCCESS.CLOSED ||
-                result === PoolStatus.FILLED.FAILED
-              ) {
-                tempFinishedPools = tempFinishedPools.concat({
-                  ...pool,
-                  poolStatus: result
-                });
-                setFinishedPools(tempFinishedPools);
-              } else if (
-                result === PoolStatus.UPCOMING ||
-                result === PoolStatus.LIVE ||
-                result === PoolStatus.PAUSED ||
-                result === PoolStatus.SOLDOUT
-              ) {
-                tempUpcomingLivePools = tempUpcomingLivePools.concat({
-                  ...pool,
-                  poolStatus: result
-                });
-                setUpcomingLivePools(tempUpcomingLivePools);
+              if (result !== PoolStatus.FILLED.SUCCESS.ACCOMPLISHED) {
+                tempPools = tempPools.concat({ ...pool, poolStatus: result });
+                setPools(tempPools);
               } else {
-                tempEtcPools = tempEtcPools.concat({
+                tempAccomplishedPools = tempAccomplishedPools.concat({
                   ...pool,
                   poolStatus: result
                 });
-                setEtcPools(tempEtcPools);
+                setAccomplishedPools(tempAccomplishedPools);
               }
             }
           );
         });
 
-      setEthPrice(await getEthPrice(langStorage === 'kr' ? 'KRW' : 'USD'));
-
-      return;
+      await axios
+        .get('https://api.coinbase.com/v2/prices/ETH-USD/spot')
+        .then((result) => {
+          setEthPrice(result.data.data.amount);
+        })
+        .catch((error) => console.log(error));
     } catch (error) {
       console.log(error);
-
-      return;
     }
-  }, [poolList, library, t]);
+  }, [poolList, library]);
 
   useEffect(() => {
     try {
@@ -171,10 +141,9 @@ function Tabcard() {
         poolList.filter(
           (pool) => !!pool.contractAddress && pool.contractAddress !== ''
         ).length ===
-        finishedPools.length + upcomingLivePools.length + etcPools.length
+        pools.length + accomplishedPools.length
       ) {
         setLoadingFlag(false);
-        setValue(1);
       } else {
         setLoadingFlag(true);
       }
@@ -183,34 +152,20 @@ function Tabcard() {
       console.log(error);
       return;
     }
-  }, [poolList, finishedPools, upcomingLivePools, etcPools]);
+  }, [poolList, pools, accomplishedPools]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   return (
-    <Page title="TaalSwap Finance" className={classes.root} id="tabcard_wrap">
+    <Page title="TaalSwap Finance" className={classes.root} id="finished_wrap">
       <Container maxWidth="lg">
-        <Box sx={{ width: '100%' }}>
-          {loadingFlag && (
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                marginBottom: '2rem'
-              }}
-            >
-              <CircularProgress />
-              <Typography color="primary">loading..</Typography>
-            </Box>
-          )}
+        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
           <div className="tit_line">
-          <Box textAlign="center">
-            <Typography variant="h4">{t('taalswap.Finished')}</Typography>
-          </Box>
+            <Typography variant="h3" align="left" gutterBottom>
+              Finished
+            </Typography>
           </div>
           <Box sx={{ my: 5 }}>
             <Box
@@ -222,31 +177,7 @@ function Tabcard() {
             ></Box>
           </Box>
           <Grid container spacing={3}>
-            {/* {accomplishedPools.map((pool, index) => ( */}
-            {finishedPools.map((pool, index) => (
-              <Grid item xs={12} md={4} key={index}>
-                <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
-              </Grid>
-            ))}
-          </Grid>
-          <div className="tit_line">
-          <Box textAlign="center" sx={{ my: 5 }}>
-            <Typography variant="h4">{t('taalswap.LiveUpcoming')}</Typography>
-          </Box>
-          </div>
-
-          <Box sx={{ my: 5 }} className="tabcard_loading">
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            ></Box>
-          </Box>
-          <Grid container spacing={3}>
-            {/* {pools.map((pool, index) => ( */}
-            {upcomingLivePools.map((pool, index) => (
+            {accomplishedPools.map((pool, index) => (
               <Grid item xs={12} md={4} key={index}>
                 <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
               </Grid>
@@ -269,7 +200,7 @@ function Tabcard() {
               variant="outlined"
               component={RouterLink}
             >
-              {t('taalswap.ViewAll')}
+              View All
             </Button>
           </Box>
         </Box>
