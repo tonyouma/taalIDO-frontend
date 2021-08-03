@@ -46,7 +46,7 @@ function CandidatePool() {
     <Page title="TaalSwap Finance" className={classes.root} id="candidate_wrap">
       <Container maxWidth="lg">
         <div className="tit_line">
-          <Typography variant="h3" align="left" gutterBottom>
+          <Typography fontSize="16px" align="left" gutterBottom>
             {t('taalswap.CandidateProjects')}
           </Typography>
         </div>

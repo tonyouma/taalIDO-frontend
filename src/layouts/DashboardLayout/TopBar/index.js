@@ -35,7 +35,6 @@ import { useTranslation } from 'react-i18next';
 
 const TAL_TOKEN_ADDRESS = '0xbC91D155EDBB2ac6079D34F6AfeC40e4E6808DF6';
 
-
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;

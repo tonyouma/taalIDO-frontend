@@ -79,15 +79,18 @@ function DarkMode({ className }) {
         </Typography> */}
         <div className={classes.listIcon} id="footer_iconbox">
           <a href="https://twitter.com/taal_fi" target="_blank">
-          <motion.img src="/static/icons/twitter_icon_w.svg" />
-          </a>
-          <a href="https://taalswap.medium.com" target="_blank">
-          <motion.img src="/static/icons/page_icon_w.svg" />
+            <motion.img src="/static/icons/twitter_icon_w.svg" />
           </a>
           <a href="https://t.me/TaalSwapOfficial" target="_blank">
+            <motion.img src="/static/icons/page_icon_w.svg" />
+          </a>
+          <a href="https://taalswap.medium.com" target="_blank">
             <motion.img src="/static/icons/messege_icon_w.svg" />
           </a>
-          <a href="https://taalswap.gitbook.io/taalswap-docs-v-2-0/" target="_blank">
+          <a
+            href="https://taalswap.gitbook.io/taalswap-docs-v-2-0/"
+            target="_blank"
+          >
             <motion.img src="/static/icons/gitbook_icon_w.svg" />
           </a>
           <a href="https://github.com/taalswap" target="_blank">

@@ -208,9 +208,9 @@ function Tabcard() {
             </Box>
           )}
           <div className="tit_line">
-          <Box textAlign="center">
-            <Typography variant="h4">{t('taalswap.Finished')}</Typography>
-          </Box>
+            <Typography fontSize="16px" textAlign="left" gutterBottom>
+              {t('taalswap.Finished')}
+            </Typography>
           </div>
           <Box sx={{ my: 5 }}>
             <Box
@@ -230,9 +230,9 @@ function Tabcard() {
             ))}
           </Grid>
           <div className="tit_line">
-          <Box textAlign="center" sx={{ my: 5 }}>
-            <Typography variant="h4">{t('taalswap.LiveUpcoming')}</Typography>
-          </Box>
+            <Typography fontSize="16px" textAlign="left" gutterBottom>
+              {t('taalswap.LiveUpcoming')}
+            </Typography>
           </div>
 
           <Box sx={{ my: 5 }} className="tabcard_loading">

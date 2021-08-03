@@ -41,7 +41,7 @@ function LandingPageView() {
       <Hero />
       <div className={classes.content}>
         <TabCard />
-        <Finished />
+        {/* <Finished /> */}
         <CandidatePool />
         <Advertisement />
         <CleanInterfaces />
