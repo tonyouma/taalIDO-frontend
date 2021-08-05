@@ -190,7 +190,7 @@ function Tabcard() {
   };
 
   return (
-    <Page title="TaalSwap Finance" className={classes.root} id="tabcard_wrap">
+    <Page title="TaalSwap IDO" className={classes.root} id="tabcard_wrap">
       <Container maxWidth="lg">
         <Box sx={{ width: '100%' }}>
           {loadingFlag && (
