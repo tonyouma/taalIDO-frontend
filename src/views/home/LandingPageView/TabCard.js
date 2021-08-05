@@ -208,7 +208,7 @@ function Tabcard() {
             </Box>
           )}
           <div className="tit_line">
-            <Typography fontSize="16px" textAlign="left" gutterBottom>
+            <Typography textAlign="left" gutterBottom>
               {t('taalswap.Finished')}
             </Typography>
           </div>
@@ -230,7 +230,7 @@ function Tabcard() {
             ))}
           </Grid>
           <div className="tit_line">
-            <Typography fontSize="16px" textAlign="left" gutterBottom>
+            <Typography textAlign="left" gutterBottom>
               {t('taalswap.LiveUpcoming')}
             </Typography>
           </div>
