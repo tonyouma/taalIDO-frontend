@@ -43,7 +43,7 @@ function CandidatePool() {
   }, [poolList]);
 
   return (
-    <Page title="TaalSwap Finance" className={classes.root} id="candidate_wrap">
+    <Page title="TaalSwap IDO" className={classes.root} id="candidate_wrap">
       <Container maxWidth="lg">
         <div className="tit_line">
           <Typography fontSize="16px" align="left" gutterBottom>
@@ -51,14 +51,14 @@ function CandidatePool() {
           </Typography>
         </div>
 
-        <Box sx={{ my: 5 }} className="pooltitle_wrap">
-          <Box
+        <Box sx={{ my: 3 }} className="pooltitle_wrap">
+          {/* <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end'
             }}
-          ></Box>
+          ></Box> */}
         </Box>
 
         <Grid container spacing={2}>
