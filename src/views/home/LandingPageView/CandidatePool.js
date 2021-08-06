@@ -51,14 +51,14 @@ function CandidatePool() {
           </Typography>
         </div>
 
-        <Box sx={{ my: 5 }} className="pooltitle_wrap">
-          <Box
+        <Box sx={{ my: 3 }} className="pooltitle_wrap">
+          {/* <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end'
             }}
-          ></Box>
+          ></Box> */}
         </Box>
 
         <Grid container spacing={2}>
