@@ -27,8 +27,8 @@ import getEthPrice from 'src/utils/getEthPrice';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100%',
-    paddingTop: theme.spacing(15),
-    paddingBottom: theme.spacing(10)
+    paddingTop: theme.spacing(15)
+    // paddingBottom: theme.spacing(10)
   },
   header: {
     top: 0,
@@ -190,7 +190,7 @@ function Tabcard() {
   };
 
   return (
-    <Page title="TaalSwap Finance" className={classes.root} id="tabcard_wrap">
+    <Page title="TaalSwap IDO" className={classes.root} id="tabcard_wrap">
       <Container maxWidth="lg">
         <Box sx={{ width: '100%' }}>
           {loadingFlag && (
@@ -208,18 +208,18 @@ function Tabcard() {
             </Box>
           )}
           <div className="tit_line">
-            <Typography fontSize="16px" textAlign="left" gutterBottom>
+            <Typography textAlign="left" gutterBottom>
               {t('taalswap.Finished')}
             </Typography>
           </div>
-          <Box sx={{ my: 5 }}>
-            <Box
+          <Box sx={{ my: 3 }}>
+            {/* <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-end'
               }}
-            ></Box>
+            ></Box> */}
           </Box>
           <Grid container spacing={3}>
             {/* {accomplishedPools.map((pool, index) => ( */}
@@ -229,23 +229,26 @@ function Tabcard() {
               </Grid>
             ))}
           </Grid>
-          <div className="tit_line">
-            <Typography fontSize="16px" textAlign="left" gutterBottom>
+          <div className="tit_line" style={{ marginTop: '50px' }}>
+            <Typography textAlign="left" gutterBottom>
               {t('taalswap.LiveUpcoming')}
             </Typography>
           </div>
 
-          <Box sx={{ my: 5 }} className="tabcard_loading">
-            <Box
+          <Box sx={{ my: 3 }} className="tabcard_loading">
+            {/* <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}
-            ></Box>
+            ></Box> */}
           </Box>
           <Grid container spacing={3}>
             {/* {pools.map((pool, index) => ( */}
+            {/* <Grid item xs={12} md={4}>
+              <PlanCard pool={null} ethPrice={null} index={1} />
+            </Grid> */}
             {upcomingLivePools.map((pool, index) => (
               <Grid item xs={12} md={4} key={index}>
                 <PlanCard pool={pool} ethPrice={ethPrice} index={index} />
